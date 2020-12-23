@@ -1,0 +1,70 @@
+第一小节
+==============
+
+第一小节第一子节
+----------------
+
+*单星号----强调斜体*
+
+**双星号----加黑**
+
+.. role:: raw-html(raw)
+   :format: html
+.. default-role:: raw-html
+
+`<U>` 下划线 `</U>` 、 `<S>` 删除线 `</S>`
+
+代码段
+
+::
+
+    void test_sphinx()
+    {
+        int reval = 0;
+        return reval;
+    }
+
+文本段
+
+this is a  normal text. code sample::
+    it is not processed in any way,except
+    that  the indentation is removed.
+
+    it can span multiple lines.
+
+this is a normale text again.
+
+子节的子节
+^^^^^^^^^^^^^^^^^
+
+自定义表格
+
++-------------------------------------+-------------------+--------+
+|    header row,column 1              |  header 2         | header | 
+|    (header rows optional)           |                   |        |
++=====================================+===================+========+
+|   body row 1                        | colum 2           |        |
+|   body row 2                        |                   | column |
++-------------------------------------+-------------------+--------+
+
+嵌入本地文档
+
+* :download:`holo_ark_v4_sch.pdf<res/HoloArk_V40_200917a.pdf>` 
+
+嵌入网址
+
+www.baidu.com
+
+第二小节
+===========
+
+当前时间
+
+.. |current-time| date:: %Y-%m-%d %H:%M:%S
+
+加载图片
+
+.. image:: res/test.png
+    :align: center
+
+最后终端执行 make html 即可, 效果图如下：

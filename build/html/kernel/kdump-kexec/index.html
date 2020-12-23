@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.1. linux kernel debug tools &mdash; ywg_dev_doc 0.1 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="3. linux driver modules note" href="../../driver/index.html" />
+    <link rel="prev" title="2. kernel note" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">1. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. kernel note</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.1. linux kernel debug tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kerel-debugkdump">2.1.1. kerel-debug之kdump</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">4. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../app/index.html">5. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work_space/index.html">6. holo work note</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">2. </span>kernel note</a> &raquo;</li>
+        
+      <li><span class="section-number">2.1. </span>linux kernel debug tools</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/kernel/kdump-kexec/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="linux-kernel-debug-tools">
+<h1><span class="section-number">2.1. </span>linux kernel debug tools<a class="headerlink" href="#linux-kernel-debug-tools" title="永久链接至标题">¶</a></h1>
+<div class="section" id="kerel-debugkdump">
+<h2><span class="section-number">2.1.1. </span>kerel-debug之kdump<a class="headerlink" href="#kerel-debugkdump" title="永久链接至标题">¶</a></h2>
+<p>一般情况下kernel crash时系统处于死机状态，无法通过一般手段获取故障发生时的
+现场信息。这种情况下kdump-kexec机制应运而生。
+kexec可在一个内核运行时加载另一个内核，而且不进行硬件初始化。在跳过u-boot
+而且没有硬件重启的情况下可以保留上一个内核的运行现场。
+产生crash的内核称为生产内核，发生crash后运行的另外一个内核称为捕获内核。
+生产内核在发生crash时通过kdump生成vmcore文件，vmcore文件包含函数调用栈信息
+cpu寄存器信息等。在捕获内核中可以通过dgdb等工具查看并调试。</p>
+<p>什么是kexec?</p>
+<blockquote>
+<div><p>kexec是实现kdump机制的关键，它包括2个组成部分：一是内核空间的系统调用
+kexec_load负责在生产内核启动时将捕获内核加载到指定地址。二是用户空间的
+kexec-tools，他将捕获内核的地址传递给生产内核，从而在系统崩溃时能找到
+捕获内核的地址并运行。</p>
+</div></blockquote>
+<p>什么是kdump</p>
+<blockquote>
+<div><p>kdump的概念出现在2005年左右，是迄今为止最为可靠的内核转存机制。kdump是
+一种基于kexec的内核崩溃转存机制。当系统崩溃时，kdump使用kexec启动到第二
+个内核。第二个内核通常叫捕获内核，生产内核会预留一部分内存给捕获内核使用，
+由于kdump利用kexec启动捕获内核绕过了boot，没有硬件复位，使得生产内核 的内
+存得以保留。这是内核崩溃转存的本质。</p>
+</div></blockquote>
+<p>kexec安装</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="n">edge</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">utils</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">kexec</span><span class="o">/</span><span class="n">kexec</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mf">2.0</span><span class="o">.</span><span class="mf">17.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">tar</span> <span class="n">xvzf</span> <span class="n">kexec</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mf">2.0</span><span class="o">.</span><span class="mf">17.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="o">./</span><span class="n">configure</span> <span class="o">--</span><span class="n">build</span><span class="o">=</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span> <span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">aarch64</span><span class="o">-</span><span class="n">unknown</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span> <span class="o">--</span><span class="n">target</span><span class="o">=</span><span class="n">aarch64</span><span class="o">-</span><span class="n">unknown</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span>
+<span class="n">make</span> <span class="n">ARCH</span><span class="o">=</span><span class="n">arm64</span> <span class="n">clean</span> <span class="nb">all</span>
+<span class="n">make</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>注：以上操作直接在目标板系统中执行</p>
+<p>kernel 配置</p>
+<p>内核编译时需要打开以下选项（最好使用menuconfig的方式，手动修改.config容易漏掉依赖项配置）</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG_KEXEC</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_SYSFS</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_DEBUG_INFO</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_CRASH_DUMP</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_PROC_VMCORE</span><span class="o">=</span><span class="n">y</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../driver/index.html" class="btn btn-neutral float-right" title="3. linux driver modules note" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="2. kernel note" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, yinwg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
