@@ -5,7 +5,8 @@ hardware design
 ---------------
 
 * :download:`holo-ark-v4-sch.pdf<res/HoloArk_V40_200917a.pdf>`
-
+* :download:`holo-ark-v4-pos-top.pdf<res/HOLOARK_V40_ASM-BOT-MIRROR.pdf>`
+* :download:`holo-ark-v4-pos-bot.pdf<res/HOLOARK_V40_ASM-BOT-MIRROR.pdf>`
 * :download:`板卡标注图<res/ark-v4-标注.png>`
 
 
