@@ -16,6 +16,7 @@ Welcome to ywg_dev_doc's documentation!
     fs/index.rst
     app/index.rst
     work_space/index.rst
+    misc/index.rst
 
 Indices and tables
 ==================
