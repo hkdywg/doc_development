@@ -14,9 +14,10 @@ Welcome to ywg_dev_doc's documentation!
     kernel/index.rst
     driver/index.rst
     fs/index.rst
-    app/index.rst
+    user/index.rst
     work_space/index.rst
     misc/index.rst
+    issues/index.rst
 
 Indices and tables
 ==================
