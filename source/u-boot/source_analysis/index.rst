@@ -1,0 +1,86 @@
+source analysis
+===============
+
+目录结构
+--------
+::
+
+    board:      开发板相关目录，平台依赖
+    arch:       CPU相关目录，平台依赖
+    include:    头文件目录，开发板的配置文件也在其中，configs存放开发板配置文件
+    common:     通用多功能函数实现
+    cmd:        cmd命令实现
+    drivers:    通用设备驱动程序，包括以太网，flash驱动等
+    fs:         文件系统支持
+    lib:        通用库函数实现
+    net:        网络相关工具
+    tool:       工具
+    script:     脚本
+
+u-boot目录可分为3类：
+
+1)  处理器体系结构或开发板硬件直接相关的
+2)  通用函数或者驱动程序
+3)  u-boot应用程序、工具或者文档
+
+
+重要文件
+--------
+
+- include/configs/holo_ark_v3.h
+
+开发板配置文件,包含spl loader配置信息，环境变量配置信息，地址配置信息等
+
+- arch/arm/cpu/armv8/u-boot.lds
+
+程序链接脚本，定义程序入口entry(_start),并安排各程序段衔接位置，程序首先运行start.s文件。
+
+- arch/arm/cpu/armv8/start.S
+
+程序首先运行的文件，程序刚开始运行的汇编代码，完成基本初始化。
+
+- arch/arm/cpu/armv8/lowlevel_init.S
+
+内存初始化，clock、SDRAM初始化代码（bootstrap中已完成，不执行）
+
+- board/holomatic/holo_ark_v3/board.c
+
+C语言入口start_
+
+- common/main.c
+
+main_loop()定义于此。
+
+- arch/arm/lib/interrupts.c
+
+中断相关函数
+
+main_loop()在没有字符输入的情况下。执行autoboot_command函数，boot kernel
+
+u-boot 实际主要运行的三个位置::
+
+    _start----->start_armboot-------->main_loop
+
+生成文件
+--------
+
+::
+
+    System.map:     uboot映像符号表，它包含了uboot全局变量和函数的地址信息。可供用户查看或由外部程序调试使用
+    uboot.bin:      uboot映像原始二进制文件。
+    uboot：         uboot映像elf格式文件。
+    uboot.srec:     uboot映像的s_record格式。
+    注：uboot和uboot.srec格式都自带定位信息
+    tool/mkimge可转换为其他格式印象
+
+
+程序相关
+--------
+
+- 环境变量的处理
+
+1)  cmd/nvedit.c setenv, printenv 等函数
+2)  待完善
+
+- 
+

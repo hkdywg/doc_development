@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.1. source analysis &mdash; ywg_dev_doc 0.1 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="2. kernel note" href="../../kernel/index.html" />
+    <link rel="prev" title="1. u-boot dev note" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">1. u-boot dev note</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.1. source analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">1.1.1. 目录结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">1.1.2. 重要文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">1.1.3. 生成文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">1.1.4. 程序相关</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">2. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">4. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../app/index.html">5. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">1. </span>u-boot dev note</a> &raquo;</li>
+        
+      <li><span class="section-number">1.1. </span>source analysis</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/u-boot/source_analysis/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="source-analysis">
+<h1><span class="section-number">1.1. </span>source analysis<a class="headerlink" href="#source-analysis" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2><span class="section-number">1.1.1. </span>目录结构<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>board:      开发板相关目录，平台依赖
+arch:       CPU相关目录，平台依赖
+include:    头文件目录，开发板的配置文件也在其中，configs存放开发板配置文件
+common:     通用多功能函数实现
+cmd:        cmd命令实现
+drivers:    通用设备驱动程序，包括以太网，flash驱动等
+fs:         文件系统支持
+lib:        通用库函数实现
+net:        网络相关工具
+tool:       工具
+script:     脚本
+</pre></div>
+</div>
+<p>u-boot目录可分为3类：</p>
+<ol class="arabic simple">
+<li><p>处理器体系结构或开发板硬件直接相关的</p></li>
+<li><p>通用函数或者驱动程序</p></li>
+<li><p>u-boot应用程序、工具或者文档</p></li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">1.1.2. </span>重要文件<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p>include/configs/holo_ark_v3.h</p></li>
+</ul>
+<p>开发板配置文件,包含spl loader配置信息，环境变量配置信息，地址配置信息等</p>
+<ul class="simple">
+<li><p>arch/arm/cpu/armv8/u-boot.lds</p></li>
+</ul>
+<p>程序链接脚本，定义程序入口entry(_start),并安排各程序段衔接位置，程序首先运行start.s文件。</p>
+<ul class="simple">
+<li><p>arch/arm/cpu/armv8/start.S</p></li>
+</ul>
+<p>程序首先运行的文件，程序刚开始运行的汇编代码，完成基本初始化。</p>
+<ul class="simple">
+<li><p>arch/arm/cpu/armv8/lowlevel_init.S</p></li>
+</ul>
+<p>内存初始化，clock、SDRAM初始化代码（bootstrap中已完成，不执行）</p>
+<ul class="simple">
+<li><p>board/holomatic/holo_ark_v3/board.c</p></li>
+</ul>
+<p><a href="#id5"><span class="problematic" id="id6">C语言入口start_</span></a></p>
+<ul class="simple">
+<li><p>common/main.c</p></li>
+</ul>
+<p>main_loop()定义于此。</p>
+<ul class="simple">
+<li><p>arch/arm/lib/interrupts.c</p></li>
+</ul>
+<p>中断相关函数</p>
+<p>main_loop()在没有字符输入的情况下。执行autoboot_command函数，boot kernel</p>
+<p>u-boot 实际主要运行的三个位置:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_start</span><span class="o">-----&gt;</span><span class="n">start_armboot</span><span class="o">--------&gt;</span><span class="n">main_loop</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">1.1.3. </span>生成文件<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>System.map:     uboot映像符号表，它包含了uboot全局变量和函数的地址信息。可供用户查看或由外部程序调试使用
+uboot.bin:      uboot映像原始二进制文件。
+uboot：         uboot映像elf格式文件。
+uboot.srec:     uboot映像的s_record格式。
+注：uboot和uboot.srec格式都自带定位信息
+tool/mkimge可转换为其他格式印象
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2><span class="section-number">1.1.4. </span>程序相关<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../kernel/index.html" class="btn btn-neutral float-right" title="2. kernel note" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="1. u-boot dev note" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, yinwg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

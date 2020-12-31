@@ -182,6 +182,14 @@ tag相关操作
 
     target
     bin
-    *.o
 
 
+常用操作
+^^^^^^^^
+
+::
+    
+    git config --local user.email "hkdywg@163.com"
+    git config --local user.name "hkdywg"
+
+    git push --set-upstream origin wg/feature
