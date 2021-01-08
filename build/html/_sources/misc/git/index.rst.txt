@@ -193,3 +193,8 @@ tag相关操作
     git config --local user.name "hkdywg"
 
     git push --set-upstream origin wg/feature
+
+- git 命令思维导图
+
+.. image::  res/git-map.png
+
