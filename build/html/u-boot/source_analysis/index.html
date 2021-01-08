@@ -92,6 +92,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#u-boot">1.1.4. u-boot启动流程</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#spl">1.1.4.1. SPL启动流程分析</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id4">1.1.4.2. u-boot 启动流程分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">1.1.4.3. 移植u-boot</a></li>
 </ul>
 </li>
 </ul>
@@ -184,8 +185,8 @@ cmd:        cmd命令实现
 drivers:    通用设备驱动程序，包括以太网，flash驱动等
 fs:         文件系统支持
 lib:        通用库函数实现
-net:        网络相关工具
-tool:       工具
+net:        网络相关工具,如tftp，nfs
+tool:       用于创建u-boot s-record和bin镜像文件的工具
 script:     脚本
 </pre></div>
 </div>
@@ -713,8 +714,9 @@ ENDPROC(_main)
 <li><p>mem_malloc_init 进行memory的malloc池初始化，以后调用malloc就在这个池子中分配内存</p></li>
 <li><p>spl_init 包括fdt log等前期初始化工作</p></li>
 <li><p>timer_init  定时器初始化</p></li>
+<li><p>spl_board_init 根据配置选项完成相应的spl阶段外设初始化，包括console i2c misc watchdog</p></li>
 </ol>
-<p>4)  spl_board_init 根据配置选项完成相应的spl阶段外设初始化，包括console i2c misc watchdog
+<p>5)  boot_from_devices 设置从哪个外部设备启动(NAND  SDCARD NOR)
 6） 将image从外部设备load到ram中
 7)  判断image类型，如果是uboot则break，去运行u-boot。如果是linux则启动linux(说明：spl可以直接启动linux)</p>
 <p>至此，SPL结束它的生命，控制权交给uboot或者linux</p>
@@ -1111,6 +1113,77 @@ jump到这个地址运行。</p>
 从环境变量bootcmd中获取对应的命令然后执行</p></li>
 </ol>
 <p>至此u-boot结束它的生命周期，控制权交由kernel</p>
+</div>
+<div class="section" id="id5">
+<h3><span class="section-number">1.1.4.3. </span>移植u-boot<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<ol class="arabic simple">
+<li><p>安装依赖库</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libncurses5</span><span class="o">-</span><span class="n">dev</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>添加开发板对应的板级文件</p></li>
+</ol>
+<ol class="upperalpha simple">
+<li><p>copy板级文件目录</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="n">board</span><span class="o">/</span><span class="n">ti</span> <span class="n">cp</span> <span class="n">board</span><span class="o">/</span><span class="n">holo_ark</span>
+</pre></div>
+</div>
+<ol class="upperalpha simple" start="2">
+<li><p>修改目录下的.c文件命名</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mv</span> <span class="n">evm</span><span class="o">.</span><span class="n">c</span> <span class="n">board</span><span class="o">.</span><span class="n">c</span>
+</pre></div>
+</div>
+<ol class="upperalpha simple" start="3">
+<li><p>修改目录下对应的Makefile</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="o">-</span><span class="n">y</span> <span class="o">+=</span> <span class="n">board</span><span class="o">.</span><span class="n">o</span>
+</pre></div>
+</div>
+<ol class="upperalpha simple" start="4">
+<li><p>修改目录下对应Kconfig</p></li>
+</ol>
+<p>修改Kconfig可改变图形界面选项，以及对应的配置信息</p>
+<ol class="arabic simple" start="3">
+<li><p>移植配置文件</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">configs</span>
+<span class="n">cp</span> <span class="n">j721e_evm_a72_defconfig</span> <span class="n">holo_ark_a72_defconfig</span>
+<span class="c1">#修改XX_defconfig文件</span>
+<span class="n">CONFIG_ARM</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_ENV_SIZE</span><span class="o">=</span><span class="mh">0x20000</span>
+<span class="n">CONFIG_ENV_OFFSET</span><span class="o">=</span><span class="mh">0x680000</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>修改开发板对应的头文件</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">include</span><span class="o">/</span><span class="n">configs</span>
+<span class="n">cp</span> <span class="n">j721e_evm</span><span class="o">.</span><span class="n">h</span> <span class="n">holo_ark_v3</span><span class="o">.</span><span class="n">h</span>
+
+<span class="c1">#修改.h的重复检测宏</span>
+<span class="c1">#ifndef __HOLO_ARK_V3_H</span>
+<span class="c1">#define __HOLO_ARK_V3_H</span>
+<span class="c1">#define CONFIG_SYS_SPL_MALLOC_START     0x84000000</span>
+<span class="c1">#define CONFIG_SYS_SPL_MALLOC_SIZE      SZ_16M</span>
+<span class="c1">#define EXTRA_ENV_J721E_BOARD_SETTINGS</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>驱动修改</p></li>
+<li><p>bootcmd</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">环境变量的默认值定义在include</span><span class="o">/</span><span class="n">env_default</span><span class="o">.</span><span class="n">h中</span>
+<span class="s2">&quot;bootcmd=&quot;</span>  <span class="n">CONFIG_BOOTCOMMAND</span>
+<span class="n">CONFIG_BOOTCOMMAND</span> <span class="n">在include</span><span class="o">/</span><span class="n">environment</span><span class="o">/</span><span class="n">ti</span><span class="o">/</span><span class="n">boot</span><span class="o">.</span><span class="n">h中定义</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>

@@ -13,8 +13,8 @@ source analysis
     drivers:    通用设备驱动程序，包括以太网，flash驱动等
     fs:         文件系统支持
     lib:        通用库函数实现
-    net:        网络相关工具
-    tool:       工具
+    net:        网络相关工具,如tftp，nfs 
+    tool:       用于创建u-boot s-record和bin镜像文件的工具
     script:     脚本
 
 u-boot目录可分为3类：
@@ -972,5 +972,78 @@ board_init_r中一个重要的函数是 ``initcall_run_list(init_sequrnce_r)`` ,
     从环境变量bootcmd中获取对应的命令然后执行
 
 至此u-boot结束它的生命周期，控制权交由kernel
+
+
+移植u-boot
+^^^^^^^^^^
+
+1. 安装依赖库
+
+::
+
+    sudo apt-get install build-essential
+    sudo apt-get install libncurses5-dev
+
+2.  添加开发板对应的板级文件
+
+A)  copy板级文件目录
+
+::
+
+    cp board/ti cp board/holo_ark
+
+B)  修改目录下的.c文件命名
+
+::
+
+    mv evm.c board.c
+
+C)  修改目录下对应的Makefile
+
+::
+
+    obj-y += board.o
+
+D) 修改目录下对应Kconfig
+
+修改Kconfig可改变图形界面选项，以及对应的配置信息
+
+3.  移植配置文件
+
+::
+
+    cd configs
+    cp j721e_evm_a72_defconfig holo_ark_a72_defconfig
+    #修改XX_defconfig文件
+    CONFIG_ARM=y
+    CONFIG_ENV_SIZE=0x20000
+    CONFIG_ENV_OFFSET=0x680000
+    ...
+
+4.  修改开发板对应的头文件
+
+::
+
+    cd include/configs
+    cp j721e_evm.h holo_ark_v3.h
+
+    #修改.h的重复检测宏
+    #ifndef __HOLO_ARK_V3_H
+    #define __HOLO_ARK_V3_H
+    #define CONFIG_SYS_SPL_MALLOC_START     0x84000000 
+    #define CONFIG_SYS_SPL_MALLOC_SIZE      SZ_16M
+    #define EXTRA_ENV_J721E_BOARD_SETTINGS
+    ...
+
+5. 驱动修改
+
+    
+6.  bootcmd
+
+::
+    
+    环境变量的默认值定义在include/env_default.h中
+    "bootcmd="  CONFIG_BOOTCOMMAND
+    CONFIG_BOOTCOMMAND 在include/environment/ti/boot.h中定义
 
 
