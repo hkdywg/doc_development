@@ -90,6 +90,10 @@ spl一般是地址无关的，设计成地址无关的主要目的是为了保�
 
 位置无关码究其原因，主要是编译生成的汇编代码都是相对地址。
 
+启动流程图如下，不同平台之间略有差别
+
+.. image::  res/uboot.jpg
+
 SPL启动流程分析
 ^^^^^^^^^^^^^^^
 
@@ -1047,3 +1051,54 @@ D) 修改目录下对应Kconfig
     CONFIG_BOOTCOMMAND 在include/environment/ti/boot.h中定义
 
 
+u-boot命令总结
+^^^^^^^^^^^^^^
+
+- 环境变量相关
+
+::
+
+    printenv
+    setenv
+    saveenv
+
+- 内存操作相关
+
+::
+
+    md[.b,.w,.l] address
+    nm[.b,.w,.l] address
+    mm[.b,.w,.l] address
+    mw[.b,.w,.l] address value [count]
+    cp[.b,.w,.l] source target count
+    cmp[.b,.w,.l] addr1 addr2 count
+
+- 网络相关
+
+::
+
+    setenv ipaddr 192.168.1.2
+    setenv ethaddr 20:21:01:08:17:33
+    setenv gatewayip 192.168.1.1
+    setenv netmask 255.255.255.0
+    setenv serverip 192.168.1.11
+    saveenv
+
+    ping 192.168.1.11
+    dhcp
+    nfs [loadAddress] [[hostIpaddr:]bootfilename]
+    nfs 80800000 192.168.1.11:/home/zImage
+    tftpboot [loadAddress] [[hostIpaddr:]bootfilename]
+    ftftp 80800000 zImage
+
+- mmc  操作命令
+
+::
+
+    mmc info
+    mmc rescan
+    mmc list
+    mmc dev [dev] [part]
+    mmc part
+
+更详细的命令可以通过 ``help`` 查看

@@ -93,6 +93,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#spl">1.1.4.1. SPL启动流程分析</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id4">1.1.4.2. u-boot 启动流程分析</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id5">1.1.4.3. 移植u-boot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">1.1.4.4. u-boot命令总结</a></li>
 </ul>
 </li>
 </ul>
@@ -256,6 +257,8 @@ tool/mkimge可转换为其他格式印象
 <p>spl一般是地址无关的，设计成地址无关的主要目的是为了保证SPL被搬运到任何地方都能运行，这样设计是因为我们不知道spl会被放到
 哪个地址运行。</p>
 <p>位置无关码究其原因，主要是编译生成的汇编代码都是相对地址。</p>
+<p>启动流程图如下，不同平台之间略有差别</p>
+<img alt="../../_images/uboot.jpg" src="../../_images/uboot.jpg" />
 <div class="section" id="spl">
 <h3><span class="section-number">1.1.4.1. </span>SPL启动流程分析<a class="headerlink" href="#spl" title="永久链接至标题">¶</a></h3>
 <p>spl的入口代码是在arch/arm/lib/vector.S中的 <code class="docutils literal notranslate"><span class="pre">_start</span></code> 函数</p>
@@ -1184,6 +1187,57 @@ jump到这个地址运行。</p>
 <span class="n">CONFIG_BOOTCOMMAND</span> <span class="n">在include</span><span class="o">/</span><span class="n">environment</span><span class="o">/</span><span class="n">ti</span><span class="o">/</span><span class="n">boot</span><span class="o">.</span><span class="n">h中定义</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="id6">
+<h3><span class="section-number">1.1.4.4. </span>u-boot命令总结<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p>环境变量相关</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">printenv</span>
+<span class="n">setenv</span>
+<span class="n">saveenv</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>内存操作相关</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">md</span><span class="p">[</span><span class="o">.</span><span class="n">b</span><span class="p">,</span><span class="o">.</span><span class="n">w</span><span class="p">,</span><span class="o">.</span><span class="n">l</span><span class="p">]</span> <span class="n">address</span>
+<span class="n">nm</span><span class="p">[</span><span class="o">.</span><span class="n">b</span><span class="p">,</span><span class="o">.</span><span class="n">w</span><span class="p">,</span><span class="o">.</span><span class="n">l</span><span class="p">]</span> <span class="n">address</span>
+<span class="n">mm</span><span class="p">[</span><span class="o">.</span><span class="n">b</span><span class="p">,</span><span class="o">.</span><span class="n">w</span><span class="p">,</span><span class="o">.</span><span class="n">l</span><span class="p">]</span> <span class="n">address</span>
+<span class="n">mw</span><span class="p">[</span><span class="o">.</span><span class="n">b</span><span class="p">,</span><span class="o">.</span><span class="n">w</span><span class="p">,</span><span class="o">.</span><span class="n">l</span><span class="p">]</span> <span class="n">address</span> <span class="n">value</span> <span class="p">[</span><span class="n">count</span><span class="p">]</span>
+<span class="n">cp</span><span class="p">[</span><span class="o">.</span><span class="n">b</span><span class="p">,</span><span class="o">.</span><span class="n">w</span><span class="p">,</span><span class="o">.</span><span class="n">l</span><span class="p">]</span> <span class="n">source</span> <span class="n">target</span> <span class="n">count</span>
+<span class="n">cmp</span><span class="p">[</span><span class="o">.</span><span class="n">b</span><span class="p">,</span><span class="o">.</span><span class="n">w</span><span class="p">,</span><span class="o">.</span><span class="n">l</span><span class="p">]</span> <span class="n">addr1</span> <span class="n">addr2</span> <span class="n">count</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>网络相关</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setenv</span> <span class="n">ipaddr</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.2</span>
+<span class="n">setenv</span> <span class="n">ethaddr</span> <span class="mi">20</span><span class="p">:</span><span class="mi">21</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">17</span><span class="p">:</span><span class="mi">33</span>
+<span class="n">setenv</span> <span class="n">gatewayip</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.1</span>
+<span class="n">setenv</span> <span class="n">netmask</span> <span class="mf">255.255</span><span class="o">.</span><span class="mf">255.0</span>
+<span class="n">setenv</span> <span class="n">serverip</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.11</span>
+<span class="n">saveenv</span>
+
+<span class="n">ping</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.11</span>
+<span class="n">dhcp</span>
+<span class="n">nfs</span> <span class="p">[</span><span class="n">loadAddress</span><span class="p">]</span> <span class="p">[[</span><span class="n">hostIpaddr</span><span class="p">:]</span><span class="n">bootfilename</span><span class="p">]</span>
+<span class="n">nfs</span> <span class="mi">80800000</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.11</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">zImage</span>
+<span class="n">tftpboot</span> <span class="p">[</span><span class="n">loadAddress</span><span class="p">]</span> <span class="p">[[</span><span class="n">hostIpaddr</span><span class="p">:]</span><span class="n">bootfilename</span><span class="p">]</span>
+<span class="n">ftftp</span> <span class="mi">80800000</span> <span class="n">zImage</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>mmc  操作命令</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mmc</span> <span class="n">info</span>
+<span class="n">mmc</span> <span class="n">rescan</span>
+<span class="n">mmc</span> <span class="nb">list</span>
+<span class="n">mmc</span> <span class="n">dev</span> <span class="p">[</span><span class="n">dev</span><span class="p">]</span> <span class="p">[</span><span class="n">part</span><span class="p">]</span>
+<span class="n">mmc</span> <span class="n">part</span>
+</pre></div>
+</div>
+<p>更详细的命令可以通过 <code class="docutils literal notranslate"><span class="pre">help</span></code> 查看</p>
 </div>
 </div>
 </div>

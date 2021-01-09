@@ -1,7 +1,4 @@
-linux kernel debug tools
-========================
-
-kerel-debug之kdump
+kernel-debug之kdump
 ------------------
 
 kdump机制介绍
