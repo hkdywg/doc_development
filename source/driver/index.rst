@@ -5,3 +5,4 @@ linux driver modules note
     mmc/index.rst
     i2c/index.rst
     udev_sysfs/index.rst
+    gpio/index.rst
