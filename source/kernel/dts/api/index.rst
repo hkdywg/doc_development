@@ -201,3 +201,22 @@ struct device_node
 ::
 
     void of_get_mac_address(struct device_node *np);
+
+
+驱动调用示例
+------------
+
+
+::
+
+    int iic_probe(struct i2c_client *clent, const struct i2c_device_id *id)
+    {
+        struct device dev;
+        char *string;
+        unsigned int mint;
+        dev = client->dev;
+
+        of_property_read_string(dev.of_node, "string_test", &string);
+        of_property_read_u32(dev.of_name, "mint", &mint);
+        return 0;
+    }
