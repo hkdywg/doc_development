@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.4. GPIO子系统 &mdash; ywg_dev_doc 0.1 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4. file system note" href="../../fs/index.html" />
+    <link rel="prev" title="3.3. sysfs、udev以及它们背后的linux统一设备模型" href="../udev_sysfs/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">1. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">2. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">3.1. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">3.2. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev_sysfs/index.html">3.3. sysfs、udev以及它们背后的linux统一设备模型</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.4. GPIO子系统</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pin-control-subsystem">3.4.1. pin control subsystem</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">4. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">5. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../issues/index.html">8. Issues</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">3. </span>linux driver modules note</a> &raquo;</li>
+        
+      <li><span class="section-number">3.4. </span>GPIO子系统</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/driver/gpio/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="gpio">
+<h1><span class="section-number">3.4. </span>GPIO子系统<a class="headerlink" href="#gpio" title="永久链接至标题">¶</a></h1>
+<p>GPIO按硬件功能大致可以分为以下三类</p>
+<ul class="simple">
+<li><p>有些硬件逻辑是IO port本身的功能设定相关的，我们称这个HW block为pin control，软件通过设定pin controller这个硬件单元的寄存器可以实现</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>引脚g功能配置。是GPIO或者一些特殊功能引脚</p></li>
+<li><p>引脚特性配置，例如pull-up/pull-down，driver-strengthe的设定</p></li>
+</ol>
+<ul class="simple">
+<li><p>如果一组GPIO被配置成SPI，那么这些引脚被链接到SPI controller，如果配置成GPIO则连接到GPIO controller</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>配置GPIO方向</p></li>
+<li><p>如果是输出z，可以配置high leval或者low leval</p></li>
+<li><p>如果是输入，可以获取电平状态</p></li>
+</ol>
+<ul class="simple">
+<li><p>如果有中断的功能</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>中断的enable和disable</p></li>
+<li><p>触发方式</p></li>
+<li><p>中断状态清除</p></li>
+</ol>
+<p>通过软件抽象来掩盖硬件差异</p>
+<ol class="arabic simple">
+<li><p>pin control subsystem 驱动pin controller硬件的软件子系统</p></li>
+<li><p>GPIO subsystem 驱动GPIO controller的软件子系统</p></li>
+<li><p>GPIO interrupt chip driver。这个模块是作为一个interrupt subsystemd中的一个底层硬件驱动模块存在的。</p></li>
+</ol>
+<p>pin control subsystem block diagram</p>
+<img alt="../../_images/pin_control.gif" src="../../_images/pin_control.gif" />
+<p>gpio control subsystem block diagram</p>
+<img alt="../../_images/gpio_control.gif" src="../../_images/gpio_control.gif" />
+<div class="section" id="pin-control-subsystem">
+<h2><span class="section-number">3.4.1. </span>pin control subsystem<a class="headerlink" href="#pin-control-subsystem" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p>pin control subsystem文件列表</p></li>
+</ul>
+<p>linux/driver/pintrol 目录下重要文件列表</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 72%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>file name</p></th>
+<th class="head"><p>descrpition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td colspan="2"><p>core.c core.h                     | pin control subsystem core driver</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>pinctrl-utils.c pinctrl-utils.h   | pin ctl subsys 的一些utillity的接口函数</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>pinmux.c pinmux.h                 | pin muxing部分的f代码，也成为pinmux dirver</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>pinconf.c pinconf.h               | pin config部分的代码，也称为pinconf driver</p></td>
+</tr>
+<tr class="row-even"><td colspan="2"><p>devicetree.c devicetree.h         | device tree 代码</p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>pinctrl-xxx.c                     | 各种pin controller的low level driver</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../fs/index.html" class="btn btn-neutral float-right" title="4. file system note" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../udev_sysfs/index.html" class="btn btn-neutral float-left" title="3.3. sysfs、udev以及它们背后的linux统一设备模型" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, yinwg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

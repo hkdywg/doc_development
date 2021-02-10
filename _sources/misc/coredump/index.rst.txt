@@ -1,0 +1,65 @@
+coredump segment调试手段
+========================
+
+编译阶段
+
+1)  nm              获取二进制文件包含的符号信息
+2)  strings         获取二进制文件包含的字符串常量
+3)  strip           去除二进制文件包含的字符
+4)  readelf         显示目标文件详细信息
+5)  objdump         尽可能反汇编出源代码
+6)  addr2line       根据地址查找代码行
+
+
+运行阶段
+
+1)  gdb             强大的调试工具
+2)  ldd             显示程序需要使用的动态库和实际使用的动态库
+3)  strace          跟踪程序当前的系统调用
+4)  time            查看程序执行时间，用户态时间，内核态时间
+5)  gprof           显示用户态各函数执行时间
+6)  valgrind        显示内存错误
+7)  mtrace          检查内存错误
+
+
+dmesg && addr2line
+------------------
+
+在应用程序运行中发生segment fault时没有生成core文件可以通过 ``dmesg`` 和 ``addr2line`` 进行问题查找。
+
+以下为示例内容 
+
+::
+
+    #include <stdio.h>
+
+    int main()
+    {
+        char *string_ptr = NULL;
+
+        *string_ptr = "core dump";
+
+        return 0;
+    }
+
+对main.c文件进行编译，注意需要增加 ``-g`` 选项，以生成需要的debug符号内容。
+
+::
+
+    gcc -g main.c -o main
+
+然后运行 ./main ,发现发生了segment fault，通过 ``dmesg`` 查看错误发生时的打印信息
+
+::
+
+    [108081.093508] main[18210]: segfault at 0 ip 000055949e6fe64e sp 00007ffff2936400 error 6 in main[55949e6fe000+1000]
+
+以上信息说明：
+系统当前时间    进程名字以及PID     segfault at 引起故障的地址  ip指令的内存地址    sp堆栈指针地址 [55949e6fe000+1000] 崩溃时映射的虚拟内存起始地址和大小
+
+::
+
+    addr2line -e main 64e
+    addr2line -e main ip地址-模块入口地址
+
+

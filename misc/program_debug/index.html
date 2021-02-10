@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>7.3. 调试手段 &mdash; ywg_dev_doc 0.1 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="7.4. 性能优化" href="../performance_optimzation/index.html" />
+    <link rel="prev" title="7.2. shell 使用笔记" href="../shell/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">1. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">2. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">4. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">5. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.1. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.2. shell 使用笔记</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.3. 调试手段</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">7.3.1. 编译阶段</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nm">7.3.1.1. nm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#strings">7.3.1.2. strings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#strip">7.3.1.3. strip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#readelf">7.3.1.4. readelf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#objdump">7.3.1.5. objdump</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dmesg-addr2line">7.3.2. dmesg &amp;&amp; addr2line</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../performance_optimzation/index.html">7.4. 性能优化</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../issues/index.html">8. Issues</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">7. </span>misc</a> &raquo;</li>
+        
+      <li><span class="section-number">7.3. </span>调试手段</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/misc/program_debug/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">7.3. </span>调试手段<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>编译阶段</p>
+<ol class="arabic simple">
+<li><p>nm              获取二进制文件包含的符号信息</p></li>
+<li><p>strings         获取二进制文件包含的字符串常量</p></li>
+<li><p>strip           去除二进制文件包含的字符</p></li>
+<li><p>readelf         显示目标文件详细信息</p></li>
+<li><p>objdump         尽可能反汇编出源代码</p></li>
+<li><p>addr2line       根据地址查找代码行</p></li>
+</ol>
+<p>运行阶段</p>
+<ol class="arabic simple">
+<li><p>gdb             强大的调试工具</p></li>
+<li><p>ldd             显示程序需要使用的动态库和实际使用的动态库</p></li>
+<li><p>strace          跟踪程序当前的系统调用</p></li>
+<li><p>time            查看程序执行时间，用户态时间，内核态时间</p></li>
+<li><p>gprof           显示用户态各函数执行时间</p></li>
+<li><p>valgrind        显示内存错误</p></li>
+<li><p>mtrace          检查内存错误</p></li>
+</ol>
+<div class="section" id="id2">
+<h2><span class="section-number">7.3.1. </span>编译阶段<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="section" id="nm">
+<h3><span class="section-number">7.3.1.1. </span>nm<a class="headerlink" href="#nm" title="永久链接至标题">¶</a></h3>
+<p>nm 命令可以查看二进制目标文件(可以是库文件或者可执行文件)的符号表</p>
+<p>nm 为name的缩写</p>
+</div>
+<div class="section" id="strings">
+<h3><span class="section-number">7.3.1.2. </span>strings<a class="headerlink" href="#strings" title="永久链接至标题">¶</a></h3>
+<p>strings 可以打印文件中可打印的字符，这个文件可以是文件文件，可执行文件，动态链接库，静态连接库</p>
+</div>
+<div class="section" id="strip">
+<h3><span class="section-number">7.3.1.3. </span>strip<a class="headerlink" href="#strip" title="永久链接至标题">¶</a></h3>
+<p>strip可以从特定文件中剥离掉一些符号信息和调试信息。</p>
+<p>那strip命令有什么用处呢？经过strip处理后的文件会变小，但是依然可以运行。这样可以节省很多空间。</p>
+<p>strip之后nm看不到任何信息</p>
+</div>
+<div class="section" id="readelf">
+<h3><span class="section-number">7.3.1.4. </span>readelf<a class="headerlink" href="#readelf" title="永久链接至标题">¶</a></h3>
+<p>readelf用来读取elf文件中的内容，elf(executable &amp; linkable format)是一种文件格式，我们常见的目标文件，动态库文件和可执行文件都属于这个类型。</p>
+</div>
+<div class="section" id="objdump">
+<h3><span class="section-number">7.3.1.5. </span>objdump<a class="headerlink" href="#objdump" title="永久链接至标题">¶</a></h3>
+<p>objdump工具用来显示二进制文件的信息，就是以一种可阅读的格式让你更多的了解二进制二年间可能带有的附加信息。</p>
+<ol class="arabic simple">
+<li><p>-f 显示文件头信息</p></li>
+<li><p>-D 反汇编所有section</p></li>
+<li><p>-h 显示目标文件各section的头部摘要信息</p></li>
+<li><p>-x 显示所有可以用的头信息，包括符号表、重定位入口。-x 等价于-a -f -h -r -t同时指定</p></li>
+<li><p>-i 显示文件的重定位入口，如果和-d或者-D一起使用，重定位部分以反汇编后的格式显示出</p></li>
+<li><p>-r 显示文件的重定位入口。</p></li>
+<li><p>-S 尽可能的反汇编出源代码，尤其是当编译的时候指定了-g这种调试参数时，效果比较明显。</p></li>
+<li><p>-t 显示文件的符号表入口。类似于nm -s提供的信息</p></li>
+</ol>
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">objdump</span> <span class="o">-</span><span class="n">x</span> <span class="n">main</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="dmesg-addr2line">
+<h2><span class="section-number">7.3.2. </span>dmesg &amp;&amp; addr2line<a class="headerlink" href="#dmesg-addr2line" title="永久链接至标题">¶</a></h2>
+<p>在应用程序运行中发生segment fault时没有生成core文件可以通过 <code class="docutils literal notranslate"><span class="pre">dmesg</span></code> 和 <code class="docutils literal notranslate"><span class="pre">addr2line</span></code> 进行问题查找。</p>
+<p>以下为示例内容</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">char</span> <span class="o">*</span><span class="n">string_ptr</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+
+    <span class="o">*</span><span class="n">string_ptr</span> <span class="o">=</span> <span class="s2">&quot;core dump&quot;</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>对main.c文件进行编译，注意需要增加 <code class="docutils literal notranslate"><span class="pre">-g</span></code> 选项，以生成需要的debug符号内容。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gcc</span> <span class="o">-</span><span class="n">g</span> <span class="n">main</span><span class="o">.</span><span class="n">c</span> <span class="o">-</span><span class="n">o</span> <span class="n">main</span>
+</pre></div>
+</div>
+<p>然后运行 ./main ,发现发生了segment fault，通过 <code class="docutils literal notranslate"><span class="pre">dmesg</span></code> 查看错误发生时的打印信息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">108081.093508</span><span class="p">]</span> <span class="n">main</span><span class="p">[</span><span class="mi">18210</span><span class="p">]:</span> <span class="n">segfault</span> <span class="n">at</span> <span class="mi">0</span> <span class="n">ip</span> <span class="mf">000055949e6</span><span class="n">fe64e</span> <span class="n">sp</span> <span class="mi">00007</span><span class="n">ffff2936400</span> <span class="n">error</span> <span class="mi">6</span> <span class="ow">in</span> <span class="n">main</span><span class="p">[</span><span class="mf">55949e6</span><span class="n">fe000</span><span class="o">+</span><span class="mi">1000</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>以上信息说明：
+系统当前时间    进程名字以及PID     segfault at 引起故障的地址  ip指令的内存地址    sp堆栈指针地址 [55949e6fe000+1000] 崩溃时映射的虚拟内存起始地址和大小</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">addr2line</span> <span class="o">-</span><span class="n">e</span> <span class="n">main</span> <span class="mi">64</span><span class="n">e</span>
+<span class="n">addr2line</span> <span class="o">-</span><span class="n">e</span> <span class="n">main</span> <span class="n">ip地址</span><span class="o">-</span><span class="n">模块入口地址</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../performance_optimzation/index.html" class="btn btn-neutral float-right" title="7.4. 性能优化" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../shell/index.html" class="btn btn-neutral float-left" title="7.2. shell 使用笔记" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, yinwg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

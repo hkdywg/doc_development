@@ -1,0 +1,289 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.1.3. kernel-debug之debugfs &mdash; ywg_dev_doc 0.1 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="2.2. DTS设备树详解" href="../../dts/index.html" />
+    <link rel="prev" title="2.1.1. kernel-debug之kdump" href="../kdump-kexec/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">1. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">2. kernel note</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">2.1. linux kernel debug tools</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../kdump-kexec/index.html">2.1.1. kernel-debug之kdump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kdump-kexec/index.html#kernel-debugprintk">2.1.2. kernel debug之printk</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.3. kernel-debug之debugfs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#procfs">2.1.3.1. procfs 文件系统</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sysfs">2.1.3.2. sysfs 文件系统</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">2.2. DTS设备树详解</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">3. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">4. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">5. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../issues/index.html">8. Issues</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html"><span class="section-number">2. </span>kernel note</a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">2.1. </span>linux kernel debug tools</a> &raquo;</li>
+        
+      <li><span class="section-number">2.1.3. </span>kernel-debug之debugfs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/kernel/debug/debugfs/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kernel-debugdebugfs">
+<h1><span class="section-number">2.1.3. </span>kernel-debug之debugfs<a class="headerlink" href="#kernel-debugdebugfs" title="永久链接至标题">¶</a></h1>
+<p>为了用户方便调试内核，kernel提供 <code class="docutils literal notranslate"><span class="pre">procfs</span></code> 、 <code class="docutils literal notranslate"><span class="pre">sysfs</span></code> 、<code class="docutils literal notranslate"><span class="pre">debugfs</span></code> 以及 <code class="docutils literal notranslate"><span class="pre">relayfs</span></code> 来与用户空间进行数据交互。
+尤其是 <code class="docutils literal notranslate"><span class="pre">debugfs</span></code> ,这是内核开发者实现的专门用来调试的文件系统接口，其他的工具或者接口都依赖于它。</p>
+<p>内核中有三个常用的伪文件系统: procfs, debugfs,和sysfs</p>
+<ul class="simple">
+<li><p>procfs 历史最早，用来获取CPU，内存，设备驱动，进程等各种信息</p></li>
+<li><p>sysfs 跟 <code class="docutils literal notranslate"><span class="pre">kobject</span></code> 框架紧密联系，而 <code class="docutils literal notranslate"><span class="pre">kobject</span></code> 是为驱动模型而存在的，所以sysfs是为设备驱动服务的</p></li>
+<li><p>debugfs 从名字来看就是为debug而生，所以更加灵活</p></li>
+<li><p>relayfs 是一个快速的转发(relay)数据的文件系统，它以其功能而得名，它为那些需从 内核空间转发大量用户数据到用户空间的工具和应用提供了快速有效的转发机制。</p></li>
+</ul>
+<div class="section" id="procfs">
+<h2><span class="section-number">2.1.3.1. </span>procfs 文件系统<a class="headerlink" href="#procfs" title="永久链接至标题">¶</a></h2>
+<p>procfs 比较老的一种用户态与内核态的数据交互方式，内核的很多数据都是通过这种方式输出给用户的。内核的很多参数也可以通过procfs去设置。
+除了 <code class="docutils literal notranslate"><span class="pre">sysctl</span></code> 出口到 <code class="docutils literal notranslate"><span class="pre">/proc</span></code> 下的参数，procfs提供的大多数内核参数都是只读的，实际上很多应用严重依赖procfs，因此它几乎是必不可少的组件.</p>
+<p>procfs提供了一下api：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">proc_dir_entry</span> <span class="o">*</span><span class="n">create_proc_entry</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">mode_t</span> <span class="n">mode</span><span class="p">,</span> <span class="n">struct</span> <span class="n">proc_dir_entry</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span>
+<span class="c1">#该函数用于创建一个正常的proc条目，name指定名称，mode指定权限，parent指定目录。</span>
+<span class="c1">#如果要在/proc下创建条目，parent设置为NULL</span>
+
+<span class="n">extern</span> <span class="n">void</span> <span class="n">remove_proc_entry</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">struct</span> <span class="n">proc_dir_entry</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span>
+<span class="c1">#用于删除上面的条目</span>
+
+<span class="n">struct</span>  <span class="n">proc_dir_entry</span> <span class="o">*</span><span class="n">proc_mkdir</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span> <span class="n">name</span><span class="p">,</span> <span class="n">struct</span> <span class="n">proc_dir_entry</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span>
+<span class="n">extern</span> <span class="n">struct</span> <span class="n">proc_dir_entry</span> <span class="o">*</span><span class="n">proc_mkdir_mode</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">mode_t</span> <span class="n">mode</span><span class="p">,</span> <span class="n">struct</span> <span class="n">proc_dir_entry</span> <span class="o">*</span><span class="n">parent</span><span class="p">)</span>
+<span class="c1">#该函数 用于创建一个proc目录</span>
+
+<span class="n">struct</span> <span class="n">proc_dir_entry</span> <span class="o">*</span><span class="n">proc_symlink</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span> <span class="n">name</span><span class="p">,</span> <span class="n">struct</span> <span class="n">proc_dir_entry</span><span class="o">*</span> <span class="n">parent</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">dest</span><span class="p">)</span>
+<span class="c1">#该函数用于创建一个符号链接，name指定创建的名称，parent指定路径，dest指定链接到的proc条目名称</span>
+
+<span class="n">struct</span>  <span class="n">proc_dir_entry</span> <span class="o">*</span><span class="n">proc_net_create</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">mode_t</span> <span class="n">mode</span><span class="p">,</span> <span class="n">get_info_t</span> <span class="o">*</span><span class="n">get_info</span><span class="p">)</span>
+<span class="n">struct</span>  <span class="n">proc_dir_entry</span> <span class="o">*</span><span class="n">proc_net_fops_create</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">mode_t</span> <span class="n">mode</span><span class="p">,</span> <span class="n">struct</span> <span class="n">file_operations</span> <span class="o">*</span><span class="n">fops</span><span class="p">)</span>
+<span class="c1">#该函数用于在/proc/net目录下创建，name指定名称，mode指定权限，get_info(fops)则指定操作函数</span>
+</pre></div>
+</div>
+<p>用户可以通过 <code class="docutils literal notranslate"><span class="pre">cat</span></code> 、<code class="docutils literal notranslate"><span class="pre">echo</span></code> 等文件操作函数来设置和查看这些proc文件。</p>
+<p>注：对于proc中的大文件，proc有一些限制，因为它提供的缓存只有一个页。因为对于超页的部分要做特别的考虑，处理起来也比较复杂。且
+容易出错，所以proc不适合大数据量的输入输出。</p>
+</div>
+<div class="section" id="sysfs">
+<h2><span class="section-number">2.1.3.2. </span>sysfs 文件系统<a class="headerlink" href="#sysfs" title="永久链接至标题">¶</a></h2>
+<p>内核子系统或者设备驱动可以直接编译到内核，也可以编译成模块。编译到内核时，可以使用内核启动参数来向它们传递参数。如果编译成模块，则
+可以通过命令行在插入模块时传递参数，或在运行时，通过 <code class="docutils literal notranslate"><span class="pre">sysfs</span></code> 来设置或读取模块数据。</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">sysfs</span></code> 是一个基于内存的文件系统，实际上它基于 <code class="docutils literal notranslate"><span class="pre">ramfs</span></code> ,sysfs提供了一种把内核数据结构以及属性开放给用户态的方式，它与 <code class="docutils literal notranslate"><span class="pre">kobject</span></code></dt><dd><p>子系统紧密的结合在一起。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">sysfs</span>
+<span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">sysfs</span> <span class="n">sysfs</span> <span class="o">/</span><span class="n">sysfs</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>注：不要把 <code class="docutils literal notranslate"><span class="pre">sysfs</span></code> 和 <code class="docutils literal notranslate"><span class="pre">sysctl</span></code> 混淆， <code class="docutils literal notranslate"><span class="pre">sysctl</span></code> 是内核的一些控制参数，其目的是方便用户对内核的行为进行控制，而 <code class="docutils literal notranslate"><span class="pre">sysfs</span></code> 仅仅
+是把内核的 <code class="docutils literal notranslate"><span class="pre">kobject</span></code> 对象的层次关系和属性开放给用户查看。因此sysfs的绝大部分是只读的,模块作为一个 <code class="docutils literal notranslate"><span class="pre">kobject</span></code> 也被出口到 <code class="docutils literal notranslate"><span class="pre">sysfs</span></code></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../dts/index.html" class="btn btn-neutral float-right" title="2.2. DTS设备树详解" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../kdump-kexec/index.html" class="btn btn-neutral float-left" title="2.1.1. kernel-debug之kdump" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, yinwg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

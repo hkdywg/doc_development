@@ -1,0 +1,954 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.2.1. 内核对设备树的支持 &mdash; ywg_dev_doc 0.1 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="2.2.3. 代码分析" href="../source_analysis/index.html" />
+    <link rel="prev" title="2.2. DTS设备树详解" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">1. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">2. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">2.1. linux kernel debug tools</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">2.2. DTS设备树详解</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.2.1. 内核对设备树的支持</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#machine-desc">2.2.1.1. 对设备树中平台信息的处理(选择machine_desc)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtbdevice-node">2.2.1.2. dtb转换为device_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-node-platfom-device">2.2.1.3. device_node 转换为platfom_device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#platform-deviceplatform-driver">2.2.1.4. platform_device与platform_driver匹配</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">2.2.1.5. 内核中设备树操作函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">2.2.1.6. 根文件系统中查看设备树</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dtsdtb">2.2.2. DTS与DTB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#device-tree">2.2.2.1. device tree结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-tree-source-file">2.2.2.2. device tree source file语法介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-tree-binary">2.2.2.3. device tree binary格式</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../source_analysis/index.html">2.2.3. 代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../file_analysis/index.html">2.2.4. 文件结构解析</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">3. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">4. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">5. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../issues/index.html">8. Issues</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html"><span class="section-number">2. </span>kernel note</a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">2.2. </span>DTS设备树详解</a> &raquo;</li>
+        
+      <li><span class="section-number">2.2.1. </span>内核对设备树的支持</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/kernel/dts/dts_overview/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1><span class="section-number">2.2.1. </span>内核对设备树的支持<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>从源头上分析，uboot将一些参数，设备树文件传递给内核。内核将如何处理设备树文件呢</p>
+<p>从内核的第一个执行文件head.S开始分析</p>
+<ul>
+<li><p>R0 R1 R2三个寄存器的设置</p>
+<blockquote>
+<div><p>uboot启动内核时会设置r0 r1 r2三个寄存器
+r0 一般设置为0
+r1 一般设置为machine id(在使用设备树时该参数没有被使用)
+r2 一般设置ATAGS或者dtb的开始地址</p>
+<p>这里的machine id是让内核知道时那个CPU，从而调用对应的初始化函数。
+以前没有设备树的时候需要传递这个参数，有设备树后这个参数就不再需要设置了</p>
+</div></blockquote>
+</li>
+<li><p>head.S的内容</p>
+<p>内核head.S所作的工作如下：
+a)    __lookup_processor_type 使用汇编指令读取CPU ID根据该id找到对应的proc_info_list结构体(里面包含这类CPU的初始化函数、信息)
+b)    __vet_atags 判断是否有可用的dtb
+c)    __create_page_tables 创建页表,即创建虚拟地址和物理地址的映射关系
+d)    __enable_mmu 使能MMC,以后就要使用虚拟地址了
+e)    将uboot传入的R2参数，保存到__atags_pointer中
+f)    调用C函数start_kernel</p>
+</li>
+</ul>
+<div class="section" id="machine-desc">
+<h2><span class="section-number">2.2.1.1. </span>对设备树中平台信息的处理(选择machine_desc)<a class="headerlink" href="#machine-desc" title="永久链接至标题">¶</a></h2>
+<ul>
+<li><p>内核是如何选择对应的machine_desc</p>
+<blockquote>
+<div><p>一个编译为image的内核镜像文件，可以支持多个单板，这些板子的配置少有不同，需要做一些单独的初始化。
+内核中针对这些单板,构造了一个machine_desc结构体，里面有.init和.nr。
+设备树的根节点里，有如下两行</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;SMDK2440&quot;</span><span class="p">;</span>
+<span class="n">compatible</span><span class="o">=</span><span class="s2">&quot;samsung,smdk2440&quot;</span><span class="p">,</span><span class="s2">&quot;samsung,smdk2410&quot;</span><span class="p">,</span><span class="s2">&quot;samsung,smdk24xx&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>这里的compatible属性声明想要什么machine_desc，属性值可以是一些列字符串，依次与machine_desc匹配。
+内核中有多个machine_desc，其中有个dt_compat成员，它指向一个字符串数组，里面表示该machine_desc支持哪些单板.</p>
+</div></blockquote>
+</li>
+<li><p>start_kernel的调用过程</p>
+<p>head.s会把dtb的位置保存在变量__atags_pointer里，最后调用start_kernel。
+start_kernel 的调用过程如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>start_kernel  //init/main.c
+    setup_arch(&amp;command_line); //arch/arm/kernel/setup.c
+        mdest = setup_machine_fdt(__atags_pointer);//arch/arm/kernel/setup.c
+            early_init_dt_verify(phys_to_virt(dt_phys))  //判断是否有效的dtb,drivers/of/fdt.c                    initial_boot_params = params;
+            mdesc = of_flat_dt_match_machine(mdesc_best,arch_get_next_mach);//找到最匹配的machine_desc。 /drivers/of/ftd.c
+            while(data=get_next_compat(&amp;compat)){
+                score = of_flat_dt_match(dt_root,compat);
+                if(score &gt; 0 &amp;&amp; score &lt; best_score)
+                {
+                    best_data = data;
+                    best_score = score;
+                }
+            }
+        machine_desc = mdesc;
+</pre></div>
+</div>
+</li>
+<li><p>对设备树中运行时配置信息的处理</p>
+<p>设备树只是其一个信息传递的作用，对这些信息配置的处理，也比较简单，即从设备树的dtb文件中，把这些设备鄂信息提取出来赋值给内核的某个变量即可。
+函数调用过程如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">start_kernel</span> <span class="o">//</span><span class="n">init</span><span class="o">/</span><span class="n">main</span><span class="o">.</span><span class="n">c</span>
+    <span class="n">setup_arch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">command_line</span><span class="p">);</span> <span class="o">//</span><span class="n">arch</span><span class="o">/</span><span class="n">arm</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">c</span>
+        <span class="n">mdesc</span> <span class="o">=</span> <span class="n">setup_machine_fdt</span><span class="p">(</span><span class="n">__atags_pointer</span><span class="p">);</span> <span class="o">//</span><span class="n">arch</span><span class="o">/</span><span class="n">arm</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">devtree</span><span class="o">.</span><span class="n">c</span>
+            <span class="n">early_init_dt_scan_nodes</span><span class="p">();</span> <span class="o">//</span><span class="n">arch</span><span class="o">/</span><span class="n">arm</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">devtree</span><span class="o">.</span><span class="n">c</span>
+            <span class="o">//</span><span class="n">从chosen</span> <span class="n">节点中检索信息</span>
+            <span class="n">of_scan_flat_dt</span><span class="p">(</span><span class="n">early_init_dt_scan_chosen</span><span class="p">,</span><span class="n">boot_command_line</span><span class="p">);</span>
+            <span class="o">//</span> <span class="n">初始化</span> <span class="p">{</span><span class="n">size</span><span class="p">,</span> <span class="n">address</span><span class="p">}</span><span class="o">-</span><span class="n">cells</span> <span class="n">info</span>
+            <span class="n">of_scan_flat_dt</span><span class="p">(</span><span class="n">early_init_dt_scan_root</span><span class="p">,</span><span class="n">NULL</span><span class="p">);</span>
+            <span class="o">//</span><span class="n">setup</span> <span class="n">memory</span><span class="p">,</span><span class="n">calling</span> <span class="n">early_init_dt_add_memory_arch</span>
+            <span class="n">of_scan_flat_dt</span><span class="p">(</span><span class="n">early_init_dt_scan_memory</span><span class="p">,</span><span class="n">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>里面主要对三种类型的信息进行处理，分别是 /chosen 节点中bootargs属性，根节点的#address-cells和#size-cells属性，/memory的reg属性</p>
+<ol class="arabic simple">
+<li><p>/chosen 节点中bootargs属性就是内核启动的命令行参数，它里面包含可以指定根文件系统在哪里，第一个运行的应用程序时哪一个，指定内核的打印信息从那个设备中打印出来</p></li>
+<li><p>/memory 中的reg属性指定了不同板子的内存大小和起始地址</p></li>
+<li><p>根节点的#address-cells和#size-cells属性指定属性参数的位数，比如指定前面的memory中reg属性的地址时32位的还是64位的，大小是用一个32位表示还是用两个32位表示。</p></li>
+</ol>
+<p>总结：
+* 将/chosen节点中的bootargs属性的值存入全局变量boot_command_line
+* 确定根结点的两个属性的值#address-cells, #size-cells 分别存入全局变量 dt_root_addr_cells dt_root_size_cells
+* 解析/memory中reg属性。提取出base size，最终调用memblock_add(base,size);</p>
+</div>
+<div class="section" id="dtbdevice-node">
+<h2><span class="section-number">2.2.1.2. </span>dtb转换为device_node<a class="headerlink" href="#dtbdevice-node" title="永久链接至标题">¶</a></h2>
+<blockquote>
+<div><p>在dts文件里，每一个大括号{}代表一个节点，比如根结点里有个大括号,对应一个device_node结构体.memory也有一个大括号，也对应一个device_node结构体。
+节点中有各种属性，还有子节点，所以存在父子关系或者兄弟关系。
+include/linux/of.h 中有对device_node结构体的定义：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct device_node{
+    const char *name;   //节点中的name属性,如果没有该属性，则设为NULL
+    const char *type;   //节点中的device_type属性，如果没有该属性则设为NULL
+    phandle phandle;
+    const char *full_name;  //节点的名字，node-name[@unit-address]
+    struct fwnode_handle fwnode;
+
+    struct property *properties;    //节点属性
+    struct property *deadprops;     //removed properties
+    struct device_node *parent;     //节点的父亲
+    struct device_node *child;      //子节点
+    struct device_node *siblingl;   //兄弟节点
+    #if defined(CONFIG_OF_KOBJ)
+        struct kobject kobj;
+    #endif
+    unsigned long _flags;
+    void *data;
+    #if defined(CONFIG_SPACE)
+        const char *path_component_name;
+        unsigned int unique_id;
+        struct of_irq_controller *irq_trans;
+    #endif
+}
+</pre></div>
+</div>
+</div></blockquote>
+<p>device_node结构体表示一个节点，property结构体表示节点的具体属性。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct property{
+    char *name;     //属性名字，指向dtb文件中字符串
+    int length;     //属性值的长度
+    void *value;    //属性值，指向dtb文件中value所在的位置，数据仍以big endian存储
+    struct property *next;
+    #if defined(CONFIG_OF_DYNAMIC) || defined(CONFIG_SPACE)
+        unsigned long _flags;
+    #endif
+    #if defined (CONFIG_OF_PROMTREE)
+        unsigned int unique_id;
+    #endif
+    #if defined(CONFIG_OF_KOBJ)
+        struct bin_attribute attr;
+    #endif
+}
+</pre></div>
+</div>
+<p>两个结构体与dts内容的对应关系如下图所示：</p>
+<img alt="../../../_images/Ldd_devicetree_chapter3_4_001.jpg" src="../../../_images/Ldd_devicetree_chapter3_4_001.jpg" />
+</div>
+<div class="section" id="device-node-platfom-device">
+<h2><span class="section-number">2.2.1.3. </span>device_node 转换为platfom_device<a class="headerlink" href="#device-node-platfom-device" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p>哪些device_node可以转换platform_device</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="p">{</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;SMDK2440&quot;</span><span class="p">;</span>
+    <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;samsung,smdk2440&quot;</span><span class="p">;</span>
+
+    <span class="c1">#address-cells = &lt;1&gt;;</span>
+    <span class="c1">#size-cells = &lt;1&gt;;</span>
+
+    <span class="n">memory</span><span class="o">@</span><span class="mh">0x30000000</span><span class="p">{</span>
+        <span class="n">device_type</span> <span class="o">=</span> <span class="s2">&quot;memory&quot;</span><span class="p">;</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x30000000</span> <span class="mh">0x4000000</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="n">chosen</span><span class="p">{</span>
+        <span class="n">bootargs</span> <span class="o">=</span> <span class="s2">&quot;noinitrd root=/dev/mtdblock4 rw init=/linuxrc console=ttySAC0,115200&quot;</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="o">//</span><span class="n">只有len设备才会转换成platform_device</span>
+    <span class="n">led</span><span class="p">{</span>
+        <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;jz2440_led&quot;</span><span class="p">;</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">S3C24C10_GPF</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="p">};</span>
+ <span class="p">};</span>
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p>内核函数of_platform_default_populate_init,遍历device_node树，生成platform_device。</p></li>
+<li><p>并非所有的device_node都会转换成platform_device，只有以下的device_node会转换
+a) 该节点必须含有compatible属性
+b) 根节点的子节点
+c) 含有特殊compatible属性的节点的子节点(子节点必须含有compatible属性)。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">##这些特殊的compatible属性为：</span>
+<span class="s2">&quot;simple-bus&quot;</span><span class="p">,</span><span class="s2">&quot;simple-mfd&quot;</span><span class="p">,</span><span class="s2">&quot;isa&quot;</span><span class="p">,</span><span class="s2">&quot;arm,amba-bus&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>根节点时例外的，生成platform_device时，即使有compatible属性也不会处理</p>
+<ul>
+<li><p>如何在设备树中描述硬件</p>
+<p>示例：</p>
+</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="p">{</span>
+    <span class="n">mytest</span><span class="p">{</span>
+        <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;mytest&quot;</span><span class="p">,</span><span class="s2">&quot;sample-bus&quot;</span><span class="p">;</span>
+        <span class="n">mytest</span><span class="o">@</span><span class="mi">0</span><span class="p">{</span>
+            <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;mytest_0&quot;</span><span class="p">;</span>
+        <span class="p">};</span>
+    <span class="p">};</span>
+    <span class="n">i2c</span><span class="p">{</span>
+        <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;samsung,i2c&quot;</span><span class="p">;</span>
+        <span class="n">at24c02</span><span class="p">{</span>
+            <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;at24c02&quot;</span><span class="p">;</span>
+        <span class="p">};</span>
+    <span class="p">};</span>
+    <span class="n">spi</span><span class="p">{</span>
+        <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;samsung,spi&quot;</span><span class="p">;</span>
+        <span class="n">flash</span><span class="o">@</span><span class="mi">0</span><span class="p">{</span>
+            <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;winbond,w25q32dw&quot;</span><span class="p">;</span>
+            <span class="n">spi</span><span class="o">-</span><span class="nb">max</span><span class="o">-</span><span class="n">frequency</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">25000000</span><span class="o">&gt;</span><span class="p">;</span>
+            <span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="p">};</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>以上示例中，/mytest会被转换为platform_device，因为他兼容”sample-bus”,它的子节点/mytest/mytest&#64;0 也会被转换为platform_device</p></li>
+<li><dl class="simple">
+<dt>/i2c节点一般表示i2c控制器，它会被转换为platform_device，在内核中有对应的platform_driver。</dt><dd><p>/i2c/at24c02节点不会被转换为platform_device,它被如何处理完全由父节点的platform_driver决定。一般是被创建为一个i2c_client</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>/spi节点一般表示spi控制器，它会被转换为platform_device，在内核中有对应的platform_driver。</dt><dd><p>/spi/flash&#64;0节点不会被转换为platform_device,它被如何处理完全由父节点的platform_driver决定。一般是被创建为一个spi_client</p>
+</dd>
+</dl>
+</li>
+</ol>
+<ul class="simple">
+<li><p>转换过程</p></li>
+</ul>
+<ol class="loweralpha simple">
+<li><p>入口函数 of_platform_default_populate_init,生成platform_device //drivers/of/platform.c</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">of_platform_default_populate_init</span>
+    <span class="n">of_platform_default_populate</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span><span class="n">NULL</span><span class="p">,</span><span class="n">NULL</span><span class="p">);</span>
+        <span class="n">of_platform_populate</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span><span class="n">of_default_bus_match_table</span><span class="p">,</span><span class="n">NULL</span><span class="p">,</span><span class="n">NULL</span><span class="p">)</span>
+        <span class="n">for_each_child_of_node</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="n">child</span><span class="p">){</span>
+            <span class="n">rc</span><span class="o">=</span><span class="n">of_platform_bus_create</span><span class="p">(</span><span class="n">child</span><span class="p">,</span><span class="n">matches</span><span class="p">,</span><span class="n">lookup</span><span class="p">,</span><span class="n">patent</span><span class="p">,</span><span class="n">true</span><span class="p">);</span>
+            <span class="n">dev</span><span class="o">=</span><span class="n">of_device_alloc</span><span class="p">(</span><span class="n">np</span><span class="p">,</span><span class="n">bus_id</span><span class="p">,</span><span class="n">patent</span><span class="p">);</span>  <span class="o">//</span><span class="n">根据device_node节点的属性设置platform_device的resource</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">rc</span><span class="p">){</span>
+                <span class="n">of_node_put</span><span class="p">(</span><span class="n">child</span><span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+<ol class="loweralpha simple" start="2">
+<li><p>of_platform_bus_create(bus,matches,..)调用过程，处理bus节点生成platform_device，并决定是否处理他的子节点</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dev = of_platform_device_create_pdata(bus,bus_id,platform_data,patent); //生成bus节点的platform_device结构体
+if(!dev || !of_match_node(matches,bus))  //如果bus节点的compatible属性不吻合matches表就部处理它的子节点
+    return 0;
+
+    for_each_child_of_node(bus,child){  //遍历子节点
+        pr_debug(&quot;create child:%pOF\n&quot;,child);
+        rc = of_platform_bus_create(child,matches,lookuo,&amp;dev-&gt;dev,strict);     //处理它的子节点，of_platform_bus_create是一个递归调用
+        if(rc){
+            of_node_put(child);
+            break;
+        }
+    }
+</pre></div>
+</div>
+<ol class="loweralpha simple" start="3">
+<li><p>i2c节点一般表示i2c控制器，它会被转换为platform_device，在内核中有对应的platform_driver，platform_driver的probe函数中会调用i2c_add_numbered_adapter：</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">i2c_add_numbered_adapter</span>    <span class="o">//</span><span class="n">drivers</span><span class="o">/</span><span class="n">i2c</span><span class="o">/</span><span class="n">i2c</span><span class="o">-</span><span class="n">core</span><span class="o">-</span><span class="n">base</span><span class="o">.</span><span class="n">c</span>
+    <span class="n">__i2c_add_numbered_adapter</span>
+        <span class="n">i2c_register_adapter</span>
+            <span class="n">of_i2c_register_devices</span><span class="p">(</span><span class="n">adap</span><span class="p">);</span> <span class="o">//</span><span class="n">drivers</span><span class="o">/</span><span class="n">i2c</span><span class="o">/</span><span class="n">i2c</span><span class="o">-</span><span class="n">core</span><span class="o">-</span><span class="n">of</span><span class="o">.</span><span class="n">c</span>
+            <span class="n">for_each_available_child_of_node</span><span class="p">(</span><span class="n">bus</span><span class="p">,</span><span class="n">node</span><span class="p">){</span>
+                <span class="n">client</span> <span class="o">=</span> <span class="n">of_i2c_register_device</span><span class="p">(</span><span class="n">adap</span><span class="p">,</span><span class="n">node</span><span class="p">);</span>
+                    <span class="n">client</span> <span class="o">=</span> <span class="n">i2c_new_device</span><span class="p">(</span><span class="n">adap</span><span class="o">.&amp;</span><span class="n">info</span><span class="p">);</span>    <span class="o">//</span><span class="n">设备树中的i2c子节点被转换为i2c_client</span>
+            <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="platform-deviceplatform-driver">
+<h2><span class="section-number">2.2.1.4. </span>platform_device与platform_driver匹配<a class="headerlink" href="#platform-deviceplatform-driver" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p>注册platform_driver的过程</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>platform_driver_register
+    __platform_driver_register
+        drv-&gt;driver.prober = platform_drv_prober;
+        driver_register
+            bus_add_driver
+            klist_add_tail(&amp;priv-&gt;knode_bus,&amp;bus-&gt;p-&gt;klist_drivers);    //把platform_driver放入platform_bus_type的driver链表中
+            driver_attach
+            bus_for_each_dev(drv-&gt;bus,NULL,drv,__driver_attach);    //对于platform_bus_type的每一个设备，调用_driver_attach
+            __driver_attach
+                ret=driver_match_device(drv,dev);   //判断dev和drv是否匹配成功
+                    return drv-&gt;bus-&gt;match ? drv-&gt;bus-&gt;match(dev,drv) : 1;  //调用platform_bus_type.match
+                driver_probe_device(drv,dev);
+                    really_probe
+                        drv-&gt;probe  //platform_drv_probe
+                         platform_drv_probe
+                          struct platform_driver *drv = to_platform_driver(_dev-&gt;driver);
+                          drv-&gt;probe
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>注册platform_device的过程</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pltform_device_register
+    platform_device_add
+        device_add
+            bus_add_device
+                klist_add_tail(&amp;dev-&gt;p-&gt;knode_bus,&amp;bus-&gt;p-&gt;klist_devices);      //把platform_device放入platform_bus_type的device链表中
+            bus_probe_device(dev)
+             device_initial_prober
+               __device_attach
+               ret = bus_for_each_drv(dev-&gt;bus,NULL,&amp;data,__device_attach_driver);  //对于platform_bus_type下的每一个driver，调用__device_attach_driver
+               __device_attach_driver
+                 ret=driver_match_device(drv,dev);
+                 return drv-&gt;bus-&gt;match ? drv-&gt;bus-&gt;match(dev,drv) : 1;     //调用platform_bus_type.match
+                 driver_probe_device
+</pre></div>
+</div>
+<p>匹配函数是platform_bus_type.match ，即platform_match，匹配过程按优先顺序罗列如下</p>
+<ol class="arabic simple">
+<li><p>比较platform_dev.driver_override和platform_driver.drv-&gt;name</p></li>
+<li><p>比较platform_dev.dev.of_node的compatible属性和platform_driver.drv-&gt;of_match_table</p></li>
+<li><p>比较platform_dev.name和platform_driver.id_table</p></li>
+<li><p>比较platform_dev.name和platform_driver.drv-&gt;name</p></li>
+</ol>
+<p>有一个匹配成功，即匹配成功</p>
+</div>
+<div class="section" id="id2">
+<h2><span class="section-number">2.2.1.5. </span>内核中设备树操作函数<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>include/linux 目录下有很多of开头的头文件，dtb—-&gt;device_node—–&gt;platform_device</p>
+<ul class="simple">
+<li><p>处理dtb</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>of_fdt.h        //dtb文件的相关操作函数，我们一般用不到，因为dtb文件在内核中已经转换为device_node树(它更易于使用)
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>处理device_node</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>of.h                //提供设备树的一般处理函数，比如of_property_read_u32(读某个属性的u32值)，*of_get_child_count(获取某个device_node的子节点数)
+of_address.h        //地址相关的函数，，比如of_get_address(获取reg属性中的addr,size值)
+                        of_match_device(从matches数组中取出与当前设备最匹配的一项)
+of_dma.h            //设备树中DMA相关属性的函数
+of_gpio.h           //GPIO相关的函数
+of_graph.h          //GPU相关驱动中用到的函数，从设备中获取GPU信息
+of_iommu.h          //很少用到
+of_irq.h            //中断相关的函数
+of_mdio.h           //MDIO(Ethernet PHY)api
+of_net.h            //
+of_pci.h            //PCI相关函数
+of_pdt.h            //很少用到
+of_reserved_mem.h   //reserved_mem相关函数
+</pre></div>
+</div>
+<p>以中断作为例子，一个设备可以发出中断，必须包含中断号和中断触发方式. 官方设备树规格书里面的设备示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">soc</span><span class="p">{</span>
+    <span class="c1">#address-cells = &lt;1&gt;;</span>
+    <span class="c1">#size-cells = &lt;1&gt;;</span>
+
+    <span class="n">serial</span><span class="p">{</span>
+        <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;ns16550&quot;</span><span class="p">;</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x4600</span> <span class="mh">0x100</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="n">clock</span><span class="o">-</span><span class="n">frequency</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="n">interrupts</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0xA</span> <span class="mh">0x8</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="n">interrupt</span><span class="o">-</span><span class="n">parent</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">ipic</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>里面包含中断值，通过int of_irq_parse_one(struct device_node *device,int index,struct of_phandle_args *out_irq);</p>
+<p>解析某一对值，或者我们可以解析原始数据 int of_irq_parse_raw(const __be32 *addr,struct of_phandle_args *out_irq);</p>
+<p>addr就指向了某一对值，把里面的中断号中断触发方式解析出来，保存在of_phandle_args结构体中</p>
+<ul class="simple">
+<li><p>处理platform_device</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>of_platform.h   //把device_node转换为platform_device时用到的函数
+
+//根据device_node分配设置platform_device
+struct platform_device *of_device_alloc(struct device_node *np,const char *bus_id,struct device *parent);
+//根据device_node查找到platform_device
+of_find_device_by_node
+of_device.h     //设备相关的函数，比如of_match_device
+</pre></div>
+</div>
+<p>of文件分为三类</p>
+<ol class="arabic simple">
+<li><p>处理DTB</p></li>
+<li><p>处理device_node</p></li>
+<li><p>处理platform_device 设备相关信息</p></li>
+</ol>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">2.2.1.6. </span>根文件系统中查看设备树<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p>查看原始dtb文件</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hexdump</span> <span class="o">-</span><span class="n">C</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">firmware</span><span class="o">/</span><span class="n">fdt</span>
+</pre></div>
+</div>
+<ul>
+<li><p>以目录结构呈现的dtb文件，根节点对应base目录，每一个节点对应一个目录，每一个属性对应一个文件</p>
+<p>比如查看#address-cells的16进制</p>
+</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hexdump</span> <span class="o">-</span><span class="n">C</span> <span class="s2">&quot;#address-cells&quot;</span>
+</pre></div>
+</div>
+<p>查看compatible</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="n">compatible</span>
+</pre></div>
+</div>
+<p>/sys/devices/platform 系统中所有的platform_device，有来自设备树的，也有来自.c文件注册的</p>
+<p>对于来自设备树的platform_device。可以进入/sys/devices/platform/&lt;设备名&gt;/of_node 查看它的设备树属性</p>
+<p>/proc/device-tree 是链接文件，指向 /sys/firmware/devicetree/base</p>
+</div>
+</div>
+<div class="section" id="dtsdtb">
+<h1><span class="section-number">2.2.2. </span>DTS与DTB<a class="headerlink" href="#dtsdtb" title="永久链接至标题">¶</a></h1>
+<div class="section" id="device-tree">
+<h2><span class="section-number">2.2.2.1. </span>device tree结构<a class="headerlink" href="#device-tree" title="永久链接至标题">¶</a></h2>
+<p>dts文件通过编译生成dtb格式文件</p>
+<img alt="../../../_images/Ldd_devicetree_chapter2_1_001.jpg" src="../../../_images/Ldd_devicetree_chapter2_1_001.jpg" />
+<p>在描述divice tree结构之前，我们首先明确一个问题device tree是否需要描述系统中的所有硬件信息，答案是否定的。
+基本上那些可以动态探测到的设备是不需要描述的，例如usb device，不过对于soc上的usb host controller，它是无法
+动态识别的，需要在device tree中描述。同样的道理，在computer system中，PCI device可以被动态探测到不需要在device
+tree中描述，但是PCI bridge如果不能被探测，那么就需要描述它。</p>
+<p>为了了解device tree结构，我们首先给出一个device tree的示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">o</span> <span class="n">device</span><span class="o">-</span><span class="n">tree</span>
+    <span class="o">|-</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;device-tree&quot;</span>
+    <span class="o">|-</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;myboardname&quot;</span>
+    <span class="o">|-</span><span class="n">compatible</span><span class="o">=</span><span class="s2">&quot;myboadfamilyname&quot;</span>
+    <span class="o">|-</span><span class="c1">#address-cells=&lt;2&gt;</span>
+    <span class="o">|-</span><span class="c1">#size-cells=&lt;2&gt;</span>
+    <span class="o">|-</span><span class="n">linux</span><span class="o">-</span><span class="n">phandle</span><span class="o">=&lt;</span><span class="mi">0</span><span class="o">&gt;</span>
+    <span class="o">|</span>
+    <span class="n">o</span> <span class="n">cpus</span>
+    <span class="o">||-</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;cpus&quot;</span>
+    <span class="o">||-</span><span class="n">linux</span><span class="o">-</span><span class="n">phandle</span><span class="o">=&lt;</span><span class="mi">1</span><span class="o">&gt;</span>
+    <span class="o">||-</span><span class="c1">#address-cless=&lt;1&gt;</span>
+    <span class="o">||-</span><span class="c1">#size-cells=&lt;0&gt;</span>
+    <span class="o">|</span>
+    <span class="n">o</span> <span class="n">powerpc</span><span class="p">,</span><span class="mi">970</span><span class="o">@</span><span class="mi">0</span>
+    <span class="o">||-</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;powerpc,970&quot;</span>
+    <span class="o">||-</span><span class="n">device_type</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span>
+    <span class="o">||-</span><span class="n">reg</span><span class="o">=&lt;</span><span class="mi">0</span><span class="o">&gt;</span>
+    <span class="o">||-</span><span class="n">clock</span><span class="o">-</span><span class="n">frequency</span><span class="o">=&lt;</span><span class="mh">0x5f5e1000</span><span class="o">&gt;</span>
+    <span class="o">||-</span><span class="mi">64</span><span class="o">-</span><span class="n">bit</span>
+    <span class="o">||-</span><span class="n">linux</span><span class="p">,,</span><span class="n">phandle</span><span class="o">=&lt;</span><span class="mi">2</span><span class="o">&gt;</span>
+    <span class="o">|</span>
+    <span class="n">o</span> <span class="n">memory</span><span class="o">@</span><span class="mi">0</span>
+    <span class="o">||-</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;meory&quot;</span>
+    <span class="o">||-</span><span class="n">device_type</span><span class="o">=</span><span class="s2">&quot;memory&quot;</span>
+    <span class="o">||-</span><span class="n">reg</span><span class="o">=&lt;</span><span class="mh">0x00000000</span> <span class="mh">0x0000000</span> <span class="mh">0x00000000</span> <span class="mh">0x20000000</span><span class="o">&gt;</span>
+    <span class="o">||-</span><span class="n">linux</span><span class="p">,</span><span class="n">phandle</span><span class="o">=&lt;</span><span class="mi">3</span><span class="o">&gt;</span>
+    <span class="o">|</span>
+    <span class="n">o</span> <span class="n">chosen</span>
+        <span class="o">|-</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;chosen&quot;</span>
+        <span class="o">|-</span><span class="n">bootargs</span><span class="o">=</span><span class="s2">&quot;root=/dev/sda2&quot;</span>
+        <span class="o">|-</span><span class="n">linux</span><span class="p">,</span><span class="n">phandle</span><span class="o">=&lt;</span><span class="mi">4</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>device tree的基本单元是node，这些node被组织成树状结构，除了root node，每个node都只有一个parent，
+一个device tree文件中只能有一个root node。每个node中包含若干的property/value来描述该node的一些
+特性。每个node用节点名字(node name)标识，节点名字的格式node-<a class="reference external" href="mailto:name&#37;&#52;&#48;unit-address">name<span>&#64;</span>unit-address</a>。如果该node没有reg
+属性，那么该节点名字中必须不能包括&#64;和unit-address。unit-address的具体格式是和设备挂载在那个bus上
+相关。例如对于cpu，其unit-address就是从0开始编址，以此加一。而具体的设备，如以太网控制器，其
+unit-address就是寄存器地址。root node的node name是确定的，必须是”/”</p>
+<p>在一个树状结构的device_tree中，如果引用一个node呢。要想唯一指定一个node必须使用full path，例如
+/node-name-1/node-name-2/node-name-n 在上面的例子中可以通过/cpus/powerpc,970&#64;0访问</p>
+<p>属性(property)值标识了设备的特性，他的值(value)是多种多样的
+1)  可能为空，也就是没有值的定义，例如上图的64-bit,这个属性没有赋值
+2)  可能是一个u32 u64的数值，值的一提的是cell这个术语，在device tree表示32bit的信息单位。例如</p>
+<dl class="simple">
+<dt>::</dt><dd><p>#address-cells=&lt;1&gt;;</p>
+</dd>
+</dl>
+<ol class="arabic simple" start="3">
+<li><p>可能是一个数组，例如&lt;0x00000000 0x00000000 0x00000000 0x20000000&gt;</p></li>
+<li><p>可能是一个字符串，例如device_type=”memory”，当然也可能是一个string list.例如powerpc,970</p></li>
+</ol>
+</div>
+<div class="section" id="device-tree-source-file">
+<h2><span class="section-number">2.2.2.2. </span>device tree source file语法介绍<a class="headerlink" href="#device-tree-source-file" title="永久链接至标题">¶</a></h2>
+<p>在linux_kernel中，扩展名为dts的文件就是描述硬件信心的device tree source file,在dts文件中，一个node被定义成</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">label</span><span class="p">:]</span><span class="n">node</span><span class="o">-</span><span class="n">name</span><span class="p">[</span><span class="nd">@unit</span><span class="o">-</span><span class="n">address</span><span class="p">]{</span>
+    <span class="p">[</span><span class="n">properties</span> <span class="n">definitions</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">child</span> <span class="n">nodes</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>“[]”表示option,因此可以定义一个只有node name的空节点。label方便在dts文件中引用。child node的格式和node是
+完全一样的。因为，一个dts文件中就是若干个嵌套组成的node，property，以及child node，child node property</p>
+<p>如果一个device node中包含了有寻址需求的child node，那么就必须定义这两个属性。(address-cells size-cells).
+“#”是number的意思。#address-size这个属性用来描述sub node中reg属性地址域特性的。也就是需要多少u32的cell来
+描述该地址域，同理可推断#size-cells的含义</p>
+<dl class="simple">
+<dt>chosen node主要用来描述由系统firmware指定的runtime parameter。如果存在chosen node这个节点，那么它的parent</dt><dd><p>node必须是根节点。command line可以通过bootargs这个property属性传递。initrd的开始地址也可以通过linux,initrd-start
+这个property属性传递</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;root=/dev/nfs nfsroot=1.1.1.1:/nfsboot ip=1.1.1.2:1.1.1.1:255.255.255.0::usbd0:off console=ttyS0,115200 mem=64M@0x30000000&quot;</span>
+</pre></div>
+</div>
+<p>通过该command line可以控制内核从usbnet启动，当然，具体项目要相应的修改command line以便应对不同的需求。</p>
+<p>device tree用于hw platform识别，runtime parameter传递以及硬件设备描述。chosen节点并没有描述任何硬件设备节点
+信息，它只是传递了runtime parameter</p>
+<p>aliases节点定义了一些别名，因为device tree是树状结构，当要引用一个node的时候要指明相对于root node的full path。
+如果要多次引用就=每次都需要写复杂的字符串，多少有些麻烦。因此可以在aliases节点定义一些设备节点full path的缩写。</p>
+<p>memory device node是所有设备树文件的必备机电，它定义了物理内存的layout。device_type属性定义了该node的设备类型
+例如cpu、serial。对于memory node其device_type必须等于memory。reg属性定义了访问该device node的地址信息，该属性
+值被解析成任意长度的数组(address size)，具体用多长的数据来描述address 和size，则根据parent node中的#address-cells和
+#size-cells定义。对于device node。reg描述了memory-mapped io register的offset和length。对于memory node则定义了
+该memory的起始地址和长度</p>
+<p>例如我们的系统是64bit的，physical memory分成两段，定义如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RAM</span><span class="p">:</span><span class="n">start</span> <span class="n">address</span> <span class="mh">0x0</span><span class="p">,</span><span class="n">lenth</span> <span class="mh">0x80000000</span> <span class="p">(</span><span class="mi">2</span><span class="n">GB</span><span class="p">)</span>
+<span class="n">RAM</span><span class="p">:</span><span class="n">start</span> <span class="n">address</span> <span class="mh">0x100000000</span> <span class="n">length</span> <span class="mh">0x100000000</span> <span class="p">(</span><span class="mi">4</span><span class="n">GB</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>对于这样的系统，我们可以将root node的#address-cells和#size-cells这两个属性值设定为2,然后用以下方法描述物理内存</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#address-cell=&lt;2&gt;;
+#size-cells=&lt;2&gt;;
+
+方法一：
+
+memory@0{
+    device_type=&quot;memory&quot;;
+    reg=&lt;0x00000000 0x00000000 0x00000000 0x80000000
+         0x00000001 0x00000000 0x00000001 0x00000000
+    &gt;;
+};
+
+方法二：
+
+memory@0{
+    device_type=&quot;memory&quot;;
+    reg=&lt;0x00000000 0x00000000 0x00000000 0x80000000&gt;;
+};
+
+memory@100000000{
+    devuce_type=&quot;memory&quot;;
+    reg=&lt;0x00000001 0x00000000 0x00000001 0x00000000&gt;;
+};
+</pre></div>
+</div>
+<p>以下是s3c24xx.dtsi的一个示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &quot;skeleton.dtsi&quot;</span>
+
+<span class="o">/</span><span class="p">{</span>
+    <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;samsung,s3c24xx&quot;</span><span class="p">;</span><span class="o">--------------</span><span class="n">A</span>
+    <span class="n">interrupt</span><span class="o">-</span><span class="n">patent</span> <span class="o">=</span> <span class="o">&lt;&amp;</span><span class="n">intc</span><span class="o">&gt;</span><span class="p">;</span><span class="o">------------------</span><span class="n">B</span>
+
+    <span class="n">aliases</span><span class="p">{</span>
+        <span class="n">pinctrl</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">pinctrl_0</span><span class="p">;</span><span class="o">--------------------</span><span class="n">C</span>
+    <span class="p">};</span>
+
+    <span class="n">intc</span><span class="p">:</span><span class="n">interrupt</span><span class="o">-</span><span class="n">controller</span><span class="o">@</span><span class="mi">4</span><span class="n">a000000</span><span class="p">{</span><span class="o">----------</span><span class="n">D</span>
+        <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;samsung,s3c2410-irq&quot;</span><span class="p">;</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x4a000000</span> <span class="mh">0x100</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="n">interrupt</span><span class="o">-</span><span class="n">controller</span><span class="p">;</span>
+        <span class="c1">#interrupt-cells = &lt;4&gt;;</span>
+    <span class="p">};</span>
+
+    <span class="n">serial</span><span class="o">@</span><span class="mi">50000000</span><span class="p">{</span><span class="o">-----------------------------</span><span class="n">E</span>
+        <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;samsung,s3c2410-uart&quot;</span><span class="p">;</span>
+        <span class="n">reg</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mh">0x50000000</span> <span class="mh">0x4000</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="n">interrupts</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">4</span> <span class="mi">28</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">4</span> <span class="mi">28</span><span class="o">&gt;</span><span class="p">;</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;disabled&quot;</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="n">pinctrl_0</span><span class="p">:</span><span class="n">pinctrl</span><span class="o">@</span><span class="mi">56000000</span><span class="p">{</span><span class="o">------------------</span><span class="n">F</span>
+        <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;samsung,s3c2410-wakeup-eint&quot;</span><span class="p">;</span>
+        <span class="n">interrrupts</span> <span class="o">=</span> <span class="o">&lt;</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                      <span class="o">&lt;</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                      <span class="o">&lt;</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">,</span>
+                      <span class="o">&lt;</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">3</span> <span class="mi">3</span><span class="o">&gt;</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>A)  在描述compatible属性之前要县描述model属性，model属性指定了该设备属于哪一个设备生产商的哪一个model。
+一般而言，我们会给model赋值”manufacturer,model”,例如model=”samsung,s3c24xx”.现在回到compatible属性的描述，
+该属性的值是一个string list，定义了一系列的modle，这些字符串被kernel哟你过来选择哪一个driver来驱动该设备。
+对于root node，compatible属性用来匹配machine type的，对于普通的device node则是用来匹配driver的。</p>
+<p>B)  具体各个hw block的interrupt source是如何物理的连接到interrupt controller的呢，在dts文件中是用interrupt-
+parent这个属性来标识的。如果interrupe-parent的属性值为root node，那么root node会产生中断到interrupt controller么
+答案是否定的。</p>
+<p>intc是一个lable，标识了一个device node(以上示例中是标识了interrupt-controller&#64;4a000000这个device node)。实际上
+interrupt-parent属性值应该是一个u32的整数(这个整数值在device tree的范围内唯一标识了一个的device node,也就是phandle)。
+定义了一个lable后，后续可以使用&amp;来引用这个lable,dtc会将lable转换成u32的整数放入dtb中。</p>
+<p>在device tree中有一个概念叫interrupt tree，也就是说interrupt也是一个树状结构</p>
+<img alt="../../../_images/interrupt.gif" src="../../../_images/interrupt.gif" />
+<p>系统中有一个interrupt tree的根节点，device1、device2以及PCI host brigde的interrupt line都是连接到root interrupt
+controller的。PCI host bridge设备中有一些下游的设备，也会产生中断，但是他们的中断都是连接到PCI host bridge上的
+interrupt controller(术语叫做interrupt nexus)，然后报告到root interrupt controller。</p>
+<ol class="upperalpha simple" start="3">
+<li><p>pinctrl0也是一个缩写，/pinctrl&#64;56000000的别名</p></li>
+<li><p>intc是描述interrupt controller的device node。interrupt-controller属性为空，只是用来标识该node是一个interrupt controller
+而不是interrupt nexuss</p></li>
+</ol>
+<p>对于根节点必须有个cpus的child node来描述系统中cpu信息。</p>
+</div>
+<div class="section" id="device-tree-binary">
+<h2><span class="section-number">2.2.2.3. </span>device tree binary格式<a class="headerlink" href="#device-tree-binary" title="永久链接至标题">¶</a></h2>
+<p>经过device tree compiler的编译，device tree source file变成了device tree blob格式</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>DTB header
+(struct boot_param_header)</p></td>
+</tr>
+<tr class="row-even"><td><p>alignment gap</p></td>
+</tr>
+<tr class="row-odd"><td><p>memory reserve map</p></td>
+</tr>
+<tr class="row-even"><td><p>alignment gap</p></td>
+</tr>
+<tr class="row-odd"><td><p>device-tree structure</p></td>
+</tr>
+<tr class="row-even"><td><p>alignment gap</p></td>
+</tr>
+<tr class="row-odd"><td><p>device-tree strings</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>dtb header</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 76%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>header fild nam</p></td>
+<td><p>description</p></td>
+</tr>
+<tr class="row-even"><td><p>magic</p></td>
+<td><p>用来识别DTB的，kernel以此确定是dtb还是tag list</p></td>
+</tr>
+<tr class="row-odd"><td><p>totalsize</p></td>
+<td><p>DTB的它total size</p></td>
+</tr>
+<tr class="row-even"><td><p>off_dt_struct</p></td>
+<td><p>device tree structure block的offset</p></td>
+</tr>
+<tr class="row-odd"><td><p>off_dt_strings</p></td>
+<td><p>device tree strings block的offset</p></td>
+</tr>
+<tr class="row-even"><td><p>off_mem_rsvmap</p></td>
+<td><p>offset to memory reserve map</p></td>
+</tr>
+<tr class="row-odd"><td><p>version</p></td>
+<td><p>该dtb版本</p></td>
+</tr>
+<tr class="row-even"><td><p>last_comp_ver</p></td>
+<td><p>兼容版本信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>boot_cpuid_phys</p></td>
+<td><p>我们在哪个cpu上booting</p></td>
+</tr>
+<tr class="row-even"><td><p>dt_strings_size</p></td>
+<td><p>dts block的size，和off_dt_strings确定了strings在内存的位置</p></td>
+</tr>
+<tr class="row-odd"><td><p>dt_struct_size</p></td>
+<td><p>dts block的size，和off_dt_struct确定了struct在内存中位置</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>memory reserve map的格式描述</p></li>
+</ul>
+<p>这个区域包括若干的reserve memory描述符，每个reserve memory描述符是有address和size组成，其中address和size都是用u64来描述。</p>
+<ul class="simple">
+<li><p>device tree structure block的格式描述</p></li>
+</ul>
+<p>device tree structure block区域是有若干的分片组成，每个分片开始位置都是保存了token，以此来描述该
+分片的属性和内容，共计有5种token</p>
+<ol class="arabic simple">
+<li><p>FDT_BEGIN_NODE(0x00000001),该token描述了一个node的开始位置，紧挨着该token的就是node name(包括unit address)</p></li>
+<li><p>FDT_END_NODE(0x000000002),该token描述了一个node的结束位置</p></li>
+<li><p>FDT_PROP(0x00000003),该token描述了一个property开始的位置，该token之后是两个u32的数据，分别是length和name offset。
+length表示该property value datade size. name offset表示该属性字符串在device tree strings block的偏移。length和name offset
+之后就是长度位length的具体属性值数据</p></li>
+<li><p>FDT_NOP(0x00000004)</p></li>
+<li><p>FDT_END(0x00000009),该token标识了一个dtb的结束位置</p></li>
+</ol>
+<ul class="simple">
+<li><p>一个dtb的可能结构如下</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>若干个FDT_NOP(可选)</p></li>
+<li><dl class="simple">
+<dt>FDT_BEGIN_NODE</dt><dd><p>node name
+padding</p>
+</dd>
+</dl>
+</li>
+<li><p>若干属性定义</p></li>
+<li><p>若干子节点定义(FDT_BEGIN_NODE和FDT_END_NODE包围)</p></li>
+<li><p>若干个FDT_NOP</p></li>
+<li><p>FDT_END_NODE</p></li>
+<li><p>FDT_END</p></li>
+</ol>
+<ul class="simple">
+<li><p>device tree string block的格式描述</p></li>
+</ul>
+<p>device tree strings bloc定义了各个node中使用的属性的字符串表，由于很多属性会出现在多个node中，因此，所有的属性字符串组成了一个
+string block。这样可以压缩dtb的size</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../source_analysis/index.html" class="btn btn-neutral float-right" title="2.2.3. 代码分析" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="2.2. DTS设备树详解" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, yinwg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

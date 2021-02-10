@@ -1,0 +1,806 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.2. I2C驱动框架以及I2C设备驱动 &mdash; ywg_dev_doc 0.1 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4. file system note" href="../../fs/index.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="../mmc/sdcard/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">1. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">2. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">3.1. emmc driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.2. I2C驱动框架以及I2C设备驱动</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#i2c">3.2.1. I2C驱动框架</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">3.2.1.1. 主要对象</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">3.2.1.2. 内核源码分析</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">3.2.2. 设备驱动编写方法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">3.2.2.1. 注册设备</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">3.2.2.2. 数据传输函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">4. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">5. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../issues/index.html">8. Issues</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">3. </span>linux driver modules note</a> &raquo;</li>
+        
+      <li><span class="section-number">3.2. </span>I2C驱动框架以及I2C设备驱动</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/driver/i2c/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="i2ci2c">
+<h1><span class="section-number">3.2. </span>I2C驱动框架以及I2C设备驱动<a class="headerlink" href="#i2ci2c" title="永久链接至标题">¶</a></h1>
+<div class="section" id="i2c">
+<h2><span class="section-number">3.2.1. </span>I2C驱动框架<a class="headerlink" href="#i2c" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id1">
+<h3><span class="section-number">3.2.1.1. </span>主要对象<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p>I2C总线</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">bus_type</span> <span class="n">i2c_bus_type</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">name</span>           <span class="o">=</span> <span class="s2">&quot;i2c&quot;</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">match</span>          <span class="o">=</span> <span class="n">i2c_device_match</span><span class="p">,</span> <span class="o">//</span><span class="n">匹配规则</span>
+    <span class="o">.</span><span class="n">probe</span>          <span class="o">=</span> <span class="n">i2c_device_probe</span><span class="p">,</span> <span class="o">//</span><span class="n">匹配成功后的行为</span>
+    <span class="o">.</span><span class="n">remove</span>         <span class="o">=</span> <span class="n">i2c_device_remove</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">shutdown</span>       <span class="o">=</span> <span class="n">i2c_device_shutdown</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">pm</span>             <span class="o">=</span> <span class="o">&amp;</span><span class="n">i2c_device_pm_ops</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>I2C总线对应这/bus下的一条总线，这个I2C总线结构体管理着I2C设备与I2C驱动的匹配，删除等操作，当设备或者驱动
+注册到总线时，I2C总线会调用i2c_device_match函数查看I2C设备和驱动是否匹配，如果匹配则调用i2c_device_probe函数
+，进而调用I2C驱动的probe函数。</p>
+<p>注：i2c_device_match会管理i2c设备和总线匹配规则，这将和如何编写I2C驱动程序息息相关。</p>
+<ul class="simple">
+<li><p>I2C驱动</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">i2c_driver</span> <span class="p">{</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">probe</span><span class="p">)(</span><span class="n">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="p">,</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">i2c_device_id</span> <span class="o">*</span><span class="p">);</span> <span class="o">//</span><span class="n">probe函数</span>
+    <span class="n">struct</span> <span class="n">device_driver</span> <span class="n">driver</span><span class="p">;</span> <span class="o">//</span><span class="n">表明这是一个驱动</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">i2c_device_id</span> <span class="o">*</span><span class="n">id_table</span><span class="p">;</span> <span class="o">//</span><span class="n">要匹配的从设备信息</span><span class="p">(</span><span class="n">名称</span><span class="p">)</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">detect</span><span class="p">)(</span><span class="n">struct</span> <span class="n">i2c_client</span> <span class="o">*</span><span class="p">,</span> <span class="n">struct</span> <span class="n">i2c_board_info</span> <span class="o">*</span><span class="p">);</span> <span class="o">//</span><span class="n">设备探测函数</span>
+    <span class="n">const</span> <span class="n">unsigned</span> <span class="n">short</span> <span class="o">*</span><span class="n">address_list</span><span class="p">;</span> <span class="o">//</span><span class="n">设备地址</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="n">clients</span><span class="p">;</span> <span class="o">//</span><span class="n">设备链表</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>I2C设备</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct i2c_client {
+    unsigned short addr; //设备地址
+    char name[I2C_NAME_SIZE]; //设备名称
+    struct i2c_adapter *adapter; //适配器，I2C控制器。
+    struct i2c_driver *driver; //设备对应的驱动
+    struct device dev; //表明这是一个设备
+    int irq; //中断号
+    struct list_head detected; //节点
+};
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>I2C适配器</p></li>
+</ul>
+<p>i2c_adapter对应物理上的一个i2c适配器</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct i2c_adapter {    //适配器
+    unsigned int id; //适配器的编号
+    const struct i2c_algorithm *algo; //算法，发送时序
+    struct device dev; //表明这是一个设备
+};
+</pre></div>
+</div>
+<p>i2c_algorithm 对应着一套通讯方法</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">i2c_algorithm</span> <span class="p">{</span>
+    <span class="o">/*</span> <span class="n">作为主设备时的发送函数</span> <span class="o">*/</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">master_xfer</span><span class="p">)(</span><span class="n">struct</span> <span class="n">i2c_adapter</span> <span class="o">*</span><span class="n">adap</span><span class="p">,</span> <span class="n">struct</span> <span class="n">i2c_msg</span> <span class="o">*</span><span class="n">msgs</span><span class="p">,</span>
+               <span class="nb">int</span> <span class="n">num</span><span class="p">);</span>
+
+    <span class="o">/*</span> <span class="n">作为从设备时的发送函数</span> <span class="o">*/</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">smbus_xfer</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">i2c_adapter</span> <span class="o">*</span><span class="n">adap</span><span class="p">,</span> <span class="n">u16</span> <span class="n">addr</span><span class="p">,</span>
+               <span class="n">unsigned</span> <span class="n">short</span> <span class="n">flags</span><span class="p">,</span> <span class="n">char</span> <span class="n">read_write</span><span class="p">,</span>
+               <span class="n">u8</span> <span class="n">command</span><span class="p">,</span> <span class="nb">int</span> <span class="n">size</span><span class="p">,</span> <span class="n">union</span> <span class="n">i2c_smbus_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>I2C驱动有4个重要的东西，I2C总线、I2C驱动、I2C设备、I2C适配器</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>I2C总线：维护着两个链表(I2C驱动，I2C设备)，管理着I2C设备和驱动的匹配以及删除</p></li>
+<li><p>I2C驱动：对应着I2C设备驱动程序</p></li>
+<li><p>I2C设备：对应着具体硬件设备的抽象</p></li>
+<li><p>I2C适配器： 用于I2C驱动和I2C设备间的通讯，是SOC上I2C控制器的一个抽象</p></li>
+</ol>
+<ul class="simple">
+<li><p>I2C总线运行机制</p></li>
+</ul>
+<img alt="../../_images/i2c.png" src="../../_images/i2c.png" />
+<p>I2C驱动框架可以分为4部分，I2C核心、I2C设备、I2C驱动、I2C适配器，其中I2C总线位于I2C核心中。</p>
+</div>
+<div class="section" id="id2">
+<h3><span class="section-number">3.2.1.2. </span>内核源码分析<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p>注册I2C设备</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>设备树解析过程</p></li>
+</ol>
+<p>kernel会为设备树root节点下所有带 <code class="docutils literal notranslate"><span class="pre">compatible</span></code> 属性的节点都分配并注册一个 <code class="docutils literal notranslate"><span class="pre">platform_device</span></code> 。
+另外如果某个节点的compatible符合某些matches条件，则会为该节点下的所有带compatible属性的子节点(child)
+也分配并注册一个platform_device</p>
+<p>Platform_devce数据结构如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">struct</span> <span class="n">platform_device</span> <span class="p">{</span>
+    <span class="n">const</span> <span class="n">char</span>      <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="nb">int</span>             <span class="nb">id</span><span class="p">;</span>
+    <span class="nb">bool</span>            <span class="n">id_auto</span><span class="p">;</span>
+    <span class="o">/*</span> <span class="n">以此挂入统一设备模型</span> <span class="o">*/</span>
+    <span class="n">struct</span> <span class="n">device</span>   <span class="n">dev</span><span class="p">;</span>
+    <span class="n">u64</span>             <span class="n">platform_dma_mask</span><span class="p">;</span>
+    <span class="o">/*</span> <span class="n">io和irq资源的总数</span> <span class="o">*/</span>
+    <span class="n">u32</span>             <span class="n">num_resources</span><span class="p">;</span>
+    <span class="o">/*</span> <span class="n">指向resource数组</span> <span class="o">*/</span>
+    <span class="n">struct</span> <span class="n">resource</span> <span class="o">*</span><span class="n">resource</span><span class="p">;</span>
+
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">platform_device_id</span> <span class="o">*</span><span class="n">id_entry</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>解析设备树以及生成platform_device的过程如下所示：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//第一层
+/* kerner加载 */
+start_kernel
+--&gt; arch_call_rest_init
+    --&gt; rest_init
+        --&gt; kernel_init
+            --&gt; kernel_init_freeable
+                --&gt; do_basic_setup
+                    --&gt; do_initcalls
+                        --&gt; of_platform_default_populate_init
+
+//第二层
+/* drivers/of/platform.c */
+static int __init of_platform_default_populate_init(void)
+{
+        /* 检查of_root（&quot;/&quot;节点）是否为NULL */
+        if (!of_have_populated_dt())
+                return -ENODEV;
+
+        /* 进行实际的platform_device填充操作 */
+        of_platform_default_populate(NULL, NULL, NULL);
+
+        return 0;
+}
+
+/* 在do_initcalls会被调用执行 */
+arch_initcall_sync(of_platform_default_populate_init);
+
+//第三层
+const struct of_device_id of_default_bus_match_table[] = {
+        { .compatible = &quot;simple-bus&quot;, },
+        { .compatible = &quot;simple-mfd&quot;, },
+        { .compatible = &quot;isa&quot;, },
+#ifdef CONFIG_ARM_AMBA
+        { .compatible = &quot;arm,amba-bus&quot;, },
+#endif /* CONFIG_ARM_AMBA */
+        {} /* Empty terminated list */
+};
+
+int of_platform_default_populate(struct device_node *root,
+                                 const struct of_dev_auxdata *lookup,
+                                 struct device *parent)
+{
+        /* of_default_bus_match_table即为上述的matches条件，其他形参均为NULL */
+        return of_platform_populate(root, of_default_bus_match_table, lookup,
+                                    parent);
+}
+EXPORT_SYMBOL_GPL(of_platform_default_populate);
+
+//第五层
+int of_platform_populate(struct device_node *root,
+                        const struct of_device_id *matches,
+                        const struct of_dev_auxdata *lookup,
+                        struct device *parent)
+{
+        struct device_node *child;
+        int rc = 0;
+        /* 传入的root为NULL，获取&quot;/&quot;节点 */
+        root = root ? of_node_get(root) : of_find_node_by_path(&quot;/&quot;);
+        /* 遍历&quot;/&quot;节点下所有的child节点 */
+        for_each_child_of_node(root, child) {
+                /* 分配并创建platform_device */
+                rc = of_platform_bus_create(child, matches, lookup, parent, true);
+                if (rc) {
+                        of_node_put(child);
+                        break;
+                }
+        }
+        /* 设置已填充标志位，避免重复填充 */
+        of_node_set_flag(root, OF_POPULATED_BUS);
+
+        of_node_put(root);
+        return rc;
+}
+EXPORT_SYMBOL_GPL(of_platform_populate);
+
+//第六层
+/* bus：root下的child节点
+ * matches：of_default_bus_match_table
+ * lookup：NULL
+ * parent：NULL
+ * strict：true
+ */
+static int of_platform_bus_create(struct device_node *bus,
+                                  const struct of_device_id *matches,
+                                  const struct of_dev_auxdata *lookup,
+                                  struct device *parent, bool strict)
+{
+        const struct of_dev_auxdata *auxdata;
+        struct device_node *child;
+        struct platform_device *dev;
+        const char *bus_id = NULL;
+        void *platform_data = NULL;
+        int rc = 0;
+
+        /* 只为含&quot;compatible&quot;属性的节点创建platform_device */
+        if (strict &amp;&amp; (!of_get_property(bus, &quot;compatible&quot;, NULL))) {
+                return 0;
+        }
+        /* 跳过符合of_skipped_node_table条件的节点 */
+        if (unlikely(of_match_node(of_skipped_node_table, bus))) {
+                return 0;
+        }
+        /* 跳过已经创建过platform_device的节点 */
+        if (of_node_check_flag(bus, OF_POPULATED_BUS)) {
+                return 0;
+        }
+        /* 创建并填充platform_device */
+        dev = of_platform_device_create_pdata(bus, bus_id, platform_data, parent);
+        /* 1、创建platform_device失败，则直接返回，继续遍历root下其他child node
+         * 2、创建platform_device成功，但当前node不符合matches条件，即compatible属性值
+         *    不为&quot;simple-bus&quot;、&quot;simple-mfd&quot;、&quot;isa&quot;等时，也直接返回；否则继续为当前node
+         *    下所有含compatible属性的child node创建并填充platform_device
+         */
+        if (!dev || !of_match_node(matches, bus))
+                return 0;
+        /* 遍历当前node下的所有child node */
+        for_each_child_of_node(bus, child) {
+                /* 递归调用of_platform_bus_create函数 */
+                rc = of_platform_bus_create(child, matches, lookup, &amp;dev-&gt;dev, strict);
+                if (rc) {
+                        of_node_put(child);
+                        break;
+                }
+        }
+        /* 设置已填充标志位：OF_POPULATED_BUS */
+        of_node_set_flag(bus, OF_POPULATED_BUS);
+        return rc;
+}
+
+//第七层
+static struct platform_device *of_platform_device_create_pdata(
+                                        struct device_node *np,
+                                        const char *bus_id,
+                                        void *platform_data,
+                                        struct device *parent)
+{
+        struct platform_device *dev;
+        /* of_device_is_available: 检查节点的status属性，如果没有该属性，或者属性值
+         *                         为&quot;ok&quot;、&quot;okay&quot;，则认为该node是有效的
+         */
+        if (!of_device_is_available(np) ||
+            of_node_test_and_set_flag(np, OF_POPULATED))
+                return NULL;
+        /* 创建platform_device结构体，并对结构体成员进行赋值:
+         *      如dev-&gt;dev.of_node = of_node_get(np)，即将当前的device_node结构体
+         *      赋值给了platform_device-&gt;device.of_node成员，即完成绑定操作
+         */
+        dev = of_device_alloc(np, bus_id, parent);
+        if (!dev)
+                goto err_clear_flag;
+
+        dev-&gt;dev.coherent_dma_mask = DMA_BIT_MASK(32);
+        if (!dev-&gt;dev.dma_mask)
+                dev-&gt;dev.dma_mask = &amp;dev-&gt;dev.coherent_dma_mask;
+        /* struct bus_type platform_bus_type = {
+         *          .name           = &quot;platform&quot;,
+         *          .dev_groups     = platform_dev_groups,
+         *          .match          = platform_match,
+         *          .uevent         = platform_uevent,
+         *          .dma_configure  = platform_dma_configure,
+         *          .pm             = &amp;platform_dev_pm_ops,
+         * };
+         * 设置struct device的总线类型，此后与platform_driver的匹配即是通过
+         * platform_match函数
+         */
+        dev-&gt;dev.bus = &amp;platform_bus_type;
+        dev-&gt;dev.platform_data = platform_data;
+        of_msi_configure(&amp;dev-&gt;dev, dev-&gt;dev.of_node);
+        /* 调用device_add加入统一设备模型 */
+        if (of_device_add(dev) != 0) {
+            ...
+        }
+
+        return dev;
+}
+</pre></div>
+</div>
+<p>至此，为所有设备树中符合条件的node都创建了platform_device结构体，node下描述的资源也解析到了platform_device
+中，并通过i <code class="docutils literal notranslate"><span class="pre">dev成员</span></code> 将该node描述的设备加入了统一设备模型。</p>
+<p>在统一设备模型中，每次device或者driver加入bus中，都会调用对应bus的match函数(如platform_match)对driver或者device
+链表进行遍历，如有匹配项，则进入driver的probe函数。</p>
+<p>spi、i2c等真实的物理总线的控制器设备(controller)是作为 <code class="docutils literal notranslate"><span class="pre">platform_device</span></code> 挂入 <code class="docutils literal notranslate"><span class="pre">platform_bus</span></code> 的，所以在
+spi_master或者i2c_adapter等driver注册到platform_bus时，会与device进行配对并进入driver的probe函数。在probe函数
+中会对控制器节点下的子节点(即：spi、i2c从设备)进行解析，创建对应的spi_device、i2c_client等结构体，最终挂入对应的
+spi、i2c总线。</p>
+<p>这样，设备树中描述的所有设备都有了对应的xxx_device，并加入了统一设备模型中。</p>
+<ul class="simple">
+<li><p>i2c从设备节点创建过程</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">首先找到i2c控制器</span><span class="p">(</span><span class="n">adaper</span><span class="p">)</span><span class="n">驱动</span><span class="p">,</span><span class="n">他是与设备树通过compatible匹配</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">of_device_id</span> <span class="n">i2c_imx_dt_ids</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span> <span class="o">.</span><span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;fsl,imx1-i2c&quot;</span><span class="p">,</span> <span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">imx1_i2c_hwdata</span><span class="p">,</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="o">.</span><span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;fsl,imx21-i2c&quot;</span><span class="p">,</span> <span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">imx21_i2c_hwdata</span><span class="p">,</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="o">.</span><span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;fsl,vf610-i2c&quot;</span><span class="p">,</span> <span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">vf610_i2c_hwdata</span><span class="p">,</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="o">.</span><span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;fsl,imx7d-i2c&quot;</span><span class="p">,</span> <span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">imx7d_i2c_hwdata</span><span class="p">,</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="o">/*</span> <span class="n">sentinel</span> <span class="o">*/</span> <span class="p">}</span>
+<span class="p">};</span>
+<span class="n">MODULE_DEVICE_TABLE</span><span class="p">(</span><span class="n">of</span><span class="p">,</span> <span class="n">i2c_imx_dt_ids</span><span class="p">);</span>
+
+<span class="n">static</span> <span class="n">struct</span> <span class="n">platform_driver</span> <span class="n">i2c_imx_driver</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">probe</span> <span class="o">=</span> <span class="n">i2c_imx_probe</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">remove</span> <span class="o">=</span> <span class="n">i2c_imx_remove</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">DRIVER_NAME</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">pm</span> <span class="o">=</span> <span class="n">I2C_IMX_PM_OPS</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">of_match_table</span> <span class="o">=</span> <span class="n">i2c_imx_dt_ids</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="o">.</span><span class="n">id_table</span> <span class="o">=</span> <span class="n">imx_i2c_devtype</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>匹配后进入i2c_imx_probe(struct platform_device  *pdev)函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//第一层
+i2c_imx_probe //i2c-imx.c
+--&gt; i2c_add_numbered_adapter //i2c-core-base.c
+    --&gt; __i2c_add_numbered_adapter //i2c-core-base.c
+        --&gt; i2c_register_adapter //i2c-core-base.c
+            --&gt;of_i2c_register_devices //i2c-core-of.c
+
+//第二层 i2c-core-of.c
+void of_i2c_register_devices(struct i2c_adapter *adap)
+{
+    struct device_node *bus, *node;
+    struct i2c_client *client;
+    /* 获取总线 */
+    bus = of_get_child_by_name(adap-&gt;dev.of_node, &quot;i2c-bus&quot;);
+    if (!bus)
+        bus = of_node_get(adap-&gt;dev.of_node);
+
+    /* 遍历有效的子节点 */
+    for_each_available_child_of_node(bus, node) {
+            /* 如已被填充则跳过 */
+            if (of_node_test_and_set_flag(nc, OF_POPULATED))
+                    continue;
+            client = of_i2c_register_device(adap, node);
+    }
+}
+//第三层 of_i2c_register_device
+static struct i2c_client *of_i2c_register_device(struct i2c_adapter *adap,
+                         struct device_node *node)
+{
+    struct i2c_board_info info = {};
+    const __be32 *addr_be;
+    u32 addr;
+    /* 获取I2C从设备地址 */
+    addr_be = of_get_property(node, &quot;reg&quot;, &amp;len);
+    addr = be32_to_cpup(addr_be);
+    /* 填充info */
+    /* 填充info.type */
+    if (of_modalias_node(node, info.type, sizeof(info.type)) &lt; 0) {
+        dev_err(&amp;adap-&gt;dev, &quot;of_i2c: modalias failure on %pOF\n&quot;,
+            node);
+        return ERR_PTR(-EINVAL);
+    }
+    /* 填充info.addr */
+    info.addr = addr;
+    /* 如上注册 */
+    result = i2c_new_device(adap, &amp;info);
+
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>注册I2C驱动</p></li>
+</ul>
+<p>与注册设备驱动过程基本一致</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//第一层
+int i2c_register_driver(struct module *owner, struct i2c_driver *driver)
+{
+    driver-&gt;driver.bus = &amp;i2c_bus_type; //指定I2C总线
+
+    driver_register(&amp;driver-&gt;driver); //向总线注册驱动
+}
+//第二层
+int driver_register(struct device_driver *drv)
+{
+    bus_add_driver(drv);
+}
+//第三层
+int bus_add_driver(struct device_driver *drv)
+{
+    driver_attach(drv); //此函数会遍历总线设备链表进行操作
+
+    klist_add_tail(&amp;priv-&gt;knode_bus, &amp;bus-&gt;p-&gt;klist_drivers); // 添加进bus的driver链表中
+}
+//第四层
+int driver_attach(struct device_driver *drv)
+{
+    /* 遍历总线的设备链表，调用__driver_attach */
+    bus_for_each_dev(drv-&gt;bus, NULL, drv, __driver_attach);
+}
+//第五层
+static int __driver_attach(struct device *dev, void *data)
+{
+    if (!driver_match_device(drv, dev))
+        return 0;
+
+    driver_probe_device(drv, dev);
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>I2C adapter</p></li>
+</ul>
+<p>I2C适配器有两个重要的数据结构, <code class="docutils literal notranslate"><span class="pre">i2c_adapter</span></code> 和 <code class="docutils literal notranslate"><span class="pre">i2c_algorithm</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//第一层
+struct i2c_adapter{
+    const struct i2c_algorithm *algo; /* 总线访问算法 */
+}
+/* i2c_algorithm 就是I2C适配器与IIC设备进行通信的方法。*/
+//第二层
+struct i2c_algorithm {
+    ......
+    /* I2C适配器的传输函数,此函数完成与IIC设备的通信 */
+    int (*master_xfer)(struct i2c_adapter *adap,
+    struct i2c_msg *msgs,
+    int num);
+    /* SMBUS总线的传输函数 */
+    int (*smbus_xfer) (struct i2c_adapter *adap, u16 addr,
+    unsigned short flags, char read_write,
+    u8 command, int size, union i2c_smbus_data *data);
+
+    /* To determine what the adapter supports */
+    u32 (*functionality) (struct i2c_adapter *);
+    ......
+};
+/* 实例-构建适配器 */
+static const struct i2c_algorithm s3c24xx_i2c_algorithm = {
+    .master_xfer            = s3c24xx_i2c_xfer,
+    .functionality          = s3c24xx_i2c_func,
+};
+
+static int s3c24xx_i2c_probe(struct platform_device *pdev)
+{
+    i2c-&gt;adap.algo    = &amp;s3c24xx_i2c_algorithm; //构建了算法
+    i2c_add_numbered_adapter(&amp;i2c-&gt;adap); //注册了适配器
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>I2C数据传输</p></li>
+</ul>
+<p>设备驱动中I2C数据传输时通过I2C适配器完成的，可使用 <code class="docutils literal notranslate"><span class="pre">i2c_transfer</span></code> 来传输I2C数据，如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">i2c_transfer</span><span class="p">(</span><span class="n">struct</span> <span class="n">i2c_adapter</span> <span class="o">*</span><span class="n">adap</span><span class="p">,</span> <span class="n">struct</span> <span class="n">i2c_msg</span> <span class="o">*</span><span class="n">msgs</span><span class="p">,</span> <span class="nb">int</span> <span class="n">num</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">adap</span><span class="o">-&gt;</span><span class="n">algo</span><span class="o">-&gt;</span><span class="n">master_xfer</span><span class="p">(</span><span class="n">adap</span><span class="p">,</span> <span class="n">msgs</span><span class="p">,</span> <span class="n">num</span><span class="p">);</span> <span class="o">//</span><span class="n">调用适配器的算法</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id3">
+<h2><span class="section-number">3.2.2. </span>设备驱动编写方法<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>I2C设备驱动中重点关注两个数据结构 <code class="docutils literal notranslate"><span class="pre">i2c_clent</span></code> 和 <code class="docutils literal notranslate"><span class="pre">i2c_driver</span></code> ,前是用来描述设备信息的，后者是描述驱动的。</p>
+<div class="section" id="id4">
+<h3><span class="section-number">3.2.2.1. </span>注册设备<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p>设置I2C设备驱动信息</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">设备树匹配列表</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">of_device_id</span> <span class="n">my_i2c_dev_of_match</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span> <span class="o">.</span><span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;my_i2c_dev, 0&quot;</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="o">/*</span> <span class="n">Sentinel</span> <span class="o">*/</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="o">/*</span> <span class="n">i2c驱动结构体</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">struct</span> <span class="n">i2c_driver</span> <span class="n">my_i2c_drv</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">probe</span> <span class="o">=</span> <span class="n">ap3216c_probe</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">remove</span> <span class="o">=</span> <span class="n">ap3216c_remove</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">,</span>
+            <span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span>
+            <span class="o">.</span><span class="n">of_match_table</span> <span class="o">=</span> <span class="n">my_i2c_dev_of_match</span><span class="p">,</span>
+           <span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>注册I2C设备驱动</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">__init</span> <span class="n">my_i2c_drv_init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="n">i2c_add_driver</span><span class="p">(</span><span class="o">&amp;</span><span class="n">my_i2c_drv</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>注册I2C设备</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">在i2c节点下添加设备信息</span> <span class="o">*/</span>
+<span class="o">&amp;</span><span class="n">i2c1</span> <span class="p">{</span>
+    <span class="n">my_i2c_dev</span><span class="o">@</span><span class="mi">20</span> <span class="p">{</span>
+        <span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;my_i2c_dev,0&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3><span class="section-number">3.2.2.2. </span>数据传输函数<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p>传输函数</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+ * adap：i2c适配器
+ * msgs：消息数据
+ * num：数组的个数
+ */
+int i2c_transfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>传输报文msg的组成</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">i2c_msg</span> <span class="p">{</span>
+    <span class="n">__u16</span> <span class="n">addr</span><span class="p">;</span>     <span class="o">//</span><span class="n">从设备地址</span>
+    <span class="n">__u16</span> <span class="n">flags</span><span class="p">;</span> <span class="o">//</span><span class="n">读或写</span>
+    <span class="n">__u16</span> <span class="nb">len</span><span class="p">;</span>      <span class="o">//</span><span class="n">消息的长度</span>
+    <span class="n">__u8</span> <span class="o">*</span><span class="n">buf</span><span class="p">;</span>      <span class="o">//</span><span class="n">消息</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>示例：</p>
+<img alt="../../_images/i2c_read.jpeg" src="../../_images/i2c_read.jpeg" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/* 定义 i2c_msg 结构体 */
+struct i2c_msg msg[2];
+
+char val[10]
+
+/* 填充msg */
+msg[0].addr = my_i2c_client-&gt;addr; /* 这个client在probe函数中得到的 */
+msg[0].flags = 0; /* 0表示写，1表示读 */
+msg[0].buf = 0x80; /* 写：要发送的数据地址，读：读取到的数据存放的地址 */
+msg[0].len = 1; /* 想要传输的字节数 */
+
+/* 填充msg */
+msg[1].addr = my_i2c_client-&gt;addr; /* 这个client在probe函数中得到的 */
+msg[1].flags = 1; /* 1表示读 */
+msg[1].buf = val; /* 读到的数据存在这里 */
+msg[1].len = 4; /* 想要读取的字节数 */
+
+
+/* 传输数据 */
+i2c_transfer(my_i2c_client-&gt;adapter, msg, 2); /* 有两个msg */
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../fs/index.html" class="btn btn-neutral float-right" title="4. file system note" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../mmc/sdcard/index.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, yinwg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

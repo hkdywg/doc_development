@@ -1,0 +1,871 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.3. sysfs、udev以及它们背后的linux统一设备模型 &mdash; ywg_dev_doc 0.1 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="3.4. GPIO子系统" href="../gpio/index.html" />
+    <link rel="prev" title="3.2. I2C驱动框架以及I2C设备驱动" href="../i2c/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">1. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">2. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">3.1. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">3.2. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.3. sysfs、udev以及它们背后的linux统一设备模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sysfs">3.3.1. sysfs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">3.3.2. 统一设备模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#kobject">3.3.2.1. kobject</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#uedev">3.3.3. uedev</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#udev">3.3.3.1. udev规则</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">3.4. GPIO子系统</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">4. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">5. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../issues/index.html">8. Issues</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html"><span class="section-number">3. </span>linux driver modules note</a> &raquo;</li>
+        
+      <li><span class="section-number">3.3. </span>sysfs、udev以及它们背后的linux统一设备模型</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/driver/udev_sysfs/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sysfsudevlinux">
+<h1><span class="section-number">3.3. </span>sysfs、udev以及它们背后的linux统一设备模型<a class="headerlink" href="#sysfsudevlinux" title="永久链接至标题">¶</a></h1>
+<div class="section" id="sysfs">
+<h2><span class="section-number">3.3.1. </span>sysfs<a class="headerlink" href="#sysfs" title="永久链接至标题">¶</a></h2>
+<p>sysfs是一个基于内存的虚拟的文件系统，有kernel提供，挂载到/sys目录下，负责以设备树的形式向user space提供直观的设备和驱动信息。</p>
+<p>sysfs以不同的视角展示当前系统接入的设备：</p>
+<ul class="simple">
+<li><p>/sys/block 历史遗留问题，存放块设备，提供一设备名(如sda)到/sys/devices的符号链接</p></li>
+<li><p>/sys/bus 按总线类型分类，在某个总线目录之下可以找到链接该总线的设备的符号链接，指向/sys/devices. 某个总线目录之下的drivers目录
+包含了该总线所需的所有驱动的符号链接。对应卡尔呢了中的struct bus_type</p></li>
+<li><p>/sys/calss 按设备功能分类，如输入设备在/sys/class/input之下，图形设备在/sys/class/graphics之下，是指向/sys/devices的符号链接。
+对应kernel中的struct class</p></li>
+<li><p>/sys/dev 按设备驱动程序分层(字符设备 块设备)，提供以major:minor为名到/sys/devices的符号链接。 对应Kernel中的struct device_driver</p></li>
+<li><p>/sys/devices 包含所有被发现的注册在各种总线上的各种物理设备。
+所有物理设备都按其在总线上的拓扑结构来显示，除了platform devices和system devices。
+platform devices 一般是挂载在芯片内部高速或者低速总线上的各种控制器和外设，能被CPU直接寻址。
+system devices不是外设，而是芯片内部的核心结构，比如CPU，timer等。对应kernel中的strcut device</p></li>
+<li><p>/sys/firmware 提供对固件的查询和操作接口(关于固件有专用于固件加载的一套api)</p></li>
+<li><p>/sys/fs 描述当前加载的文件系统，提供文件系统和文件系统已挂载的设备信息。</p></li>
+<li><p>/sys/kernel 提供kernel所有可调整参数，但大多数可调整参数依然存放在sysctl(/proc/sys/kernel)</p></li>
+<li><p>/sys/module 所有加载模块(包括内联、编译进kernel、外部的模块)信息，按模块类型分类。</p></li>
+<li><p>/sys/power 电源选项，可用于控制整个机器的电源状态，如写入控制命令进行关机、重启等。</p></li>
+</ul>
+<p>sysfs支持多视角查看，通过符号链接，同样的信息可出现在多个目录下。</p>
+<p>以硬盘sda为例，既可以在块设备目录/sys/block下找到，又可以在/sys/devices/pci0000:00/0000:00:10.0/host32/target32:0:0/下找到</p>
+</div>
+<div class="section" id="id1">
+<h2><span class="section-number">3.3.2. </span>统一设备模型<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>sysfs的功能基于linux的统一设备模型，其由以下结构组成：</p>
+<div class="section" id="kobject">
+<h3><span class="section-number">3.3.2.1. </span>kobject<a class="headerlink" href="#kobject" title="永久链接至标题">¶</a></h3>
+<p>统一设备模型中最基本的对象</p>
+<ul class="simple">
+<li><p>kobject</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct kobject{
+    const char *name;               //名称，将在sysfs中作为文件名
+    struct list_head entry;         //加入kset链表的结构
+    struct kobject *parent;         //父节点指针，构成树状结构
+    struct kset *kset;              //指向所属的kset
+    struct kobj_type *ktype;        //类型
+    struct kernfs_node *sd;         //指向所属(sysfs)目录项
+    struct kref kref;               //引用计数
+
+    unsigned int state_initialized:1;           //是否已经初始化
+    unsigned int state_in_sysfs:1;              //是否已经在sysfs中显示
+    unsigned int state_add_uevent_sent:1;       //是否已经向user space发送add uevent
+    unsigned int state_remove_uevent_sent:1;
+    unsigned int uevent_suppress:1;             //是否忽略上报
+};
+</pre></div>
+</div>
+<p>其中 kobj_type结构如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct kobj_type{
+    void (*release)(struct kobject *kobj);          //析构函数，kobject的引用计数为0时调用
+    const struct sysfs_ops *sysfs_ops;              //操作函数，当用户读取sysfs属性时调用show(),写入sysfs属性时调用store()
+    struct attribute **default_attrs;               //默认属性，体现为该kobject目录下的文件
+    const struct kobject_ns_type_operations *(*child_ns_type)(struct kobject *kobj);   //namespace 操作函数
+    const void *(*namespace)(struct kobject *kobj);
+};
+</pre></div>
+</div>
+<p>实际上这里实现的类似与对kobject的派生，包含不同kobj_type的kobject可以看作不同的子类。通过实现相同的函数来实现多态。
+每一个kobject的数据结构(如kset、device、device_driver等)，都要实现自己的kobj_type，并实现其中的函数。</p>
+<p>kobj_type的定义会如实的在sysfs中反映，其中的属性attribute会以attribute.name为文件名在该目录下创建文件，对该文件进行读写会调用
+sysfs_ops 中定义的show()和store()</p>
+<ul class="simple">
+<li><p>kset</p></li>
+</ul>
+<p>kobject的容器，维护了其包含的kobject链表，链表的最后一项指向kset.kobj，用于表示某一类型的kobject</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct kset{
+    struct list_head list;          //kobject链表头
+    spinlock_t list_lock;           //自旋锁，保障操作安全
+    struct kobject kobj;            //自身的kobject
+    const struct kset_uevent_ops *uevent_ops;       //uevent 操作函数集。
+};
+</pre></div>
+</div>
+<p>注意和kobj_type的关联，kobject会利用成员kset找到自己所属的kset，设置自身的ktype为kset.kobj.ktype。当没有指定的kset成员时，才会用ktype来建立关系。</p>
+<p>此外，kobject调用的是它所属的kset的uevent操作函数来发送uevent，如果kobject不属于任何kset，则无法发送uevent</p>
+<ul class="simple">
+<li><p>device/driver/bus/class</p></li>
+</ul>
+<p>linux设备模型的更上一层的表述是device/driver/bus/class。他们都定义在include/linux/device.h中</p>
+<ol class="arabic simple">
+<li><p>/sys/bus 目录下的每个子目录都是注册好了的总线类型，每个子目录下包含两个子目录(devices和driver文件夹)。其中devices下是该总线类型下的所有设备，
+这些设备都是符号链接，指向/sys/devices。</p></li>
+<li><p>/sys/devices 目录是是全局设备结构体系，包含所有被发现的注册在总线上的各种物理设备。</p></li>
+<li><p>/sys/class  目录则是包含所有注册在kernel中的设备类型。</p></li>
+</ol>
+<p>下图是一个usb设备的设备去驱动拓扑图</p>
+<img alt="../../_images/linux_device_model01.png" src="../../_images/linux_device_model01.png" />
+<p>在总线上管理着两个链表，分别管理着设备和驱动，当我们向系统注册一个驱动时，便会向驱动的管理链表插入我们的新驱动，同样当我们向系统注册一个设备时，便会
+向设备的管理链表插入我们的新设备。在插入的同时总线会执行一个 <code class="docutils literal notranslate"><span class="pre">bus_type</span></code> 结构体中的 <code class="docutils literal notranslate"><span class="pre">match</span></code> 方法对新插入的设备/驱动进行匹配。匹配成功后会调用
+device_driver结构体中probe方法，移除驱动或者设备时调用device_driver结构体中的remove方法。</p>
+<ul class="simple">
+<li><p>device</p></li>
+</ul>
+<p>device描述了一项设备，对应数据结构device</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct device{
+    struct device *parent;
+    struct device_private *p;
+    strcut kobject kobj;
+    const char *init_name;
+    const struct device_type  *type;
+    struct mutex mutex;
+    struct bus_type *bus;
+    struct device_driver *driver;
+    struct class *class;
+};
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p><strong>init_name</strong>:指定设备名字</p></li>
+<li><p><strong>parent</strong>:表示该设备的父对象</p></li>
+<li><p><strong>bus</strong>:表示该设备挂载在哪条总线，当我们注册设备时，内核便会将该设备注册到对应的总线。</p></li>
+<li><p><strong>driver</strong>:表示该设备对应的驱动</p></li>
+</ol>
+<p>可以使用以下函数注册和注销设备</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">device_register</span><span class="p">(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+<span class="n">void</span> <span class="n">device_unregister</span><span class="p">(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>其中维护了类型为device_private的指针p</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">device_private</span><span class="p">{</span>
+    <span class="n">struct</span> <span class="n">klist</span> <span class="n">list_children</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">klist_node</span> <span class="n">knode_parent</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">klist_node</span> <span class="n">knode_driver</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">klist_node</span> <span class="n">knode_bus</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="n">deferred_probe</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">device</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>klist_node 用来作为所属driver链表，所属bus链表中的节点。</p>
+<p>设备通过device_register来注册到系统中，通过device_unregister来从系统中卸载。</p>
+<ul class="simple">
+<li><p>driver</p></li>
+</ul>
+<p>设备依赖于driver来进行驱动，对应的数据结构为device_driver</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">device_driver</span><span class="p">{</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">bus_type</span> <span class="o">*</span><span class="n">bus</span><span class="p">;</span>
+
+    <span class="n">strcut</span> <span class="n">module</span> <span class="o">*</span><span class="n">owner</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">mod_name</span><span class="p">;</span>
+
+    <span class="nb">bool</span> <span class="n">suppress_bind_attrs</span><span class="p">;</span>
+    <span class="n">enum</span> <span class="n">probe_type</span> <span class="n">probe_type</span><span class="p">;</span>
+
+    <span class="n">const</span> <span class="n">strcut</span> <span class="n">of_device_id</span> <span class="o">*</span><span class="n">of_match_table</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">acpi_device_id</span> <span class="o">*</span><span class="n">acpi_match_table</span><span class="p">;</span>
+
+    <span class="nb">int</span><span class="p">(</span><span class="o">*</span><span class="n">probe</span><span class="p">)(</span><span class="n">strcut</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+    <span class="nb">int</span><span class="p">(</span><span class="o">*</span><span class="n">remove</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">shutdown</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+    <span class="nb">int</span><span class="p">(</span><span class="o">*</span><span class="n">suspend</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="n">pm_message_t</span> <span class="n">state</span><span class="p">);</span>
+    <span class="nb">int</span><span class="p">(</span><span class="o">*</span><span class="n">resume</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">attribute_group</span> <span class="o">**</span><span class="n">groups</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">dev_pm_ops</span> <span class="o">*</span><span class="n">pm</span><span class="p">;</span>
+
+    <span class="n">struct</span> <span class="n">driver_private</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p><strong>name</strong>:指定驱动名称</p></li>
+<li><p><strong>bus</strong>:表示驱动依赖于哪个总线</p></li>
+<li><p><strong>suppress_bind_attrs</strong>:用于指定是否通过sysfs导出bind与unbind文件，bind和unbind文件时驱动用于绑定/解绑关联的设备。</p></li>
+<li><p><strong>of_match_table</strong>:指定驱动支持的设备类型，当内核使能设备树时，会利用该成员与设备树中的 <code class="docutils literal notranslate"><span class="pre">compatible</span></code> 属性进行比较</p></li>
+<li><p><strong>probe</strong>:驱动与设备匹配后会执行该回调函数。</p></li>
+<li><p><strong>groups</strong>:表示驱动的属性</p></li>
+</ol>
+<p>其中维护了类型为driver_private的指针p</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">driver_private</span><span class="p">{</span>
+    <span class="n">struct</span> <span class="n">kobject</span> <span class="n">kobj</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">klist</span> <span class="n">klist_device</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">klist_node</span> <span class="n">knode_bus</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">module_kobject</span> <span class="o">*</span><span class="n">mkobj</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">device_driver</span> <span class="o">*</span><span class="n">driver</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>其维护了dirver自身的私有属性，比如由于他也是kobject的子类，因此包含了kobj。可通过driver_cteate_file/ dirver_remove_file来增删属性，属性将直接作用于p-&gt;kobj.</p>
+<ul class="simple">
+<li><p>bus</p></li>
+</ul>
+<p>设备总是挂载在某一条总线上的，对应的数据结构为bus_type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">bus_type</span><span class="p">{</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">dev_name</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev_root</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">device_attribute</span> <span class="o">*</span><span class="n">dev_attrs</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">attribute_group</span> <span class="o">**</span><span class="n">bus_groups</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">attribute_group</span> <span class="o">**</span><span class="n">dev_groups</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">attribute_group</span> <span class="o">**</span><span class="n">drv_groups</span><span class="p">;</span>
+
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">match</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="n">struct</span> <span class="n">device_driver</span> <span class="o">*</span><span class="n">drv</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">uevent</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="n">struct</span> <span class="n">kobj_uvent_env</span> <span class="o">*</span><span class="n">env</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">probe</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">remove</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">shutdown</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">online</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">offline</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">suspend</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span><span class="n">pm_message_t</span> <span class="n">state</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">resume</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+
+    <span class="n">struct</span> <span class="n">subsys_private</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">lock_class_key</span> <span class="n">lock_key</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p><strong>name</strong>:指定总线名称，会在/sys/bus目录下创建一个新的目录，目录名称就是该参数的值</p></li>
+<li><p><strong>bus_groups,dev_groups,drv_groups</strong>:分别表示总线、设备、驱动的属性。这些属性可以时内部变量、字符串等等，</p></li>
+<li><p><strong>match</strong>:当向总线注册一个新的设备或者新的驱动时，会调用该回调函数。</p></li>
+<li><p><strong>uevent</strong>:当总线上的设备发生添加、移除就会调用该函数。</p></li>
+<li><p><strong>probe</strong>:设备和驱动匹配后会调用该函数。</p></li>
+<li><p><strong>p</strong>:该结构它用于存放特定的私有数据，其成员klist_devices和klist_drivers记录了挂载在该总线上的设备和驱动。</p></li>
+</ol>
+<p>通过以下函数注册和注销bus</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">bus_register</span><span class="p">(</span><span class="n">struct</span> <span class="n">bus_type</span> <span class="o">*</span><span class="n">bus</span><span class="p">);</span>
+<span class="n">void</span> <span class="n">bus_ungister</span><span class="p">(</span><span class="n">struct</span> <span class="n">bus_type</span> <span class="o">*</span><span class="n">bus</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>其中维护了类型为subsys_private的指针P</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct subsys_private{
+    struct kset subsys;
+    struct kset *devices_kset;
+    struct list_head interface;
+    struct mutex mutex;
+
+    struct kset *drivers_kset;
+    struct klist klist_devices;
+    struct klist klist_drivers;
+    struct blocking_nottifier_head bus_notifier;
+    unsigned int drivers_autoprober:1;
+    struct bus_type *bus;
+
+    struct kset glue_dirs;
+    struct class *class;
+};
+</pre></div>
+</div>
+<p>它维护了bus自身的私有属性，它维护了挂载在该总线上的设备集合device_kset和与该总线相关的驱动程序集合drivers_kset</p>
+<p>对应到sysfs中，每个bus_type对象对应/sys/bus目录下的一个子目录，子目录下必有devices和dirver文件夹，里面存放指向设备和驱动的符号链接。</p>
+<p>下图是总线上关联设备和驱动之后的数据结构关系图：</p>
+<img alt="../../_images/linux_device_driver_bus.png" src="../../_images/linux_device_driver_bus.png" />
+<ul class="simple">
+<li><p>class</p></li>
+</ul>
+<p>class对应一种设备分类，对应的数据结构为class</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct class{
+    const char *name;
+    struct module *owner;
+
+    struct class_attribute *class_attrs;
+    const struct attribute_group **dev_grpoups;
+    struct kobject *dev_kobj;
+
+    int (*dev_uevent)(struct device *dev,struct kobj_uvent_env *env);
+    char *(*devnode)(struct device *dev, umode_t *mode);
+
+    void (*class_release)(struct class *class);
+    void (*dev_release)(struct device *dev);
+
+    int (*suspend)(struct device *dev,pm_message_t state);
+    int (*resume)(struct device *dev);
+    int (*shutdown)(struct device *dev);
+
+    const struct kobj_ns_type_operation *ns_type;
+    const void *(*namespace)(struct device *dev);
+
+    const struct dev_pm_ops *pm;
+
+    struct subsys_private *p;
+};
+</pre></div>
+</div>
+<p>class 只是一种抽象的概念，用于描述接口相似的一类设备。</p>
+<ul class="simple">
+<li><p>小结</p></li>
+</ul>
+<p>device driver bus class四者之间存在着这样的关系：</p>
+<p>driver用于驱动device，其保存了所有能够被它所驱动的设备链表。</p>
+<p>bus是连接CPU和device的桥梁，其保存了所有挂载在它上面的设备链表和驱动这些设备的驱动链表。</p>
+<p>class用于描述一类device，其保存了所有该类device的设备链表。</p>
+<ul class="simple">
+<li><p>attribute</p></li>
+</ul>
+<p>用于定义设备模型中的各项属性，基本属性有两种，分别为普通属性attribute和二进制属性bin_attribute</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">attribute</span><span class="p">{</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="n">umode_t</span> <span class="n">mode</span><span class="p">;</span>
+    <span class="c1">#ifdef CONFIG_DEBUG_LOCK_ALLOC</span>
+    <span class="nb">bool</span> <span class="n">ignore_lockdep</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">lock_class_key</span> <span class="o">*</span><span class="n">key</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">lock_class_ket</span> <span class="n">skey</span><span class="p">;</span>
+    <span class="c1">#endif</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">bin_attribute</span><span class="p">{</span>
+    <span class="n">struct</span> <span class="n">attribute</span> <span class="n">attr</span><span class="p">;</span>
+    <span class="n">size_t</span> <span class="n">size</span><span class="p">;</span>
+    <span class="n">void</span> <span class="o">*</span><span class="n">private</span><span class="p">;</span>
+    <span class="n">ssize_t</span> <span class="p">(</span><span class="o">*</span><span class="n">read</span><span class="p">)(</span><span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">,</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="p">,</span><span class="n">struct</span> <span class="n">bin_attribute</span> <span class="o">*</span><span class="p">,</span><span class="n">char</span> <span class="o">*</span><span class="p">,</span> <span class="n">loff_t</span> <span class="p">,</span> <span class="n">size_t</span><span class="p">);</span>
+    <span class="n">ssize_t</span> <span class="p">(</span><span class="o">*</span><span class="n">write</span><span class="p">)(</span><span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">,</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="p">,</span><span class="n">struct</span> <span class="n">bin_attribute</span> <span class="o">*</span><span class="p">,</span><span class="n">char</span> <span class="o">*</span><span class="p">,</span> <span class="n">loff_t</span> <span class="p">,</span><span class="n">size_t</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">mmap</span><span class="p">)(</span><span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">,</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="p">,</span><span class="n">struct</span> <span class="n">bin_attribute</span> <span class="o">*</span><span class="n">attr</span><span class="p">,</span> <span class="n">struct</span> <span class="n">vm_area_struct</span> <span class="o">*</span><span class="n">vma</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>使用attribute生成的sysfs文件，只能用字符串的形式读写，而struct bin_attribute在attribute的基础上，增加了read、write函数，因此
+它生成的sysfs文件可以用任何方式读写。</p>
+<ul class="simple">
+<li><p>attribute_gpoup</p></li>
+</ul>
+<p>顾名思义就是属性组，将一组属性打包成一个对象，其包含了以attribute和bin_attribute指针数组。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">attribute_group</span><span class="p">{</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="n">umode_t</span> <span class="p">(</span><span class="o">*</span><span class="n">is_visible</span><span class="p">)(</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="p">,</span><span class="n">struct</span> <span class="n">attribute</span> <span class="o">*</span><span class="p">,</span><span class="nb">int</span><span class="p">);</span>
+    <span class="n">umode_t</span> <span class="p">(</span><span class="o">*</span><span class="n">is_bin_visible</span><span class="p">)(</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="p">,</span> <span class="n">struct</span> <span class="n">bin_attribute</span> <span class="o">*</span><span class="p">,</span> <span class="nb">int</span><span class="p">);</span>
+    <span class="n">struct</span> <span class="n">attribute</span> <span class="o">**</span><span class="n">attrs</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">bin_attribute</span> <span class="o">**</span><span class="n">bin_attrs</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>sysfs 映射</p></li>
+</ul>
+<p>sysfs本质上是对统一设备模型中的各结构的映射。换句话说sysfs本质上就是通过vfs接口去读写kobject的层次结构后动态建立的内存文件系统。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">__init</span> <span class="n">sysfs_init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">err</span><span class="p">;</span>
+
+    <span class="n">sysfs_root</span> <span class="o">=</span> <span class="n">kernfs_create_root</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">KERNFS_ROOT_EXTRA_OPEN_PERM_CHEACK</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">IS_ERR</span><span class="p">(</span><span class="n">sysfs_root</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">PTR_ERR</span><span class="p">(</span><span class="n">sysfs_root</span><span class="p">);</span>
+
+    <span class="n">sysfs_root_kn</span> <span class="o">=</span> <span class="n">sysfs_root</span><span class="o">-&gt;</span><span class="n">kn</span><span class="p">;</span>
+
+    <span class="n">err</span> <span class="o">=</span> <span class="n">register_filesystem</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sysfs_fs_type</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">kernfs_destroy_root</span><span class="p">(</span><span class="n">sysfs_root</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>sysfs_init通过kernfs_create_root创建新的kernfs层级，然后将其保存在静态全局变量中，供各处使用，然后通过register_filesystem将其注册到名
+为sysfs的文件系统中。</p>
+<ul class="simple">
+<li><p>目录映射</p></li>
+</ul>
+<p>kobject 在sysfs中对应的是目录(dir)</p>
+<p>当我们注册一个kobject时，会调用kobject_add 于是</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kobject_add</span><span class="o">===&gt;</span><span class="n">kobject_add_varg</span><span class="o">===&gt;</span><span class="n">kobject_add_internal</span><span class="o">===&gt;</span><span class="n">create_dir</span><span class="o">====&gt;</span><span class="n">sysfs_create_dir_ns</span>
+</pre></div>
+</div>
+<p>如果kobj有parent，则它的父节点为kobj-&gt;parent-&gt;sd</p>
+<ul class="simple">
+<li><p>属性映射</p></li>
+</ul>
+<p>属性在sysfs中对应的是文件(file)</p>
+<p>当需要为设备添加属性时，可以调用device_create_file，于是</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">deivice_create_file</span><span class="o">===&gt;</span><span class="n">sysfs_create_file</span><span class="o">===&gt;</span><span class="n">sysfs_create_file_ns</span><span class="o">====&gt;</span><span class="n">sysfs_add_file_mode_ns</span><span class="o">===&gt;</span><span class="n">__kernfs_create_file</span>
+</pre></div>
+</div>
+<p>创建的文件大小即为存放该属性值的长度，对于普通属性来说，大小为 PAGE_SIZE(4K)，而对于二进制属性来说，大小由属性自定义，即 bin_attribute.size 指定。</p>
+<p>当用户对属性文件进行读写时，会调用绑定的读写函数，比如对于 mode 为 SYSFS_PREALLOC 且 kobj-&gt;ktype-&gt;sysfs_ops 定义了 show 和 store 函数的属性，
+绑定是 sysfs_prealloc_kfops_rw 。这里的 kobj 指的是该属性的父节点，也就是属性所属设备的 kobj。</p>
+<p>于是在读文件时，调用 sysfs_kf_read ，它会根据属性文件找到其父节点类型对应的 sysfs_ops ，然后调用 sysfs_ops.show 。show 需要将输出写到传入的 buf 缓冲区中，
+并返回写入的长度。</p>
+<p>在写文件时，调用 sysfs_kf_write ，它会根据属性文件找到其父节点类型对应的 sysfs_ops ，然后调用 sysfs_ops.store 。 store 可以从传入的 buf 缓冲区中，
+读取用户写入的长度为 len 的内容。</p>
+<p>但是需要注意的是， sysfs_ops 中的 show 和 store 函数并非是读写我们属性所需要的 show 和 store 。因为一个设备只有一个类型，因此 sysfs_ops 打扰 show 和 store
+只有一种实现，但实际上 show 和 store 应该根据属性的不同而不同。怎么办呢？绕个弯子：在调用 sysfs_ops.show 和 sysfs_ops.store 时传入属性 attribute 的指针，
+然后在函数中将指针转换为设备类型对应属性的指针后调用属性的 show 和 store 函数。这也就是 device_attribute 、 class_attribute 或一些设备自定义属性
+(比如 cpuidle_driver_attr) 中定义有 show 和 store 函数的原因。</p>
+</div>
+</div>
+<div class="section" id="uedev">
+<h2><span class="section-number">3.3.3. </span>uedev<a class="headerlink" href="#uedev" title="永久链接至标题">¶</a></h2>
+<p>udev完全工作在用户空间，当一个设备被插入或者移除时，内核会通过netlink套接字发送设备详细信息到用户空间，udev获取到设备信息，根据信息内容在/dev下创建并命名设备节点。</p>
+<ul class="simple">
+<li><p>冷插拔的设备怎么办</p></li>
+</ul>
+<p>由于冷插拔的设备在开机时就已经存在，在udev启动前已经被插入，针对这种情况，sysfs的设备都存在 <code class="docutils literal notranslate"><span class="pre">uevent</span></code> 文件，向该文件写入 <code class="docutils literal notranslate"><span class="pre">add</span></code> ，内核会重新发送netlink，之后udev就可以
+受到设备的详细信息了，从而创建/dev下对应的设备节点。</p>
+<div class="section" id="udev">
+<h3><span class="section-number">3.3.3.1. </span>udev规则<a class="headerlink" href="#udev" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p>配置文件</p></li>
+</ul>
+<p>udev的配置文件位于/etc/udev/和/lib/udev</p>
+<p>udev的主配置文件是/etc/udev/udev.conf，它包含一套变量，允许用户修改udev默认值，可以设置的变量如下：</p>
+<p>udev_root 设备目录，默认是/dev</p>
+<p>udev_log  日志等级(表示严重程度)，跟syslog一致，例如err,info,debug</p>
+<ul class="simple">
+<li><p>规则文件</p></li>
+</ul>
+<p>udev的规则文件一般位于/lib/udev/rules.d/，也可以位于/etc/udev/rules.d/</p>
+<p>规则文件是按照字母顺序处理的，对于相同名字的规则文件，/etc/udev/rules.d比/lib/udev/rules.d优先</p>
+<p>规则文件必须以.rules作为扩展名，否则不被当作规则文件。</p>
+<p>规则文件的每一行哦第时key=vaule的格式，key有两种类型，1) <code class="docutils literal notranslate"><span class="pre">匹配型key</span></code> 2) <code class="docutils literal notranslate"><span class="pre">赋值型key</span></code></p>
+<p>当所有匹配型key都匹配时，该规则即被采用，赋值型key就会获得相应的值。</p>
+<p>一条规则有多个key=value组成，以英文逗号个凯，每个key有一个操作，取决于操作符，有效的操作符如下：</p>
+<ol class="arabic simple">
+<li><p>== 比较是否相等</p></li>
+<li><p>!= 比较是否不想等</p></li>
+<li><p>= 给一个key赋值，表示一个列表的key会被重置，并且把这个唯一的值传给它</p></li>
+<li><p>+= 将一个值增加到key中</p></li>
+<li><p>:= 将一个值传给一个key，并且不允许再修改这个key</p></li>
+</ol>
+<ul class="simple">
+<li><p>匹配型key</p></li>
+</ul>
+<p>下面的key可以匹配设备属性，部分key也可以用于匹配sysfs中父设备属性，不仅仅是产生事件的那个设备。如果在一个规则中，有多个key
+匹配了一个父设备，则这些key必须匹配同一个父设备。</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>key</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ACTION</p></td>
+<td><p>匹配事件的动作名</p></td>
+</tr>
+<tr class="row-odd"><td><p>DEVPATH</p></td>
+<td><p>匹配事件的设备devpath</p></td>
+</tr>
+<tr class="row-even"><td><p>KERNEL</p></td>
+<td><p>匹配事件的设备名</p></td>
+</tr>
+<tr class="row-odd"><td><p>NAME</p></td>
+<td><p>匹配网络接口或者设备节点名字，NAME只有在前面的规则中赋值之后才可以使用</p></td>
+</tr>
+<tr class="row-even"><td><p>SYMLINK</p></td>
+<td><p>匹配设备节点的符号连接名字，只有在赋值之后才可以使用</p></td>
+</tr>
+<tr class="row-odd"><td><p>SUBSYSTEM</p></td>
+<td><p>匹配设备子系统</p></td>
+</tr>
+<tr class="row-even"><td><p>DRIVER</p></td>
+<td><p>匹配设备的驱动名，只对绑定到一个驱动的设备有用</p></td>
+</tr>
+<tr class="row-odd"><td><p>ATTR{filename}</p></td>
+<td><p>匹配事件设备的sysfs属性</p></td>
+</tr>
+<tr class="row-even"><td><p>KERNELS</p></td>
+<td><p>向上搜索devpath，知道找到一个匹配的设备名</p></td>
+</tr>
+<tr class="row-odd"><td><p>SUBSYSTEMS</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p>DRIVERS</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p>ATTRS{filename}</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p>ENV{key}</p></td>
+<td><p>环境变量取值</p></td>
+</tr>
+<tr class="row-odd"><td><p>TAG</p></td>
+<td><p>设备的TAG</p></td>
+</tr>
+<tr class="row-even"><td><p>TEST{ }</p></td>
+<td><p>测试一个文件是否存在</p></td>
+</tr>
+<tr class="row-odd"><td><p>PROGRAM</p></td>
+<td><p>执行一个程序，如果程序成功返回，key为true，可以从RESULT把这个key读取</p></td>
+</tr>
+<tr class="row-even"><td><p>RESULT</p></td>
+<td><p>匹配最近一次PROGRAM调用的返回字符串，应该在PROGRAM之后使用</p></td>
+</tr>
+</tbody>
+</table>
+<p>支持一些shell的通配符</p>
+<ol class="arabic simple">
+<li><ul class="simple">
+<li><p>代表0到无穷多个任意字符</p></li>
+</ul>
+</li>
+<li><p>? 代表【一定有一个】任意字符</p></li>
+<li><p>[] 代表一定有一个在括号内的字符</p></li>
+</ol>
+<ul class="simple">
+<li><p>赋值型KEY</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>key</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NAME</p></td>
+<td><p>根据这个规则创建的设备文件的文件名</p></td>
+</tr>
+<tr class="row-odd"><td><p>SYMLINK</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>OWNER</p></td>
+<td><p>设备文件的属组</p></td>
+</tr>
+<tr class="row-odd"><td><p>GROUP</p></td>
+<td><p>设备文件所在的组</p></td>
+</tr>
+<tr class="row-even"><td><p>MODE</p></td>
+<td><p>设备文件的权限，采用8进制</p></td>
+</tr>
+<tr class="row-odd"><td><p>ATTR{key}</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>TAG</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>RUN</p></td>
+<td><p>为设备而执行的程序列表</p></td>
+</tr>
+<tr class="row-even"><td><p>LABEL</p></td>
+<td><p>GOTO 可以跳到的地方</p></td>
+</tr>
+<tr class="row-odd"><td><p>GOTO</p></td>
+<td><p>跳到下一个带有匹配名字的LABEL处</p></td>
+</tr>
+<tr class="row-even"><td><p>IMPORT</p></td>
+<td><p>导入一个文件或者一个程序执行后而生成的规则集到当前文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>WAIT_FOR</p></td>
+<td><p>等待一个特定的设备文件的创建，主要是用作时序和依赖问题</p></td>
+</tr>
+<tr class="row-even"><td><p>OPTIONS</p></td>
+<td><p>特定选项：last_rule对这类设备终端规则执行。ignore_divice忽略当前规则</p></td>
+</tr>
+</tbody>
+</table>
+<p>NAME、SYMLINK、PROGRAM、OWNER、GROUP、MODE、RUN这些filed支持一个简单的，类似于printf函数的格式字符串替换，可以的字符串替换如下；</p>
+<ol class="arabic simple">
+<li><p>$kernel,%k  :该设备在内核中的名字(%k替换$kernel)</p></li>
+<li><p>$number,%n  :该设备的内核号码，例如sda1的内核号码是1</p></li>
+<li><p>$devpath,%p :该设备的devpath</p></li>
+<li><p>$id,%b      :向上搜索devpath，寻找SUBSYSTEMS，KERNELS，DRIVERS和ATTRS时，被匹配的设备名字</p></li>
+<li><p>$driver     :…被匹配的驱动名字</p></li>
+<li><p>$attr{file}, %s{file}   :一个被发现的设备的sysfs属性的值，如果该设备没有该属性，且前面的KERNELS ，SUBSYSTEMS，DRIVERS或ATTRS测试选择的是一个父设备，那么就用父设备的属性，如果属性是一个符号链，符号链的最后一个元素作为返回值。</p></li>
+<li><p>$env{key},%E{key}   :一个设备的属性值</p></li>
+<li><p>$major,%M   :主设备号</p></li>
+<li><p>$minor,%m   :次设备号</p></li>
+<li><p>$result,%c  :由PROGRAM调用的外部程序返回的字符串，如果这个字符串包含空格，可以用%c{N}选中第N个字段。如果这个数字N后面有一个+字符，则表示选中这个字段开始的后面所有字符</p></li>
+<li><p>$parent,%p  :父设备的节点名字</p></li>
+<li><p>$name       :设备节点的名字，用一个空格作为分割符，该值只有在前面的规则赋值之后才存在</p></li>
+<li><p>$links      :当前符号链的列表，用空格隔开</p></li>
+<li><p>$root,%r    :udev_root的值</p></li>
+<li><p>$sys,%S     :sysfs挂载点</p></li>
+<li><p>$tempmpde,%N    :在真正的设备节点创建之前，创建的一个临时设备节点的名字，这个临时节点供外部程序使用。</p></li>
+</ol>
+<ul class="simple">
+<li><p>查询设备信息</p></li>
+</ul>
+<p>例如：设备sda的SYSFS{size}可以通过cat /sys/block/sda/size得到。SYSFS{model}信息可以通过cat /sys/block/sda/device/model得到</p>
+<p>或者可以通过udevadm命令获取设备信息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="nd">@ArkV3</span><span class="p">:</span><span class="o">/</span><span class="n">dev</span><span class="c1"># udevadm info --query=all --name=/dev/mmcblk0</span>
+<span class="n">P</span><span class="p">:</span> <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">f80000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc0</span><span class="o">/</span><span class="n">mmc0</span><span class="p">:</span><span class="mi">0001</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk0</span>
+<span class="n">N</span><span class="p">:</span> <span class="n">mmcblk0</span>
+<span class="n">S</span><span class="p">:</span> <span class="n">disk</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="nb">id</span><span class="o">/</span><span class="n">mmc</span><span class="o">-</span><span class="n">S0J57X_0x11bc20a7</span>
+<span class="n">S</span><span class="p">:</span> <span class="n">disk</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="n">path</span><span class="o">/</span><span class="n">platform</span><span class="o">-</span><span class="mi">4</span><span class="n">f80000</span><span class="o">.</span><span class="n">sdhci</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">DEVLINKS</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">disk</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="nb">id</span><span class="o">/</span><span class="n">mmc</span><span class="o">-</span><span class="n">S0J57X_0x11bc20a7</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">disk</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="n">path</span><span class="o">/</span><span class="n">platform</span><span class="o">-</span><span class="mi">4</span><span class="n">f80000</span><span class="o">.</span><span class="n">sdhci</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">DEVNAME</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">mmcblk0</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">DEVPATH</span><span class="o">=/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">f80000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc0</span><span class="o">/</span><span class="n">mmc0</span><span class="p">:</span><span class="mi">0001</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk0</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">DEVTYPE</span><span class="o">=</span><span class="n">disk</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">ID_NAME</span><span class="o">=</span><span class="n">S0J57X</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">ID_PART_TABLE_TYPE</span><span class="o">=</span><span class="n">dos</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">ID_PART_TABLE_UUID</span><span class="o">=</span><span class="mi">19</span><span class="n">c5099c</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">ID_PATH</span><span class="o">=</span><span class="n">platform</span><span class="o">-</span><span class="mi">4</span><span class="n">f80000</span><span class="o">.</span><span class="n">sdhci</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">ID_PATH_TAG</span><span class="o">=</span><span class="n">platform</span><span class="o">-</span><span class="mi">4</span><span class="n">f80000_sdhci</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">ID_SERIAL</span><span class="o">=</span><span class="mh">0x11bc20a7</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">MAJOR</span><span class="o">=</span><span class="mi">179</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">MINOR</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">SUBSYSTEM</span><span class="o">=</span><span class="n">block</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">TAGS</span><span class="o">=</span><span class="p">:</span><span class="n">systemd</span><span class="p">:</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">USEC_INITIALIZED</span><span class="o">=</span><span class="mi">2619079</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>调试</p></li>
+</ul>
+<p>以下内容为通过udevadm monitor监测SD卡的拔出以及插入事件</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="nd">@ArkV3</span><span class="p">:</span><span class="o">~</span><span class="c1"># udevadm monitor</span>
+<span class="n">monitor</span> <span class="n">will</span> <span class="nb">print</span> <span class="n">the</span> <span class="n">received</span> <span class="n">events</span> <span class="k">for</span><span class="p">:</span>
+<span class="n">UDEV</span> <span class="o">-</span> <span class="n">the</span> <span class="n">event</span> <span class="n">which</span> <span class="n">udev</span> <span class="n">sends</span> <span class="n">out</span> <span class="n">after</span> <span class="n">rule</span> <span class="n">processing</span>
+<span class="n">KERNEL</span> <span class="o">-</span> <span class="n">the</span> <span class="n">kernel</span> <span class="n">uevent</span>
+
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95305.858326</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p2</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95305.863476</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95305.863909</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p2</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95305.865764</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">virtual</span><span class="o">/</span><span class="n">bdi</span><span class="o">/</span><span class="mi">179</span><span class="p">:</span><span class="mi">96</span> <span class="p">(</span><span class="n">bdi</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95305.865813</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95305.866439</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">virtual</span><span class="o">/</span><span class="n">bdi</span><span class="o">/</span><span class="mi">179</span><span class="p">:</span><span class="mi">96</span> <span class="p">(</span><span class="n">bdi</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95305.869234</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95305.869314</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95305.884325</span><span class="p">]</span> <span class="n">unbind</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95305.884538</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95305.887321</span><span class="p">]</span> <span class="n">unbind</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95305.887671</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95312.630739</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95312.634149</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95312.644368</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">virtual</span><span class="o">/</span><span class="n">bdi</span><span class="o">/</span><span class="mi">179</span><span class="p">:</span><span class="mi">96</span> <span class="p">(</span><span class="n">bdi</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95312.646727</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">virtual</span><span class="o">/</span><span class="n">bdi</span><span class="o">/</span><span class="mi">179</span><span class="p">:</span><span class="mi">96</span> <span class="p">(</span><span class="n">bdi</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95312.652352</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95312.652402</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95312.652431</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p2</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95312.652881</span><span class="p">]</span> <span class="n">bind</span>     <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95312.713507</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95312.827378</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95312.827647</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p2</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95312.830561</span><span class="p">]</span> <span class="n">bind</span>     <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../gpio/index.html" class="btn btn-neutral float-right" title="3.4. GPIO子系统" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../i2c/index.html" class="btn btn-neutral float-left" title="3.2. I2C驱动框架以及I2C设备驱动" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2020, yinwg
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
