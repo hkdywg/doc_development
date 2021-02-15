@@ -15,7 +15,6 @@ Welcome to ywg_dev_doc's documentation!
     driver/index.rst
     fs/index.rst
     user/index.rst
-    work_space/index.rst
     misc/index.rst
     issues/index.rst
 
