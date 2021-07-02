@@ -39,6 +39,9 @@ this is a normale text again.
 
 自定义表格
 
+.. table::
+    :align: center
+
 +-------------------------------------+-------------------+--------+
 |    header row,column 1              |  header 2         | header | 
 |    (header rows optional)           |                   |        |
@@ -67,4 +70,13 @@ www.baidu.com
 .. image:: res/test.png
     :align: center
 
+标注解释1 [#]_
+标注解释2 [#]_
+
+.. [#] 解释1.........
+.. [#] 解释2.........
+
+.. note::
+    
+    此处为注解部分
 最后终端执行 make html 即可, 效果图如下：
