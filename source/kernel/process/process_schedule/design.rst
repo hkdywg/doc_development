@@ -818,4 +818,70 @@ linux可以用两种方式进行进程的分组
     };
 
 
+周期性调度器
+------------
+
+周期性调度器在 ``scheduler_tick`` 中实现,如果系统正在活动中,内核会按照频率HZ自动调用该函数,如果没有进程等待调度,那么计算机在店里供应不足的情况下，内核会关闭该调度器
+以减少能耗,这对于嵌入式设备是很重要的
+
+周期性调度器主流程
+^^^^^^^^^^^^^^^^^^^
+
+scheduler_tick函数定义在 kernel/sched/core.c 中,它有两个主要任务
+
+1) 更新相关统计量,管理内核中的与整个系统和各个进程的调度相关的统计量,其间执行的主要操作是对各种计数器+1
+
+2) 激活负责当前进程调度类的周期性调度方法，检查进程的执行时间是否超过了它对应的idea_runtime,如果超过了则告诉系统,需要启动主调度器进行进程切换
+
+::
+
+    /*
+     * This function gets called by the timer code, with HZ frequency.
+     * We call it with interrupts disabled.
+     */
+    void scheduler_tick(void)
+    {
+        //获取当前CPU的ID
+        int cpu = smp_processor_id();
+        //获取cpu的全局就绪队列rq
+        struct rq *rq = cpu_rq(cpu);
+        //获取就绪队列上正在运行的进程curr
+        struct task_struct *curr = rq->curr;
+        struct rq_flags rf;
+
+        sched_clock_tick();
+
+        rq_lock(rq, &rf);
+        //更新rq的当前时间戳,即使rq->clock变为当前时间戳
+        update_rq_clock(rq);
+        //执行当前进程所在调度类的task_tick函数进行周期性调度
+        curr->sched_class->task_tick(rq, curr, 0);
+        //更新rq的负载信息
+        calc_global_load_tick(rq);
+        psi_task_tick(rq);
+
+        rq_unlock(rq, &rf);
+
+        perf_event_task_tick();
+
+    #ifdef CONFIG_SMP
+        //当前CPU是否空闲
+        rq->idle_balance = idle_cpu(cpu);
+        //如果到时候进行周期性负载均衡则触发SCHED_SOFTIRQ
+        trigger_load_balance(rq);
+    #endif
+    }
+
+- 定时器周期性的激活调度器
+
+定时器是linux提供的一种定时服务机制,他在某个特定的时间唤醒某个进程,来做一些工作,在低分辨率定时器的每次时钟中断完成全局统计量更新后，每个CPU在软中断中执行以下操作
+
+1) 更新该cpu上当前进程内核态、用户态、使用时间
+
+2) 调用该cpu上的定时器函数
+
+3) 启动周期性定时器(scheduler_tick)完成该cpu上任务的周期性调度工作
+
+在支持动态定时器的系统中，可以关闭该调度器，从而进入深入睡眠过程,scheduler_tick查看当前进程是否运行太长时间，如果是,将进程的TIF_NEED_RESCHED置位,然后在中断返回时,调用schedule进行进程切换
+
 
