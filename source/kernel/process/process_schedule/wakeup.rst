@@ -219,3 +219,75 @@ wake_up_new_task中唤醒进程时,内核使用全局check_preempt_cuur检查是
         if (task_on_rq_queued(rq->curr) && test_tsk_need_resched(rq->curr))
             rq_clock_skip_update(rq);
     }
+
+
+无效唤醒
+--------
+
+几乎在所有的情况下,进程都会在检查了某些条件之后发现条件不满足才进入睡眠，可以有时候进程却会判断条件为真后开始睡眠，如果这样的话进程就会无限期的
+休眠下去，这就是所谓的无效唤醒问题
+
+在操作系统中，当多个进程都企图对共享数据进行某种处理，而最后的结果又取决于进程运行的顺序时，就会发生竞争条件,这是操作系统中一个典型的问题，无效
+唤醒恰恰就是由于竞争条件导致的
+
+A进程
+
+::
+
+    spin_lock(&list_lock);
+    if(list_empty((&list_head)))
+    {
+            spin_unlock(&list_lock);
+            set_current_state(TASK_INTERRUPTIBLE);
+            schedule();
+            spin_lock(&list_lock);
+    }
+    /* rest of the code ... */
+    spin_unlock(&list_lock);
+
+B进程
+
+::
+
+    spin_lock(&list_lock);
+    list_add_tail(&list_head, new_node);
+    spin_unlock(&list_lock);
+    wake_up_process(A);
+
+
+这里会出现一个问题,当A进程执行到spin_unlock(&list_lock);之后,B进程被另外一个CPU调度投入运行在这个时间片内B进执行完了它所有的指令，因此它试图唤醒A进程,而此时的A进程还没有
+进入睡眠,所以唤醒操作无效。而A进程之后将自己的状态设置为TASK_INTERRUPTIBLE状态，错过了唤醒时机,A进程会无限期的睡眠下去
+
+这样修改以后可以避免无效唤醒的问题了
+
+A进程
+
+::
+
+    set_current_state(TASK_INTERRUPTIBLE);
+    spin_lock(&list_lock);
+    if(list_empty(&list_head))
+    {
+        spin_unlock(&list_lock);
+        schedule();
+        spin_lock(&list_lock);
+    }
+    set_current_state(TASK_RUNNING);
+    /* rest of the code ... */
+    spin_unlock(&list_lock);
+
+
+在linux操作系统中，内核的稳定性至关重要，为了避免在linux操作系统内核中出现无效唤醒问题,linux内核在需要进程睡眠的时候应该使用类似如下的操作
+
+::
+
+    /* q 是我们希望睡眠的等待队列 */
+    DECLARE_WAITQUEUE(wait, current);
+    add_wait_queue(q, &wait);
+    set_current_state(TASK_INTERRUPTIBLE);
+
+    /* 或TASK_INTERRUPTIBLE */
+    while(!condition)
+    schedule();
+    set_current_state(TASK_RUNNING);
+    remove_wait_queue(q, &wait);
