@@ -244,6 +244,7 @@ pick_next_entity函数
 ---------------------
 
 ::
+
     //1. 首先要确保任务组之间的公平这也是设置组的原因之一
     //2. 选择下一个合适的(优先级比较高的)进程,因为它确实需要马上运行
     //3. 如果没有条件2中进程，那么为了良好的局部性,选择上一次执行的进程
@@ -312,8 +313,7 @@ linux CFS实现的判决条件是:
 
 2) 尽可能减少以上这种抢占带来的缓存刷新的影响
 
-- cfs_rq的last和next指针,last表示最后一个执行wakeup的sched_entity, next表示最后一个被wakeup的sched_entity.他们在进程wakeup的时候会赋值,在pick新sched_entity的时候,会优先选择
-这些last或者next指针的sched_entity,有利于提高缓存的命中率
+- cfs_rq的last和next指针,last表示最后一个执行wakeup的sched_entity, next表示最后一个被wakeup的sched_entity.他们在进程wakeup的时候会赋值,在pick新sched_entity的时候,会优先选择这些last或者next指针的sched_entity,有利于提高缓存的命中率
 
 因此我们优选出来的进程必须同last和next指针域进行对比，其实就是检查就绪队列中的最优进程,即红黑树最左边节点last是否可以抢占last和next指针域，检查是否可以抢占是通过wake_up_preempt_entity函数来完成的
 
