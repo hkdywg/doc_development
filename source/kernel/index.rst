@@ -11,3 +11,4 @@ http://kernel.org/doc/html/v4.19/index.html
     kernel_function/index.rst
     queue/index.rst
     process/index.rst
+    system_call/index.rst
