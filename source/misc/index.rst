@@ -2,6 +2,7 @@ misc
 ####
 
 .. toctree::
+    reference/index.rst
     git/index.rst
     shell/index.rst
     program_debug/index.rst
