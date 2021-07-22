@@ -5,3 +5,4 @@ shell 使用笔记
     shell_rule.rst
     Makefile_shell/index.rst
     shell_advanced.rst
+    regular_expression.rst
