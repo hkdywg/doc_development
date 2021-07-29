@@ -5,3 +5,4 @@ u-boot dev note
     source_analysis/index.rst
     legacy-fit_img.rst
     parsing_uimage.rst
+    bootm.rst
