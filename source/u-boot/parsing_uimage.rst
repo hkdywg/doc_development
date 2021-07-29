@@ -96,8 +96,36 @@ image_info_t的详细解释如下
         uint8_t		arch;			/* CPU architecture */      //CPU体系结构
     } image_info_t;
 
+- image_header数据结构如下
+
+::
+
+    /*
+     * Legacy format image header,
+     * all data in network byte order (aka natural aka bigendian).
+     */
+    typedef struct image_header {
+        __be32		ih_magic;	/* Image Header Magic Number	*/
+        __be32		ih_hcrc;	/* Image Header CRC Checksum	*/
+        __be32		ih_time;	/* Image Creation Timestamp	*/
+        __be32		ih_size;	/* Image Data Size		*/
+        __be32		ih_load;	/* Data	 Load  Address		*/
+        __be32		ih_ep;		/* Entry Point Address		*/
+        __be32		ih_dcrc;	/* Image Data CRC Checksum	*/
+        uint8_t		ih_os;		/* Operating System		*/
+        uint8_t		ih_arch;	/* CPU architecture		*/
+        uint8_t		ih_type;	/* Image Type			*/
+        uint8_t		ih_comp;	/* Compression Type		*/
+        uint8_t		ih_name[IH_NMLEN];	/* Image Name		*/
+    } image_header_t;
+
 
 解析uImage的时候主要目的就是填充image_info_t os和ulong ep
+
+解析完成之后的示例如下
+
+.. image::
+    res/images_header.png
 
 legacy-uImage中kernel信息的解析代码流程
 ----------------------------------------
