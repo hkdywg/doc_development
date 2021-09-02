@@ -9,3 +9,4 @@ misc
     performance_optimzation/index.rst
     vim/index.rst
     makefile/index.rst
+    ld_scripts/index.rst
