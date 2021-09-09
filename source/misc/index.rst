@@ -10,3 +10,4 @@ misc
     vim/index.rst
     makefile/index.rst
     ld_scripts/index.rst
+    assembly/index.rst
