@@ -11,6 +11,8 @@ linux参考网站
 
 - QNX系统参考网站 http://www.qnx.com/developers/docs/7.0.0/index_frames.html?q=/developers/docs/7.0.0/com.qnx.doc.ide.userguide/topic/about.html
 
+- bash 参考网站 https://wangdoc.com/bash/intro.html
+
 
 **优秀的github**
 
