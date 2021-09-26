@@ -1,6 +1,9 @@
 source analysis
 ===============
 
+:download:`res/uboot-world.pdf` 
+
+
 目录结构
 --------
 ::
@@ -128,7 +131,8 @@ spl的入口代码是在arch/arm/lib/vector.S中的 ``_start`` 函数
 1)  _start中直接执行reset
 2)  ldr pc, _xx定义的是中断的处理方式，类似中断向量表
 
-注：spl阶段是不允许中断的，u-boot可以
+.. note::
+    spl阶段是不允许中断的，u-boot可以
 
 - reset
 
@@ -562,7 +566,7 @@ _main 所做的工作都是为调用C函数做前期的准备，这个C函数就
 3)  timer_init  定时器初始化
 4)  spl_board_init 根据配置选项完成相应的spl阶段外设初始化，包括console i2c misc watchdog
 5)  boot_from_devices 设置从哪个外部设备启动(NAND  SDCARD NOR)
-6） 将image从外部设备load到ram中
+6)  将image从外部设备load到ram中
 7)  判断image类型，如果是uboot则break，去运行u-boot。如果是linux则启动linux(说明：spl可以直接启动linux)
 
 至此，SPL结束它的生命，控制权交给uboot或者linux
@@ -1010,7 +1014,35 @@ C)  修改目录下对应的Makefile
 
 D) 修改目录下对应Kconfig
 
+例如:
+
+::
+
+    if TARGET_X3
+
+    config SYS_BOARD        ##SYS_BOARD对应board目录下的板子类型
+        default "x3"
+
+    config SYS_VENDOR       ##SYS_VENDOR代表board下的文件夹,例如holomatic，则在编译的时候会选择board/holomatic文件夹
+        default "holomatic"
+
+    config SYS_SOC          ##SYS_SOC代表SOC类型
+        default "x3"
+
+    config SYS_CONFIG_NAME  ##SYS_CONFIG_NAME代表include/configs目录下的头文件
+        default "holo_j3"
+
+    endif
+
+
 修改Kconfig可改变图形界面选项，以及对应的配置信息
+
+E) 修改arch/arm/Kconfig
+
+::
+
+    source "board/holomatic/x3/Kconfig"
+
 
 3.  移植配置文件
 
