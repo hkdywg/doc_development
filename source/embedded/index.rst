@@ -5,3 +5,4 @@ embeded
     fs/index.rst
     debug/index.rst
     gpt/index.rst
+    systemd/index.rst

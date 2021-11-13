@@ -17,6 +17,7 @@ Welcome to ywg_dev_doc's documentation!
     user/index.rst
     misc/index.rst
     embedded/index.rst
+    net/index.rst
 
 Indices and tables
 ==================
