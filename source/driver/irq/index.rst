@@ -9,3 +9,4 @@ linux 中断
     irq_frame.rst
     irq_soft_hard.rst
     irq_process.rst
+    irq_soft.rst
