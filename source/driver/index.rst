@@ -11,3 +11,4 @@ linux driver modules note
     Async_notify/index.rst
     net/index.rst
     timer/index.rst
+    input/index.rst
