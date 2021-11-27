@@ -4,3 +4,4 @@
 .. toctree::
     input_frame.rst
     input_core.rst
+    input_event.rst
