@@ -10,3 +10,4 @@ linux driver modules note
     kobj/index.rst
     Async_notify/index.rst
     net/index.rst
+    timer/index.rst
