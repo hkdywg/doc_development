@@ -3,3 +3,4 @@
 
 .. toctree::
     input_frame.rst
+    input_core.rst
