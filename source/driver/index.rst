@@ -2,6 +2,7 @@ linux driver modules note
 =========================
 
 .. toctree::
+    platform_bus/index.rst
     mmc/index.rst
     i2c/index.rst
     irq/index.rst
