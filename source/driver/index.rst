@@ -13,3 +13,4 @@ linux driver modules note
     net/index.rst
     timer/index.rst
     input/index.rst
+    framebuffer/index.rst
