@@ -7,3 +7,4 @@ embeded
     gpt/index.rst
     systemd/index.rst
     ota/index.rst
+    safeboot/index.rst
