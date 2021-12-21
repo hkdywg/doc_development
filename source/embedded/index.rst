@@ -8,3 +8,4 @@ embeded
     systemd/index.rst
     ota/index.rst
     safeboot/index.rst
+    yocto/index.rst
