@@ -5,3 +5,4 @@ Yocto使用总结
     overview_concepts.rst
     source_struct.rst
     task_variable.rst
+    task.rst
