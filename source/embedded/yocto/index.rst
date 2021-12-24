@@ -6,3 +6,4 @@ Yocto使用总结
     source_struct.rst
     task_variable.rst
     task.rst
+    recipet.rst
