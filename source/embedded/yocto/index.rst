@@ -7,3 +7,4 @@ Yocto使用总结
     task_variable.rst
     task.rst
     recipet.rst
+    task_continue.rst
