@@ -1,6 +1,71 @@
 常见任务 二
 ============
 
+bitbake 定位相关目录
+---------------------
+
+定位recipe文件位置
+
+::
+
+    bitbake -e dropbear  | grep ^FILE=
+    FILE="/home/yinwg/ywg_workspace/yocto/yocto/build/workspace/recipes/dropbear/dropbear_2020.80.bb"
+
+定位recipe依赖的conf、bbclass、bbapend等文件
+
+::
+
+    bitbake -e  | grep ^BBINCLUDED=
+
+
+定位构建这个包时的工作目录
+
+::
+
+    bitbake -e dropbear | grep ^WORKDIR=
+    WORKDIR="/home/yinwg/ywg_workspace/yocto/yocto/build/tmp/work/core2-64-poky-linux/dropbear/2020.80-r0"
+
+定位源码解压后的位置
+
+::
+
+    bitbake -e dropbear | grep ^S=
+    S="/home/yinwg/ywg_workspace/yocto/yocto/build/workspace/sources/dropbear"
+
+定位源码的编译目录
+
+::
+    bitbake -e dropbear | grep ^B=
+    B="/home/yinwg/ywg_workspace/yocto/yocto/build/tmp/work/core2-64-poky-linux/dropbear/2020.80-r0/dropbear-2020.80/"
+
+
+bitbake 执行任务
+-----------------
+
+执行 bitbake -s 命令可以列出当前项目中所有可构建的包和版本。构建一个包的最简单方法是执行 bitbake <package_name> ，
+Bitbake 会搜索这个包的 recipe 文件，找到后就解析 recipe 中的配置选项，然后依次执行如下任务（task）。
+
+1) Fetch–从远程或者本地获取源码
+2) Extract–将源码解压到指定的工作目录下，之后所有的构建工作都在这个工作目录下进行
+3) Patch–为错误修复和新功能应用补丁文件
+4) Configure–进行编译前的配置工作
+5) Compile–编译和链接
+6) Install–将文件复制到目标目录下
+7) Package–生成安装包
+
+
+也可以通过-c参数执行单独的任务，例如只下载源码可以执行 bitbake <package_name> -c fetch 。常用的任务选项有：
+
+1) fetch ，下载源码
+2) unpack ，解压源码
+3) patch ， 打补丁
+4) configure ，配置
+5) compile ，编译
+6) clean ，删除最终输出的文件
+7) clearsstate ，删除编译过程产生的所有文件
+8) cleanall ，删除所有文件，包括下载的源码包，编译过程的缓存文件和最终的输出文件。
+
+
 升级recipes
 ------------
 

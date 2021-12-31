@@ -41,7 +41,8 @@ recipes指后缀为.bb的文件。通常，recipes包含单个软件的信息，
 class
 ^^^^^^
 
-类文件(.bbclass)包含有助于在recipes之间共享的信息
+类文件(.bbclass)包含在recipes之间共享的信息. meta/classes/base.bbclass被所有的recipe喝class文件自动包含，它包含了标准任务的基本定义，例如获取、解压、配置、编译、安装、打包，
+有些定义只是框架，内容是空的
 
 configurations
 ^^^^^^^^^^^^^^^
@@ -49,10 +50,13 @@ configurations
 配置文件(.conf)定义了管理Openenbedded构建过程中的各种配置变量，这些文件分为几个区域，这些区域定义了机器配置选项，编译器配置选项，
 一般通用配置选项和用户配置选项。 conf/local.conf
 
+主configuration文件是bitbake.conf，位于meta/conf/bitbake.conf
+
 layers
 ---------
 
-layer是包含相关元数据的集合，这些元数据告诉openembedded构建系统如何构建目标。
+layer是包含相关元数据的集合，这些元数据告诉openembedded构建系统如何构建目标。layer被用来分类不同的任务单元，某些任务单元有共同的特性，可以放在一个layer下，方便模块化组织数据。
+例如要制定一套支持特定硬件的系统，可以把与底层相关的单元放在一个layer中，这个layer可以叫做Board support package layer
 
 openembedded
 --------------
