@@ -6,3 +6,6 @@ embeded
     debug/index.rst
     gpt/index.rst
     systemd/index.rst
+    ota/index.rst
+    safeboot/index.rst
+    yocto/index.rst
