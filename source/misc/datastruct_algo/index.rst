@@ -1,5 +1,5 @@
-剑指offer
-============
+数据结构与算法
+================
 
 .. toctree::
-    array.rst
+    sword_offer/index.rst
