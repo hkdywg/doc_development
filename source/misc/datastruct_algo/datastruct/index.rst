@@ -2,5 +2,4 @@
 ================
 
 .. toctree::
-    datastruct/index.rst
-    sword_offer/index.rst
+   tree.rst 
