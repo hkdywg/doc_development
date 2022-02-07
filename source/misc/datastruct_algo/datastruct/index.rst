@@ -3,3 +3,4 @@
 
 .. toctree::
    tree.rst 
+   red_black.rst
