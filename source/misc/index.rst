@@ -11,3 +11,4 @@ misc
     makefile/index.rst
     ld_scripts/index.rst
     assembly/index.rst
+    datastruct_algo/index.rst
