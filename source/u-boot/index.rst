@@ -8,3 +8,4 @@ u-boot dev note
     parsing_uimage.rst
     bootm.rst
     transfer_param.rst
+    uboot_memory.rst
