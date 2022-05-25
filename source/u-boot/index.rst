@@ -9,3 +9,4 @@ u-boot dev note
     bootm.rst
     transfer_param.rst
     uboot_memory.rst
+    multi_core_startup.rst
