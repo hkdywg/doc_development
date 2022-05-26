@@ -1,6 +1,10 @@
 uboot编译流程分析
 =====================
 
+
+u-boot官方在线文档 https://u-boot.readthedocs.io/en/latest/index.html
+
+
 在分析uboot编译过程之前，必须了解Makefile语法。由于u-boot的Makefile中存在相互调用，这里介绍以下make -f和make -c的区别
 
 - -c选项：Makefile中的-c是递归调用子目录的Makefile，-c选项后跟目录，表示到子目录下执行子目录的makefile，顶层Makefile的export的变量还有make默认的变量是可以传递给子目录中的Makefile的
