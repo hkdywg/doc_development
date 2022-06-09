@@ -9,3 +9,5 @@ embeded
     ota/index.rst
     safeboot/index.rst
     yocto/index.rst
+    video/index.rst
+
