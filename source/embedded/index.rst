@@ -10,4 +10,5 @@ embeded
     safeboot/index.rst
     yocto/index.rst
     video/index.rst
+    bus/index.rst
 
