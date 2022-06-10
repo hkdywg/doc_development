@@ -3,3 +3,4 @@
 
 .. toctree::
     ./video_interface.rst
+    ./LCD_timing.rst
