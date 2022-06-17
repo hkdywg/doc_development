@@ -2,6 +2,9 @@ V4L2框架概述
 =================
 
 
+* :download:`v4l2_驱动编写指南.pdf<res/v4l2_驱动编写指南.pdf>` 
+
+
 整体框架
 ----------
 
@@ -30,13 +33,28 @@ V4L2框架主要涉及以下几个部分
 
 图中包含来以下几个关键因素
 
+**cocntroler主要抽象的结构体**
+
 - ``v4l2_device`` : 这是整个输入设备的总结构体,可以认为他是整个v4l2框架的入口,充当驱动的管理者. 
+
+- ``video_device`` : 用于生成设备节点(/dev/videoX), 给用户提供操作接口,如查询/设置参数,获取buffer数据,向内核提交处理好的buffer等
+
+- ``v4l2_async_notifier`` : 用于子设备的异步注册,subdev子设备的注册通常和controller设备是分开的,controler设备需要通过v4l2_async_notifier查找子设备并将其注册到v4l2_device进行统一管理
 
 - ``media_device`` : 用于运行时数据流的管理,嵌在V4L2 device内部
 
+- ``vb2_queue`` : 提供内核与用户空间的buffer流转接口,包括buffer的申请,buffer在内核和用户空间之间的切换等
+
+**subdev子设备主要抽象的结构体**
+
+- ``v4l2_subdev`` : 子设备抽象结构体,提供子设备的基本参数设置及函数接口
+
 - ``v4l2_ctrl_handler`` : 控制模块,提供子设备(主要是ISP和video)在用户空间的操作接口,比如改变图像的亮度,对比度等
 
-- ``vb2_queue`` : 提供内核与用户空间的buffer流转接口,管理输入设备产生的视频帧
+
+.. image::
+    res/v4l2_device.png
+
 
 
 .. image::
@@ -47,6 +65,11 @@ V4L2框架主要涉及以下几个部分
 -----------------
 
 在V4L2架构下视频的获取以及控制通过open,read以及ioctl等系统调用接口完成
+
+数据结构关系图
+
+.. image::
+    res/v4l2_data_relation.jpg
 
 
 v4l2_fops
@@ -88,16 +111,16 @@ video_device结构体用于在/dev目录下生成设备节点文件,把操作设
         struct media_intf_devnode *intf_devnode;
         struct media_pipeline pipe;
     #endif
-        const struct v4l2_file_operations *fops;
+        const struct v4l2_file_operations *fops;    #设备操作函数
 
         u32 device_caps;
 
         /* sysfs */
-        struct device dev;
-        struct cdev *cdev;
+        struct device dev;  #V4L2设备
+        struct cdev *cdev;  #字符设备
 
         struct v4l2_device *v4l2_dev;
-        struct device *dev_parent;
+        struct device *dev_parent;  #父设备
 
         struct v4l2_ctrl_handler *ctrl_handler;
 
@@ -106,7 +129,7 @@ video_device结构体用于在/dev目录下生成设备节点文件,把操作设
         struct v4l2_prio_state *prio;
 
         /* device info */
-        char name[32];
+        char name[32];      #设备信息
         enum vfl_devnode_type vfl_type;
         enum vfl_devnode_direction vfl_dir;
         int minor;
@@ -138,11 +161,11 @@ v4l2_device
     struct v4l2_device {
         struct device *dev;
         struct media_device *mdev;
-        struct list_head subdevs;
+        struct list_head subdevs;   #用于跟踪注册的subdevs
         spinlock_t lock;
-        char name[V4L2_DEVICE_NAME_SIZE];
+        char name[V4L2_DEVICE_NAME_SIZE];   #设备名称,默认情况下,驱动程序名字+总线ID
         void (*notify)(struct v4l2_subdev *sd,
-                unsigned int notification, void *arg);
+                unsigned int notification, void *arg);  #由子设备调用的回调函数
         struct v4l2_ctrl_handler *ctrl_handler;
         struct v4l2_prio_state prio;
         struct kref ref;
@@ -172,7 +195,7 @@ v4l2_subdev
         struct v4l2_ctrl_handler *ctrl_handler;     //subdev控制接口
         char name[V4L2_SUBDEV_NAME_SIZE];
         u32 grp_id;
-        void *dev_priv;
+        void *dev_priv; #私有数据指针
         void *host_priv;
         struct video_device *devnode;
         struct device *dev;
@@ -419,6 +442,23 @@ rvin_mc_ioctl_ops
 
 应用层处理流程
 ---------------
+
+图像数据从内核空间传输到用户空间主要有两种方法:
+
+- 用户空间通过read系统调用进入内核空间,驱动程序通过v4l2_file_operation->read函数调用copy_to_user将数据拷贝到用户空间.这种方式效率比较低
+
+- 通过指针传递的方式,有两种方式, 1)buffer在用户空间申请,然后传递给内核驱动层 2) buffer在内核空间申请,用户空间通过 ``mmap`` 函数映射到buffer
+
+.. image::
+    res/buffer_process.png
+
+V4L2驱动中会维护 ``queue_list`` 和 ``done_list`` 两个存储buffer指针的队列
+
+1) 用户空间app端会向内核申请已经写入新数据的buffer，内核空间驱动从done_list队列中返回buffer指针
+
+2) app得到buffer数据进行处理，处理完成后将buffer提交给内核，内核将app提交的buffer添加到queue_list队列中
+
+3) 内核驱动从queue_list队列中取出空闲的buffer，并写入最新的视频数据，当一帧数据更新完后，将该buffer加入到 done_list队列中等待app获取
 
 .. image::
     res/v4l2_app_1.png
