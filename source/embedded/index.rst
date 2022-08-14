@@ -11,4 +11,5 @@ embeded
     yocto/index.rst
     video/index.rst
     bus/index.rst
+    hotplug/index.rst
 
