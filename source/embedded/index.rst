@@ -12,4 +12,7 @@ embeded
     video/index.rst
     bus/index.rst
     hotplug/index.rst
+    core/index.rst
+    hardware/index.rst
+
 
