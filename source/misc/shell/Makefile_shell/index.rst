@@ -80,3 +80,22 @@ makefile中嵌入脚本
     env:
         sh $(SRC_PATH)/scripts/connect.sh
         find $(SRC_PATH) -name "sysinfo.cfg" | xargs rm -f
+
+
+
+**Makefile中使用shell的source命令**
+
+makefile中使用source,报错"source Command not found” 
+
+解决方法：
+
+::
+
+    Makefile的默认shell是/bin/sh, 本身是不支持source的，可以将shell的默认执行程序修改为/bin/bash
+
+    SHELL:=/bin/bash
+
+
+
+
+
