@@ -6,3 +6,4 @@ application development node
     c++/index.rst
     function_safety/index.rst
     communication/index.rst
+    video/index.rst
