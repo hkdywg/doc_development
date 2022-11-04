@@ -99,7 +99,8 @@ ftyp用来指出当前文件遵循的规范，ftyp的伪代码如下
 
 ::
 
-    aligned(8) class FileTypeBox extends Box(‘ftyp’) {
+    aligned(8) class FileTypeBox 
+    extends Box(‘ftyp’) {
       unsigned int(32) major_brand;
       unsigned int(32) minor_version;
       unsigned int(32) compatible_brands[]; // to end of the box
@@ -146,7 +147,9 @@ MP4文件的整体信息，跟具体的视频流，音频流无关，比如创�
 
 ::
 
-    aligned(8) class MovieHeaderBox extends FullBox(‘mvhd’, version, 0) { if (version==1) {
+    aligned(8) class MovieHeaderBox 
+    extends FullBox(‘mvhd’, version, 0) { 
+    if (version==1) {
           unsigned int(64)  creation_time;      //创建时间
           unsigned int(64)  modification_time;  //文件修改时间
           unsigned int(32)  timescale;          //一秒包含的时间单位
@@ -233,7 +236,8 @@ handler_type的取值包括
 
 ::
 
-    aligned(8) class HandlerBox extends FullBox(‘hdlr’, version = 0, 0) {
+    aligned(8) class HandlerBox 
+    extends FullBox(‘hdlr’, version = 0, 0) {
         unsigned int(32) pre_defined = 0;
         unsigned int(32) handler_type;
         const unsigned int(32)[3] reserved = 0;
@@ -274,14 +278,16 @@ stsd给出sample的描述信息，这里面包含了在解码阶段需要用到�
 
 ::
 
-    aligned(8) abstract class SampleEntry (unsigned int(32) format) extends Box(format){
+    aligned(8) abstract class SampleEntry (unsigned int(32) format) 
+    extends Box(format){
         const unsigned int(8)[6] reserved = 0;
         unsigned int(16) data_reference_index;  
         //当mp4文件的数据部分被分割成多个片段，每个片段对应一个索引
     }
 
     // Visual Sequences
-    class VisualSampleEntry(codingname) extends SampleEntry (codingname){
+    class VisualSampleEntry(codingname) 
+    extends SampleEntry (codingname){
         unsigned int(16) pre_defined = 0;
         const unsigned int(16) reserved = 0;
         unsigned int(32)[3] pre_defined = 0;
@@ -304,7 +310,8 @@ stsd给出sample的描述信息，这里面包含了在解码阶段需要用到�
     // AudioSampleEntry、HintSampleEntry 定义略过
 
 
-    aligned(8) class SampleDescriptionBox (unsigned int(32) handler_type) extends FullBox('stsd', 0, 0){
+    aligned(8) class SampleDescriptionBox (unsigned int(32) handler_type) 
+    extends FullBox('stsd', 0, 0){
         int i ;
         unsigned int(32) entry_count;
         for (i = 1 ; i u entry_count ; i++) {
@@ -403,7 +410,8 @@ sample以chunk为单位分成多个组，chunk的size可以是不同的，chunk�
 
 ::
 
-    aligned(8) class SampleSizeBox extends FullBox(‘stsz’, version = 0, 0) {
+    aligned(8) class SampleSizeBox 
+    extends FullBox(‘stsz’, version = 0, 0) {
     //通常为0,如果sample_size不为0，所有的sample都是同样的大小，如果sample_size为0,sample的大小可能不一样
         unsigned int(32) sample_size;
         //当前track里面的sample数目
@@ -428,7 +436,8 @@ stts包含dts到sample number的映射表，主要用来推导每个帧的时长
 
 ::
 
-    aligned(8) class TimeToSampleBox extends FullBox(’stts’, version = 0, 0) {
+    aligned(8) class TimeToSampleBox 
+    extends FullBox(’stts’, version = 0, 0) {
         //stts中包含的entry条目数
         unsigned int(32)  entry_count;
         int i;
@@ -478,7 +487,9 @@ mp4文件中，关键帧所在的sample的序号，如果没有stss的话，所�
 
 ::
 
-    aligned(8) class CompositionOffsetBox extends FullBox(‘ctts’, version = 0, 0) { unsigned int(32) entry_count;
+    aligned(8) class CompositionOffsetBox 
+    extends FullBox(‘ctts’, version = 0, 0) { 
+    unsigned int(32) entry_count;
       int i;
        for (i=0; i < entry_count; i++) {
           unsigned int(32)  sample_count;
