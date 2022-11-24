@@ -1,6 +1,48 @@
 MIPI DSI
 ==========
 
+* :download:`MIPI_DSI协议.pdf<res/Mipi-DSI-specification-v1-3.pdf>`
+* :download:`MIPI_DPHY协议.pdf<res/MIPI-D-PHY-Specification-v01-00-00.pdf>`
+* :download:`MIPI协议归纳整理.pdf<res/MIPI-DSI协议归纳整理.pdf>`
+
+名词解释
+
+=========   =============================== ======================================================================
+ 缩写　         全称　                                  含义
+---------   ------------------------------- ----------------------------------------------------------------------
+ BPP            Bits per Pixel                  像素深度
+ CSI            Camera Serial Interface         摄像串行接口
+ DBI            Display Bus Interface           显示总线接口
+ DCS            Display Command Set             显示命令集
+ DSI            Display Serial Interface        显示串行接口
+ Fps            Frames per second               每秒传输帧数
+ Mbps           Megabits per second             每秒传输的兆bit位
+ PHY            Physical Layer                  物理层
+ DI             Data Indentifier                数据识别
+ HS             High Speed                      高速
+ LP             Low Power                       低功耗
+ EoTp           End of Transmission Packet      传输包结尾
+ SoT            Start of Transmission           传输开始
+ Lps            Low Power State                 低功耗状态
+ PH             Packet Head                     包头
+ PCLK           Pixel Clock                     像素时钟
+ DE             Data Enable                     数据使能
+ FR             Frame Rate                      帧率
+ HSYNC          Horizontal Sync                 水平同步
+ HLW/HPW        Horizontal Low Pulse Width      水平同步信号宽度
+ HSA            Horizontal Sync Active          水平同步有效，等同HPW
+ HBP            Horizontal Back Porch           水平后肩
+ HACT           Horizontal Active               水平有效区，即宽度
+ HFP            Horizontal Front POrtch         水平前肩
+ VSYNC          Vertical Sync                   垂直同步
+ VLW/VPW        Vertiacl Low Pulse Width        垂直同步信号宽度
+ VSA            Vertiacl Sync Active            垂直同步宽度，等同VPW
+ VBP            Vertiacl Back Porch             垂直后肩
+ VACT           Vertiacl Active                 垂直有效区，即高度
+ VFP            Vertiacl Front Porch            垂直前肩
+=========   =============================== ======================================================================
+
+
 
 MIPI DSI链路层支持两种工作模式，一种是 ``视频模式(Video mode)`` , 另一种是 ``命令模式(Command mode)``
 
@@ -114,3 +156,69 @@ Command模式
 .. note::
     DSI Video模式: 主机需要持续刷新显示器，因此相比CMD模式更耗电．可以不带帧缓冲器
     DSI Cmd模式: MIPI总线控制器使用命令报文来发送像素数据，需要帧缓冲区，不需要定期刷新数据
+
+
+DSI 数据包
+-------------
+
+实例：
+
+::
+
+    {cmd} , {par...}
+    {0xF0}, {0x5A,0x5A},    ## cmd: 0xF0; 数据:0x5A,0x5A
+    {0xF1}, {0xA5,0xA5},
+    ...
+    {0x36}, {0x08},          ## cmd: 0x36; 数据:0x8
+    ...
+    {0x11},                  ## cmd: 0x11; 无数据
+
+短数据包
+^^^^^^^^^
+
+短数据包(Short Packet)共4个字节，包括:1字节 ``DI`` 2字节 ``data`` 和1字节 ``ECC``
+
+格式: DI + DATA0~1 + ECC
+
+.. image::
+    res/dsi_sp.png
+
+长数据包
+^^^^^^^^^^^
+
+长数据包(Long Packet)包括: 4字节包头，数据和2字节校验
+
+格式: PH(DI + Word Count + ECC) + Packet Data + PF
+
+.. image::
+    res/dsi_lp.png
+
+.. note::
+    DI[7:6]: 虚拟通道ID
+    DI[5:0]: 数据类型
+
+.. image::
+    res/data_type_list_1.png
+
+.. image::
+    res/data_type_list_2.png
+
+DI中Data Type部分值的含义如下:
+
+- 0x5: 没有参数，即只有一个CMD,如上面示例中的命令0x11
+
+- 0x15: 一个参数，即1个CMD + 1个parameter, 如上面示例中的命令0x36
+
+- 0x39: 长包写，即1个CMD + 2个及以上的parameter,如上面示例中的的命令0XF0 0xF1
+
+
+按照MIPI DSI协议组包后的数据为
+
+::
+
+    0x39,3,ECC,0xF0,0x5A,0x5A,PF
+    0x39,3,ECC,0xF1,0xA5,0xA5,PF
+    ...
+    0x15,0x36,0x08,ECC
+    ...
+    0x05,0x11,0x0,ECC
