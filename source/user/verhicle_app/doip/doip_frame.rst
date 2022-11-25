@@ -1,6 +1,11 @@
 DoIP协议框架
 ===============
 
+* :download:`ISO 13400-1-2011<res/ISO 13400-1-2011.pdf>`
+* :download:`ISO 13400-2-2019<res/ISO 13400-2-2019.pdf>`
+* :download:`ISO 13400-3-2016<res/ISO 13400-3-2016.pdf>`
+* :download:`ISO 13400-4-2016<res/ISO 13400-4-2016.pdf>`
+
 DoIP协议(Diagnostic On IP---ISO 13400)定义将IP技术应用到车载网络诊断范畴的通信规则．其中包含两层含义:
 
 - 将IP技术应用到车载网络中，需满足车规需求
