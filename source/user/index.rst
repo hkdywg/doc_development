@@ -7,3 +7,4 @@ application development node
     function_safety/index.rst
     communication/index.rst
     video/index.rst
+    verhicle_app/index.rst
