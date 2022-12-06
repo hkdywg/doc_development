@@ -60,6 +60,18 @@ mipi csi clk存在两种工作模式,一种是连续时钟模式,传输过程中
 
 退出时序：LP00-->LP10-->LP11
 
+- MIPI典型时钟值
+
+.. image::
+    res/mipi_clk_type.jpg
+
+.. image::
+    res/mipi_data_type.jpg
+
+
+.. note::
+    UI即MIPI的CLK lane的高速时钟周期的二分之一，因为MIPI采用DDR时钟
+
 
 Multi-Lane Distribution and Merging
 --------------------------------------
