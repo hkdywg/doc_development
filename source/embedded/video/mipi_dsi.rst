@@ -227,3 +227,24 @@ DI中Data Type部分值的含义如下:
     0x15,0x36,0x08,ECC
     ...
     0x05,0x11,0x0,ECC
+
+
+DSI命令模式
+--------------
+
+
+MIPI DSI在初始化时会先进入Escape mode, 然后0x87(低字节在前)进入Low speed mode,频率为10Mhz以下．
+
+.. image::
+    res/dsc_cmd.jpg
+
+
+.. image::
+    res/escape_mode.jpg
+
+
+Entry Escape mode: LP11--->LP10--->LP00--->LP01---->LP00
+
+Exit Escape mode: LP10--->LP11
+
+命令行为: 0x23(Generic short Write, 2 paramters)  0x3A(register)   0x77(Data)   0x1F(Ecc)
