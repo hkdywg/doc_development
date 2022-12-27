@@ -8,3 +8,4 @@ application development node
     communication/index.rst
     video/index.rst
     verhicle_app/index.rst
+    socket/index.rst
