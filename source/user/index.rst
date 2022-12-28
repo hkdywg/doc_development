@@ -9,3 +9,4 @@ application development node
     video/index.rst
     verhicle_app/index.rst
     socket/index.rst
+    linux_system/index.rst
