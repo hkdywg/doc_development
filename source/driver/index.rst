@@ -15,3 +15,5 @@ linux driver modules note
     timer/index.rst
     input/index.rst
     framebuffer/index.rst
+    drm/index.rst
+    v4l2/index.rst

@@ -18,6 +18,7 @@ bick开发手记
     misc/index.rst
     embedded/index.rst
     net/index.rst
+    rtos/index.rst
 
 Indices and tables
 ==================

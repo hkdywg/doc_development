@@ -9,3 +9,10 @@ embeded
     ota/index.rst
     safeboot/index.rst
     yocto/index.rst
+    video/index.rst
+    bus/index.rst
+    hotplug/index.rst
+    core/index.rst
+    hardware/index.rst
+
+
