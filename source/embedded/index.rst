@@ -14,5 +14,6 @@ embeded
     hotplug/index.rst
     core/index.rst
     hardware/index.rst
+    buildroot/index.rst
 
 
