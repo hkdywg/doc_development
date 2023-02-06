@@ -142,3 +142,64 @@ gpt分区表实例
 .. image::
     res/back_partition.png
 
+
+
+gpt分区表查看
+-----------------
+
+一般fdisk适用于MBR分区，而gdisk使用GPT分区．gdisk命令常用格式如下
+
+::
+
+    gdisk 设备文件名(绝对路径)
+
+
+示例如下
+
+::
+
+    yinwg@ubuntu:~/ywg_workspace/prj/gpt_ver$ gdisk system.img 
+    GPT fdisk (gdisk) version 1.0.5
+
+    Warning! Disk size is smaller than the main header indicates! Loading
+    secondary header from the last sector of the disk! You should use 'v' to
+    verify disk integrity, and perhaps options on the experts' menu to repair
+    the disk.
+    Caution: invalid backup GPT header, but valid main header; regenerating
+    backup header from main header.
+
+    Warning! Error 25 reading partition table for CRC check!
+    Warning! One or more CRCs don't match. You should repair the disk!
+    Main header: OK
+    Backup header: ERROR
+    Main partition table: OK
+    Backup partition table: ERROR
+
+    Partition table scan:
+      MBR: protective
+      BSD: not present
+      APM: not present
+      GPT: damaged
+
+    ****************************************************************************
+    Caution: Found protective or hybrid MBR and corrupt GPT. Using GPT, but disk
+    verification and recovery are STRONGLY recommended.
+    ****************************************************************************
+
+    Command (? for help): print
+    Disk system.img: 526336 sectors, 257.0 MiB
+    Sector size (logical): 512 bytes
+    Disk identifier (GUID): CB0A9716-409B-FD40-8DD9-5FB082604799
+    Partition table holds up to 128 entries
+    Main partition table begins at sector 2 and ends at sector 33
+    First usable sector is 34, last usable sector is 62160862
+    Partitions will be aligned on 2048-sector boundaries
+    Total free space is 2014 sectors (1007.0 KiB)
+
+    Number  Start (sector)    End (sector)  Size       Code  Name
+       1            2048         2099199   1024.0 MiB  FFFF  system_A
+       2         2099200         4196351   1024.0 MiB  FFFF  system_B
+       3         4196352        62160862   27.6 GiB    FFFF  user
+
+    Command (? for help): 
+
