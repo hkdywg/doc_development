@@ -73,7 +73,7 @@ AVB协议栈如下图所示：
 6. 基于AVB的RTP/RTCP传输协议: 它主要是将传统的RTP/RTCP流映射到AVB流，使用AVB性能，从而降低延迟，提高同步精度
 
 
-
+AVB官方网站 https://avb.statusbar.com/page/developer-faq/
 
 
 
