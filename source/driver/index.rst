@@ -16,3 +16,4 @@ linux driver modules note
     framebuffer/index.rst
     drm/index.rst
     v4l2/index.rst
+    rpmsg/index.rst
