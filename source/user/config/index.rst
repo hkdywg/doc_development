@@ -3,3 +3,4 @@
 
 .. toctree::
     yaml.rst
+    json.rst
