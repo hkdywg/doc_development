@@ -12,3 +12,4 @@ application development node
     linux_system/index.rst
     Cstand_lib/index.rst
     security/index.rst
+    config/index.rst
