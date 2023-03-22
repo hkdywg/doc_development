@@ -1,6 +1,14 @@
 mqtt协议基础
 ===============
 
+`MQTT5.0官方文档 <http://docs.oasis-open.org/mqtt/mqtt/v5.0/csprd02/mqtt-v5.0-csprd02.html>`_
+
+`MQTT3.1.1官方文档 <http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html>`_
+
+- MQTT服务器地址：test.ranye-iot.net
+- TCP 端口：1883
+- TCP/TLS 端口：8883
+
 MQTT(消息队列遥测传输)是一种轻量级通讯协议，该协议一个重要特点是易于在客户端实现．广泛应用于车联网，智能家居，物联网领域．
 
 MQTT基础原理
