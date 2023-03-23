@@ -5,6 +5,9 @@ mqtt协议基础
 
 `MQTT3.1.1官方文档 <http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html>`_
 
+
+* :download:`MQTT-3.1.1-CN.pdf<res/MQTT-3.1.1-CN.pdf>` 
+
 - MQTT服务器地址：test.ranye-iot.net
 - TCP 端口：1883
 - TCP/TLS 端口：8883
