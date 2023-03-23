@@ -151,6 +151,153 @@ CONNECT - 客户端请求连接服务器
   3.Will Message 4.User Name 5.Password)
     
 
+CONNACK - 确认收到连接请求
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+CONNACK包是服务端发送的用来响应客户端CONNECT包的一种数据包，从服务端发送到客户端的第一个包一定是CONNACK包. 
+
+.. image::
+    res/CONNACK_packet.png
+
+.. note::
+    字节3是连接确认标识，为7-1是保留位必须设置为0，位0(SP1)是session present标识
+
+1. 如果服务端接受了一个CleanSession设置为1的连接，服务端必须将CONNACK包中的session present设置为0，并且CONNACK包的返回码也设置为0.
+
+2. 如果服务端接受了一个CleanSession设置为0的连接，session present的值取决于服务端是否已经存储了客户端ID对应的会话状态．如果已经存储，
+   session present必须设置为1,否则设置为0,另外CONNACK返回码也必须设置为0
+
+
+PUBLISH - 发布消息
+^^^^^^^^^^^^^^^^^^^
+
+PUBLISH控制包可以从服务端发送到客户端也可以从客户端发送到服务端
+
+.. image::
+    res/PUBLISH_packet.png
+
+载荷包含了发布的应用消息，内容和格式由应用决定．载荷的长度可以由固定包头中的Remaining Length减去可变包头长度得到
+
+PUBLISH包的接收方需要按照下表进行响应
+
+=================   =====================================
+ QoS Level                  Expected Respinse
+-----------------   -------------------------------------
+ QoS 0                  None
+ QoS 1                  PUBACK Packet
+ QoS 2                  PUBREC Packet
+=================   =====================================
+
+
+PUBACK - 发布确认
+^^^^^^^^^^^^^^^^^^^^
+
+PUBACK包用来响应QoS等级为1的PUBLISH包
+
+.. image::
+    res/PUBACK_packet.png
+
+
+PUBREC - 发布收到
+^^^^^^^^^^^^^^^^^^^
+
+PUBREC包用来响应QoS 2的PUBLISH包，这是QoS 2协议交换的第二个包
+
+.. image::
+    res/PUBREC_packet.png
+
+
+PUBREL - Publish release
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+PUBREL包用来响应PUBREC包，是QoS 2协议交换的第三部分
+
+.. image::
+    res/PUBREL_packet.png
+
+
+PUBCOMP - 发布完成
+^^^^^^^^^^^^^^^^^^^^^
+
+PUBCOMP包用来响应PUBREL包，这是QoS 2协议交换的第四个也是最后一个包
+
+.. image::
+    res/PUBCOMP_packet.png
+
+SUBSCRIBE - 订阅主题
+^^^^^^^^^^^^^^^^^^^^^^^
+
+SUBSCRIBE包从客户端发送到服务端创建一个或多个订阅
+
+
+.. image::
+    res/SUBSCRIBE_packet.png
+
+
+SUBACK - 订阅确认
+^^^^^^^^^^^^^^^^^^^^
+
+SUBACK包从服务端发送给客户端，用来确认收到并处理了SUBSCRIBE包，且必须包含与相应SUBSCRIBE包相同的包唯一标识
+
+.. image::
+    res/SUBACK_packet.png
+
+.. note::
+    载荷包含了返回码的列表，每个返回码对应SUBSCRIBE包中需要被确认的主题，SUBACK中的返回码顺序必须匹配SUBSCRIBE包中的主题顺序
+
+
+UNSUBSCRIBE - 退订主题
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+UNSUBSCRIBE包从客户端发往服务端，用来退订主题
+
+.. image::
+    res/UNSUBSCRIBE_packet.png
+
+
+UNSUBACK - 退订确认
+^^^^^^^^^^^^^^^^^^^^^
+
+UNSUBACK包从服务端发送到客户端来确认收到UNSUBSCRIBE包
+
+.. image::  
+    res/UNSUBACK_packet.png
+
+
+PINGREQ - PING请求
+^^^^^^^^^^^^^^^^^^^^
+
+PINGREQ包从客户端发往服务端，可以用来
+
+1. 在没有其他控制包从客户端发往服务端时，告知服务端客户端的存活状态
+
+2. 请求服务端响应，来确认服务端是否存活　
+
+3. 确认网络连接的有效性
+
+.. image::
+    res/PINGREQ_packet.png
+
+
+PINGRESP - PING响应
+^^^^^^^^^^^^^^^^^^^^^
+
+PINGRESP包从服务端发送给客户端来响应PINGREQ包，它代表服务端是存活的
+
+.. image::  
+    res/PINGRESP_packet.png
+
+
+DISCONNECT - 断开连接通知
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+DISCONNECT包是客户端发送给服务端的最后一个控制包
+
+.. image::
+    res/DISCONNECT_packet.png
+
+
+
 
 
 
