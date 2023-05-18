@@ -216,9 +216,35 @@ subscribe
     res/pub_sub.png
 
 
+MQTT服务端(代理)编译
+-----------------------
+
+EMQ X是一款开源的，高性能，可扩展的分布式MQTT消息服务器，可以支持千万级的并发连接和百万级的消息推送．
 
 
+EMQ依赖项安装
+^^^^^^^^^^^^^^^
 
+::
+
+    sudo apt update
+    sudo apt install software-properties-common apt-transport-https
+    wget -O- https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | sudo apt-key add -
+    echo "deb https://packages.erlang-solutions.com/ubuntu focal contrib" | sudo tee /etc/apt/sources.list.d/erlang.list
+
+    sudo apt update
+    sudo apt install erlang
+
+
+EMQ编译
+^^^^^^^^^
+
+::
+
+    git clone https://github.com/emqx/emqx.git
+    cd qmqx
+    make
+    make dist
 
 
 
