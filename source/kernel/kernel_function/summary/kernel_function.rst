@@ -23,3 +23,9 @@
 
 .. toctree::
     D_function.rst
+
+
+**E**
+
+.. toctree::
+    E_function.rst
