@@ -17,3 +17,9 @@
 
 .. toctree::
     C_function.rst
+
+
+**D**
+
+.. toctree::
+    D_function.rst
