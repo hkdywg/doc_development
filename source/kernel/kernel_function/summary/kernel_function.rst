@@ -5,3 +5,9 @@
 
 .. toctree::
     A_function.rst
+
+
+**B**
+
+.. toctree::
+    B_function.rst
