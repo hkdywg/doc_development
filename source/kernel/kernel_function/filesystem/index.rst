@@ -328,11 +328,162 @@ current_umask
     module_exit(get_fs_type_exit);
 
 
+inode_add_bytes
+------------------
+
+``inode_add_bytes`` 增加inode节点的字节数
+
+::
+
+    #include <linux/fs.h>
+    //kernel源码fs/stat.c
+    void inode_add_bytes(struct inode *inode, loff_t bytes)
+
+    typedef __kernel_loff_t loff_t;
+    typedef long long __kernel_loff_t;
 
 
+- inode: 要被增加字节的inode结构体
+
+- bytes: 要增加的字节数
+
+::
+
+    struct inode {
+        umode_t                     i_mode;     //改变节点的模式
+        unsigned short              i_opflags;   
+        kuid_t                      i_uid;      //所有者标识符
+        kgid_t                      i_gid;      //组标识符
+        unsigned int                i_flags;    //文件系统的安装标志
+        #ifdef CONFIG_FS_POSIX_ACL
+        struct posix_acl            *i_acl;
+        struct posix_acl            *i_default_acl;
+        #endif
+        const struct inode_operations *i_op;    //节点的操作函数
+        struct super_block          *i_sb;      //指向超级块的指针
+        struct address_space        *i_mapping; //指向address_space对象的指针
+        #ifdef CONFIG_SECURITY
+        void                        *i_security;    //指向索引节点安全结构的指针
+        #endif
+        unsigned long               i_ino;      //索引节点号
+        unioc {
+                const unsigned int i_nlink;     //硬链接的数目
+                unsigned int __i_nlink;
+        };
+        dev_t                       i_rdev;     //实设备标识符
+        loff_t                      i_size;     //文件的字节数
+        struct timespec             i_atime;    //上次访问文件的时间
+        struct timespec             i_mtime;    //上次写文件的时间
+        struct timespec             i_ctime;    //上次修改索引节点的时间
+        spinlock_t                  i_lock;     //保护索引节点一些字段的自旋锁
+        unsigned short              i_bytes;    //文件中最后一个块的字节数
+        unsigned int                i_blkbits;  //块的位数
+        blkcnt_t                    i_blocks;   //文件的块数
+        #ifdef __NEED_I_SIZE_ORDERED
+        seqcount_t                  i_size_seqcount;    
+        #endif
+        unsigned long               i_state;
+        struct mutex                i_mutex;    //节点的信号量
+        unsigned long               dirtie_when;
+        struct hlist_node           i_hash;     //用于散列表的指针
+        struct list_head            i_wb_list;  //dev IO备份列表指针
+        struct list_head            i_lru;      //节点的LRU链表
+        struct list_head            i_sb_list;  //用于超级块的索引节点链表的指针
+        union {
+            struct hlist_head       i_dentry;   //引用索引节点的目录项对象链表的头
+            struct rcu_head         i_rcu;      //rcu链表的头指针
+        };
+        u64                         i_version;  //版本号
+        atomic_t                    i_count;    //引用计数器
+        atomic_t                    i_dio_count;//dio的计数器
+        atomic_t                    i_writecount;   //用于写进程的引用计数器
+        #ifdef CONFIG_IMA
+        atomic_t                    i_readcount;    //读计数器
+        #endif
+        const struct file_operations *i_fops;   
+        struct file_lock            *i_flock;   //指向文件锁链表的指针
+        struct address_space        i_data;     //文件的address_space对象
+        struct list_head            i_devices;  //用于具体的字符和块设备索引节点链表
+        union {
+            struct pipe_inode_info  *i_pipe;    //如果文件是一个管道，则使用它
+            struct block_device     *i_bdev;    //指向块设备驱动程序的指针
+            struct cdev             *i_cdev;    //指向字符设备驱动程序的指针
+        };
+        __u32                       i_generation;
+        #ifdef CONFIG_FSNOTIFY
+        __u32                       i_fsnotify_mask;    //目录通知事件的位掩码
+        struct hlist_head           i_fsnotify_marks;   //位掩码链表头指针
+        #endif
+        void                        *i_private;     //文件或设备的私有指针
+    };
 
 
+``inode_get_bytes`` 用于获取整个inode节点的总字节数
 
+::
+
+    #include <linux/fs.h>
+    //kernel源码fs/stat.c
+    loff_t inode_get_bytes(struct inode *inode)
+    void inode_set_bytes(struct inode *inode, loff_t bytes)
+    void inode_sub_bytes(struct inode *inode, loff_t bytes)
+
+
+``is_bad_inode`` 用于判断传入参数inode是否被标记为坏节点
+
+::
+    
+    #include <linux/fs.h>
+    //kernel源码fs/bad_inode.c
+    int is_bad_inode(struct inode *inode)
+    void make_bad_inode(struct inode *inode)    //将inode节点标记为坏节点
+
+
+**测试代码**
+
+::
+
+    #include <linux/init.h>
+    #include <linux/module.h>
+    #include <linux/fs.h>
+    #include <linux/fs_struct.h>
+    #include <linux/path.h>
+    #include <linux/sched.h>
+
+    int inode_test_init(void)
+    {
+        struct dentry *dentry = current->fs->pwd.dentry;
+        struct inode *inode = dentry->d_inode;
+
+        int is_bad = is_bad_inode(inode);
+        if(!is_bad) {
+            unsigned long inode_len = inode_get_bytes(inode);   //获取inode节点的字节数
+            printk("the current inode bytes is %d\n", inode_len);
+
+            inode_add_bytes(inode, 1024);   //给inode节点增加1k
+        } else {
+            printk("it is a bad inode!\n");    
+        }
+
+        return 0;
+    }
+
+    void inode_test_exit(void)
+    {
+        return;
+    }
+
+    module_init(inode_test_init);
+    module_exit(inode_test_exit);
+
+``may_umount`` 用于检查挂载点mnt是否处于忙的状态, 忙的定义为在挂载点上有打开的文件，pwd结构体，或者vfsmount结构体
+
+::
+
+    #include <linux/fs.h>
+    //kernel源码fs/namespace.c
+    int may_umount(struct vfsmount *mnt)
+    int may_umount_tree(struct vfsmount *mnt)
 
 
 
