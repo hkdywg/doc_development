@@ -11,3 +11,9 @@
 
 .. toctree::
     B_function.rst
+
+
+**C**
+
+.. toctree::
+    C_function.rst
