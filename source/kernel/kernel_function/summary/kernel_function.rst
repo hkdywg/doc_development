@@ -84,3 +84,11 @@
 
 .. toctree::
     P_function.rst
+
+
+**Q**
+
+**R**
+
+.. toctree::
+    R_function.rst
