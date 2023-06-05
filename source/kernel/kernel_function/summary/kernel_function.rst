@@ -98,3 +98,9 @@
 
 .. toctree::
     S_function.rst
+
+
+**T**
+
+.. toctree::
+    T_function.rst
