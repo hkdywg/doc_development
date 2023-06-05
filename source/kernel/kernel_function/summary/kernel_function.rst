@@ -112,3 +112,15 @@
 
 .. toctree::
     V_function.rst
+
+
+**W**
+
+**X**
+
+**Y**
+
+**Z**
+
+.. toctree::
+    Z_function.rst
