@@ -51,6 +51,11 @@
 .. toctree::
     I_function.rst
 
+**J**
 
+**K**
+
+.. toctree::
+    K_function.rst
 
 
