@@ -74,3 +74,8 @@
 
 .. toctree::
     N_function.rst
+
+**O**
+
+.. toctree::
+    O_function.rst
