@@ -35,3 +35,9 @@
 
 .. toctree::
     F_function.rst
+
+
+**G**
+
+.. toctree::
+    G_function.rst
