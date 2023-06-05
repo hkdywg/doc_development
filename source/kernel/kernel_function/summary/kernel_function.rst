@@ -58,4 +58,7 @@
 .. toctree::
     K_function.rst
 
+**L**
 
+.. toctree::
+    L_function.rst
