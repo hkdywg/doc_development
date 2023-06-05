@@ -62,3 +62,9 @@
 
 .. toctree::
     L_function.rst
+
+
+**M**
+
+.. toctree::
+    M_function.rst
