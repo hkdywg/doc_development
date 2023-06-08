@@ -465,33 +465,83 @@ cma_clear_bitmap
 cma_declare_contiguous
 =========================
 
-::
-
-    int __init cma_declare_contiguous(phys_addr_t base, phys_addr_t size, phys_addr_t limit,
-        phys_addr_t al)
-
 
 
 cma_early_percent_memory
 =========================
 
+::
 
+    #ifdef CONFIG_CMA_SIZE_PERCENTAGE
+    static phys_addr_t __init __maybe_unused cma_early_percent_memory(void)
+    {
+        struct memblock_region *reg;
+        unsigned long total_pages = 0;
+
+        //遍历MEMBLOCK内存分配器中所有可用的物理内存
+        for_each_memblock(memory, reg)
+            //统计总共可用的物理内存数
+            total_pages += memblock_region_memory_end_pfn(reg) - 
+                memblock_region_memory_base_pfn(reg);
+        return (total_pages * CONFIG_CMA_SIZE_PERCENTAGE / 100) << PAGE_SHIFT;
+    }
+    #else
+    static inline __maybe_unused phys_addr_t cma_early_percent_memory(void)
+    {
+        return 0;
+    }
+    #endif
+
+``cma_early_percent_memory`` 用于按内核配置获得一定百分比的物理内存数
 
 
 cma_for_each_area
 ====================
+
+::
+
+    int cma_for_each_area(int (*it)(struct cma *cma, void *data), void *data)
+    {
+        int i;
+
+        for(i = 0; i < cma_area_count; i++) {
+            int ret = it(&cma_areas[i], data);
+
+            if(ret)
+                return ret;
+        }
+
+        return 0;
+    }
+
+``cma_for_each_area`` 用于遍历所有的CMA区域，并在每个区域内处理指定的任务．参数it是一个回调函数，data是传入的参数
 
 
 
 cma_get_base
 ===============
 
+::
 
+    phys_addr_t cma_get_base(const struct cma *cma)
+    {
+        return PFN_PHYS(cma->base_pfn);
+    }
+
+``cma_get_base`` 用于获得CMA区域的起始物理地址
 
 
 cma_get_name
 ==============
 
+::
+
+    const char *cma_get_name(const struct cma *cma)
+    {
+        return cma->name ? cma->name : "(undefined)";
+    }
+
+``cma_get_name`` 用于获得CMA区域的名字
 
 
 
@@ -499,51 +549,182 @@ cma_get_size
 ===============
 
 
+::
+
+    unsigned long cma_get_size(const struct cma *cma)
+    {
+        return cma->count << PAGE_SHIFT;
+    }
+
+``cma_get_size`` 用于获得CMA区域的长度
+
 
 
 cma_init_reserved_areas
 =========================
 
+::
+
+    static int __init cma_init_reserved_areas(void)
+    {
+        int  i;
+        for(i = 0; i < cma_area_count; i++) {
+            //激活cma区域
+            int ret = cma_activate_area(&cma_areas[i]);
+
+            if(ret)
+                return ret;
+        }
+
+        return 0;
+    }
 
 
-
+``cma_init_reserved_areas`` 用于激活系统所有的CMA区域，当前系统总共包含cma_area_count个CMA区域
 
 
 cma_init_reserved_mem
 =========================
 
+::
 
+    //base: 指向系统预留区的起始地址
+    //size: 指向预留区的长度
+    //order_per_bit: 指明CMA中一个bitmap代表page的数量
+    //name: cma区域名字
+    //cma: 指向一个cma区域
+    int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size, unsigned int order_per_bit,
+                                        const char *name, struct cma **res_cma)
+    {
+        struct cma *cma;
+        phys_addr_t alignment;
 
+        //检查当前cma区域数量是否已经超过系统支持最大cma区域数
+        if(cma_area_count == ARRAY_SIZE(cma_areas))
+            return -ENOSPC;
+
+        //判断此区域是否已经在MEMBLOCK分配器中了
+        if(!size || !memblock_is_region_reserved(base, size))
+            return -EINVAL;
+
+        //算出最大对齐占用的page数量
+        alignment = PAGE_SIZE << max_t(unsigned long, MAX_OEDER - 1, pageblock_order);
+
+        //
+        if(!IS_ALIGNED(alignment >> PAGE_SHIFT, 1 << order_per_bit))
+            return -EINVAL;
+
+        if(ALIGN(base, alignment) != bae || ALIGN(size, alignment) != size)
+            return -EINVAL;
+        //取出当前可用的struct cma
+        cma = &cma_areas[cma_area_count];
+        //设置cma名字
+        if(name) 
+            cma->name = name;
+        else
+            cma->name = kasprintf(GFP_KERNEL, "cam%d\n", cma_area_count);
+            if(!cma->name)
+                return -NOMEM;
+        //设置cma区域的起始物理页帧号
+        cma->base_pfn = PFN_DOWN(base);
+        cma->count = size >> PAGE_SHIFT;
+        cma->order_per_bit = order_per_bit;
+        *res_cma = cma;
+        cma_area_count++;
+        totalcma_pages += (size / PAGE_SIZE);
+
+        return  0;
+    }
+
+``cma_init_reserved_mem`` 作用是将一块系统预留区加入到CMA区域内
 
 
 cma_release
 ==============
+
+::
+
+    //cma: 指向一块cma区域
+    //pages: 指向要释放物理内存区块的起始物理页
+    //count: 指明要释放的物理页的数量
+    bool cma_release(struct cma *cma, const struct page *pages, unsigned int count)
+    {
+        unsigned long pfn;
+
+        //判断cma和pages参数的有效性
+        if(!cma || !pages)
+            return false;
+
+        //将pages转换成页帧号
+        pfn = page_to_pfn(pages);
+        //判断页帧号是否在cma区域内
+        if(pfn < cma->base_pfn || pfn >= cma->base_pfn + cma->count)
+            return false;
+
+        VM_BUG_ON(pfn + count > cma->base_pfn + cma->count);
+
+        //将所有页帧返回给buddy系统
+        free_contig_range(pfn, count);
+        cma_clear_bitmap(cma, pfn, count);
+        trace_cma_relase(pfn, pages, count);
+    }
+
+``cma_release`` 用于释放一块连续物理内存区块
 
 
 
 __cpu_active_mask
 ===================
 
+::
+
+    typedef struct cpumask { DECLARE_BITMAP(bits, NR_CPUS); } cpumask_t;
+
+    struct cpumask __cpu_active_mask __read_mostly;
+    EXPORT_SYMBOL(__cpu_active_mask);
 
 
-__cpu_architecture
-=====================
-
-
-
-
-
-cpu_architecture
-===================
-
-
-
-
+``__cpu_active_mask`` 用于维护系统中所有CPU的active和inactive信息,其实现是一个bitmap，每个bit对应一个CPU
 
 
 
 cpu_has_aliasing_icache
 ==========================
+
+::
+
+    static int cpu_has_aliasing_icache(unsigned int arch)
+    {
+        int aliasing_icache;
+        unsigned int id_reg, num_sets, line_size;
+
+        //判断ICACHE是否属于PIPT类型，如果是PIPT类型则不需要对齐，直接返回
+        if(icache_is_pipt())
+            return 0;
+
+        switch(arch) {
+            case CPU_ARCH_ARMv7:
+                //设置CSSELR寄存器，选中level1的ICACHE
+                set_csselr(CSSELR_ICACHE | CSSELR_L1);
+                //执行一次内存屏障
+                isb();
+                //读取level1 ICACHE的cache sets和cache line信息
+                id_reg = read_ccsidr();
+                line_size = 4 << ((id_reg & 0x7) + 2);
+                num_sets = ((id_reg >> 13) & 0x7fff) + 1;
+                aliasing_icache = (line_size * num_sets) > PAGE_SIZE;
+                break;
+            case CPU_ARCH_ARMv6:
+                aliasing_icache = read_cpuid_cachetype() & (1 << 11);
+                break;
+            default:
+                aliasing_icache = 0;
+        }
+
+        return aliasing_icache;
+    }
+
+``cpu_has_aliasing_icache`` 用于判断ICACHE是否按页对齐
 
 
 
@@ -552,102 +733,167 @@ cpu_has_aliasing_icache
 cpu_init
 ===========
 
+::
+
+   void notrace cpu_init(void) 
+   {
+    #ifndef CONFIG_CPU_V7M
+        //获取当前使用的cpu号
+        unsigned int cpu = smp_processor_id();
+        //获取但前cpu对应的全局堆栈
+        struct stack *stk = &stacks[cpu];
+
+        if(cpu >= NR_CPUS) {
+            pr_crit("CPU%u: bad primary CPU number\n", cpu);
+            BUG();
+        }
+        //将当前CPU在per_cpu_offset中的值写入到TPIDRPRW寄存器里
+        set_my_cpu_offset(per_cpu_offset(cpu));
+        //调用系统相关的proc_init函数
+        cpu_proc_init();
+    #ifdef CONFIG_THUMB2_KERNEL
+    #define PLC "r"
+    #else
+    #define PLC "I"
+    #endif
+        //内嵌汇编,修改CPSR寄存器
+        __asm__ (
+        "msr cpsr_c, %1\n\t"
+        "add r14, %0, %2\n\t"
+        "mov sp, r14\n\t"
+        "msr cpsr_c, %3\n\t"
+        "add r14, %0. %4\n\t"
+        "mov sp, r14\n\t"
+        "msr cpsr_c, %7\n\t"
+        "add r14, %0, %8\n\t"
+        "mov sp, r14\n\t"
+        "msr cpsr_c, %9"
+        :
+        : "r" (stk),
+        PLC (PSR_F_BIT | PSR_I_BIT | IRQ_MODE),
+        "I" (offsetof(struct stack, irq[0])),
+        PLC (PSR_F_BIT | PSR_I_BIT | ABT_MODE),
+        "I" (offsetof(struct stack, abt[0])),
+        PLC (PSR_F_BIT | PSR_I_BIT | UND_MODE),
+        "I" (offsetof(struct stack, und[0])),
+        PLC (PSR_F_BIT | PSR_I_BIT | FIQ_MODE),
+        "I" (offsetof(struct stack, fiq[0])),
+        PLC (PSR_F_BIT | PSR_I_BIT | SVC_MODE)
+        : "r14");
+    #endif
+   }
+
+``cpu_init`` 用于初始化一个CPU,并设置了per-cpu的堆栈
 
 
-
-
+.. note::
+    linux使用stacks[]维护全局堆栈
 
 
 
 cpu_logical_map
 ===================
 
+::
 
+    extern u32 __cpu_logical_map[];
+    #define cpu_logical_map(cpu) __cpu_logical_map[cpu]
+
+    //arm中对应的为
+    u32 __cpu_logical_map[NR_CPUS] = { [0 ... NR_CPUS-1] = MPIDR_INVALID };
+
+
+``cpu_logical_map`` 用于获得cpu对应的逻辑cpu号
 
 
 
 cpu_max_bits_warn
 ====================
 
+::
 
+    static inline void cpu_max_bits_warn(unsigned int cpu, unsigned int bits)
+    {
+    #ifdef CONFIG_DEBUG_PER_CPU_MAPS
+        WARN_ON_ONCE(cp >= bits);
+    #endif
+    }
 
-
-__cpu_online_mask
-====================
-
-
-
-
-
-__cpu_possible_mask
-=====================
-
-
-
-__cpu_present_mask
-=====================
-
-
+``cpu_max_bits_warn`` 用于检查cpu号是否已经超过最大cpu号，如果超过，内核则报错
 
 
 cpu_proc_init
 ===============
 
+::
 
+    #define PROC_VTABLE(f) processor.f
+    #define cpu_proc_init   PROC_VTABLE(__proc_init)
 
+    ENTRY(cpu_v7_proc_init)
+        ret lr
+    ENDPROC(cpu_v7_proc_init)
 
 
 
 CPU_TO_FDT32
 ===============
 
+::
+
+    #define CPU_TO_FDT32(x) ((EXTRAC_BYTE(x, 0) << 24) | (EXTRAC_BYTE(x, 1) << 16)) |
+                                (EXTRAC_BYTE(x, 2) << 8) | (EXTRAC_BYTE(x, 3)))
 
 
-
-
-
-cpuid_feature_extract
-=======================
-
-
-
-
-cpuid_feature_extract_field
-=============================
-
-
+``CPU_TO_FDT32`` 用于将数据的大小端模式进行翻转
 
 
 cpuid_init_hwcaps
 =====================
 
+::
+
+    static void __init cpuid_init_hwcaps(void)
+    {
+        int block;
+        u32 isar5;
+
+        if(cpu_architecture() < CPU_ARCH_ARMv7)
+            return;
+
+        block = cpuid_feature_extract(CPUID_EXT_ISAR0, 24);
+        if(block >= 2)
+            elf_hwcap |= HWCAP_IDIVA;
+        if(block >= 1)
+            elf_hwcap |= HECAP_IDIVT;
+
+        block = cpuid_feature_extract(CPUID_EXT_MMFR0, 0);
+        if(block >= 5)
+            elf_hwcap |= HWCAP_LPAE;
+
+        isar5 = read_cpuid_ext(CPUID_EXT_ISAR5);
+
+        block = cpuid_feature_extract_field(isar5, 4);
+        if (block >= 2)
+                elf_hwcap2 |= HWCAP2_PMULL;
+        if (block >= 1)
+                elf_hwcap2 |= HWCAP2_AES;
+
+        block = cpuid_feature_extract_field(isar5, 8);
+        if (block >= 1)
+                elf_hwcap2 |= HWCAP2_SHA1;
+
+        block = cpuid_feature_extract_field(isar5, 12);
+        if (block >= 1)
+                elf_hwcap2 |= HWCAP2_SHA2;
+
+        block = cpuid_feature_extract_field(isar5, 16);
+        if (block >= 1)
+                elf_hwcap2 |= HWCAP2_CRC32;
+    }
 
 
-
-
-cpumask_bits
-===============
-
-
-
-
-cpumask_check
-=================
-
-
-
-cpumsk_clear_cpu
-===================
-
-
-
-
-
-cpumask_set_cpu
-=================
-
-
-
+``cpuid_init_hwcaps`` 用于获得系统指定的硬件支持信息
 
 
 create_mapping
@@ -659,21 +905,84 @@ create_mapping
 __create_mapping
 ===================
 
+::
+
+    //mm: 指向进程的mm_struct结构
+    //map_desc: 指向映射关系
+    //alloc: 指向分配函数
+    static void __init __create_mapping(struct mm_struct *mm, struct map_desc *md,
+                void *(*alloc)(unsigned long sz), bool ng)
+    {
+        unsigned long addr, length, end;
+        phys_addr_t phys;
+        const struct mem_types *type;
+        pgd_t *pgd;
+
+        //获取内存类型
+        type = &mem_types[md->type];
+
+        #ifndef CONFIG_ARM_LPAE
+        if(md->pfn >= 0x1000000)
+            create_36bit_mapping(mm, md, type, ng);
+            return;
+        #endif
+
+        //从映射关系结构中获得虚拟地址
+        addr = md->virtual & PAGE_MASK;
+        //获得物理地址
+        phys = __pfn_to_phys(md->pfn);
+        length = PAGE_ALIGN(md->length + (md->virtual & ~PAGE_MASK));
+
+        if(type->prot_l1 == 0 && ((addr | phys | length) & ~SECTION_MASK))
+            return;
+
+        //获得虚拟地址addr对应的PGD入口
+        pgd = pgd_offset(mm, addr);
+        //计算终止的虚拟地址
+        end = addr + length;
+
+        do {
+            //获得下一个pgd入口对应的虚拟地址
+            unsigned long next = pgd_addr_end(addr, end);
+            //分配获得初始化一个pud入口地址
+            alloc_init_pud(pgd, addr, next, phys, type, alloc, ng);
+
+            phys += next - addr;
+            addr = next;
+        } while(pgd++, addr != end);
+    }
+
+
+``__create_mapping`` 作用就是建立页表
+
 
 
 
 current_stack_pointer
 =======================
 
+::
+
+    register unsigned long current_stack_pointer asm("sp");
 
 
-
+``current_stack_pointer`` 用于读取当前堆栈的值
 
 
 
 current_thread_info
 ======================
 
+::
+
+    static inline struct thread_info *current_thread_info(void)
+    {
+        return (struct thread_inf *) (current_stack_pointer & ~(THREAD_SIZE - 1));
+
+    }
+
+``current_thread_info`` 用于获得当前进程的thread_info结构．在linux内核中，进程将thread_info与进程的内核态堆栈捆绑在同一块
+区域内，区域的大小为THREAD_SIZE．通过一定的算法，只要知道进程内核态堆栈的地址，也就可以推断出thread_info的地址．
 
 
 
