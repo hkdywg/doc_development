@@ -8,5 +8,6 @@
     process_quite/index.rst
     process_schedule/index.rst
     process_cfs/index.rst
+    thread_info/index.rst
     
 
