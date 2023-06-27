@@ -557,43 +557,119 @@ fdt_next_node
 fdt_next_tag
 ================
 
+::
+    
+    uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+    {
+        const fdt32_t *tagp, *lenp;
+        uint32_t tag;
+        int offset = startoffset;
+        const char *p;
 
+        *nextoffset = -FDT_ERR_TRUNCATED;
+        tagp = fdt_offset_ptr(fdt, offset, FDT_TAGSIZE);
+        if(!tagp)
+            return FDT_END;
+        tag = fdt32_to_cpu(*tagp);
+        offset += FDT_TAGSIZE;
+
+        *nextoffset = -FDT_ERR_BADSTRUCTURE;
+        switch(tag) {
+        case FDT_BEGIN_NODE:
+            do {
+                p = fdt_offset_ptr(fdt, offset++, 1);
+            } while(p && (*p != '\0'));
+            if(!p)
+                return FDT_END;
+            break;
+
+        case FDT_PROP:
+            lenp = fdt_offset_ptr(fdt, offset, sizeof(*lenp));
+            if(!lenp)
+                return FDT_END;
+            offset += sizeof(struct fdt_property) - FDT_TAGSIZE + fdt32_to_cpu(*lenp);
+            if(fdt_version(fdt) < 0x10 && fdt32_to_cpu(*lenp) >= 8 && ((offset - fdt32_to_cpu(*lenp)) % 8) != 0)
+                offset += 4;
+            break;
+        case FDT_END:
+        case FDT_END_NODE:
+        case FDT_NOP:
+            break;
+        }
+
+    }
 
 
 
 fdt_off_dt_strings
 ====================
 
+::
+
+    #define fdt_off_dt_strings(fdt) (fdt_get_header(fdt, off_dt_strings))
+    #define fdt_off_mem_rsvmap(fdt) (fdt_get_header(fdt, off_mem_rsvmap))
+    #define fdt_off_dt_struct(fdt) (fdt_get_header(fdt, off_dt_struct))
 
 
-
-
-
-
-fdt_off_dt_struct
-=====================
-
-
-
-
-
-fdt_off_mem_rsvmap
-=====================
-
-
+``fdt_off_dt_strings`` 用于读取dtb header的off_dt_strings信息．
 
 
 
 fdt_offset_ptr
 ==================
 
+::
 
+    //fdt: 指向dtb
+    //offset: device-node在dtb structure区域内的偏移
+    //len: 表示device-node的长度
+    const void *fdt_offset_ptr(const void *fdt, int offset, unsigned int len)
+    {
+        unsigned absoffset = offsdt + fdt_off_dt_struct(fdt);
+
+        if((absoffset < offset) || ((absoffset + len) < absoffset) 
+        || (absoffset + len) > fdt_totalsize(fdt))
+            return NULL;
+
+        if(fdt_version(fdt) >= 0x11)
+            if(((offset + len) < offset) || ((offset + len) > fdt_size_dt_struct(fdt)))
+                return NULL;
+
+        return fdt_offset_ptr_(fdt, offset);
+    }
+
+
+``fdt_offset_ptr`` 通过device-node在dtb structure内的偏移获得指向device-node的指针
 
 
 
 fdt_offset_ptr_
 ===================
 
+::
+
+    //fdt: 指向dtb
+    //offset: device-node在dtb structure区块内的偏移
+    static inline const void *fdt_ofset_ptr_(const void *fdt, int offset)
+    {
+        return (const char*)fdt + fdt_off_dt_struct(fdt) + offset;
+    }
+
+
+``fdt_offset_ptr_`` 通过device-node在dtb structure内的偏移得到指向device-node的指针．
+
+.. note::
+    dtb的结构涉及如下图所示
+
+    +------------------------------------------+
+    |           boot_param_header              |
+    +------------------------------------------+
+    |           memory reserve map             |
+    +------------------------------------------+
+    |         device-tree structure            |
+    +------------------------------------------+
+    |         device-tree strings              |
+    +------------------------------------------+
 
 
 
@@ -601,7 +677,40 @@ fdt_offset_ptr_
 fdt_reserved_mem_save_node
 ===================================
 
+::
 
+    #define MAX_RESERVED_REGIONS 32
+    static struct reserved_mem reserved_mem[MAX_RESERVED_REGIONS];
+    //node: 指向节点偏移
+    //uname: 指向预留区的名字
+    //base: 预留区的起始地址
+    //size: 预留区的长度
+    void __init fdt_reserved_mem_save_node(unsigned long node, const char *uname, 
+                        phys_addr_t base, phys_addr_t size)
+    {
+        struct reserved_mem *rmem = &reserved_mem[reserved_mem_count];
+
+        if(reserved_mem_count == ARRAY_SIZE(reserved_mem)) {
+            pr_err("not enough space all defined regions.\n");
+            return;
+        }
+
+        rmem->fdt_node = node;
+        rmem->name = uname;
+        rmem->base = base;
+        rmem->size = size;
+
+        reserved_mem_count++;
+
+        return;
+    }
+
+
+``fdt_reserved_mem_save_node`` 用于将dts中"reserved-memory"添加到系统的reserved_mem[]数组中
+
+
+.. note::
+    内核使用一个struct reserved_mem数组维护着系统中所有的保留区
 
 
 
@@ -610,18 +719,86 @@ FDT_RO_PROBE
 ================
 
 
+::
+
+    #define FDT_RO_PROBE(fdt)   \
+    {   \
+        int err_; \
+        if((err_ = fdt_ro_probe_(fdt)) != 0) \
+            return err_;    \
+    }
+
+``FDT_RO_PROBE`` 用于检查dtb的完整性
 
 
 fdt_ro_probe_
 =================
 
+::
 
+    int fdt_ro_probe_(const void *fdt)
+    {
+        //检查DTB的MAGIC信息
+        if(fdt_magic(fdt) == FDT_MAGIC) {
+            if(fdt_version(fdt) < FDT_FIRST_SUPPORTED_VERSION)
+                return -FDT_ERR_BADVERSION;
+            if(fdt_last_comp_version(fdt) > FDT_LAST_SUPPORTED_VERSION)
+                return -FDT_ERR_BADVERSION;
+        } else if(fdt_magic(fdt) == FDT_SW_MAGIC) { 
+            if(fdt_size_dt_struct(fdt) == 0)
+                return -FDT_ERR_BADSTATE;
+        } else {
+            return -FDT_ERR_BADMAGIC;
+        }
 
+        return 0;
+    }
+
+``fdt_ro_probe_`` 用于一个只读dtb的最小健全性检查．
 
 
 __fdt_scan_reserved_mem
 =========================
 
+::
+
+    //node: 指向子节点的索引
+    //uname: 子节点的名字
+    //depth: 子节点的深度
+    //data: 私有数据
+    static int __init __fdt_scan_reserved_mem(unsigned long node, const char *uname,
+                                        int depth, void *void)
+    {
+        static int found;
+        int err;
+
+        //判断节点是否是reserved-memory节点内的子节点
+        if(!fount && depth == 1 && strcmp(uname, "reserved-memory") == 0) {
+            if(__reserved_mem_check_root(node) != 0) { 
+                pr_err("reserved memory: unsupported node format, ignoring\n");
+                return 1;
+            }
+            fount = 1;
+            return 0;
+        } else if(!found) {
+            return 0;
+        } else if(found && depth < 2) {
+            return 1;
+        }
+
+        //判断节点的status是否为okay
+        if(!of_fdt_device_is_available(initial_boot_params, node))
+            return 0;
+
+        //将节点的reg属性对应的预留区加入到MEMBLOCK内存分配器的保留区
+        err = __reserved_mem_reserve_reg(node, uname);
+        if(err == -ENOENT && of_get_flat_dt_prop(node, "size", NULL))
+            fdt_reserved_mem_save_node(node, uname, 0, 0);
+
+        return 0;
+    }
+
+``__fdt_scan_reserved_mem`` 用于将dts中reserved-memory节点包含的子节点预留区加入到系统内进行维护．
 
 
 
@@ -629,121 +806,157 @@ __fdt_scan_reserved_mem
 fdt_size_dt_strings
 =====================
 
+::
+
+    #define fdt_size_dt_strings(fdt) (fdt_get_header(fdt, size_dt_strings))
 
 
+``fdt_size_dt_strings`` 用于读取dtb header的dt_strings_size信息
 
 
 fdt_size_dt_struct
 ===================
 
+::
 
+    #define fdt_size_dt_struct(fdt) (fdt_get_header(fdt, size_dt_struct))
+
+
+``fdt_size_dt_struct`` 用于读取dtb header的dt_struct_size信息
 
 
 fdt_string_eq_
 ================
 
+::
 
+    static int fdt_string_eq_(const void *fdt, int stroffset, const char *s, int len)
+    {
+        int slen;
+        const char *p = fdt_get_string(fdt, stroffset, &slen);
 
+        return p && (slen == len) && (memcmp(p, s, len) == 0);
+    }
 
-
-FDT_TAGALIGN
-===============
-
-
-
+``fdt_string_eq_`` 用于对比offset对应dtb devicetree strings区域内字符串与参数s给定的字符串是否相等
 
 
 fdt_totalsize
 ================
 
+::
+
+    #define fdt_totalsize(fdt) (fdt_get_header(fdt, totalsize))
 
 
-
-
-fdt_version
-=============
-
-
-
-
-
-fdt32_ld
-==========
-
-
-
-
-
-fdt32_to_cpu
-===============
-
-
-
-
-fdt64_ld
-===========
-
+``fdt_totalsize`` 用于读取dtb header的totalsize信息
 
 
 fill_pmd_pags
 ================
 
+::
 
+    static void __init fill_pmd_gaps(void)
+    {
+        struct static_vm *svm;
+        struct vm_struct *vm;
+        unsigned long addr, next = 0;
+        pmd_t *pmd;
 
+        list_for_each_entry(svm, &static_vmlist, list) {
+            vm  = &svm->vm;
+            addr = (unsigned long)vm->addr;
+            if(addr < next)
+                continue;
+
+            if((addr & ~PMD_MASK) == SECTION_SIZE) {
+                pmd = pmd_off_k(addr);
+                if(pmd_none(*pmd))
+                    pmd_empty_section_gap(addr & PMD_MASK);
+            }
+            addr += vm->size;
+            if((addr & ~PMD_MASK) == SECTION_SIZE) {
+                pmd = pmd_off_k(addr) + 1;
+                if(pmd_none(*pmd))
+                    pmd_empty_section_gap(addr);
+            }
+            next = (addr + PMD_SIZE - 1) & PMD_MASK;
+        }
+    }
+
+``fill_pmd_gaps`` 用于检查静态映射区的虚拟地址，是否存在PMD入口值占用了一个，并且基数PMD入口
 
 
 find_limits
 ===============
 
+::
+
+    static void __init find_limits(unsigned long *min, unsigned long *max_low, unsigned long *max_high)
+    {
+        *max_low = PFN_DOWN(memblock_get_current_limit());
+        *min = PFN_UP(memblock_start_of_DRAM());
+        *max_high = PFN_DOWN(memblock_end_of_DRAM());
+    }
 
 
+``find_limits`` 获得物理地址低端物理内存的起始页帧和终止页帧以及MEMBLOCK内存分配器支持的最大页帧
 
 
 fix_to_virt
 ==============
 
+::
+
+    static __always_inline unsigned long fix_to_virt(const unsigned int idx)
+    {
+        BUILD_BUG_ON(idx >= __end_of_fixed_addresses);
+        return __fix_to_virt(idx);
+    }
+
+
+``fix_to_virt`` 通过FIXMAP索引获得对应的虚拟地址
 
 
 
 fixmap_pmd
 =============
 
+::
+
+    static inline pmd_t * __init fixmap_pmd(unsigned long addr)
+    {
+        pgd_t *pgd = pgd_offset_k(addr);
+        pgd_t *pud = pud_offset(pgd, addr);
+        pgd_t *pmd = pmd_offset(pud, addr);
+
+        return pmd;
+    }
 
 
+``fixmap_pmd`` 用于获得FIXMAP区间虚拟地址对应的PMD入口地址
 
 
 flush_pmd_entry
 ===================
 
+::
+
+    static inline void flush_pmd_entry(void *pmd)
+    {
+        const unsigned int __tbl_flag = __cpu_tlb_flags;
+
+        tlb_op(TLB_DCLEAN, "c7, c10, 1 @ flush_pmd", pmd);
+        tlb_l2_op(TLB_L2CLEAN_FR, "c15, c9, 1 @ L2 flush_pmd", pmd);
+
+        if(tlb_flag(TLB_WB))
+            dsb(ishst);
+    }
 
 
+``flush_pmd_entry`` 的目的是 'clean data of unified cache line by mva to poc'
 
-
-for_each_free_mem_range
-===========================
-
-
-
-
-
-for_each_memblock
-===================
-
-
-
-
-
-
-for_each_mem_range_rev
-=========================
-
-
-
-
-
-
-for_each_free_mem_range_reverse
-=================================
 
 
 
