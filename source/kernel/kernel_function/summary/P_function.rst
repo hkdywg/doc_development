@@ -615,112 +615,105 @@ pmd_offset
 pmd_page_vaddr
 =================
 
+::
 
+    static inline pte_t *pmd_page_vaddr(pmd_t pmd)
+    {
+        return __va(pmd_val(pmd) & PHYS_MASK & (s32)PAGE_MASK);
+    }
 
-
+``pmd_page_vaddr`` 用于获得PMD入口对应的PTE页表基地址
 
 
 __pmd_populate
 =================
+
+::
+
+    static inline void __pmd_populate(pmd_t *pmdp, phys_addr_t pte, pmdval_t prot)
+    {
+        pmdval_t pmdval =  (pte + PTE_HWTABLE_OFF) | port;
+        pmdp[0] = __pmd(pmdval);
+    #ifndef CONFIG_ARM_LPAE
+        pmdp[1] = __pmd(pmdval + 256 * sizeof(pte_t));
+    #endif
+        flush_pmd_entry(pmdp);
+    }
+
+``__pmd_populate`` 向指定的PMD入口填充PTE页表的物理地址与标志
 
 
 
 pmd_populate_kernel
 =====================
 
+::
 
+    static inline void pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmdp, pte_t *ptep)
+    {
+        __pmd_populate(pmdp, __pa(ptep), _PAGE_KERNEL_TABLE);
+    }
 
-
-
+``pmd_populate_kernel`` 是为内核PMD入口填充PTE页表信息
 
 
 pmd_val
 ==========
 
+::
+
+    #define pmd_val(x)  ((x).pmd)
 
 
 populate_zone
 =================
 
+::
 
+    static inline bool populate_zone(struct zone *zone)
+    {
+        return zone->present_pages;
+    }
 
+``populate_zone`` 用于判断ZONE是否已经包含物理内存
 
 
 prepare_page_table
 ====================
 
+::
+
+    static inline void prepare_page_table(void)
+    {
+        unsigned long addr;
+        phys_addr_t end;
+
+        for(addr = 0; addr < MODULES_VADDR; addr += PMD_SIZE)
+            pmd_clear(pmd_off_k(addr));
+
+    #ifdef CONFIG_XIP_KERNEL
+        addr = ((unsigned long)_exiprom + PMD_SIZE - 1) & PMD_MASK;
+    #endif
+        
+        for( ; addr < PAGE_OFFSET; addr += PMD_SIZE)
+            pmd_clear(pmd_offset_k(addr));
+
+        end = memblock.memory.regions[0].base + memblock.memory.regions[0].size;
+        if(end >= arm_lowmem_limit)
+            end = arm_lowmem_limit;
+
+        for(addr = __phys_to_virt(end); addr < VMALLOC_START; addr += PMD_SIZE)
+            pmd_clear(pmd_off_k(addr));
+    }
 
 
+``prepare_page_table`` 函数的作用是建立页表之前，清除未使用的页表．函数分别找了三段虚拟地址，分别为
 
-__pte
-==========
+- 0地址到MODULE_VADDR
 
+- MODULE_VADDR到PAGE_OFFSET
 
+- 第一块DRM大于arm_lowmem_limit部分
 
-
-
-pte_index
-===========
-
-
-
-
-pte_offset_early_fixmap
-===========================
-
-
-
-
-pte_offset_kernel
-====================
-
-
-
-
-
-pte_none
-=============
-
-
-
-
-pte_pfn
-=========
-
-
-
-
-
-pte_val
-===========
-
-
-
-
-
-pud_addr_end
-===============
-
-
-
-
-pud_offset
-==============
-
-
-
-
-
-__pv_stub
-=============
-
-
-
-
-
-
-
-
-
-
+对这三段地址分别使用pmd_off_k计算出pmd入口之后，使用pmd_clear将pmd项清除，并刷新TLB和Cache
 
