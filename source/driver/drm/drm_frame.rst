@@ -37,17 +37,21 @@ KMS全称是kernel mode setting,这里的mode是指限制控制器的mode.
 
 KMS将整个显示控制器的显示pipeline抽象成以下几个部分:
 
-- plane : 图层
+- plane : 硬件图层，有的display硬件支持多层合成显示，但所有的display controller至少要有一个plane
 
-- crtc : 显示控制器,例如在RCAR-V3H中对应SOC内部的DU模块
+- crtc : 显示控制器,产生时序信号的硬件模块，例如在RCAR-V3H中对应SOC内部的DU模块
 
-- encoder : 输出转换器,指LVDS\DSI\eDP\HDMI等显示接口
+- encoder : 负责将CRTC输出的timing时序转换成外部设备所需要的信号的模块,如HDMI转换器或DSI Controller
 
-- connector : 指encoder和panel之间的交互的接口部分
+- connector : 连接物理显示设备的连接器，如HDMI, DSI总线，通常和Encoder驱动绑定在一起
 
 - Bridge : 桥接设备,一般用户注册encoder后面另外连接的转换芯片,比如DSI2HDMI转换芯片
 
 - Panel : 泛指LCD\HDMI等显示设备的抽象
+
+- Fb: Framebuffer,单个图层的显示内容，惟一一个和硬件无关的基本元素
+
+- VBLANK: 软件和硬件的同步机制，时序中的垂直消隐区，软件通常使用硬件VSYNC来实现
 
 
 这些组件组合成display pipeline:
