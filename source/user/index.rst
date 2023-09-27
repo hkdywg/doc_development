@@ -13,3 +13,4 @@ application development node
     Cstand_lib/index.rst
     security/index.rst
     config/index.rst
+    soft_package_list/index.rst
