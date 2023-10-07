@@ -4,4 +4,5 @@
 .. toctree::
     opendds/index.rst
     some_ip/index.rst
+    mqtt/index.rst
 

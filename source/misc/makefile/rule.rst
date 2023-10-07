@@ -106,6 +106,74 @@ makefile中变量的名字可以包含字符、数字、下划线(可以是数�
 - ?= 如果没有赋值就等于后面的值
 - += 添加等号后面的值
 
+make环境变量
+^^^^^^^^^^^^^
+
+- MAKEFILES
+
+如果当前环境定义了一个MAKEFILES环境变量，make执行时首先将变量的值作为需要读入的makefile文件，多个文件之间使用空格分开．类似使用指示符include
+包含其他makefile文件一样
+
+- MAKEFILES_LIST
+
+make程序在读取多个 Makefile 文件时，包括由环境变量 "MAKEFILES" 指定、命令行指定、当前工作下默认以及使用指示符"include" 指定包含的，
+在对这些文件进行解析执行之前 make 读取的文件名将会被自动依次追加到变量 "MAKEFILES_LIST" 的定义域中。
+
+这样可以通过测试此变量的最后一个字获取当前 make 程序正在处理的 Makfile 文件名。
+
+::
+
+    name1 := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
+    include inc.mk
+    name2 := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
+     
+    all:
+        @echo name1 = $(name1)
+        @echo name2 = $(name2)
+
+输出结果为:
+
+::
+
+    name1 = Makefile
+    name2 = inc.mk
+
+
+- VPATH
+
+GNU make 可以识别到一个特殊变量 "PATH"。通过变量 "PATH" 可以指定依赖文件的搜索路径，当规则的依赖文件在当前目录不存在时，make 会在此变量所指定的目录下去寻找这些依赖文件。
+其实，"VPATH" 变量所指定的是 Makefile 中所有文件的搜索路径，包括了规则的依赖文件和目标文件。定义变量 "VPATH" 时，使用空格或者冒号（:）将多个需要搜索的目录分开。例如：
+
+::
+
+    VPATH = src:../headers
+
+这样，就为所有规则的依赖指定了两个搜索目录，"src" 和 "../headers"。
+
+- MAKELEVEL
+
+在多级递归调用的 make 执行过程中，变量 "MAKELEVEL" 代表了调用的深度。在 make 一级级的执行过程中变量 "MAKELEVEL" 的值不断发生变化。
+
+- MAKEFLAGS
+
+在 make 的递归过程中，最上层make的命令行选项如 "-k"、"-s" 等会被自动的通过环境变量 "MAKEFLAGS" 传递给子 make 进程。
+
+传递过程中变量 "MAKEFLAGS" 的值会被主控 make 自动的设置为包含执行 make 时的命令行选项的字符串。
+
+执行多级的 make 调用时，当不希望传递 "MAKEFLAGS" 给子 make 时，需要再调用子程序 make 对这个变量进行赋空，例如： 
+
+::
+
+    subsystem:
+        cd subdir && $(MAKE) MAKEFLAGS=
+
+
+- CURDIR
+
+在 make 递归调用中，变量 "CURDIR" 代表 make 的工作目录。当使用 "-C" 选项进入一个子目录后，此变量将被重新赋值。
+
+
+
 shell变量
 ^^^^^^^^^
 

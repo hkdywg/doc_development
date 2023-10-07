@@ -14,3 +14,4 @@ http://kernel.org/doc/html/v4.19/index.html
     system_call/index.rst
     kernel_start/index.rst
     mm/index.rst
+    concurrenty_contrl/index.rst

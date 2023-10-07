@@ -14,3 +14,4 @@ misc
     assembly/index.rst
     datastruct_algo/index.rst
     markdown/index.rst
+    linux_commond/index.rst
