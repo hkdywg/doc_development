@@ -6,3 +6,4 @@ linux內存管理
     ./mm_overview.rst
     ./memory_distribute.rst
     ./mm_module.rst
+    ./memblock.rst
