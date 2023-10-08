@@ -240,6 +240,104 @@ kernel的第一个函数 ``start_kernel``
     res/memblock_init.png
 
 
+memblock物理内存映射
+-----------------------
+
+物理内存在通过memblock_add添加进系统之后，这部分的物理内存到虚拟内存的映射还没有建立．即使可以通过memblock_alloc分配一段物理内存，但是还不能访问，
+需要在paging_init执行之后
+
+
+::
+
+    void __init paging_init(void)
+    {
+        pgd_t *pgdp = pgd_set_fixmap(__pa_symbol(swapper_pg_dir));
+
+        map_kernel(pgdp);
+        map_mem(pgdp);
+
+        pgd_clear_fixmap();
+
+        cpu_replace_ttbrl(lm_alias(swapper_pg_dir));
+        init_mm.pgd = swapper_pg_dir;
+
+        mmeblock_free(__pa_symbol(init_pg_dir),
+            __pa_symbol(init_pg_end) - __pa_symbol(init_pg_dir));
+
+        memblock_allow_resize();
+    }
+
+
+- pgd_set_fixmap: swapper_pg_dir页表的物理地址映射到fixmap的FIX_PGD区域，然后使用swapper_pg_dir页表作为内核的pgd页表．因为页表都是处于虚拟地址空间
+  构建的，所以这里需要转成虚拟地址pgdp．而此时伙伴系统也没有ready，只能通过fixmap预先设定用于映射PGD的页表，现在pgdp是分配FIX_PGD的物理内存空间对应的虚拟地址
+
+- map_kernel: 将内核的各个段(.text .init .data .bss)映射到虚拟内存空间，这样内核就可以正常运行了
+
+- map_mem: 将memblock子系统添加的物理内存进行映射，主要是把通过memblock_add添加到系统中的物理内存进行映射，主要如果memblock设置了MEMBLOCK_NOMAP标志的话则就不对其地址进行映射
+
+- cpu_replace_ttbr1: 将TTBR1寄存器指向新准备的swapper_pg_dir页表，TTBR1寄存器是虚拟内存管理的重要组成部分，用于存储当前使用的页表的首地址
+
+- 将init_pg_dir指向的区域释放
+
+
+**__create_pgd_mapping**
+
+map_kernel是映射内核启动时需要的各个段，map_mem是映射memblock添加的物理内存．但是页表映射都会调用到 ``__create_pgd_mapping`` 函数
+
+::
+
+    static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys, unsigned long virt,
+        phys_addr_t size, pgprot_t prot, phys_addr_t (*pgtable_alloc)(int), int flags)
+    {
+        unsigned long addr, end, next;
+        pgd_t *pgdp = pgd_offset_pgd(pgdir, virt);
+
+        if(WARN_ON((phys ^ virt) & ~PAGE_MASK))
+            return;
+
+        phys &= PAGE_MASK;
+        addr = virt & PAGE_MASK;
+        end = PAGE_ALIGN(virt + size);
+
+        do {
+            next = pgd_addr_end(addr, end);
+            alloc_init_pud(pgdp, addr, next, phys, prot, pgtable_alloc, flags);
+            phys += next - addr;
+        } while(pgdp++, addr = next, addr != end);
+    }
+
+
+.. image::
+    res/create_pgd_mapping.png
+
+总体来说，就是逐级页表建立映射关系，同时中间会进行权限的控制
+
+从上面的代码流程分析，可以看出pgd/pud/pmd/pte的页表项虽然保存的都是物理地址，但是上面pgd/pud/pmd/pte的计算分析都是基于虚拟地址
+
+假设内核需要访问虚拟地址virt_addr对应的物理地址为phys的内容
+
+- 通过存放内核页表的寄存器TTBR1得到swapper_pg_dir页表的物理地址，然后转换成pgd页表的虚拟地址
+
+- 根据virt_addr计算对应的pgd entry(pgd页表的地址+vrt_addr计算出的offset)，PGD entry存放的是PUD页表的物理地址，然后转换成PUD页表基地址的虚拟地址
+
+- PUD和PMD的处理过程类似
+
+- 最后从PMD entry中找到PTE页表的虚拟地址，根据vir_addr计算得到对应的pte entry,从pte entry中得到phys所在的物理页帧地址
+
+- 加上根据virt_addr计算得到的偏移后得到virt对应的物理地址
+
+.. image::
+    res/virt_to_phys.png
+
+
+以虚拟地址0xffff000140e09000为例
+
+.. image::
+    res/virt_phys_addr.png
+
+
+
+
 
 
 
