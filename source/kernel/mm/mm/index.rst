@@ -7,3 +7,4 @@ linux內存管理
     ./memory_distribute.rst
     ./mm_module.rst
     ./memblock.rst
+    ./phys_addr.rst
