@@ -5,6 +5,7 @@ kernel doc
 http://kernel.org/doc/html/v4.19/index.html
 
 .. toctree::
+    kernel_map/index.rst
     debug/index.rst
     dts/index.rst
     list/index.rst
@@ -15,3 +16,4 @@ http://kernel.org/doc/html/v4.19/index.html
     kernel_start/index.rst
     mm/index.rst
     concurrenty_contrl/index.rst
+    kernel_actual_combat/index.rst
