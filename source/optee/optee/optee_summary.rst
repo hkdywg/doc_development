@@ -128,6 +128,11 @@ OP-TEE是开源的TEE解决方案，下面以ubuntu 20.04为例搭建其仿真�
     #更换为
     #EPO_URL = "https://mirrors.tuna.tsinghua.edu.cn/git/git-repo/"
     ~/bin/repo init -u https://github.com/OP-TEE/manifest.git -m qemu_v8.xml
+    repo sync
+    cd ./build
+    make -j8 toolchains
+    make -f qemu_v8.mk all -j8
+    make -f qemu_v8.mk run-only
 
 
 
