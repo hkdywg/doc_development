@@ -10,6 +10,7 @@ bick开发手记
     :maxdepth: 2
     :numbered:
 
+    optee/index.rst
     u-boot/index.rst
     kernel/index.rst
     driver/index.rst
