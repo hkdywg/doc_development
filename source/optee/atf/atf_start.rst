@@ -105,7 +105,8 @@ ARMv8安全引导过程
 .. image::
     res/bl_step.png
 
-
+.. image::
+    res/bl1-bl33.png
 
 
 
