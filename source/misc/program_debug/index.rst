@@ -6,3 +6,4 @@
     debug.index
     elf_bin.index
     perform_tools.rst
+    debug_problem.rst
