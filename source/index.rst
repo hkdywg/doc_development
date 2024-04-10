@@ -20,6 +20,7 @@ bick开发手记
     embedded/index.rst
     net/index.rst
     rtos/index.rst
+    android/index.rst
 
 Indices and tables
 ==================
