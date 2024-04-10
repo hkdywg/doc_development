@@ -37,6 +37,11 @@ init天子一号进程
 - 启动Launcher,SystemServer启动的ActivityManagerServer会负责启动Launcher,Launcher启动后会将已安装的应用快捷图标显示到界面上
 
 
+启动框架图
+
+.. image::
+    res/init.png
+
 **init进程**
 
 .. note::
