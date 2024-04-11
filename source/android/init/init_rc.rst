@@ -75,6 +75,13 @@ init.rc主要包含5种类型语句．
         <option>
         ...
 
+.. note::
+    option是service的可选项，与service配合使用
+
+    - oneshot: service退出后不再重启
+
+    - onrestart: 当服务重启时，执行相应的命令
+
 
 init.rc注释
 ---------------
