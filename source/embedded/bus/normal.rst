@@ -39,6 +39,9 @@ I2C协议规定，总线上数据的传输必须一个起始信号为开始条�
 .. image::
     res/i2c_rw.png
 
+.. image::
+    res/IIC_r_w.png
+
 
 以下为I2C写寄存器的一个示例
 
