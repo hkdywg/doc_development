@@ -2,5 +2,6 @@
 ====================
 
 .. toctree::
-    normal.rst
     standard_protocal.rst
+    normal.rst
+    usb.rst
