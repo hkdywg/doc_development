@@ -11,12 +11,24 @@ USB总线接口
 USB总线信号
 ^^^^^^^^^^^^^
 
-USB使用差分传输模式，两根数据线D+和D-
+USB2.0采用四线制，分别是Vbus电源线，GND地线，差分数据线D+和D-. 所以USB2.0的四线制是半双工通信
 
 ::
 
     差分信号1: D+>2.8V, D-<0.3V
     差分信号0: D->2.8V, D+<0.3V
+
+USB接口设计如下,电源线和地线较长，这样设计可以使USB设备接入时，USB电源先于数据信号连接，避免电源不稳定对信号造成的影响
+
+.. image::
+    res/usb_pin.png
+
+由于USB2.0采用的是四线制，其中没有时钟线。所以USB设备与主机设备在进行数据传输时由于没有时钟同步而导致发送端在发出的数据在接收端采样信号时，可能会因为时钟误差而导致
+数据不正确的问题。
+
+针对这个问题，USB采用时钟同步域来解决这个问题。即在数据发送时，先发送一个同步头(8`b 01010101).接收端通过这个同步头计算出发送端的频率。这样接收端使用同样的频率采样，从而
+达到数据可以正确接收
+
 
 - J状态和K状态:
 
@@ -59,6 +71,10 @@ USB采用NRZI(非归零编码)对发送的数据包进行编码，即: 输入数
 .. image::
     res/NRZI_code.webp
 
+
+.. image::
+    res/usb_data_value.png
+
 位填充是为了保证发送的数据序列中有足够多的电平变化，填充的对象是输入数据，即先填充后编码。数据流中每6个连续的1就要插入一个0. 接收方解码NRZI码流，然后识别填充位，并丢弃它们
 
 .. image::
@@ -73,7 +89,7 @@ USB是一种主从结构的系统，主机叫做Host，从机叫做Device. Devic
 USB总线基于分层的星状拓扑结构，以HUB为中心，连接周围设备。总线上最多可连接127个设备。HUB串联数量最多5个
 
 .. image::
-    res/usb_struct.webp
+    res/usb_struct.png
 
 
 USB设备
@@ -144,6 +160,9 @@ USB枚举过程中，都是使用控制传输
     Device: 06 05 82 ... Endpoint Descriptor
     Host: 好了，我知道你是谁了，开始传输设备吧
     Device: Ok, Read Go
+
+.. image::
+    res/usb_enum_sample.png
 
 USB描述符
 ^^^^^^^^^^^^^^^
@@ -314,6 +333,9 @@ USB协议定义了四种传输类型: ``控制传输(control transfer)`` 、 ``�
  中断传输               周期性，低频率                  允许有延迟的通信
 ===================== ============================= ==================================================================
 
+.. image::
+    res/usb_transfer_compare.png
+
 **批量传输**
 
 批量传输使用批量传输事务(IN传输/OUT传输)，一次批量传输事务分为三个阶段: 令牌包阶段、数据包阶段、握手包阶段
@@ -352,6 +374,17 @@ USB协议定义了四种传输类型: ``控制传输(control transfer)`` 、 ``�
 
   - CRC错误或位填充错误: 设备不返回任何握手包，让主机等待超时
 
+USB批量读抓包
+
+.. image::
+    res/usb_bulk_read_trans_sample.png
+
+USB批量写抓包
+
+.. image::
+    res/usb_bulk_write_trans_sample.png
+
+
 **中断传输**
 
 中断传输一般用于小批量的和非连续的数据传输，但实时性高的场合，主要应用于人机交互设备(HID)的鼠标和键盘
@@ -372,6 +405,11 @@ USB中断传输和我们传统意义上的中断不一样，他不是由设备�
 
 .. image::
     res/sync_trans.png
+
+同步读抓包
+
+.. image::
+    res/usb_sync_read_sample.png
 
 **控制传输**
 
@@ -396,6 +434,29 @@ USB中断传输和我们传统意义上的中断不一样，他不是由设备�
 
 
 - 状态过程: 状态过程只使用DATA1包，并且传输方向与数据方向相反。
+
+USB控制读
+
+.. image::
+    res/usb_control_read.png
+
+抓包分析
+
+.. image::
+    res/usb_control_read_sample.png
+
+
+USB控制写
+
+.. image::
+    res/usb_control_write.png
+
+抓包分析
+
+.. image::
+    res/usb_control_write_sample.png
+
+
 
 
 
