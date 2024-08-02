@@ -710,8 +710,59 @@ file结构体来保存打开的文件的位置，所以file称为打开的文件
     通常是内存和CPU本身
 
 
-一个示例
+示例
 ---------
 
 .. image::
 	res/example.jpg
+
+
+在linux系统中,目录结构通过 ``dentry`` 来表示，它与 ``inode`` 一起提供文件系统中文件和目录的快速访问
+
+dentry是一个复杂的目录结构，包含以下几个重要字段
+
+- d_name: 目录项的名称
+
+- d_parent: 指向父目录的dentry
+
+- d_inode: 指向目录项对应的inode
+
+- d_subdirs: 子目录项的列表
+
+- d_flags: 标志，描述目录项的状态
+
+
+.. note::
+    dentry结构通过双向链表和散列表来表示文件系统的目录结构．它允许文件系统快速查找和管理目录及文件
+
+
+假设文件系统中有以下目录结构
+
+::
+
+    /
+    ├── home/
+    │   ├── user/
+    │   │   └── file.txt
+    └── etc/
+        └── config.cfg
+
+对应的dentry结构表示如下
+
+- 根目录 '/' 对应一个dentry, 它的'd_name'是空字符串，'d_parent'指向自身
+
+- '/home' 对应一个dentry, 它的 d_name 是 "home"，d_parent 指向根目录的 dentry。
+
+- '/home/user' 对应一个 dentry，它的 d_name 是 "user"，d_parent 指向 /home 的 dentry。
+
+- '/home/user/file.txt' 对应一个 dentry，它的 d_name 是 "file.txt"，d_parent 指向 /home/user 的 dentry。
+
+- '/etc'  对应一个 dentry，它的 d_name 是 "etc"，d_parent 指向根目录的 dentry。
+
+- '/etc/config.cfg` 对应一个 dentry，它的 d_name 是 "config.cfg"，d_parent 指向 /etc 的 dentry。
+
+
+
+
+
+
