@@ -38,7 +38,7 @@ sys_open()系统调用打开或创建一个文件，成功返回该文件的文�
 
 
 sys_open
-----------
+^^^^^^^^^
 
 sys_open系统调用位于 ``fs/open.c`` 文件中
 
@@ -54,7 +54,7 @@ sys_open系统调用位于 ``fs/open.c`` 文件中
 
 
 do_sys_open
--------------
+^^^^^^^^^^^^^
 
 ::
 
@@ -88,7 +88,7 @@ do_sys_open
 
 
 do_filp_open
---------------
+^^^^^^^^^^^^^^^
 
 do_filp_open()用于打开文件，返回一个file对象
 
@@ -159,7 +159,7 @@ path_openat函数找到文件路径对应的dentry和inode
 
 
 do_last
---------
+^^^^^^^^^^^^
 
 do_last是open系统调用的最后一步
 
@@ -472,3 +472,26 @@ do_entry_open函数的主要目标就是填充file结构体，返回给最开始
         f->f_inode = NULL;
         return error;
     }
+
+sys_read
+--------------
+
+::
+
+    sys_read()
+    |-----------ksys_read()
+    |           |--------fdget_pos() 
+    |           |--------file_ppos()
+    |           |--------vfs_read()
+    |           |        |------rw_verify_area
+    |           |        |------__vfs_read
+    |           |        |       -------file->f_op->read
+    |           |        |------restore_nameidata
+    |           |--------fdput_pos()
+    |
+
+
+read与write函数相对简单，从fd找到对应file结构体，直接file_operations函数集中的read/write方法
+
+.. note::
+    file结构体中file_operations函数集中的方法与文件对应的inode函数集方式是一致的。open操作中会执行 ``f->f_op = fops_get(inode->i_fop)`` .
