@@ -28,10 +28,14 @@ DRM在源码中的分布
 
 - libdrm:基本为内核提供的IOCTL的wrapper
 
+drm与fb框架对比
+
+.. image::
+    res/drm_fb.png
+
 
 KMS
 -----
-
 
 KMS全称是kernel mode setting,这里的mode是指限制控制器的mode.
 
@@ -39,7 +43,7 @@ KMS将整个显示控制器的显示pipeline抽象成以下几个部分:
 
 - plane : 硬件图层，有的display硬件支持多层合成显示，但所有的display controller至少要有一个plane
 
-- crtc : 显示控制器,产生时序信号的硬件模块，例如在RCAR-V3H中对应SOC内部的DU模块
+- crtc : 显示控制器,产生时序信号的硬件模块，主要用于显示控制(如显示时序、分辨率、刷新率等)例如在RCAR-V3H中对应SOC内部的DU模块
 
 - encoder : 负责将CRTC输出的timing时序转换成外部设备所需要的信号的模块,如HDMI转换器或DSI Controller
 
@@ -142,14 +146,9 @@ drm_device用于抽象一个完整的DRM设备,而其中与Mode Setting相关的
         }
 
 
-CRTC
-^^^^^
-
-
 
 Framebuffer
 ^^^^^^^^^^^^
-
 
 framebuffer应该是唯一一个与硬件无关的抽象了.驱动程序需要提供自己的framebuffer实现,其主要入口就是前面提到的drm_mode_config_funcs->fb_create回调函数.
 fb_create函数接受一个drm_mode_fb_cmd2类型的参数
@@ -170,6 +169,34 @@ fb_create函数接受一个drm_mode_fb_cmd2类型的参数
 
 其中最重要的就是handle, handle是buffer object的指针
 
+CRTC
+^^^^^
+
+阴级摄像管上下文(显示控制器)，也可以理解为扫描仪(对显示buffer进行扫描，并产生时序信号的硬件模块). CRTC对内连接Framebuffer地址，对外连接Encoder, 会扫描Framebuffer上的内容，
+叠加上Planes的内容，最后传给Encoder. 
+
+.. image::
+    res/crtc_sample.png
+
+
+Encoder
+^^^^^^^^
+
+编码器/输出转换器，负责将CRTC输出的timing时序转换成外部设备所需要的信号的模块。它的作用就是将内存的pixel像素编码为显示器所需要的信号(因为画面显示到不同的设备上，所需要的电信号
+是不同的), 如RGB, LVDS, DSI, eDP, HDMI等显示接口。另外Encoder与CRTC之间的交互就是我们所说的ModeSetting, 其中还包含了前面提到的色彩模式、时序
+
+
+Connector
+^^^^^^^^^
+
+connector抽象的是一个能够显示像素的设备,由struct drm_connector进行表示
+
+connector代码层面的作用
+
+- 获取上报热插拔状态
+
+- 读取并解析屏的EDID信息
+
 Plane
 ^^^^^^^^
 
@@ -189,10 +216,6 @@ plane由drm_plane表示,其本质是对显示控制器中scanout硬件的抽象,
 - Overlay : 叠加plane,可以在主plane上叠加一层输出,可选
 
 
-Connector
-^^^^^^^^^
-
-connector抽象的是一个能够显示像素的设备,由struct drm_connector进行表示
 
 
 
