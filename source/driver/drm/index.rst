@@ -5,3 +5,4 @@ DRM框架分析
     ./drm_frame.rst
     ./connector.rst
     ./encoder.rst
+    ./crtc.rst
