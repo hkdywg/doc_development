@@ -552,13 +552,112 @@ dev->mode_config中
 
 
 
+connector初始化
+-------------------
+
+以下代码基于renesas rcar平台分析
+
+::
+
+    //rcar-du/rcar_lvds.c
+
+    static int rcar_lvds_attach(struct drm_bridge *bridge)
+    {
+        struct rcar_lvds *lvds = bridge_to_rcar_lvds(bridge);
+        struct drm_connector *connector = &lvds->connector;
+        struct drm_encoder *encoder = bridge->encoder;
+        int ret;
+
+        /* If we have a next bridge just attach it. */
+        if (lvds->next_bridge)
+            return drm_bridge_attach(bridge->encoder, lvds->next_bridge,
+                         bridge);
+
+        /* Otherwise if we have a panel, create a connector. */
+        if (!lvds->panel)
+            return 0;
+
+        ret = drm_connector_init(bridge->dev, connector, &rcar_lvds_conn_funcs,
+                     DRM_MODE_CONNECTOR_LVDS);
+        if (ret < 0)
+            return ret;
+
+        drm_connector_helper_add(connector, &rcar_lvds_conn_helper_funcs);
+
+        ret = drm_connector_attach_encoder(connector, encoder);
+        if (ret < 0)
+            return ret;
+
+        return drm_panel_attach(lvds->panel, connector);
+    }
 
 
+    static const struct drm_bridge_funcs rcar_lvds_bridge_ops = {
+        .attach = rcar_lvds_attach,
+        .detach = rcar_lvds_detach,
+        .enable = rcar_lvds_enable,
+        .disable = rcar_lvds_disable,
+        .mode_fixup = rcar_lvds_mode_fixup,
+        .mode_set = rcar_lvds_mode_set,
+    };
 
+    
+    static int rcar_lvds_probe(struct platform_device *pdev)
+    {
+        const struct soc_device_attribute *attr;
+        struct rcar_lvds *lvds;
+        struct resource *mem;
+        int ret;
 
+        lvds = devm_kzalloc(&pdev->dev, sizeof(*lvds), GFP_KERNEL);
+        if (lvds == NULL)
+            return -ENOMEM;
 
+        platform_set_drvdata(pdev, lvds);
 
+        lvds->dev = &pdev->dev;
+        lvds->info = of_device_get_match_data(&pdev->dev);
 
+        attr = soc_device_match(lvds_quirk_matches);
+        if (attr)
+            lvds->info = attr->data;
+
+        ret = rcar_lvds_parse_dt(lvds);
+        if (ret < 0)
+            return ret;
+
+        lvds->bridge.driver_private = lvds;
+        lvds->bridge.funcs = &rcar_lvds_bridge_ops;
+        lvds->bridge.of_node = pdev->dev.of_node;
+
+        mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+        lvds->mmio = devm_ioremap_resource(&pdev->dev, mem);
+        if (IS_ERR(lvds->mmio))
+            return PTR_ERR(lvds->mmio);
+
+        ret = rcar_lvds_get_clocks(lvds);
+        if (ret < 0)
+            return ret;
+
+        lvds->rstc = devm_reset_control_get(&pdev->dev, NULL);
+        if (IS_ERR(lvds->rstc)) {
+            dev_err(&pdev->dev, "failed to get cpg reset\n");
+            return PTR_ERR(lvds->rstc);
+        }
+
+        drm_bridge_add(&lvds->bridge);
+
+        return 0;
+    }
+
+    static struct platform_driver rcar_lvds_platform_driver = {
+        .probe		= rcar_lvds_probe,
+        .remove		= rcar_lvds_remove,
+        .driver		= {
+            .name	= "rcar-lvds",
+            .of_match_table = rcar_lvds_of_table,
+        },
+    };
 
 
 
