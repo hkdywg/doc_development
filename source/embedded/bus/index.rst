@@ -5,3 +5,4 @@
     standard_protocal.rst
     normal.rst
     usb.rst
+    usb_description.rst
