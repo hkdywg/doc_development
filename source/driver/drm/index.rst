@@ -6,3 +6,4 @@ DRM框架分析
     ./connector.rst
     ./encoder.rst
     ./crtc.rst
+    ./plane.rst
