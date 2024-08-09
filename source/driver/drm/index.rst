@@ -7,3 +7,4 @@ DRM框架分析
     ./encoder.rst
     ./crtc.rst
     ./plane.rst
+    ./simple_drm.rst
