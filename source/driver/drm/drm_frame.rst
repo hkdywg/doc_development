@@ -64,6 +64,8 @@ KMS将整个显示控制器的显示pipeline抽象成以下几个部分:
 - VBLANK: 软件和硬件的同步机制，时序中的垂直消隐区，软件通常使用硬件VSYNC来实现
 
 
+**基本元素**
+
 .. image::
 	res/drm_plane_crtc_encoder_con.jpeg
 
@@ -72,6 +74,21 @@ KMS将整个显示控制器的显示pipeline抽象成以下几个部分:
 
 .. image::
     res/drm_pipeline.png
+
+或者用下面的图示表达
+
+.. image::
+    res/drm_pipe_line.png
+
+通过上图可以看出，Plane是连接framebuffer与crtc的纽带，而encoder是连接crtc与connector的纽带。与物理buffer直接打交道的是
+gem而不是framebuffer
+
+
+.. note::
+    buffer是硬件设备，由gem分配和释放，framebuffer用于描述分配的显存的信息(如format, pitch, size等), 而plane则用于描述
+    图层信息，描述的是framebuffer中哪些点处于同一个图层，多个plane隶属于同一个crtc，crtc控制显卡输出图像信号，encoder将
+    crtc输出的图像信号转换成一定格式的数字信号,如HDMI，MIPI等。connector用于将encoder输出的信号传递给显示器，并与显示器建立连接
+
 
 
 对象管理
