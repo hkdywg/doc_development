@@ -166,3 +166,128 @@ MMU内存属性
 
 操作系统会为每个进程分配一个页表，该页表使用物理地址存储。当进程使用类似malloc等需要映射代码或数据的操作时，操作系统会在随后马上修改页表以加入新的物理内存。
 当进程完成退出时，内核会将相关的页表项删除，以便分配给新的进程。
+
+.. note::
+
+    当使能MMU之后，CPU直接寻址虚拟地址，而MMU负责虚拟地址到物理地址的转换和翻译工作，地址转换和翻译的依据是页表。页表项的内容是由操作系统负责填充的。如果下一级
+    页表的基地址是虚拟地址，那么MMU还需要查询另外一个页表才能找到这个虚拟地址对应的物理地址，这样MMU就会陷入死循环，所以这里下一级页表的基地址采用的是物理地址。
+
+关于页表的遍历，MMU会遍历页表，linux内核也会遍历页表，如通过 ``walk_pgd`` 、 ``__create_pgd_mapping`` 、 ``follow_page`` 等函数。通过MMU遍历页表比较容易理解，
+MMU从页表基地址寄存器得到了PGD页表(L0页表)基地址的物理地址，然后从虚拟地址中得到每级页表的索引值，从而找到对应的页表项，页表项中存储了下一级页表的物理基地址，
+以此类推，很容易遍历整个页表。但是站在软件的视角，linux内核的pgd_t, pud_t, pmd_t, pte_t数据结构中并没有存储指向下一级页表的指针。
+
+
+::
+
+	//arch/arm64/include/asm/pgtable-types.h
+	typedef u64 pteval_t;                                                                                                                                                                                                                     
+	typedef u64 pmdval_t;                                                                                                                                                                                                                     
+	typedef u64 pudval_t;                                                                                                                                                                                                                     
+	typedef u64 pgdval_t; 
+
+	typedef struct { pteval_t pte; } pte_t;
+	#define pte_val(x)  ((x).pte)
+	#define __pte(x)    ((pte_t) { (x) } )
+
+	#if CONFIG_PGTABLE_LEVELS > 2
+	typedef struct { pmdval_t pmd; } pmd_t;
+	#define pmd_val(x)  ((x).pmd)
+	#define __pmd(x)    ((pmd_t) { (x) } )
+	#endif
+
+	#if CONFIG_PGTABLE_LEVELS > 3
+	typedef struct { pudval_t pud; } pud_t;
+	#define pud_val(x)  ((x).pud)
+	#define __pud(x)    ((pud_t) { (x) } )
+	#endif
+
+	typedef struct { pgdval_t pgd; } pgd_t;
+	#define pgd_val(x)  ((x).pgd)
+	#define __pgd(x)    ((pgd_t) { (x) } )
+
+``walk_pagetable`` 函数是软件遍历页表的例子，它的作用是遍历进程的页表查找虚拟地址对应页表中的PTE
+
+::
+
+	static pte_t *walk_pagetable(struct mm_struct *mm, unsigned long address)
+	{
+		pgd_t *pgdp = NULL;
+		pud_t *pudp;
+		pmd_t *pmdp;
+        pte_t *ptep;
+
+        pgdp = pgd_offset(mm, address);
+        if(!pgdp || pgd_none(*pgdp))
+            return NULL;
+
+        pudp = pud_offset(pgdp, address);
+        if(!pudp || pud_none(*pudp))
+            return NULL;
+
+        pmdp = pmd_offset(pudp, address);
+        if(!pmdp || pmd_none(*pmdp))
+            return NULL;
+
+        if((pmd_val(*pmdp) & PMD_TYPE_MASK) == PMD_TYPE_SECT)
+            return (pte_t *)pmdp;
+
+        ptep = pte_offset_kernel(pmdp, address);
+        if(!ptep || pte_none(*ptep))
+            return NULL;
+
+        return ptep;
+	}
+
+
+进程的内存描述符mm_struct中PGD成员存储了该进程的PGD页表基地址的虚拟地址，因此通过pgd_offset很方便可以找到PGD页表项的虚拟地址
+
+::
+
+    #define pgd_offset(mm, addr)    (pgd_offset_raw((mm)->pgd, (addr)))
+    #define pgd_offset_raw(pgd, addr)   (pgd + pgd_index(addr))
+    #define pgd_index(addr)     (((addr) >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1))
+
+    #define PTRS_PER_PGD        (1 << (MAX_USER_VA_BITS - PGDIR_SHIFT))
+    #define MAX_USER_VA_BITS    VA_BITS
+    #define VA_BITS         (CONFIG_ARM64_VA_BITS)
+
+    #define PGDIR_SHIFT     ARM64_HW_PGTABLE_LEVEL_SHIFT(4 - CONFIG_PGTABLE_LEVELS)
+    #define ARM64_HW_PGTABLE_LEVEL_SHIFT(n) ((PAGE_SHIFT - 3) * (4 - (n)) + 3)
+    #define PAGE_SHIFT      CONFIG_ARM64_PAGE_SHIFT
+
+    // CONFIG_ARM64_PAGE_SHIFT在.config中定义，一般为CONFIG_ARM64_PAGE_SHIFT=12
+    // CONFIG_PGTABLE_LEVELS在.config中定义，一般为CONFIG_PGTABLE_LEVELS=4
+    // CONFIG_ARM64_VA_BITS在.config中定义，一般为CONFIG_ARM64_VA_BITS=48
+
+
+.. note::
+    比较难理解是Linux内核如何查找到下一级页表基地址的虚拟地址，因为pgd_t数据结构中并没有存储下一个指针来指向下一级页表的虚拟地址
+
+在linux内核中，物理内存会线性映射到内核空间中，偏移量为PAGE_OFFSET，在内核空间中可以很方便的实现虚拟地址到物理地址映射的转换。linux提供了两个宏，其中  ``__pa`` 用于
+根据内核中线性映射的虚拟地址计算对应的物理地址。而  ``__va`` 宏用于根据内核线性映射中物理地址计算对应的虚拟地址
+
+
+::
+
+    #define pud_offset(dir, addr)       ((pud_t *)__va(pud_offset_phys((dir), (addr))))
+    #define pud_offset_phys(dir, addr)  (pgd_page_paddr(READ_ONCE(*(dir))) + pud_index(addr) * sizeof(pud_t))
+    static inline phys_addr_t pgd_page_paddr(pgd_t pgd)
+    {
+        return __pgd_to_phys(pgd);
+    }
+    #define __pgd_to_phys(pgd)  __pte_to_phys(pgd_pte(pgd))
+    #define __pte_to_phys(pte)  (pte_val(pte) & PTE_ADDR_MASK)
+
+   //arch/arm64/include/asm/memory.h
+   #define __pa(x)  __virt_to_phys((unsigned long) (x))
+   #define __va(x)  ((void *)__phys_to_virt((phys_addr_t) (x)))
+
+   #define __phys_to_virt(x)   ((unsigned long)((x) - PHYS_OFFSET) | PAGE_OFFSET)
+
+
+在PGD页表项中存储了指向下一级页表基地址的物理地址，因此通过__va宏，可以快速把物理地址转换成内核空间的虚拟地址。从而找到下一级页表基地址的虚拟地址
+
+
+
+
+
