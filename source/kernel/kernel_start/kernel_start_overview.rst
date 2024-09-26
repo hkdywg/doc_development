@@ -86,15 +86,21 @@ kernel 入口地址的指定
 
 ::
 
-    OUTPUT_ARCH(aarch64)
-    ENTRY(_text)
+    OUTPUT_ARCH(aarch64)    //说明最终编译的格式为aarch64
+    ENTRY(_text)            //表示入口地址为_text
 
     ...
+
+    . = KIMAGE_VADDR + TEXT_OFFSET; //起始链接地址
 
 	.head.text : {
 		_text = .;
 		HEAD_TEXT
 	}
+    .text : {           /* Real text segment        */ 
+
+    ...
+
 
 所以kernel入口地址是.head.text段的代码首地址
 
@@ -174,6 +180,10 @@ stext函数
 
 内核启动的必要条件：MMU关闭，D-cache关闭，x0是传递给FDT blob的物理地址
 
+.. note::
+    数据高速缓存一定要关闭，因为在内核启动过程中取数据时会先访问高速缓存，而可能高速缓存中缓存了以前u-boot的一些数据，这些数据对于内核来说是错误的。
+    而指令高速缓存可以打开，是因为U-boot和内核代码是不重叠的，不会存在指令高速缓存有冲突。
+
 
 stext函数开始执行
 
@@ -214,7 +224,7 @@ stext函数开始执行
 
 - preserve_boot_args
 
-保存从bootloader传递过来的x0~x3参数
+保存从bootloader传递过来的x0~x3参数到boot_args数组
 
 ::
 
