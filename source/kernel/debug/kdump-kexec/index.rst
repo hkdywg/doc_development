@@ -27,6 +27,20 @@ cpu寄存器信息等。在捕获内核中可以通过dgdb等工具查看并调�
     由于kdump利用kexec启动捕获内核绕过了boot，没有硬件复位，使得生产内核 的内
     存得以保留。这是内核崩溃转存的本质。
 
+启动参数配置
+^^^^^^^^^^^^^^
+
+内核启动参数中需要做以下配置，用于crashkernel内存预留
+
+::
+
+    crashkernel=128M    //大小可自定义
+
+如果crashkernel内存预留成功，可以通过/proc/iomem中看到对应项目
+
+.. image::
+    res/crash_kernel_reserve_mem.png
+
 
 kdump kexec安装
 ^^^^^^^^^^^^^^^
@@ -54,6 +68,7 @@ kernel 配置
     CONFIG_DEBUG_INFO=y
     CONFIG_CRASH_DUMP=y
     CONFIG_PROC_VMCORE=y
+    CONFIG_PROC_KCORE=y
 
 
 kexec 应用方法
@@ -85,6 +100,16 @@ kdump-kexec机制正常运行的情况下，kdump会抓取系统崩溃时的函�
 ::
     crash vmlinux vmcore
     在kgdb中输入BT，可找到系统崩溃处的详细信息
+
+
+.. note::
+    crash不容易交叉编译，可以将捕获内核生成的coredump文件　``/proc/vmcore`` 拷贝到主机端．然后在主机端进行分析．
+
+如果遇到 ``crash: cannot determine VA_BITS_ACTUAL`` 问题，可以手动定义位宽
+
+::
+    
+    ./crash vmlinux vmcore --machdep vabits_actual=48
 
 
 
