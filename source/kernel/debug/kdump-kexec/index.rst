@@ -112,6 +112,11 @@ kdump-kexec机制正常运行的情况下，kdump会抓取系统崩溃时的函�
     ./crash vmlinux vmcore --machdep vabits_actual=48
 
 
+.. note::
+    如果使用qemu启动虚拟机的话．可以通过在启动参数中增加以下选项
+    -virtfs local,path=${SHARE_DIR},mount_tag=hostshare,security_model=none,id=hostshare
+    同时在系统启动后挂载 mount -t 9p trans=virtio hostshare /mnt
+
 
 kernel debug之printk
 --------------------
