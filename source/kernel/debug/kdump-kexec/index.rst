@@ -98,6 +98,7 @@ kdump-kexec机制正常运行的情况下，kdump会抓取系统崩溃时的函�
 利用kexec完成捕获内核的启动。在捕获内核中可以查看故障现场情况，分析确认问题。
 
 ::
+
     crash vmlinux vmcore
     在kgdb中输入BT，可找到系统崩溃处的详细信息
 
@@ -114,8 +115,10 @@ kdump-kexec机制正常运行的情况下，kdump会抓取系统崩溃时的函�
 
 .. note::
     如果使用qemu启动虚拟机的话．可以通过在启动参数中增加以下选项
+
     -virtfs local,path=${SHARE_DIR},mount_tag=hostshare,security_model=none,id=hostshare
-    同时在系统启动后挂载 mount -t 9p trans=virtio hostshare /mnt
+
+    同时在系统启动后挂载 mount -t 9p -o trans=virtio hostshare /mnt
 
 
 kernel debug之printk
