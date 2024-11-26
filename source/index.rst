@@ -21,6 +21,7 @@ bick开发手记
     net/index.rst
     rtos/index.rst
     android/index.rst
+    arm64/index.rst
 
 Indices and tables
 ==================
