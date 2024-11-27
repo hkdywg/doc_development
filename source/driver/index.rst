@@ -10,6 +10,7 @@ linux driver modules note
     gpio/index.rst
     kobj/index.rst
     Async_notify/index.rst
+    mmap/index.rst
     net/index.rst
     timer/index.rst
     input/index.rst
