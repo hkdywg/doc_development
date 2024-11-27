@@ -68,7 +68,8 @@ this is a normale text again.
 
 嵌入网址
 
-www.baidu.com
+`官方文档 <https://developer.arm.com/documentation/ddi0487/ka/?lang=en>`_
+
 
 第二小节
 ===========
