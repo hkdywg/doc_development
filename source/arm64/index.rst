@@ -5,4 +5,5 @@ arm64 arch
 
 .. toctree::
     register/index.rst
+    assembly/index.rst
     stack/index.rst
