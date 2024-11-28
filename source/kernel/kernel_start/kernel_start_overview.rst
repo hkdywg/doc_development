@@ -288,12 +288,21 @@ stext函数开始执行
 
 - __create_page_tables
 
+.. note::
+
+    在ARM64架构中，汇编代码初始化阶段会创建两次地址映射。第一次是为了打开MMU操作的准备，因为在打开MMU之前当前代码运行在物理地址之上，而打开
+    MMU之后代码与逆行在虚拟地址之上。为了从物理地址转换到虚拟地址的平滑过渡，ARM推荐VA和PA相等的一段映射(例如虚拟地址0xffff8000通过页表查询映射的物理地址也是0xffff8000)
+    这段映射在Linux中称为identity mapping, 第二次是kernel Image映射
+
+打开MMU之前，我们需要填充页表，也就是告诉MMU虚拟地址和物理地址的对应关系。系统启动初期使用section mapping，因此需要3个页表存储页表项。
+
+
 建立页初始化的过程
 
 ::
 
     __create_page_tables:
-        mov	x28, lr
+        mov	x28, lr                 //保存LR
 
         /*
          * Invalidate the init page tables to avoid potential dirty cache lines
@@ -301,10 +310,10 @@ stext函数开始执行
          * the kernel image, and thus are clean to the PoC per the boot
          * protocol.
          */
-        adrp	x0, init_pg_dir
-        adrp	x1, init_pg_end
-        sub	x1, x1, x0
-        bl	__inval_dcache_area
+        adrp	x0, init_pg_dir     //获取初始化页表基地址
+        adrp	x1, init_pg_end     //获取初始化页表终止地址, 一般为init_pg_dir + PAGE_SIZE
+        sub	x1, x1, x0              //获取初始化页表大小
+        bl	__inval_dcache_area     //将初始化页表对应的cacheline设定为无效
 
         /*
          * Clear the init page tables.
@@ -312,7 +321,7 @@ stext函数开始执行
         adrp	x0, init_pg_dir
         adrp	x1, init_pg_end
         sub	x1, x1, x0
-    1:	stp	xzr, xzr, [x0], #16
+    1:	stp	xzr, xzr, [x0], #16     //将初始化页表地址清零
         stp	xzr, xzr, [x0], #16
         stp	xzr, xzr, [x0], #16
         stp	xzr, xzr, [x0], #16
@@ -324,8 +333,8 @@ stext函数开始执行
         /*
          * Create the identity mapping.
          */
-        adrp	x0, idmap_pg_dir
-        adrp	x3, __idmap_text_start		// __pa(__idmap_text_start)
+        adrp	x0, idmap_pg_dir            //获取idmap页表基地址(物理地址)
+        adrp	x3, __idmap_text_start		//获取内核代码起始地址
 
     #ifdef CONFIG_ARM64_VA_BITS_52
         mrs_s	x6, SYS_ID_AA64MMFR2_EL1
@@ -333,12 +342,12 @@ stext函数开始执行
         mov	x5, #52
         cbnz	x6, 1f
     #endif
-        mov	x5, #VA_BITS_MIN
+        mov	x5, #VA_BITS_MIN                //获取总线位宽
     1:
-        adr_l	x6, vabits_actual
-        str	x5, [x6]
-        dmb	sy
-        dc	ivac, x6		// Invalidate potentially stale cache line
+        adr_l	x6, vabits_actual           //获取vabit_actual变量地址
+        str	x5, [x6]                        //将总线位宽写入到vabits_actual中
+        dmb	sy                              // 内存屏障指令，等待上述指令完成
+        dc	ivac, x6		                //将x6指定的虚拟地址的数据缓存清除
 
         /*
          * VA_BITS may be too small to allow for an ID mapping to be created
@@ -352,13 +361,13 @@ stext函数开始执行
          * this number conveniently equals the number of leading zeroes in
          * the physical address of __idmap_text_end.
          */
-        adrp	x5, __idmap_text_end
-        clz	x5, x5
-        cmp	x5, TCR_T0SZ(VA_BITS)	// default T0SZ small enough?
+        adrp	x5, __idmap_text_end        //获取内核代码终止地址
+        clz	x5, x5                          //地址前导0个数，并赋值给x5
+        cmp	x5, TCR_T0SZ(VA_BITS)	        //判断是否超出地址
         b.ge	1f			// .. then skip VA range extension
 
-        adr_l	x6, idmap_t0sz
-        str	x5, [x6]
+        adr_l	x6, idmap_t0sz              //获取idmap_t0sz变量地址
+        str	x5, [x6]                        //
         dmb	sy
         dc	ivac, x6		// Invalidate potentially stale cache line
 
@@ -388,10 +397,12 @@ stext函数开始执行
         str_l	x4, idmap_ptrs_per_pgd, x5
     #endif
     1:
-        ldr_l	x4, idmap_ptrs_per_pgd
-        mov	x5, x3				// __pa(__idmap_text_start)
-        adr_l	x6, __idmap_text_end		// __pa(__idmap_text_end)
+        ldr_l	x4, idmap_ptrs_per_pgd  //获取idmap_ptrs_per_pgd地址
+        mov	x5, x3				        //x3中保存着内核代码起始地址，赋值为x5
+        adr_l	x6, __idmap_text_end    //获取内核代码终止地址
 
+        //map_memory是一个宏, x0页表位置，x1一级页表项位置, x3需要映射的开始地址，x6需要映射的结束地址
+        //x7 映射的flag, x3映射的物理地址 x4: pgd项个数
         map_memory x0, x1, x3, x6, x7, x3, x4, x10, x11, x12, x13, x14
 
         /*
