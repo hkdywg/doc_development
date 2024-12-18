@@ -149,8 +149,11 @@ ktypes和release方法
 kset仅仅是一个需要相互关联的kobject集合，在这里没有任何规定他们必须是同样的ktye,但如果不是同样type则一定要小心处理
 
 kset提供以下功能:
+
 - 它就像一个装有一堆对象袋子，kset可以被kernel用来跟踪像"所有的块设备"或者"所有的PCI设备驱动"这样的东西
+
 - 一个kset也是一个sysfs里的一个子目录，该目录中能看到这些相关的kobject，每个kset都包含一个kobject，这个kobject可以用来设置成其他kobject的parent。sysfs层次结构中顶层目录就是通过这样的方法构建的
+
 - kset还可以支持kobject的"热插拔"，并会影响uevent事件如何报告给用户空间
 
 以面向对象的观点来看，kset是一个顶层容器类，kset包含有他们自己的kobject，这个kobject是在kset代码管理之下的
