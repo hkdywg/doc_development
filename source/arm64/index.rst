@@ -7,3 +7,4 @@ arm64 arch
     register/index.rst
     assembly/index.rst
     stack/index.rst
+    exception/index.rst
