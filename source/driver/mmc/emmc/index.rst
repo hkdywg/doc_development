@@ -117,8 +117,7 @@ RPMB在实际应用中，通常用于存储 一些有防止非法篡改需求的
 软件分区技术一般是将存储介质划分为多个区域，即SW Partition，然后通过一个Partition table来维护这些SW partitions。在partition table中，每一个条目
 都保存着一个分区的起始地址、大小等属性信息。软件系统在启动后，会去扫描partition table，然后根据这些信息，将各个partition加载到系统中，进行数据存取。
 
-
-
+`详细内容参见 <../../../embedded/gpt/index.rst>`_
 
 
 
