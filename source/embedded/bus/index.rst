@@ -6,3 +6,4 @@
     normal.rst
     usb.rst
     usb_description.rst
+    usb_packet_sample.rst
