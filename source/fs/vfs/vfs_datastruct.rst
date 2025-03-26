@@ -51,6 +51,17 @@ vfs数据结构
 vfs依靠四个主要的数据结构和一些辅助的数据结构来描述其结构信息，这些数据结构表现的就像是对象。每个主要对象都包含由操作函数表构成的操作对象，这些操作对象描述了内核针对这几个
 主要的对象可以进行的操作
 
+- 超级块: struct super_block, 代表一个具体的已挂载的文件系统,对应 ``struct super_operations`` 操作方法 
+
+- 索引节点: struct inode，代表一个具体的文件, 对应 ``struct inode_operations``
+
+- 目录项: struct dentry，是路径的一个组成部分。路径中的目录条目统称为目录项，对应 ``struct dentry_operations``
+
+- 文件对象: struct file, 代表一个打开的文件, 对应 ``file_operation``
+
+.. image::
+    res/vfs_data_operations.svg
+
 自举块
 ^^^^^^^^
 
@@ -219,53 +230,6 @@ vfs依靠四个主要的数据结构和一些辅助的数据结构来描述其�
 
 
 
-- 超级块方法
-
-::
-
-    struct super_operations {
-        //该函数在给定的超级块下创建并初始化一个新的索引节点对象
-        struct inode *(*alloc_inode)(struct super_block *sb);
-        //释放指定的索引节点
-        void (*destroy_inode)(struct inode *);
-        void (*free_inode)(struct inode *);
-
-        //vfs在索引节点被修改时会调用此函数
-        void (*dirty_inode) (struct inode *, int flags);
-        //将指定的inode写回磁盘
-        int (*write_inode) (struct inode *, struct writeback_control *wbc);
-        //删除索引节点
-        int (*drop_inode) (struct inode *);
-        void (*evict_inode) (struct inode *);
-        //用来释放超级块
-        void (*put_super) (struct super_block *);
-        //使文件系统的数据元素与磁盘上的文件系统同步，wait参数指定操作是否同步
-        int (*sync_fs)(struct super_block *sb, int wait);
-        int (*freeze_super) (struct super_block *);
-        int (*freeze_fs) (struct super_block *);
-        int (*thaw_super) (struct super_block *);
-        int (*unfreeze_fs) (struct super_block *);
-        //获取文件系统状态，把文件系统相关的统计信息放在statfs中
-        int (*statfs) (struct dentry *, struct kstatfs *);
-        int (*remount_fs) (struct super_block *, int *, char *);
-        void (*umount_begin) (struct super_block *);
-
-        int (*show_options)(struct seq_file *, struct dentry *);
-        int (*show_devname)(struct seq_file *, struct dentry *);
-        int (*show_path)(struct seq_file *, struct dentry *);
-        int (*show_stats)(struct seq_file *, struct dentry *);
-    #ifdef CONFIG_QUOTA
-        ssize_t (*quota_read)(struct super_block *, int, char *, size_t, loff_t);
-        ssize_t (*quota_write)(struct super_block *, int, const char *, size_t, loff_t);
-        struct dquot **(*get_dquots)(struct inode *);
-    #endif
-        int (*bdev_try_to_free_page)(struct super_block*, struct page*, gfp_t);
-        long (*nr_cached_objects)(struct super_block *,
-                      struct shrink_control *);
-        long (*free_cached_objects)(struct super_block *,
-                        struct shrink_control *);
-    };
-
 
 索引节点
 ^^^^^^^^^^
@@ -274,7 +238,7 @@ vfs依靠四个主要的数据结构和一些辅助的数据结构来描述其�
 所必须的全部信息，保存的其实是实际的数据的一些信息，这些信息称为元数据。例如文件大下，设备标识符，用户标识符，文件模式，扩展属性，文件读取或修改的时间戳，链接数量，指向存储该
 内容的磁盘区块的指针，文件分类等等。这些信息一部分是存储在磁盘特定位置，另外一部分是加载时动态填充的
 
-数据:元数据+数据本身
+文件:元数据+数据本身
 
 .. note::
     inode有两种，一种是vfs的inode，一种是具体文件系统的inode，前者在内存中，后者在磁盘中。所以每次其实是将磁盘中的inode填充内存中的inode，这样才算是使用了磁盘文件inode
@@ -412,52 +376,13 @@ inode号是唯一的，表示不同的文件。其实在linux内部的时候，�
 
 
 
-- 索引节点方法
-
-::
-
-
-    struct inode_operations {
-        struct dentry * (*lookup) (struct inode *,struct dentry *, unsigned int);   //查找指定文件的dentry
-        const char * (*get_link) (struct dentry *, struct inode *, struct delayed_call *);
-        int (*permission) (struct inode *, int);
-        struct posix_acl * (*get_acl)(struct inode *, int);
-
-        int (*readlink) (struct dentry *, char __user *,int);
-        //如果该inode描述一个目录文件，那么当在该目录下创建或者打开一个文件时，内核必须为这个文件创建一个inode。vfs通过调用该inode的i_op->create()
-        //来完成上述新inode的创建。该函数第一个参数为该目录的inode，第二个参数是要打开新文件的dentry，第三个参数是对该文件的访问权限。如果该inode描述的是一个普通文件
-        //那么该inode永远不会调用这个create函数
-        int (*create) (struct inode *,struct dentry *, umode_t, bool);
-        //用于在指定目录下创建一个硬链接，这个link函数会被系统调用link调用
-        int (*link) (struct dentry *,struct inode *,struct dentry *);
-        int (*unlink) (struct inode *,struct dentry *);
-        int (*symlink) (struct inode *,struct dentry *,const char *);
-        //创建目录,被系统调用mkdir调用
-        int (*mkdir) (struct inode *,struct dentry *,umode_t);
-        int (*rmdir) (struct inode *,struct dentry *);
-        int (*mknod) (struct inode *,struct dentry *,umode_t,dev_t);
-        int (*rename) (struct inode *, struct dentry *,
-                struct inode *, struct dentry *, unsigned int);
-        int (*setattr) (struct dentry *, struct iattr *);
-        int (*getattr) (const struct path *, struct kstat *, u32, unsigned int);
-        ssize_t (*listxattr) (struct dentry *, char *, size_t);
-        int (*fiemap)(struct inode *, struct fiemap_extent_info *, u64 start,
-                  u64 len);
-        int (*update_time)(struct inode *, struct timespec64 *, int);
-        int (*atomic_open)(struct inode *, struct dentry *,
-                   struct file *, unsigned open_flag,
-                   umode_t create_mode);
-        int (*tmpfile) (struct inode *, struct dentry *, umode_t);
-        int (*set_acl)(struct inode *, struct posix_acl *, int);
-    } ____cacheline_aligned;
-
 
 目录项
 ^^^^^^^^
 
 所谓文件，就是按照一定的形式存储在介质上的信息，所以一个文件其实包含了两方面的信息，一个是存储的数据本身，另一个是有关该文件的组织和管理的信息。
 在内存中，每个文件都有一个dentry(目录项)和inode(索引节点)结构，dentry记录着文件名，上级目录等信息，正是它形成了我们所看到的树状结构。而有关该文件的组织
-和管理的喜喜主要存在inode里面，它记录者文件在存储介质上的位置与分布. 同时dentry->d_inode指向响应的inode结构，dentry与inode是多对一的关系，因为有可能一个
+和管理的信息主要存在inode里面，它记录者文件在存储介质上的位置与分布. 同时dentry->d_inode指向相应的inode结构，dentry与inode是多对一的关系，因为有可能一个
 文件有好几个文件名。所有的dentry用d_parent和d_child连接起来,就形成了我们熟悉的树状结构.
 
 .. note::
@@ -500,32 +425,11 @@ inode号是唯一的，表示不同的文件。其实在linux内部的时候，�
         } d_u;
     } __randomize_layout;
 
+.. note::
+    dentry对象没有对应的磁盘数据结构，VFS根据字符串形式的路径名现场创建它。由于dentry对象并非保存在磁盘上，所以dentry结构体没有
+    是否被修改的标志(脏状态)
 
-- dentry相关的操作（inode里面已经包含了mkdir，rmdir，mknod之类的了）
 
-::
-
-	struct dentry_operations {
-			/* 该函数判断目录对象是否有效。VFS准备从dcache中使用一个目录项时，会调用该函数. */
-		int (*d_revalidate)(struct dentry *, unsigned int);       
-		int (*d_weak_revalidate)(struct dentry *, unsigned int);
-			/* 该目录生成散列值，当目录项要加入到散列表时，VFS要调用此函数。 */
-		int (*d_hash)(const struct dentry *, struct qstr *);    
-			/* 该函数来比较name1和name2这两个文件名。使用该函数要加dcache_lock锁。 */
-		int (*d_compare)(const struct dentry *, const struct dentry *,
-				unsigned int, const char *, const struct qstr *);
-			/* 当d_count=0时，VFS调用次函数。使用该函数要叫 dcache_lock锁。 */
-		int (*d_delete)(const struct dentry *);
-			/* 当该目录对象将要被释放时，VFS调用该函数。 */
-		void (*d_release)(struct dentry *);
-		void (*d_prune)(struct dentry *);
-			/* 当一个目录项丢失了其索引节点时，VFS就掉用该函数。 */
-		void (*d_iput)(struct dentry *, struct inode *);
-		char *(*d_dname)(struct dentry *, char *, int);
-		struct vfsmount *(*d_automount)(struct path *);
-		int (*d_manage)(struct dentry *, bool);
-	} ____cacheline_aligned;
-	 
 
 文件对象
 ^^^^^^^^^
