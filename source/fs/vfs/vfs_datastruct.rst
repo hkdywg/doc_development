@@ -15,7 +15,7 @@ VFS 是底层文件系统的主要接口。这个组件导出一组接口，然�
 
 
 .. image::
-    res/vfs_data_struct.svg
+    res/vfs_data_diagram.svg
 
 概念
 --------
@@ -30,10 +30,11 @@ VFS 是底层文件系统的主要接口。这个组件导出一组接口，然�
 
 超级块: 用于存储文件系统的控制信息的数据结构。描述文件系统的状态，文件系统类型，大小，区块数，索引节点数等,存放于磁盘的特定扇区中
 
-以上几个概念在磁盘中的位置关系如下图所示
-
 .. image::
-    res/relations.jpg
+    res/dentry_inode_superblock.png
+
+.. note::
+    Linux 文件系统会为每个文件分配两个数据结构：索引节点（index node）和目录项（directory entry），它们主要用来记录文件的元信息和目录层次结构
 
 
 **关于文件系统的三个易混淆的概念**
@@ -59,8 +60,16 @@ vfs依靠四个主要的数据结构和一些辅助的数据结构来描述其�
 
 - 文件对象: struct file, 代表一个打开的文件, 对应 ``file_operation``
 
+**vfs关键数据结构汇总**
+
+.. image::
+    res/vfs_data_struct.svg
+
+**vfs关键数据结构对应的operation汇总**
+
 .. image::
     res/vfs_data_operations.svg
+
 
 自举块
 ^^^^^^^^
@@ -76,159 +85,6 @@ vfs依靠四个主要的数据结构和一些辅助的数据结构来描述其�
 它记录的信息主要有:block与inode的总量，使用量，剩余量，文件系统的挂载时间，最近一次写入数据的时间等。可以说，没有超级块，就没有这个文件系统。inode是用来记录文件属性的，比如说
 文件的权限、所有者与组、文件的大小、修改时间等。一个文件占用一个inode，系统读取文件时，首先需要找到inode，并分析inode所记录的权限与用户是否符合，若符合才能够开始实际读取block
 的内容。其处于文件系统开始位置的1k处，所占大小为1k。
-
-以下为超级块的数据结构
-
-::
-
-
-    struct super_block {
-        //指向超级块链表的指针,s_list是一个双向循环链表，吧所有的super_block连接起来，一个super_block代表一个在linux上的文件系统
-        struct list_head	s_list;		/* Keep this first */
-        //包含该具体文件系统的块设备标识符，例如对于/dev/hda1,其设备标识符为0x301
-        dev_t			s_dev;		/* search index; _not_ kdev_t */
-        //blocksize占用的位数
-        unsigned char		s_blocksize_bits;
-        //文件系统中数据块大小，以字节为单位
-        unsigned long		s_blocksize;
-        //文件系统中允许的最大文件大小
-        loff_t			s_maxbytes;	/* Max file size */
-        //文件系统类型
-        struct file_system_type	*s_type;
-        //超级块方法,用于超级块操作的函数集合
-        const struct super_operations	*s_op;
-        //文件系统中用于限额操作的函数集合
-        const struct dquot_operations	*dq_op;
-        //用于配置磁盘限额的方法，处理来自用户空间的请求
-        const struct quotactl_ops	*s_qcop;
-        //导出方法
-        const struct export_operations *s_export_op;
-        //安装标识
-        unsigned long		s_flags;
-        unsigned long		s_iflags;	/* internal SB_I_* flags */
-        //区别于其他文件系统的标识
-        unsigned long		s_magic;
-        //指向该具体文件系统安装目录的目录项
-        struct dentry		*s_root;
-        struct rw_semaphore	s_umount;
-        //对超级块的使用计数
-        int			s_count;
-        //引用计数
-        atomic_t		s_active;
-    #ifdef CONFIG_SECURITY
-        void                    *s_security;
-    #endif
-        const struct xattr_handler **s_xattr;
-    #ifdef CONFIG_FS_ENCRYPTION
-        const struct fscrypt_operations	*s_cop;
-        struct key		*s_master_keys; /* master crypto keys in use */
-    #endif
-    #ifdef CONFIG_FS_VERITY
-        const struct fsverity_operations *s_vop;
-    #endif
-        struct hlist_bl_head	s_roots;	/* alternate root dentries for NFS */
-        struct list_head	s_mounts;	/* list of mounts; _not_ for fs use */
-        //指向文件系统被安装的块设备
-        struct block_device	*s_bdev;
-        //块设备信息
-        struct backing_dev_info *s_bdi;
-        struct mtd_info		*s_mtd;
-        struct hlist_node	s_instances;
-        unsigned int		s_quota_types;	/* Bitmask of supported quota types */
-        struct quota_info	s_dquot;	/* Diskquota specific options */
-
-        struct sb_writers	s_writers;
-
-        /*
-         * Keep s_fs_info, s_time_gran, s_fsnotify_mask, and
-         * s_fsnotify_marks together for cache efficiency. They are frequently
-         * accessed and rarely modified.
-         */
-        void			*s_fs_info;	/* Filesystem private info */
-
-        /* Granularity of c/m/atime in ns (cannot be worse than a second) */
-        u32			s_time_gran;
-        /* Time limits for c/m/atime in seconds */
-        time64_t		   s_time_min;
-        time64_t		   s_time_max;
-    #ifdef CONFIG_FSNOTIFY
-        __u32			s_fsnotify_mask;
-        struct fsnotify_mark_connector __rcu	*s_fsnotify_marks;
-    #endif
-
-        char			s_id[32];	/* Informational name */
-        uuid_t			s_uuid;		/* UUID */
-
-        unsigned int		s_max_links;
-        fmode_t			s_mode;
-
-        /*
-         * The next field is for VFS *only*. No filesystems have any business
-         * even looking at it. You had been warned.
-         */
-        struct mutex s_vfs_rename_mutex;	/* Kludge */
-
-        /*
-         * Filesystem subtype.  If non-empty the filesystem type field
-         * in /proc/mounts will be "type.subtype"
-         */
-        const char *s_subtype;
-
-        const struct dentry_operations *s_d_op; /* default d_op for dentries */
-
-        /*
-         * Saved pool identifier for cleancache (-1 means none)
-         */
-        int cleancache_poolid;
-
-        struct shrinker s_shrink;	/* per-sb shrinker handle */
-
-        /* Number of inodes with nlink == 0 but still referenced */
-        atomic_long_t s_remove_count;
-
-        /* Pending fsnotify inode refs */
-        atomic_long_t s_fsnotify_inode_refs;
-
-        /* Being remounted read-only */
-        int s_readonly_remount;
-
-        /* AIO completions deferred from interrupt context */
-        struct workqueue_struct *s_dio_done_wq;
-        struct hlist_head s_pins;
-
-        /*
-         * Owning user namespace and default context in which to
-         * interpret filesystem uids, gids, quotas, device nodes,
-         * xattrs and security labels.
-         */
-        struct user_namespace *s_user_ns;
-
-        /*
-         * The list_lru structure is essentially just a pointer to a table
-         * of per-node lru lists, each of which has its own spinlock.
-         * There is no need to put them into separate cachelines.
-         */
-        struct list_lru		s_dentry_lru;
-        struct list_lru		s_inode_lru;
-        struct rcu_head		rcu;
-        struct work_struct	destroy_work;
-
-        struct mutex		s_sync_lock;	/* sync serialisation lock */
-
-        /*
-         * Indicates how deep in a filesystem stack this SB is
-         */
-        int s_stack_depth;
-
-        /* s_inode_list_lock protects s_inodes */
-        spinlock_t		s_inode_list_lock ____cacheline_aligned_in_smp;
-        struct list_head	s_inodes;	/* all inodes */
-
-        spinlock_t		s_inode_wblist_lock;
-        struct list_head	s_inodes_wb;	/* writeback inodes */
-    } __randomize_layout;
-
-
 
 
 索引节点
@@ -258,124 +114,6 @@ inode号是唯一的，表示不同的文件。其实在linux内部的时候，�
 当创建一个文件的时候就给文件分配了一个inode。一个inode只对应一个实际文件，一个文件也只有一个inode。inodes最大数量就是文件的最大数量
 
 
-::
-
-
-    struct inode {
-        umode_t			i_mode;     //访问权控制
-        unsigned short		i_opflags;
-        kuid_t			i_uid;  //使用者的ID
-        kgid_t			i_gid;  //用户组ID
-        unsigned int		i_flags;    //文件系统标志
-
-    #ifdef CONFIG_FS_POSIX_ACL
-        struct posix_acl	*i_acl;
-        struct posix_acl	*i_default_acl;
-    #endif
-
-        const struct inode_operations	*i_op;  //索引节点操作表
-        struct super_block	*i_sb;  //相关的超级块
-        struct address_space	*i_mapping; //相关的地址映射
-
-    #ifdef CONFIG_SECURITY
-        void			*i_security;
-    #endif
-
-        /* Stat data, not accessed from path walking */
-        unsigned long		i_ino;  //索引节点号
-        /*
-         * Filesystems may only read i_nlink directly.  They shall use the
-         * following functions for modification:
-         *
-         *    (set|clear|inc|drop)_nlink
-         *    inode_(inc|dec)_link_count
-         */
-        union {
-            const unsigned int i_nlink;
-            unsigned int __i_nlink; //硬连接数
-        };
-        dev_t			i_rdev; //实际设备标识符号
-        loff_t			i_size;
-        struct timespec64	i_atime;    //最后访问时间
-        struct timespec64	i_mtime;    //最后修改时间
-        struct timespec64	i_ctime;    //最后改变时间
-        spinlock_t		i_lock;	/* i_blocks, i_bytes, maybe i_size */
-        unsigned short          i_bytes;    //使用的字节数
-        u8			i_blkbits;
-        u8			i_write_hint;
-        blkcnt_t		i_blocks;   //文件的块数
-
-    #ifdef __NEED_I_SIZE_ORDERED
-        seqcount_t		i_size_seqcount;
-    #endif
-
-        /* Misc */
-        unsigned long		i_state;
-        struct rw_semaphore	i_rwsem;
-
-        unsigned long		dirtied_when;	/* jiffies of first dirtying */
-        unsigned long		dirtied_time_when;
-
-        struct hlist_node	i_hash; //为了提高查找inode的效率，每一个inode都会有一个hash值
-        struct list_head	i_io_list;	/* backing dev IO list */
-    #ifdef CONFIG_CGROUP_WRITEBACK
-        struct bdi_writeback	*i_wb;		/* the associated cgroup wb */
-
-        /* foreign inode detection, see wbc_detach_inode() */
-        int			i_wb_frn_winner;
-        u16			i_wb_frn_avg_time;
-        u16			i_wb_frn_history;
-    #endif
-        struct list_head	i_lru;		/* inode LRU list */
-        struct list_head	i_sb_list;  //链接一个文件系统中所有inode的链表
-        struct list_head	i_wb_list;	/* backing dev writeback list */
-        union {
-            struct hlist_head	i_dentry;   //目录项链表
-            struct rcu_head		i_rcu;  //
-        };
-        atomic64_t		i_version;
-        atomic64_t		i_sequence; /* see futex */
-        atomic_t		i_count;    //引用计数
-        atomic_t		i_dio_count;
-        atomic_t		i_writecount;   //写着计数
-    #if defined(CONFIG_IMA) || defined(CONFIG_FILE_LOCKING)
-        atomic_t		i_readcount; /* struct files open RO */
-    #endif
-        union {
-            const struct file_operations	*i_fop;	/* former ->i_op->default_file_ops */
-            void (*free_inode)(struct inode *);
-        };
-        struct file_lock_context	*i_flctx;
-        struct address_space	i_data;
-        struct list_head	i_devices;
-        union {
-            struct pipe_inode_info	*i_pipe;    //管道信息
-            struct block_device	*i_bdev;    //块设备驱动节点
-            struct cdev		*i_cdev;    //字符设备驱动节点
-            char			*i_link;
-            unsigned		i_dir_seq;
-        };
-
-        __u32			i_generation;
-
-    #ifdef CONFIG_FSNOTIFY
-        __u32			i_fsnotify_mask; /* all events this inode cares about */
-        struct fsnotify_mark_connector __rcu	*i_fsnotify_marks;
-    #endif
-
-    #ifdef CONFIG_FS_ENCRYPTION
-        struct fscrypt_info	*i_crypt_info;
-    #endif
-
-    #ifdef CONFIG_FS_VERITY
-        struct fsverity_info	*i_verity_info;
-    #endif
-
-        void			*i_private; /* fs or device private pointer */
-    } __randomize_layout;
-
-
-
 
 目录项
 ^^^^^^^^
@@ -387,43 +125,6 @@ inode号是唯一的，表示不同的文件。其实在linux内部的时候，�
 
 .. note::
     不管是文件夹还是最终的文件，都是属于目录项. 目录也是一种文件，所以也存在对应的inode
-
-
-::
-
-    struct dentry {
-        /* RCU lookup touched fields */
-        unsigned int d_flags;		/* protected by d_lock */
-        seqcount_t d_seq;		/* per dentry seqlock */
-        struct hlist_bl_node d_hash;	/* lookup hash list */
-        struct dentry *d_parent;	/* parent directory */
-        struct qstr d_name;
-        struct inode *d_inode;		/* Where the name belongs to - NULL is
-                         * negative */
-        unsigned char d_iname[DNAME_INLINE_LEN];	/* small names */
-
-        /* Ref lookup also touches following */
-        struct lockref d_lockref;	/* per-dentry lock and refcount */
-        const struct dentry_operations *d_op;
-        struct super_block *d_sb;	/* The root of the dentry tree */
-        unsigned long d_time;		/* used by d_revalidate */
-        void *d_fsdata;			/* fs-specific data */
-
-        union {
-            struct list_head d_lru;		/* LRU list */
-            wait_queue_head_t *d_wait;	/* in-lookup ones only */
-        };
-        struct list_head d_child;	/* child of parent list */
-        struct list_head d_subdirs;	/* our children */
-        /*
-         * d_alias and d_rcu can share memory
-         */
-        union {
-            struct hlist_node d_alias;	/* inode alias list */
-            struct hlist_bl_node d_in_lookup_hash;	/* only for in-lookup ones */
-            struct rcu_head d_rcu;
-        } d_u;
-    } __randomize_layout;
 
 .. note::
     dentry对象没有对应的磁盘数据结构，VFS根据字符串形式的路径名现场创建它。由于dentry对象并非保存在磁盘上，所以dentry结构体没有
@@ -439,46 +140,6 @@ inode号是唯一的，表示不同的文件。其实在linux内部的时候，�
 进程其实是通过文件描述符来操作文件的，注意每个文件都有一个32位的数字来表示下一个读写的位置，这个数字叫做文件位置。一般情况下打开文件后，打开位置都是从0开始。linux用
 file结构体来保存打开的文件的位置，所以file称为打开的文件描述
 
-::
-
-	struct file {
-		union {
-			struct llist_node	fu_llist;    /* 每个文件系统中被打开的文件都会形成一个双链表 */
-			struct rcu_head 	fu_rcuhead;
-		} f_u;
-		struct path		f_path;                
-	#define f_dentry	f_path.dentry	//f_path.dentry指针指向相关的目录项对象
-		struct inode		*f_inode;	/* cached value */
-		const struct file_operations	*f_op;    /* 指向文件操作表的指针 */
-	ENODATA
-		/*
-		 * Protects f_ep_links, f_flags.
-		 * Must not be taken from IRQ context.
-		 */
-		spinlock_t		f_lock;
-		atomic_long_t		f_count;                /* 文件对象的使用计数 */
-		unsigned int 		f_flags;                /* 打开文件时所指定的标志 */
-		fmode_t			f_mode;                     /* 文件的访问模式(权限等) */
-		struct mutex		f_pos_lock;
-		loff_t			f_pos;                      /* 文件当前的位移量 */
-		struct fown_struct	f_owner;
-		const struct cred	*f_cred;
-		struct file_ra_state	f_ra;               /* /预读状态 */
-	 
-		u64			f_version;                      /* 版本号 */
-	#ifdef CONFIG_SECURITY    
-		void			*f_security;                /* 安全模块 */
-	#endif
-		/* needed for tty driver, and maybe others */
-		void			*private_data;              /* /tty设备hook */
-	 
-	#ifdef CONFIG_EPOLL
-		/* Used by fs/eventpoll.c to link all the hooks to this file */
-		struct list_head	f_ep_links;
-		struct list_head	f_tfile_llink;
-	#endif /* #ifdef CONFIG_EPOLL */
-		struct address_space	*f_mapping;        /* 页缓存映射 */
-	} __attribute__((aligned(4)));	/* lest something weird decides that 2 is OK */
 
 .. note::
 	文件对象实际上没有对应的磁盘数据，所以在结构体中没有代表其对象是否为脏，是否需要写回磁盘的标志。文件对象通过f_path.dentry指针指向相关的目录项对象，
@@ -603,17 +264,6 @@ file结构体来保存打开的文件的位置，所以file称为打开的文件
 
 .. image::
 	res/vfs_mt_sb_fs.gif
-
-- 进程与超级块、文件、索引结点、目录项的关系
-
-.. image::
-	res/vfs_st_sp_fs.gif
-
-
-以下图示说明了上述概念之间的联系
-
-.. image::
-	res/fsstruct_relation.jpg
 
 .. note::
     file，dentry，inode，super_block以及超级块的位置约定都属于vfs层，inode中的i_fop和file中f_op一样的，虽然每个文件都有目录项和索引节点在磁盘上，但是只有在需要时才会在内存中
