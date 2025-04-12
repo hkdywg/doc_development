@@ -22,6 +22,7 @@ kevin开发手记
     rtos/index.rst
     android/index.rst
     arm64/index.rst
+    fpga/index.rst
 
 Indices and tables
 ==================
