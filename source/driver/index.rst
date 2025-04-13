@@ -6,7 +6,7 @@ linux driver modules note
     mmc/index.rst
     i2c/index.rst
     irq/index.rst
-    udev_sysfs/index.rst
+    device_module/index.rst
     gpio/index.rst
     kobj/index.rst
     Async_notify/index.rst
