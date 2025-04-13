@@ -15,5 +15,6 @@ embeded
     core/index.rst
     hardware/index.rst
     buildroot/index.rst
+    udev/index.rst
 
 
