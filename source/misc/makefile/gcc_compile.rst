@@ -148,3 +148,26 @@ gcc和g++分别是gnu的c以及c++编译器，gcc/g++在执行编译工作的时
   ...  ##库文件
   -Wl,--end-group
 
+
+toochain命名规则
+--------------------
+
+命名规则为: arch[-vendor][-os][-(gnu)eabi]  
+
+- arch: 体系架构，如ARM, MIPS
+  
+- vendor: 工具链提供商(如果没有厂商名称常用的是none和unknown)
+
+- os: 目标操作系统，如linux
+
+- eabi: 嵌入式应用二进制接口
+
+
+
+
+
+
+
+
+
+
