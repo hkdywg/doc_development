@@ -3,4 +3,5 @@
 
 .. toctree::
     ./lvds.rst
+    ./mapping.rst
 
