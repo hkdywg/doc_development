@@ -4,4 +4,5 @@
 .. toctree::
     ./lvds.rst
     ./mapping.rst
+    ./histogram.rst
 
