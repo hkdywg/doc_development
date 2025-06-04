@@ -1,6 +1,9 @@
 进程管理与调度
 ==============
 
+.. image::
+    res/task_topview.svg
+
 .. toctree::
     process_overview/index.rst
     process_create/index.rst
