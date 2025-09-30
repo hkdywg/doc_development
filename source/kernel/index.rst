@@ -15,4 +15,5 @@ http://kernel.org/doc/html/v4.19/index.html
     kernel_start/index.rst
     concurrenty_contrl/index.rst
     kernel_actual_combat/index.rst
+    performance_optimzation/index.rst
     misc/index.rst
