@@ -24,6 +24,18 @@ http://www.brendangregg.com/perf.html
 .. image:: res/linux_observability_tools.png
 
 
+CPU性能优化
+----------------
+
+.. image::
+    res/cpu_perf.png
+
+.. image::
+    res/cpu_perf_tools.png
+
+.. image::
+    res/cpu_perf_metric.png
+
 分析内存瓶颈
 ------------
 
