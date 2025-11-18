@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.8.5. BT656 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.9. 嵌入式系统常见总线" href="../bus/index.html" />
+    <link rel="prev" title="8.8.4. MIPI DSI" href="mipi_dsi.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.8. 视频相关</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="video_interface.html">8.8.1. 视频传输接口协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LCD_timing.html">8.8.2. LCD timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html">8.8.3. MIPI CSI传输协议解析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_dsi.html">8.8.4. MIPI DSI</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.8.5. BT656</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">8.8.5.1. 基本概念</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt656-vs-bt601">8.8.5.2. BT656 VS BT601</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ntsc-vs-pal">8.8.5.3. NTSC VS PAL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bt601-vs-bt709-vs-bt2020">8.8.5.4. BT601 VS BT709 VS BT2020</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.8. </span>视频相关</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.8.5. </span>BT656</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/video/bt656.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bt656">
+<h1><span class="section-number">8.8.5. </span>BT656<a class="headerlink" href="#bt656" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">8.8.5.1. </span>基本概念<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>帧</p></li>
+</ul>
+<p>一个视频序列是由N个帧组成的，采集图像的时候有两种扫描方式，一种是逐行扫描(progressive scanning),一种是隔行扫描(interlaced scanning).对于隔行扫描，
+每一帧一般有两个场(field),一个叫顶场(top filed),也叫偶场，一个叫底场(bottom field),也叫奇场．</p>
+<ul class="simple">
+<li><p>场</p></li>
+</ul>
+<p>BT656标准中，一个场由三个部分组成</p>
+<p>场 = 处置消隐顶场(First Vertical Blanking) + 有效数据行(Active Video) + 垂直消隐底场(Second Vertical Blanking)</p>
+<p>对于顶场，有效行数据就是所有的偶数行，而底场，有效行数据就是所有的奇数行．顶场和底场的空白行的个数也有所不同，对于一个标准的8 bit Bt656(4:2:2) SDTV视频而言，
+其格式定义如下</p>
+<img alt="../../_images/blanking.png" src="../../_images/blanking.png" />
+<p>由上图可知，对于PAL制式，每一帧有625行，其中顶场有288行，底场有效行数据也是288行，其余行皆为垂直消隐信号．因为PAL制式的SDTV分辨率为720*576.</p>
+<p>上图中F标记奇偶场，V标记是否为垂直消隐信号</p>
+<ul class="simple">
+<li><p>行</p></li>
+</ul>
+<p>一行由四个部分组成</p>
+<p>行 = 结束码(EAV) + 水平消隐(Horizontal Vertical Blanking) + 起始码(SAV) + 有效数据(Active Video)</p>
+<img alt="../../_images/line_struct.png" src="../../_images/line_struct.png" />
+<p>EAV和SAV的四个字节格式规定为 <code class="docutils literal notranslate"><span class="pre">FF</span> <span class="pre">00</span> <span class="pre">00</span> <span class="pre">XY</span></code> ,前三个字节是固定的，最后一个字节根据场，消隐信息而定，其8bit定义为 <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">F</span> <span class="pre">V</span> <span class="pre">H</span> <span class="pre">P3</span> <span class="pre">P2</span> <span class="pre">P1</span> <span class="pre">P0</span></code></p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>F标记场信息，顶场为0,底场为1,V标记消隐信息，传输消隐数据时为1,传输有效视频数据时为0．H标记EAV还是SAV,SAV为0,EAV为1, P0-P3为保护bit,其值取决于FHV起到校验作用</p>
+</div>
+<img alt="../../_images/SAV_EAV.png" src="../../_images/SAV_EAV.png" />
+<p>总结如下</p>
+<img alt="../../_images/bt656_struct.jpg" src="../../_images/bt656_struct.jpg" />
+<ul class="simple">
+<li><p>硬件接口</p></li>
+</ul>
+<p>BT.656输入接口有一根pixel_CLK时钟信号(27M), 8根YUV的数据信号</p>
+</section>
+<section id="bt656-vs-bt601">
+<h2><span class="section-number">8.8.5.2. </span>BT656 VS BT601<a class="headerlink" href="#bt656-vs-bt601" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>BT601是16位数据传输，Y U V信号同时传输，是并行数据，行场同步信号单独输出, 21芯</p></li>
+<li><p>BT656是8/10位数据传输，不需要硬线同步信号，先传Y后传UV，行场同步信号嵌入在数据流中, 9芯</p></li>
+</ul>
+</section>
+<section id="ntsc-vs-pal">
+<h2><span class="section-number">8.8.5.3. </span>NTSC VS PAL<a class="headerlink" href="#ntsc-vs-pal" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>PAL每秒25帧，奇场在前，偶场在后，分辨率为720*576, 24bit的色彩位深，画面宽高比为4:3</p></li>
+<li><p>NTSC每秒30帧，分辨率为720*486</p></li>
+</ul>
+</section>
+<section id="bt601-vs-bt709-vs-bt2020">
+<h2><span class="section-number">8.8.5.4. </span>BT601 VS BT709 VS BT2020<a class="headerlink" href="#bt601-vs-bt709-vs-bt2020" title="此标题的永久链接"></a></h2>
+<p>一般而言，BT601针对标清视频，BT709针对HD高清视频，BT2020针对超高清视频</p>
+<ul class="simple">
+<li><p>RGB转BT601 YUV</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span>  <span class="o">=</span>  <span class="mf">0.257</span><span class="n">R</span> <span class="o">+</span> <span class="mf">0.504</span><span class="n">G</span> <span class="o">+</span> <span class="mf">0.098</span><span class="n">B</span> <span class="o">+</span> <span class="mi">16</span>
+<span class="n">Cb</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.148</span><span class="n">R</span> <span class="o">-</span> <span class="mf">0.291</span><span class="n">G</span> <span class="o">+</span> <span class="mf">0.439</span><span class="n">B</span> <span class="o">+</span> <span class="mi">128</span>
+<span class="n">Cr</span> <span class="o">=</span>  <span class="mf">0.439</span><span class="n">R</span> <span class="o">-</span> <span class="mf">0.368</span><span class="n">G</span> <span class="o">-</span> <span class="mf">0.071</span><span class="n">B</span> <span class="o">+</span> <span class="mi">128</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>BT601 YUV转RGB</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">R</span> <span class="o">=</span> <span class="mf">1.164</span><span class="p">(</span><span class="n">Y</span><span class="o">-</span><span class="mi">16</span><span class="p">)</span>                 <span class="o">+</span> <span class="mf">1.596</span><span class="p">(</span><span class="n">Cr</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">G</span> <span class="o">=</span> <span class="mf">1.164</span><span class="p">(</span><span class="n">Y</span><span class="o">-</span><span class="mi">16</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.391</span><span class="p">(</span><span class="n">Cb</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.813</span><span class="p">(</span><span class="n">Cr</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="mf">1.164</span><span class="p">(</span><span class="n">Y</span><span class="o">-</span><span class="mi">16</span><span class="p">)</span> <span class="o">+</span> <span class="mf">2.018</span><span class="p">(</span><span class="n">Cb</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这里的yuv是局部色域的，如果是全色域，转换公式如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">R</span> <span class="o">=</span> <span class="n">Y</span>                 <span class="o">+</span> <span class="mf">1.402</span><span class="p">(</span><span class="n">Cr</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">-</span> <span class="mf">0.344</span><span class="p">(</span><span class="n">Cb</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.714</span><span class="p">(</span><span class="n">Cr</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">+</span> <span class="mf">1.772</span><span class="p">(</span><span class="n">Cb</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>RGB转BT709 YUV</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Y</span>  <span class="o">=</span>  <span class="mf">0.183</span><span class="n">R</span> <span class="o">+</span> <span class="mf">0.614</span><span class="n">G</span> <span class="o">+</span> <span class="mf">0.062</span><span class="n">B</span> <span class="o">+</span> <span class="mi">16</span>
+<span class="n">Cb</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.101</span><span class="n">R</span> <span class="o">-</span> <span class="mf">0.339</span><span class="n">G</span> <span class="o">+</span> <span class="mf">0.439</span><span class="n">B</span> <span class="o">+</span> <span class="mi">128</span>
+<span class="n">Cr</span> <span class="o">=</span>  <span class="mf">0.439</span><span class="n">R</span> <span class="o">-</span> <span class="mf">0.399</span><span class="n">G</span> <span class="o">-</span> <span class="mf">0.040</span><span class="n">B</span> <span class="o">+</span> <span class="mi">128</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>BT709转RGB</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">R</span> <span class="o">=</span> <span class="mf">1.164</span><span class="p">(</span><span class="n">Y</span><span class="o">-</span><span class="mi">16</span><span class="p">)</span>                 <span class="o">+</span> <span class="mf">1.793</span><span class="p">(</span><span class="n">Cr</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">G</span> <span class="o">=</span> <span class="mf">1.164</span><span class="p">(</span><span class="n">Y</span><span class="o">-</span><span class="mi">16</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.213</span><span class="p">(</span><span class="n">Cb</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.533</span><span class="p">(</span><span class="n">Cr</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="mf">1.164</span><span class="p">(</span><span class="n">Y</span><span class="o">-</span><span class="mi">16</span><span class="p">)</span> <span class="o">+</span> <span class="mf">2.112</span><span class="p">(</span><span class="n">Cb</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这里的YUV是局部色域的，如果是全色域，则转换公式如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">R</span> <span class="o">=</span> <span class="n">Y</span>                 <span class="o">+</span> <span class="mf">1.280</span><span class="p">(</span><span class="n">Cr</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">-</span> <span class="mf">0.215</span><span class="p">(</span><span class="n">Cb</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.381</span><span class="p">(</span><span class="n">Cr</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">+</span> <span class="mf">2.128</span><span class="p">(</span><span class="n">Cb</span><span class="o">-</span><span class="mi">128</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="mipi_dsi.html" class="btn btn-neutral float-left" title="8.8.4. MIPI DSI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../bus/index.html" class="btn btn-neutral float-right" title="8.9. 嵌入式系统常见总线" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

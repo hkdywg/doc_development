@@ -1,0 +1,970 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.7.1. CMake简明 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="7.7.2. Cmake基础知识" href="base.html" />
+    <link rel="prev" title="7.7. Cmake学习笔记" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.7. Cmake学习笔记</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.7.1. CMake简明</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">7.7.1.1. CMake简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">7.7.1.2. 核心理念</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cmakelists">7.7.1.3. 编写CMakeLists文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">7.7.1.4. 检查CMake版本</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">7.7.1.5. 使用模块</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">7.7.1.6. 安装文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id13">7.7.1.7. 系统探测</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">7.7.1.8. 定制命令与目标</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id20">7.7.1.9. CMake交叉编译</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="base.html">7.7.2. Cmake基础知识</a></li>
+<li class="toctree-l3"><a class="reference internal" href="normal_cmd.html">7.7.3. CMake常见指令</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.9. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.7. </span>Cmake学习笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.7.1. </span>CMake简明</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/misc/cmake/tutorial.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cmake">
+<h1><span class="section-number">7.7.1. </span>CMake简明<a class="headerlink" href="#cmake" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">7.7.1.1. </span>CMake简介<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>CMake是一个开源的可扩展工具，用于独立于编译器的管理构建过程。CMake必须和本地构建系统联合使用，在每个源码目录中需要编写CMakeLists.txt文件，以申明
+如何生成标准的构建文件(如GNU Make的Makefile)</p>
+<p>Cmake会生成一个方便用户编辑的缓存文件，当其运行时，会定位头文件、库文件、可执行文件，这些信息都会被收集到缓存文件中。</p>
+</section>
+<section id="id2">
+<h2><span class="section-number">7.7.1.2. </span>核心理念<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>CMake包含一系列重要的概念抽象，包括目标(Targets)、生成器(Generators)、命令(Commands)等，这些命令均被实现为C++类。</p>
+<p>下面列出这些概念之间的关系</p>
+<ul class="simple">
+<li><p>源文件: 对应了典型的C/C++源码</p></li>
+<li><p>目标: 多个源文件联合成为目标，目标通常为可执行文件或者库文件</p></li>
+<li><p>目录：表示源码树中的一个目录，常常包含一个CMakeLists.txt文件，一个或者多个目标与之关联</p></li>
+<li><p>本地生成器(Local generator): 每个目录有一个本地生成器，负责为此目录生成Makefiles,或者工程文件</p></li>
+<li><p>全局生成器(Global generator): 所有本地生成共享一个全局生成器，后者负责监管构建过程，全局生成器由Cmake本身创建并驱动</p></li>
+</ul>
+<p>CMake开始执行时，会创建一个cmake对象并把命令行参数传递给它，camke对象管理整体的配置过程，持有构建过程的全局信息(例如缓存值)。cmake会根据用户的选择来创建合适的全局
+生成器(VS、Makefiles等)，并把构建过程的控制权转交给全局生成器(调用configure和generate方法)</p>
+<p>下图显示cmake、生成器、cmMakefile、命令等类型的关系</p>
+<img alt="../../_images/cmake-class-diagram.png" src="../../_images/cmake-class-diagram.png" />
+<section id="id3">
+<h3><span class="section-number">7.7.1.2.1. </span>目标<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>cmMakefile对象存放的最重要的对象是目标(Targets),目标代表可执行文件，库、实用工具等。每个 <code class="docutils literal notranslate"><span class="pre">add_library</span></code> <code class="docutils literal notranslate"><span class="pre">add_executable</span></code> <code class="docutils literal notranslate"><span class="pre">add_custom_target</span></code> 命令都会创建一个目标</p>
+<p><strong>库目标</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># 创建一个静态库，包含两个源文件</span>
+<span class="n">add_library</span><span class="p">(</span><span class="n">foo</span> <span class="n">STATIC</span> <span class="n">foo1</span><span class="o">.</span><span class="n">c</span> <span class="n">foo2</span><span class="o">.</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>命令的第二个参数申明库的类型，有效值包括</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>库类型</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>STATIC</p></td>
+<td><p>目标必须构建为静态库</p></td>
+</tr>
+<tr class="row-odd"><td><p>SHARED</p></td>
+<td><p>目标必须构建为动态库</p></td>
+</tr>
+<tr class="row-even"><td><p>MODULE</p></td>
+<td><p>目标必须构建为支持在运行时动态加载到可执行文件中的模块</p></td>
+</tr>
+</tbody>
+</table>
+<p>如果没有申明库类型，则CMake依据变量 <code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS</span></code> 判断应该构建为共享库还是静态库，如果此变量不设置构建为静态库</p>
+<p><strong>可执行目标</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># 创建可执行文件</span>
+<span class="n">add_exectable</span><span class="p">(</span><span class="n">foo</span> <span class="n">foo</span><span class="o">.</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>读写目标属性</strong></p>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">set_target_properties</span></code> <code class="docutils literal notranslate"><span class="pre">get_target_properties</span></code> 或者更通用的 <code class="docutils literal notranslate"><span class="pre">set_property</span></code> <code class="docutils literal notranslate"><span class="pre">get_property</span></code> 命令，可以读写目标的属性</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># 修改目标使用的文件目录，注意，全局的include_directories会将此目标忽略
+set_property(TARGET jsonrpc
+    PROPERTY INCLUDE_DIRECTORIES
+    ${JSONCPP_INCLUDE_DIRS}
+    ${BOOST_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/jsonrpc
+)
+# 同时设置多个属性
+set_target_properties(jsonrpc PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${PROJECT_VERSION_MAJOR})
+</pre></div>
+</div>
+<p>常见目标属性如下</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>属性</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>LINK_FLAGS</p></td>
+<td><p>传递给链接器的标志</p></td>
+</tr>
+<tr class="row-odd"><td><p>COMPILE_FLAGS</p></td>
+<td><p>传递给编译器的标志</p></td>
+</tr>
+<tr class="row-even"><td><p>INCLUDE_DIRECTORIES</p></td>
+<td><p>指定目标需要引用的头文件目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>PUBLIC_HEADER</p></td>
+<td><p>共享的库目标提供的公共头文件</p></td>
+</tr>
+<tr class="row-even"><td><p>VERSION</p></td>
+<td><p>构建版本</p></td>
+</tr>
+<tr class="row-odd"><td><p>SOVERSION</p></td>
+<td><p>API版本</p></td>
+</tr>
+<tr class="row-even"><td><p>OUTPUT_NAME</p></td>
+<td><p>目标输出文件名称</p></td>
+</tr>
+</tbody>
+</table>
+<p>全部目标属性可以查阅官网  <a class="reference external" href="https://cmake.org/cmake/help/v3.0/manual/cmake-properties.7.html#properties-on-targets">https://cmake.org/cmake/help/v3.0/manual/cmake-properties.7.html#properties-on-targets</a></p>
+<p><strong>链接到库</strong></p>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">target_link_libraries</span></code> 命令，可以指定目标需要链接的库的列表。列表的元素可以是库、库的全路径</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_library</span><span class="p">(</span><span class="n">foo</span> <span class="n">foo</span><span class="o">.</span><span class="n">cpp</span><span class="p">)</span>
+<span class="c1"># foo库依赖bar库</span>
+<span class="n">target_link_libraries</span><span class="p">(</span><span class="n">foo</span> <span class="n">bar</span><span class="p">)</span>
+
+<span class="n">add_executable</span><span class="p">(</span><span class="n">foobar</span> <span class="n">foobar</span><span class="o">.</span><span class="n">cpp</span><span class="p">)</span>
+<span class="c1"># foobar显式依赖foo，隐式依赖bar</span>
+<span class="n">target_link_libraries</span><span class="p">(</span><span class="n">foobar</span> <span class="n">foo</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3><span class="section-number">7.7.1.2.2. </span>源文件<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>与Target类似，源文件也被建模为C++类，也支持读写属性(通过set_source_files_properties、get_source_files_properties或更一般的命令)</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>属性</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>COMPILE_FLAGS</p></td>
+<td><p>针对特定源文件的编译器标志，可以包含-D、-I之类的标志</p></td>
+</tr>
+<tr class="row-odd"><td><p>GENERATED</p></td>
+<td><p>指示此文件是否在构建过程中生成，这种文件在CMake首次运行时不存在，因而计算依赖关系时考虑</p></td>
+</tr>
+<tr class="row-even"><td><p>OBJECT_DEPENDS</p></td>
+<td><p>添加此源文件时额外依赖的其他文件</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h3><span class="section-number">7.7.1.2.3. </span>目录、生成器、测试、属性<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>其他偶尔可能用到的CMake类型包括Directory、Generator、Test、Property等。</p>
+<p>属性是一种键值存储，它关联到一个对象。读写属性最一般的方法是上面提到的get/set_property命令。所有可用的属性可以通过 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-help-property-list</span></code> 得到</p>
+</section>
+<section id="id6">
+<h3><span class="section-number">7.7.1.2.4. </span>变量和缓存条目<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h3>
+<p>CMakeLists中的变量和普通编程语言中的变量很类似，变量的值要么是单个值，要么是列表。引用变量必须使用 <code class="docutils literal notranslate"><span class="pre">${VARNAME}</span></code> 语法，要设置变量的值需要使用set命令。
+变量对当前的CMakeLists文件、当前函数、以及子目录的CMakeLists、任何通过INCLUDE包含进来的文件、任何调用的宏或函数可见。</p>
+<p>当处理一个子目录、调用一个函数时，CMake创建一个新的作用域，其复制当前作用域全部变量。在子作用域中对变量的修改不会对父作用域产生影响。要修改父作用域中的变量，
+可以在set时指定特殊选项。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="n">name</span> <span class="n">Alex</span> <span class="n">PARENT_SCOPE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>常用变量如下表</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>变量</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>CMAKE_C_FLAGS</p></td>
+<td><p>C编译标志，示例 set(CMAKE_C_FLAGS “-std=c11 -pthread”)</p></td>
+</tr>
+<tr class="row-odd"><td><p>CMAKE_CXX_FLAGS</p></td>
+<td><p>C++编译标志</p></td>
+</tr>
+<tr class="row-even"><td><p>CMAKE_C_FLAGS_DEBUG</p></td>
+<td><p>用于Debug配置的C编译标记，示例 set(CMAKE_C_FLAGS_DEBUG “-g -O0”)</p></td>
+</tr>
+<tr class="row-odd"><td><p>CMAKE_CXX_FLAGS_DEBUG</p></td>
+<td><p>C++ Debug编译标志</p></td>
+</tr>
+<tr class="row-even"><td><p>CMAKE_C_FLAGS_RELEASE</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>CMAKE_CXX_FLAGS_RELEASE</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">option</span></code> 命令可以创建一个Boolean变量(ON/OFF)并将其存储在缓存中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">option</span><span class="p">(</span><span class="n">USE_PNG</span> <span class="s2">&quot;Do you want to use the png library?&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3><span class="section-number">7.7.1.2.5. </span>构建配置<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>构建配置运行工程使用不同方式构建:debug、optimized或任何其他标记。CMake默认支持四种构建配置</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>构建配置</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>Debug</p></td>
+<td><p>启用基本的调试(编译器的)标志</p></td>
+</tr>
+<tr class="row-odd"><td><p>Release</p></td>
+<td><p>基本的优化配置</p></td>
+</tr>
+<tr class="row-even"><td><p>MinSizeRei</p></td>
+<td><p>生成最小的，但不一定是最快的代码</p></td>
+</tr>
+<tr class="row-odd"><td><p>RelWithDebugInfo</p></td>
+<td><p>优化构建，但同时携带调试信息</p></td>
+</tr>
+</tbody>
+</table>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code> 变量指定目标配置</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cmake</span> <span class="o">../</span> <span class="o">-</span><span class="n">DCMAKE_BUILD_TYPE</span><span class="o">=</span><span class="n">Debug</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="cmakelists">
+<h2><span class="section-number">7.7.1.3. </span>编写CMakeLists文件<a class="headerlink" href="#cmakelists" title="此标题的永久链接"></a></h2>
+<p>CMake由CMakeLists.txt驱动，此文件包含构建需要的一些信息。</p>
+<section id="id8">
+<h3><span class="section-number">7.7.1.3.1. </span>基本命令<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>命令</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>project</p></td>
+<td><p>顶层CMakeLists.txt应该包含的第一个命令，声明工程名字和使用的语言</p></td>
+</tr>
+<tr class="row-odd"><td><p>set</p></td>
+<td><p>设置变量或者列表</p></td>
+</tr>
+<tr class="row-even"><td><p>remove</p></td>
+<td><p>从变量值的列表中移除一个单值</p></td>
+</tr>
+<tr class="row-odd"><td><p>separate_arguments</p></td>
+<td><p>基于空格，把单个字符串分割为列表</p></td>
+</tr>
+<tr class="row-even"><td><p>add_executable</p></td>
+<td><p>定义目标(可执行文件)</p></td>
+</tr>
+<tr class="row-odd"><td><p>add_library</p></td>
+<td><p>定义目标(库)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id9">
+<h3><span class="section-number">7.7.1.3.2. </span>流程控制命令<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h3>
+<p>和普通编程语言一样，CMake支持条件、循环控制结构，同时支持子过程(macro、function)</p>
+<p><strong>if-else条件控制</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="n">MSVC80</span><span class="p">)</span>
+<span class="c1">#...</span>
+<span class="n">elseif</span><span class="p">(</span><span class="n">MSVC90</span><span class="p">)</span>
+<span class="c1">#...</span>
+<span class="n">elseif</span><span class="p">(</span><span class="n">APPLE</span><span class="p">)</span>
+<span class="c1">#...</span>
+<span class="n">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>条件表达式</strong></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>语法</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>if(variable)</p></td>
+<td><p>0 FALSE OFF NO NOTFOUND *-NOTFOUNR IGNORE为假，其他为真。不区分大小写。</p></td>
+</tr>
+<tr class="row-odd"><td><p>if(NOT variable)</p></td>
+<td><p>上面取反，variable可以不用$包围</p></td>
+</tr>
+<tr class="row-even"><td><p>if(variable AND variable1)</p></td>
+<td><p>逻辑与</p></td>
+</tr>
+<tr class="row-odd"><td><p>if(varibale1 OR variable2)</p></td>
+<td><p>逻辑或</p></td>
+</tr>
+<tr class="row-even"><td><p>if(num1 EQUAL num2)</p></td>
+<td><p>数字相等比较(其他操作符包括LESS、GREATER)</p></td>
+</tr>
+<tr class="row-odd"><td><p>if(str1 STREQUAL str2)</p></td>
+<td><p>字典序相等比较(其他类似的还有STRLESS STRGREATER)</p></td>
+</tr>
+<tr class="row-even"><td><p>if(v1 VERSION_EQUAL v2)</p></td>
+<td><p>major[.minor[.patch[.tweak]]]风格版本号相等比较</p></td>
+</tr>
+<tr class="row-odd"><td><p>if(COMMAND cmd_name)</p></td>
+<td><p>如果指定的命令可以调用</p></td>
+</tr>
+<tr class="row-even"><td><p>if(DEFINED variable)</p></td>
+<td><p>如果变量被定义</p></td>
+</tr>
+<tr class="row-odd"><td><p>if(EXISTS filename)</p></td>
+<td><p>如果文件存在</p></td>
+</tr>
+<tr class="row-even"><td><p>if(IS_DIRECTORY name)</p></td>
+<td><p>判断是否为目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>if(IS_ABSOLUTE name)</p></td>
+<td><p>判断是否为绝对路径</p></td>
+</tr>
+<tr class="row-even"><td><p>if(n1 IS_NEWER_TAN n2)</p></td>
+<td><p>判断文件n1的修改时间是否大于n2</p></td>
+</tr>
+<tr class="row-odd"><td><p>if(variable MATCHES regex)</p></td>
+<td><p>变量匹配，支持正则表达</p></td>
+</tr>
+</tbody>
+</table>
+<p>操作符优先级</p>
+<ol class="arabic simple">
+<li><p>括号分组()</p></li>
+<li><p>前缀一元操作符: EXISTS、COMMAND、DEFINED</p></li>
+<li><p>比较操作符: EQUAL、LESS、GREATER以及其变体，MATCHES</p></li>
+<li><p>逻辑非: NOT</p></li>
+</ol>
+<p>5) 逻辑或与: AND OR2) 前缀一元操作符: EXISTS、COMMAND、DEFINED
+3) 比较操作符: EQUAL、LESS、GREATER以及其变体，MATCHES
+4) 逻辑非: NOT
+5) 逻辑或与: AND OR</p>
+<p><strong>foreach</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">foreach</span><span class="p">(</span><span class="n">item</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="c1"># do something with item</span>
+<span class="n">endforeach</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>while</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>while(${COUNT} LESS 2000)
+    set(TASK_COUNT, ${COUNT})
+endwhile()
+</pre></div>
+</div>
+<p><strong>break</strong></p>
+<p>此命令用于中断foreach/while循环</p>
+<p><strong>function</strong></p>
+<p>CMake中的函数类似C/C++函数，可以向函数传递参数，除了依据行参名外，你还可以使用ARGC，ARGV，ARGN，ARG0， ARG1…等形式.
+函数内部是一个新的作用域。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>function(println msg)
+    message(${msg} &quot;\n&quot;)
+    set(msg ${msg} PARTENT_SCOPE)
+endfunction()
+
+println(Hello)
+</pre></div>
+</div>
+<p><strong>return</strong></p>
+<p>此命令用于从函数中返回。</p>
+<p><strong>macro</strong></p>
+<p>宏域函数类似，但宏不会创建新的作用域。传递给宏的参数也不会被作为变量看待，而是执行宏替换为字符串</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>macro(println msg)
+    message(${msg} &quot;\n&quot;)
+endmacro()
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id10">
+<h2><span class="section-number">7.7.1.4. </span>检查CMake版本<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>if(${CMAKE_VERSION} VERSION_GREATER 1.6.1)
+
+endif()
+
+# 还可以申明要求的CMake最低版本
+cmake_minimum_required(VERSION 2.8)
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h2><span class="section-number">7.7.1.5. </span>使用模块<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h2>
+<p>所谓模块，仅仅是存放到一个文件中一系列CMake命令的集合。我们可以用include命令包含到CMakeLists.txt中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># 此模块用于查找TCL库
+include(FindTCL)
+#找到后，将其加入到链接依赖中
+target_link_libraries(FOO ${TCL_LIBRARY})
+</pre></div>
+</div>
+<p>包含一个模块时，可以使用绝对路径，或者是基于 <code class="docutils literal notranslate"><span class="pre">CMAKE_MODULE_PATH</span></code> 的相对路径，如果此变量未设置，默认为CMake的安装目录的Modules子目录</p>
+<p>模块依据用途可以分为</p>
+<ol class="arabic simple">
+<li><p>查找类模块: 查找软件元素，例如头文件、库</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># png库依赖zlib库
+include(FindZLIB)   #查找zlib库
+if(ZLIB_FOUND)      #往往在找到后设置LIBNAME_FOUND变量
+    #查找头文件位置并存入变量
+    find_path(PNG_PNG_INCLUDE_DIR png.h /usr/local/include /usr/include)
+    #查找库文件位置并存入变量
+    find_library(PNG_LIBRARY png /usr/lib /usr/local/lib)
+    if(PNG_LIBRARY AND PNG_PNG_INCLUDE_DIR)
+        set(PNG_INCLUDE_DIR ${PNG_PNG_INCLUDE_DIR} ${ZLIB_INCLUDE_DIR})
+        set(PNG_LIBRARIES ${PNG_LIBRARY} ${ZLIB_LIBRARY})
+        set(PNG_FOUND TRUE)
+    endif()
+endif()
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>系统探测模块: 探测系统的特性，例如浮点数长度、对ASCI C++11的支持</p></li>
+<li><p>实用工具模块: 用于添加额外的功能，例如处理一个CMake工程依赖于其他CMake工程的情况</p></li>
+</ol>
+</section>
+<section id="id12">
+<h2><span class="section-number">7.7.1.6. </span>安装文件<a class="headerlink" href="#id12" title="此标题的永久链接"></a></h2>
+<p>软件通常被安装到和源码、构建树无关的位置上，CMake提供一个 <code class="docutils literal notranslate"><span class="pre">install</span></code> 命令，来说明一个工程如何被安装。 执行 <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code> 即可完成安装</p>
+<p>install命令提供了若干”签名”(类似于子命令)，签名作为第一个参数传入。可用的签名包括</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>签名</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>install(TARGETS…)</p></td>
+<td><p>安装工程中目标对应的二进制文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>install(FILES…)</p></td>
+<td><p>一般性的文件安装，包括头文件、文档、软件需要的数据文件</p></td>
+</tr>
+<tr class="row-even"><td><p>install(PROGRAMS…)</p></td>
+<td><p>安装不是当前工程构建的文件，例如shell脚本，与FILES类似，只不过PROGRAMS被授予可执行权限</p></td>
+</tr>
+<tr class="row-odd"><td><p>install(DIRECTORY…)</p></td>
+<td><p>安装一个完整的目录树</p></td>
+</tr>
+<tr class="row-even"><td><p>install(SCRIPT…)</p></td>
+<td><p>指定一个用户提供的、在安装过程中执行的CMake脚本</p></td>
+</tr>
+<tr class="row-odd"><td><p>install(CODE…)</p></td>
+<td><p>与SCRIPT类似，只是脚本以内联字符串形式提供</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>TARGETS签名</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">install</span><span class="p">(</span><span class="n">TARGETS</span>
+        <span class="n">targets</span><span class="o">...</span>  <span class="c1">#基于add_executable/add_library创建的目标列表</span>
+        <span class="c1">#通过TARGETS签名安装的文件可以分为三类</span>
+        <span class="c1"># ARCHIVE 静态库， LIBRARY 可加载模块、动态库， RUNTIME可执行文件</span>
+        <span class="p">[</span><span class="n">ARCHIVE</span><span class="o">|</span><span class="n">LIBRARY</span><span class="o">|</span><span class="n">RUNTIME</span><span class="o">|</span><span class="n">FRAMEWORK</span><span class="o">|</span><span class="n">BUNDLE</span><span class="o">|</span><span class="n">PRIVATE_HEADER</span><span class="o">|</span><span class="n">PUBLIC_HEADER</span><span class="o">|</span><span class="n">RESOURCE</span><span class="p">]</span>
+        <span class="p">[</span><span class="n">DESTINATION</span> <span class="o">&lt;</span><span class="nb">dir</span><span class="o">&gt;</span><span class="p">]</span>
+        <span class="p">[</span><span class="n">PERMISSIONS</span> <span class="n">permissions</span><span class="o">...</span><span class="p">]</span>
+        <span class="p">[</span><span class="n">CONFIGURATIONS</span> <span class="p">[</span><span class="n">Debug</span><span class="o">|</span><span class="n">Release</span><span class="o">|...</span><span class="p">]]</span>
+        <span class="p">[</span><span class="n">COMPENT</span> <span class="n">compent</span><span class="p">]</span>
+        <span class="p">[</span><span class="n">OPTIONAL</span><span class="p">]</span>
+        <span class="p">[</span><span class="n">EXPORT</span> <span class="o">&lt;</span><span class="n">export</span> <span class="n">name</span><span class="o">&gt;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">install</span><span class="p">(</span><span class="n">TARGETS</span> <span class="n">myExecutable</span> <span class="n">mySharelib</span> <span class="n">myStaticlib</span> <span class="n">myPlugin</span>
+        <span class="n">RUNTIME</span> <span class="n">DESTINATION</span> <span class="nb">bin</span> <span class="n">COMPENT</span> <span class="n">Runtime</span>
+        <span class="n">LIBRARY</span> <span class="n">DESTINATION</span> <span class="n">lib</span> <span class="n">COMPENT</span> <span class="n">Runtime</span>
+        <span class="n">ARCHIVE</span> <span class="n">DESTINATION</span> <span class="n">lib</span><span class="o">/</span><span class="n">myproject</span> <span class="n">COMPENT</span> <span class="n">Development</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>FILES签名</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">install</span><span class="p">(</span><span class="n">FILES</span> <span class="n">files</span><span class="o">..</span>  <span class="c1">#需要被安装的文件的列表，如果是相对路径，相对于当前Source目录</span>
+    <span class="n">DESTINATION</span> <span class="o">&lt;</span><span class="nb">dir</span><span class="o">&gt;</span>   <span class="c1">#目标位置，如果是相对路径，相对于安装Prefix</span>
+    <span class="p">[</span><span class="n">PERMISSIONS</span> <span class="n">permissions</span><span class="o">...</span><span class="p">]</span> <span class="c1">#默认权限644</span>
+    <span class="p">[</span><span class="n">CONFIGURATIONS</span> <span class="p">[</span><span class="n">Debug</span><span class="o">|</span><span class="n">Release</span><span class="o">|...</span><span class="p">]]</span>
+    <span class="p">[</span><span class="n">COMPENT</span> <span class="n">compent</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">RENAME</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">]</span>    <span class="c1">#为文件指定新的名称，要求文件列表只有一个元素</span>
+    <span class="p">[</span><span class="n">OPTIONAL</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>PROGRAMS签名</strong></p>
+<p>安装shell脚本或者python脚本时，可以使用PROGRAMS签名，此签名和PROGRAMS一样，只是默认权限为755</p>
+<p><strong>DIRECTORY签名</strong></p>
+<p>安装整个目录时，需要使用DIRECTORY签名</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">install</span><span class="p">(</span><span class="n">DIRECTORY</span> <span class="nb">dir</span><span class="o">...</span> <span class="c1">#需要被安装的目录的列表，如果是相对路径，相对于source目录</span>
+        <span class="n">DESTINATION</span> <span class="o">&lt;</span><span class="nb">dir</span><span class="o">&gt;</span>   <span class="c1">#安装目录</span>
+        <span class="p">[</span><span class="n">FILE_PERMISSIONS</span> <span class="n">permissions</span><span class="o">...</span><span class="p">]</span>  <span class="c1">#文件默认权限644,目录默认权限755</span>
+        <span class="p">[</span><span class="n">DIRECTORIES_PERMISSIONS</span> <span class="n">permissions</span><span class="o">...</span><span class="p">]</span>
+        <span class="p">[</span><span class="n">USR_SOURCE_PERMISSIONS</span><span class="p">]</span>  <span class="c1">#和文件源保持同样的权限</span>
+        <span class="p">[</span><span class="n">CONFIGURATIONS</span> <span class="p">[</span><span class="n">Debug</span><span class="o">|</span><span class="n">Release</span><span class="o">|...</span><span class="p">]]</span>
+        <span class="p">[</span><span class="n">COMPONENT</span> <span class="n">component</span><span class="p">]</span>
+        <span class="p">[</span>
+            <span class="c1">#排除某些文件，或者为某些文件指定特殊的权限</span>
+            <span class="c1">#PATTERN用于unxi风格通配符匹配，REGEX用于正则式匹配</span>
+            <span class="p">[</span><span class="n">PATTERN</span> <span class="o">&lt;</span><span class="n">pattern</span><span class="o">&gt;</span> <span class="o">|</span> <span class="n">REGEX</span> <span class="o">&lt;</span><span class="n">regex</span><span class="o">&gt;</span><span class="p">]</span>
+            <span class="p">[</span><span class="n">EXCLUDE</span><span class="p">]</span> <span class="c1">#是否把匹配的文件排除，不安装</span>
+            <span class="p">[</span><span class="n">PERMISSIONS</span> <span class="n">permissions</span><span class="o">...</span><span class="p">]</span>  <span class="c1">#设置匹配文件的权限</span>
+        <span class="p">]</span>
+
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id13">
+<h2><span class="section-number">7.7.1.7. </span>系统探测<a class="headerlink" href="#id13" title="此标题的永久链接"></a></h2>
+<p>系统探测，即检测在其上构建的系统的各种环境信息，是构建跨平台库或者应用程序的关键因素。</p>
+<section id="id14">
+<h3><span class="section-number">7.7.1.7.1. </span>使用头文件和库<a class="headerlink" href="#id14" title="此标题的永久链接"></a></h3>
+<p>与集成外部库相关的命令包括 <code class="docutils literal notranslate"><span class="pre">find_library</span></code> 、 <code class="docutils literal notranslate"><span class="pre">find_path</span></code> 、 <code class="docutils literal notranslate"><span class="pre">find_program</span></code> 、 <code class="docutils literal notranslate"><span class="pre">find_package</span></code> 。对于大部分C/C++库，使用前两个命令一般足够和
+系统上已经安装的库进行链接，这两个命令分别用来定位库文件、头文件所在目录</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#寻找一个库
+find_library(
+        TIFF_LIBRARY
+        NAME tiff tiff2     #只需要库的basename
+        PATHS /usr/local/lib /usr/lib   #搜索库路径，前面的优先
+)
+
+#查找一般性的文件，仅支持一个待查找文件，支持多个路径
+find_path(
+        TIFF_INCLUDES
+        tiff.h
+        /usr/local/include /usr/include
+)
+
+include_directories(${TIFF_INCLUDES})
+add_executable(mytiff mytiff.c)
+target_link_libraries(mytiff ${TIFF_LIBRARY})
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>find_*命令总是会查找PATH环境变量，find_*命令会自动创建对应的缓存条目</p>
+</div>
+</section>
+<section id="id15">
+<h3><span class="section-number">7.7.1.7.2. </span>查找包<a class="headerlink" href="#id15" title="此标题的永久链接"></a></h3>
+<p>CMake提供 <code class="docutils literal notranslate"><span class="pre">find_package(Package</span> <span class="pre">[version])</span></code> 命令来查找符合package包规则的软件包。</p>
+<p>该命令可以在两个模式下运行：</p>
+<ol class="arabic simple">
+<li><p>Module模式: 此模式下CMake会依次扫描 <code class="docutils literal notranslate"><span class="pre">CMAKE_MODULE_PATH</span></code> 、CMake安装目录，尝试寻找一个名称为 <code class="docutils literal notranslate"><span class="pre">Find&lt;Package&gt;.cmake</span></code> 的查找模块。如果找到则加载，并调用其来寻找目标包的全部组件</p></li>
+<li><dl class="simple">
+<dt>Config模式: 如果Module模式下没有定位到查找模块，命令自动切换到Config模式。该模式下，命令会寻找包配置文件(package configuration file):目标包提供的、一个名为&lt;Package&gt;Config[Version].cmake</dt><dd><p>或者&lt;package&gt;-config[-version].cmake的文件。只要给出包的名称，命令就知道从何处寻找包配置文件，可能的位置是&lt;prefix&gt;/lib/&lt;package&gt;/&lt;package&gt;-config.cmake</p>
+</dd>
+</dl>
+</li>
+</ol>
+<p><strong>内置查找模块</strong></p>
+<p>CMake的内置查找模块，在找到包后，一般会定义一系列的变量供当前工程使用</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>变量名称约定</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>&lt;PKG&gt;_INCLUDE_DIRS</p></td>
+<td><p>包的头文件所在目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>&lt;PKG&gt;_LIBRARIES</p></td>
+<td><p>包提供的库的完整路径</p></td>
+</tr>
+<tr class="row-even"><td><p>&lt;PKG&gt;_DEFINITIONS</p></td>
+<td><p>使用包时，编译代码需要用的宏定义</p></td>
+</tr>
+<tr class="row-odd"><td><p>&lt;PKG&gt;_EXECUTABLE</p></td>
+<td><p>包提供的PKG工具所在目录</p></td>
+</tr>
+<tr class="row-even"><td><p>&lt;PKG&gt;_ROOT_DIR</p></td>
+<td><p>PKG包的安装根目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>&lt;PKG&gt;_VERSION_&lt;VER&gt;</p></td>
+<td><p>如果PKG的VER版本被找到则定义为真</p></td>
+</tr>
+<tr class="row-even"><td><p>&lt;PKG&gt;_&lt;CMP&gt;_FOUND</p></td>
+<td><p>如果PKG的CMP组件被找到，则定义为真</p></td>
+</tr>
+<tr class="row-odd"><td><p>&lt;PKG&gt;_FOUND</p></td>
+<td><p>如果PKG被找到则定义为真</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id16">
+<h3><span class="section-number">7.7.1.7.3. </span>为编译传递参数<a class="headerlink" href="#id16" title="此标题的永久链接"></a></h3>
+<p>要传递参数给编译器，可以指定命令行，或者使用一个预先配置好的头文件。</p>
+<p>调用 <code class="docutils literal notranslate"><span class="pre">add_definitions</span></code> 命令，可以向编译器传递宏定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#定义一个布尔的缓存条目</span>
+<span class="n">option</span><span class="p">(</span><span class="n">DEBUG_BUILD</span> <span class="s2">&quot;Enable debug messages&quot;</span><span class="p">)</span>
+<span class="k">if</span><span class="p">(</span><span class="n">DEBUG_BUILD</span><span class="p">)</span>
+    <span class="c1">#添加宏定义</span>
+    <span class="n">add_definitions</span><span class="p">(</span><span class="o">-</span><span class="n">DDEBUG_MSG</span><span class="p">)</span>
+<span class="n">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>配置头文件</strong></p>
+<p>这种方式更可维护，大部分工程应当使用该方式，应用程序只需要引入预先配置好的头文件即可，不必编写复杂的CMake规则。我们可以把头文件看作一种配置文件</p>
+</section>
+</section>
+<section id="id17">
+<h2><span class="section-number">7.7.1.8. </span>定制命令与目标<a class="headerlink" href="#id17" title="此标题的永久链接"></a></h2>
+<section id="id18">
+<h3><span class="section-number">7.7.1.8.1. </span>可移植性<a class="headerlink" href="#id18" title="此标题的永久链接"></a></h3>
+<p>CMake提供了两个主要工具，解决不同平台之间的可移植性问题。</p>
+<p><strong>cmake -E</strong></p>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-E</span> <span class="pre">arguments</span></code> 调用，可以执行一些跨平台的操作。支持的argument包括</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>操作</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>chdir dir command args</p></td>
+<td><p>改变当前目录为dir然后执行指定的命令</p></td>
+</tr>
+<tr class="row-odd"><td><p>copy file destination</p></td>
+<td><p>拷贝文件</p></td>
+</tr>
+<tr class="row-even"><td><p>copy_if_different infile outfile</p></td>
+<td><p>如果两个文件不一样，则从infile拷贝到outfile</p></td>
+</tr>
+<tr class="row-odd"><td><p>copy_directory source destination</p></td>
+<td><p>拷贝目录，包括子目录</p></td>
+</tr>
+<tr class="row-even"><td><p>remove file file1…</p></td>
+<td><p>删除文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>echo string</p></td>
+<td><p>打印到标准输出</p></td>
+</tr>
+<tr class="row-even"><td><p>time command args</p></td>
+<td><p>运行一个命令并计算耗时</p></td>
+</tr>
+</tbody>
+</table>
+<p>CMake不限制仅使用cmake命令，事实上可以调用任何命令。一个通用的实践是，通过 <code class="docutils literal notranslate"><span class="pre">find_program</span></code> 先找到一个程序，然后在定制命令中调用之</p>
+<p><strong>系统特征变量</strong></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>变量</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>EXE_EXTENSION</p></td>
+<td><p>可执行文件的扩展名，Windows为.exe ,UNIX为空</p></td>
+</tr>
+<tr class="row-odd"><td><p>CMAKE_CURRENT_BINARY_DIR</p></td>
+<td><p>与当前CMakeLists文件关联的输出目录的完整路径</p></td>
+</tr>
+<tr class="row-even"><td><p>CMAKE_CURRENT_SOURCE_DIR</p></td>
+<td><p>与当前CMakeLists文件关联的源码目录的完整路径</p></td>
+</tr>
+<tr class="row-odd"><td><p>EXECUTABLE_OUTPUT_PATH</p></td>
+<td><p>可执行文件路径</p></td>
+</tr>
+<tr class="row-even"><td><p>LIBRARY_OUTPUT_PATH</p></td>
+<td><p>库文件需要生成的目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>CMAKE_SHARED_LIBRARY_PREFIX</p></td>
+<td><p>共享库文件前缀</p></td>
+</tr>
+<tr class="row-even"><td><p>CMAKE_SHARED_LIBRARY_SUFFIX</p></td>
+<td><p>共享库文件后缀</p></td>
+</tr>
+<tr class="row-odd"><td><p>CMAKE_LIBRARY_PREFIX</p></td>
+<td><p>静态库文件前缀</p></td>
+</tr>
+<tr class="row-even"><td><p>CMAKE_LIBRARY_SUFFIX</p></td>
+<td><p>静态库文件后缀</p></td>
+</tr>
+<tr class="row-odd"><td><p>CMAKE_SHARED_MODULE_PREFIX</p></td>
+<td><p>共享模块文件前缀</p></td>
+</tr>
+<tr class="row-even"><td><p>CMAKE_SHARED_MODULE_SUFFIX</p></td>
+<td><p>共享模块文件后缀</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id19">
+<h3><span class="section-number">7.7.1.8.2. </span>定制命令与目标<a class="headerlink" href="#id19" title="此标题的永久链接"></a></h3>
+<p><strong>add_custom_command</strong></p>
+<p>add_custom_command有两个主要的签名: TARGET、OUTPUT，分别用于目标或者文件添加额外的规则。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_custom_command</span><span class="p">(</span>
+    <span class="n">TARGET</span> <span class="n">target</span>     <span class="c1">#目标名称</span>
+    <span class="c1">#执行触发时机</span>
+    <span class="c1">#pre_build,在目标的任何依赖文件被构建之前运行</span>
+    <span class="c1">#pre_link,在所有依赖已经构建好，但是尚未链接时执行</span>
+    <span class="c1">#post_build，在目标已经构建好后执行</span>
+    <span class="n">PRE_BUILD</span> <span class="o">|</span> <span class="n">PRE_LINK</span> <span class="o">|</span> <span class="n">POST_BUILD</span>
+    <span class="c1"># command为可执行文件的名称</span>
+    <span class="n">COMMAND</span> <span class="n">command</span> <span class="p">[</span><span class="n">ARGS</span> <span class="n">arg1</span> <span class="n">arg2</span> <span class="o">...</span><span class="p">]</span>
+    <span class="p">[</span><span class="n">COMMAND</span> <span class="n">command</span> <span class="p">[</span><span class="n">ARGS</span> <span class="n">arg1</span> <span class="n">arg2</span> <span class="o">...</span><span class="p">]]</span>
+    <span class="c1">#注释，在定制命令运行时打印</span>
+    <span class="p">[</span><span class="n">COMMENT</span> <span class="n">comment</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#在目标构建好之后拷贝
+add_executable(myProgram myProgram.c)
+get_target_property(EXE_LOC myProgram LOCATION)
+add_custom_command(
+    TARGET myProgram
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} ARGS -E copy ${EXE_LOC} output/file
+)
+</pre></div>
+</div>
+<p>add_custon_command的另外一个用途是指定生成一个文件的规则。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_custom_command</span><span class="p">(</span>
+    <span class="c1">#指定命令运行生成的结果文件，最好指定完整路径</span>
+    <span class="n">OUTPUT</span> <span class="n">output1</span> <span class="p">[</span><span class="n">output2</span> <span class="o">...</span><span class="p">]</span>
+    <span class="c1">#需要执行的命令</span>
+    <span class="n">COMMAND</span> <span class="n">command</span> <span class="p">[</span><span class="n">ARGS</span> <span class="p">[</span><span class="n">args</span> <span class="o">...</span><span class="p">]]</span>
+    <span class="c1">#命令依赖的文件</span>
+    <span class="p">[</span><span class="n">DEPENDS</span> <span class="p">[</span><span class="n">depends</span> <span class="o">...</span><span class="p">]]</span>
+    <span class="p">[</span><span class="n">COMMENT</span> <span class="n">commnet</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>add_custom_target</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_custom_target</span><span class="p">(</span>
+    <span class="c1">#name为目标的名称，使用make name生成此目标</span>
+    <span class="n">name</span> <span class="p">[</span><span class="n">ALL</span><span class="p">]</span>  <span class="c1">#ALL表示目标包含在ALL_BUILD目标中，自动构建</span>
+    <span class="c1">#执行的命令</span>
+    <span class="p">[</span><span class="n">command</span> <span class="n">arg</span> <span class="n">arg</span> <span class="o">...</span><span class="p">]</span>
+    <span class="c1">#此目标依赖的文件列表</span>
+    <span class="p">[</span><span class="n">DEPENDS</span> <span class="n">dep1</span> <span class="n">dep2</span> <span class="o">...</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id20">
+<h2><span class="section-number">7.7.1.9. </span>CMake交叉编译<a class="headerlink" href="#id20" title="此标题的永久链接"></a></h2>
+<p><strong>工具链文件</strong></p>
+<p>通过一个所谓工具链(ToolChain)文件，可以向CMake传递目标平台的任何必要信息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cmake</span> <span class="o">-</span><span class="n">DCMAKE_TOOLCHAIN_FILE</span><span class="o">=</span><span class="n">config</span><span class="o">/</span><span class="n">toolchain</span><span class="o">.</span><span class="n">cmake</span> <span class="o">..</span>
+</pre></div>
+</div>
+<p><strong>工具链文件变量</strong></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>变量</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>CMAKE_SYSTEM_NAME</p></td>
+<td><p>该变量必须设置，指定目标平台的名称。Linux Windows Generic(嵌入式无OS). 设置此变量后，CMAKE_CROSSCOMPILING为真</p></td>
+</tr>
+<tr class="row-odd"><td><p>CMAKE_SYSTEM_VERSION</p></td>
+<td><p>可选，目标平台版本</p></td>
+</tr>
+<tr class="row-even"><td><p>CMAKE_SYSTEM_PROCESSOR</p></td>
+<td><p>可选，目标平台处理器或者硬件的名称</p></td>
+</tr>
+<tr class="row-odd"><td><p>CMAKE_C_COMPILER</p></td>
+<td><p>C编译器完整路径或者名字</p></td>
+</tr>
+<tr class="row-even"><td><p>CMAKE_CXX_COMPILER</p></td>
+<td><p>C++编译器名字</p></td>
+</tr>
+<tr class="row-odd"><td><p>CMAKE_FIND_ROOT_PATH</p></td>
+<td><p>指定一组包含了目标平台环境的目录，这些目录供所有的find_*命令使用</p></td>
+</tr>
+<tr class="row-even"><td><p>CMAKE_FIND_ROOT_PATH_MODE_PROGRAM</p></td>
+<td><p>find_program命令默认行为，NEVER对CMAKE_FIND_ROOT_PATH目录无效，ONLY仅目录中搜索，BOTH是默认值，都搜索</p></td>
+</tr>
+<tr class="row-odd"><td><p>CMAKE_FIND_ROOT_PATH_MODE_LIBRARY</p></td>
+<td><p>find_library行为</p></td>
+</tr>
+<tr class="row-even"><td><p>CMAKE_FIND_ROOT_PATH_MODE_INCLUDE</p></td>
+<td><p>find_include行为</p></td>
+</tr>
+</tbody>
+</table>
+<p>示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Supported Values: Linux, QNX, Android, Window, Generic(For Embedded system)
+set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSTEM_PROCESSOR aarch64-poky)
+
+if(${CMAKE_VERSION} VERSION_GREATER 3.7.0)
+    set(FLAGS_SUFFIX _INIT) # 3.7.x introduced new _INIT variables for toolchainfile flags
+else()
+    set(FLAGS_SUFFIX)
+endif()
+
+set(BUILD_PLATFORM &quot;v3h_aarch64&quot;)
+
+# Set cross compiler tool path
+if(ENV{CROSS_TOOL_CHAIN_PATH})
+    set(CROSS_TOOLCHAIN_ROOT_PATH $ENV{CROSS_TOOL_CHAIN_PATH})
+else()
+    set(CROSS_TOOLCHAIN_ROOT_PATH /opt/poky/3.0.2/sysroots)
+endif()
+
+set(CMAKE_SYSROOT ${CROSS_TOOLCHAIN_ROOT_PATH}/aarch64-poky-linux)
+set(CMAKE_FIND_ROOT_PATH ${CMAKE_SYSROOT})
+set(TOOLCHAIN_PATH ${CROSS_TOOLCHAIN_ROOT_PATH}/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux)
+
+message(STATUS &quot;TOOLCHAIN_PATH = ${TOOLCHAIN_PATH}&quot;)
+
+find_program(CMAKE_C_COMPILER       NAMES   &quot;aarch64-poky-linux-gcc&quot;        PATHS   ${TOOLCHAIN_PATH})
+find_program(CMAKE_CXX_COMPILER     NAMES   &quot;aarch64-poky-linux-g++&quot;        PATHS   ${TOOLCHAIN_PATH})
+find_program(CMAKE_ASM_COMPILER     NAMES   &quot;aarch64-poky-linux-gcc&quot;        PATHS   ${TOOLCHAIN_PATH})
+find_program(CMAKE_RANLIB           NAMES   &quot;aarch64-poky-linux-ranlib&quot;     PATHS   ${TOOLCHAIN_PATH})
+find_program(CMAKE_AR               NAMES   &quot;aarch64-poky-linux-ar&quot;         PATHS   ${TOOLCHAIN_PATH})
+find_program(CMAKE_AS               NAMES   &quot;aarch64-poky-linux-as&quot;         PATHS   ${TOOLCHAIN_PATH})
+find_program(CMAKE_LD               NAMES   &quot;aarch64-poky-linux-ld&quot;         PATHS   ${TOOLCHAIN_PATH})
+find_program(CMAKE_NM               NAMES   &quot;aarch64-poky-linux-nm&quot;         PATHS   ${TOOLCHAIN_PATH})
+find_program(CMAKE_GDB              NAMES   &quot;aarch64-poky-linux-gdb&quot;        PATHS   ${TOOLCHAIN_PATH})
+find_program(CMAKE_STRIP            NAMES   &quot;aarch64-poky-linux-strip&quot;      PATHS   ${TOOLCHAIN_PATH})
+find_program(CMAKE_GDB              NAMES   &quot;aarch64-poky-linux-gdb&quot;        PATHS   ${TOOLCHAIN_PATH})
+find_program(CMAKE_OBJCOPY          NAMES   &quot;aarch64-poky-linux-objcopy&quot;    PATHS   ${TOOLCHAIN_PATH})
+find_program(CMAKE_OBJDUMP          NAMES   &quot;aarch64-poky-linux-objdump&quot;    PATHS   ${TOOLCHAIN_PATH})
+
+message(STATUS &quot;CMAKE_C_COMPILER = ${CMAKE_C_COMPILER}&quot;)
+message(STATUS &quot;CMAKE_CXX_COMPILER = ${CMAKE_CXX_COMPILER}&quot;)
+message(STATUS &quot;CMAKE_ASM_COMPILER = ${CMAKE_ASM_COMPILER}&quot;)
+
+
+if(NOT CMAKE_C_COMPILER)
+    message(FATAL_ERROR &quot;CMAKE_C_COMPILER not found&quot;)
+endif()
+
+if(NOT CMAKE_CXX_COMPILER)
+    message(FATAL_ERROR &quot;CMAKE_CXX_COMPILER not found&quot;)
+endif()
+
+if(NOT CMAKE_ASM_COMPILER)
+    message(FATAL_ERROR &quot;CMAKE_ASM_COMPILER not found&quot;)
+endif()
+
+if(NOT CMAKE_AR)
+    message(FATAL_ERROR &quot;CMAKE_AR not found&quot;)
+endif()
+
+set(CMAKE_SYSROOT ${CMAKE_FIND_ROOT_PATH})
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+
+set(CMAKE_ASM_FLAGS${FLAGS_SUFFIX} &quot;--sysroot=${CMAKE_FIND_ROOT_PATH}&quot;)
+set(CMAKE_C_COMPILER_TARGET aarch64-poky-linux)
+set(CMAKE_C_FLAGS${FLAGS_SUFFIX} &quot;--sysroot=${CMAKE_FIND_ROOT_PATH}&quot;)
+set(CMAKE_CXX_COMPILER_TARGET aarch64-poky-linux)
+set(CMAKE_CXX_FLAGS${FLAGS_SUFFIX} &quot;--sysroot=${CMAKE_FIND_ROOT_PATH}&quot;)
+
+set(CMAKE_EXE_LINKER_FLAGS${FLAGS_SUFFIX} &quot;--sysroot=${CMAKE_FIND_ROOT_PATH}&quot;)
+
+
+message(STATUS &quot;cross tool chain is configure&quot;)
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="7.7. Cmake学习笔记" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="base.html" class="btn btn-neutral float-right" title="7.7.2. Cmake基础知识" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

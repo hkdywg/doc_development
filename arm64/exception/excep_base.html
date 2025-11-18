@@ -1,0 +1,191 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12.4.1. 入口与返回、栈选择、异常向量表 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="FPGA笔记" href="../../fpga/index.html" />
+    <link rel="prev" title="12.4. arm64异常处理" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">12. arm64 arch</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../register/index.html">12.1. arm64寄存器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assembly/index.html">12.2. 汇编语言</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stack/index.html">12.3. arm64栈布局及函数调用栈恢复方法</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">12.4. arm64异常处理</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">12.4.1. 入口与返回、栈选择、异常向量表</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">12.4.1.1. 基础知识</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">12.4.1.2. 异常处理</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">12. </span>arm64 arch</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">12.4. </span>arm64异常处理</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">12.4.1. </span>入口与返回、栈选择、异常向量表</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/arm64/exception/excep_base.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">12.4.1. </span>入口与返回、栈选择、异常向量表<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<img alt="../../_images/exception_base.png" src="../../_images/exception_base.png" />
+<section id="id2">
+<h2><span class="section-number">12.4.1.1. </span>基础知识<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<section id="id3">
+<h3><span class="section-number">12.4.1.1.1. </span>异常等级<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>armv8内部包含4个异常等级</p>
+<ul class="simple">
+<li><p>EL0: 普通用户等级</p></li>
+<li><p>EL1: 典型的操作系统内核，这个等级被称为特权等级</p></li>
+<li><p>EL2: hypervisor</p></li>
+<li><p>EL3: Low-level固件，例如安全监视器Secure monitor,最高权限</p></li>
+</ul>
+<p>armv8提供了两个状态(secure states),一个叫普通世界(normal world),一个叫安全世界(secure world).这两个世界并行的运行在同个硬件设备上面，
+安全世界的工作重心是抵抗软件和硬件的攻击。在EL3的secure  monitor,游走于secure world和normal world</p>
+<img alt="../../_images/nor_sec.png" src="../../_images/nor_sec.png" />
+<p>在normal world的hypervisor(VMM)代码运行在系统上并且管理着多个guest os,所以每一个操作系统都运行在VMM上面，每个操作系统在同一时间都不知道
+有其他操作系统在运行</p>
+<ul>
+<li><p>Guest OS kernel: 这部分分为两类</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>一般性的操作系统，如linux/windows</p></li>
+<li><p>在运行hypervisor的情况下，还有一个Rich OS kernel也作为guest os,比如OPTEE-OS</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Hypervisor: 总是在normal world， 主要给rich os kernel提供服务</p></li>
+<li><p>secure firmware: 这段程序必须运行在Boot时间，用于初始化trust os</p></li>
+<li><p>turst os: 在EL1和Guest Os并行运行，提供一个runtime环境执行安全应用</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3><span class="section-number">12.4.1.1.2. </span>执行状态<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>armv8定义了两种执行状态，aarch64和aarch32。这两个执行状态和异常等级没有概念上的交织，也就是aarch64和aarch32都有相应的异常等级和特权模式。
+在aarch64执行状态时，使用A64指令，在aarch32执行状态时，使用A32或者thumb指令集</p>
+</section>
+</section>
+<section id="id5">
+<h2><span class="section-number">12.4.1.2. </span>异常处理<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<section id="id6">
+<h3><span class="section-number">12.4.1.2.1. </span>异常类型<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h3>
+<p><strong>interrupt</strong></p>
+<p>在aarch64体系架构中有两种类型的中断，IRQ和FIQ. FIQ的优先级高于IRQ</p>
+<ul class="simple">
+<li><p>中断线(request line): 这个是对处理器而言的，是中断控制器的输入</p></li>
+<li><p>中断向量表(vector table): 中断名单，操作系统实现，内部包含中断线对应的IRQ号</p></li>
+</ul>
+<p>对于触发中断，在CPU上有专门的术语，assert一个中断，take一个异常。</p>
+<p><strong>aborts</strong></p>
+<p>同样包含两种aborts，取指失败(instruction aborts)或者数据访问失败(data aborts)。在内存上，发生这种异常的场景包含两种，在访问内存时，外部存储器
+返回一个错误，或者指定访问的地址没有关联到真实的内存中(MMU产生该错误，一个操作系统可以使用MMU abort动态的分配内存给应用程序)</p>
+<p><strong>rest</strong></p>
+<p>rest异常有者最高的异常等级，当该异常发生的时候arm处理器就会跳转到指令所在的位置。</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="12.4. arm64异常处理" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../fpga/index.html" class="btn btn-neutral float-right" title="FPGA笔记" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

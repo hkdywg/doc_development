@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.4.3.4. MQTT应用示例 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="6.5. 视频笔记" href="../../video/index.html" />
+    <link rel="prev" title="6.4.3.3. MQTT报文" href="mqtt_packet.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">6.4. 通信中间件</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../opendds/index.html">6.4.1. opendds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../some_ip/index.html">6.4.2. SOME/IP</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">6.4.3. mqtt协议</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="mqtt_note.html">6.4.3.1. mqtt协议基础</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt_flow.html">6.4.3.2. MQTT流程图</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt_packet.html">6.4.3.3. MQTT报文</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">6.4.3.4. MQTT应用示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6.4. </span>通信中间件</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.4.3. </span>mqtt协议</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.4.3.4. </span>MQTT应用示例</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user/communication/mqtt/mqtt_usermenu.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mqtt">
+<h1><span class="section-number">6.4.3.4. </span>MQTT应用示例<a class="headerlink" href="#mqtt" title="此标题的永久链接"></a></h1>
+<section id="mqtt-client">
+<h2><span class="section-number">6.4.3.4.1. </span>MQTT Client库编译安装<a class="headerlink" href="#mqtt-client" title="此标题的永久链接"></a></h2>
+<p>Paho MQTT C++是Eclipse Paho MQTT客户端库的C++版本,源码编译安装步骤如下</p>
+<ul class="simple">
+<li><p>安装依赖项</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">build</span><span class="o">-</span><span class="n">essential</span> <span class="n">gcc</span> <span class="n">make</span> <span class="n">cmake</span> <span class="n">cmake</span><span class="o">-</span><span class="n">gui</span> <span class="n">cmake</span><span class="o">-</span><span class="n">curses</span><span class="o">-</span><span class="n">gui</span>
+<span class="c1">#如果需要安全传输，则需要安装openssl</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libssl</span><span class="o">-</span><span class="n">dev</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>在构建 C++ 库之前，首先构建并安装 Paho C 库</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">eclipse</span><span class="o">/</span><span class="n">paho</span><span class="o">.</span><span class="n">mqtt</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">paho</span><span class="o">.</span><span class="n">mqtt</span><span class="o">.</span><span class="n">c</span>
+<span class="n">git</span> <span class="n">checkout</span> <span class="n">v1</span><span class="mf">.3.8</span>
+<span class="n">cmake</span> <span class="o">-</span><span class="n">Bbuild</span> <span class="o">-</span><span class="n">H</span><span class="o">.</span> <span class="o">-</span><span class="n">DPAHO_ENABLE_TESTING</span><span class="o">=</span><span class="n">OFF</span> <span class="o">-</span><span class="n">DPAHO_BUILD_STATIC</span><span class="o">=</span><span class="n">OFF</span> \
+<span class="o">-</span><span class="n">DPAHO_WITH_SSL</span><span class="o">=</span><span class="n">OFF</span> <span class="o">-</span><span class="n">DPAHO_HIGH_PERFORMANCE</span><span class="o">=</span><span class="n">ON</span> <span class="o">-</span><span class="n">DCMAKE_INSTALL_PREFIX</span><span class="o">=./</span><span class="n">build</span><span class="o">/</span><span class="n">_install</span>
+<span class="n">sudo</span> <span class="n">cmake</span> <span class="o">--</span><span class="n">build</span> <span class="n">build</span><span class="o">/</span> <span class="o">--</span><span class="n">target</span> <span class="n">install</span>
+<span class="n">sudo</span> <span class="n">ldconfig</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>新版本的 C++ 库需要 Paho C v1.3.8 或更高版本。</p>
+</div>
+<ul class="simple">
+<li><p>编译Paho C++ library</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">eclipse</span><span class="o">/</span><span class="n">paho</span><span class="o">.</span><span class="n">mqtt</span><span class="o">.</span><span class="n">cpp</span>
+<span class="n">cd</span> <span class="n">paho</span><span class="o">.</span><span class="n">mqtt</span><span class="o">.</span><span class="n">cpp</span>
+
+<span class="n">cmake</span> <span class="o">-</span><span class="n">Bbuild</span> <span class="o">-</span><span class="n">H</span><span class="o">.</span> <span class="o">-</span><span class="n">DPAHO_BUILD_STATIC</span><span class="o">=</span><span class="n">OFF</span> <span class="o">-</span><span class="n">DPAHO_BUILD_DOCUMENTATION</span><span class="o">=</span><span class="n">OFF</span> \
+  <span class="o">-</span><span class="n">DPAHO_BUILD_SAMPLES</span><span class="o">=</span><span class="n">OFF</span> <span class="o">-</span><span class="n">DCMAKE_WITH_SSL</span><span class="o">=</span><span class="n">OFF</span> <span class="o">-</span><span class="n">DCMAKE_PREFIX_PATH</span><span class="o">=./</span><span class="n">build</span><span class="o">/</span><span class="n">_install</span>
+
+<span class="n">cd</span> <span class="n">build</span><span class="o">/</span>
+<span class="n">cmake</span> <span class="o">../</span>
+<span class="n">或</span>
+<span class="n">cmake</span> <span class="o">-</span><span class="n">DCMAKE_CXX_COMPILER</span><span class="o">=</span><span class="n">aarch64</span><span class="o">-</span><span class="n">poky</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">g</span><span class="o">++</span> <span class="o">../</span>
+</pre></div>
+</div>
+</section>
+<section id="paho-library">
+<h2><span class="section-number">6.4.3.4.2. </span>Paho library应用示例<a class="headerlink" href="#paho-library" title="此标题的永久链接"></a></h2>
+<section id="publish">
+<h3><span class="section-number">6.4.3.4.2.1. </span>publish<a class="headerlink" href="#publish" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;cstdlib&gt;
+#include &lt;unistd.h&gt;
+#include &quot;mqtt/async_client.h&quot;
+
+//const std::string ADDRESS { &quot;tcp://localhost:1883&quot; };
+const std::string ADDRESS { &quot;tcp://broker.hivemq.com:1883&quot; };
+const std::string CLIENT_ID { &quot;paho_cpp_async_publish&quot; };
+const std::string TOPIC { &quot;test/topic_newversion&quot; };
+const int QOS = 1;
+
+class callback : public virtual mqtt::callback
+{
+public:
+    virtual void connection_lost(const std::string&amp; cause) override {
+        std::cout &lt;&lt; &quot;\nConnection lost&quot; &lt;&lt; std::endl;
+        if (!cause.empty())
+            std::cout &lt;&lt; &quot;\tcause: &quot; &lt;&lt; cause &lt;&lt; std::endl;
+    }
+
+    virtual void message_arrived(mqtt::const_message_ptr msg) override {
+        std::cout &lt;&lt; &quot;\nMessage arrived&quot; &lt;&lt; std::endl;
+        std::cout &lt;&lt; &quot;\ttopic: &#39;&quot; &lt;&lt; msg-&gt;get_topic() &lt;&lt; &quot;&#39;&quot; &lt;&lt; std::endl;
+        std::cout &lt;&lt; &quot;\tpayload: &#39;&quot; &lt;&lt; msg-&gt;to_string() &lt;&lt; &quot;&#39;\n&quot; &lt;&lt; std::endl;
+    }
+
+    virtual void delivery_complete(mqtt::delivery_token_ptr token) override {
+        std::cout &lt;&lt; &quot;\nDelivery complete for token: &quot;
+            &lt;&lt; (token ? token-&gt;get_message_id() : -1) &lt;&lt; std::endl;
+    }
+};
+
+int main(int argc, char* argv[])
+{
+    std::string test_topic = &quot;test topic name: cms info&quot;;
+    mqtt::async_client client(ADDRESS, CLIENT_ID);
+    callback cb;
+    client.set_callback(cb);
+
+    mqtt::connect_options connOpts;
+    connOpts.set_keep_alive_interval(20);
+    connOpts.set_clean_session(true);
+
+    try {
+        std::cout &lt;&lt; &quot;Connecting to the MQTT server...&quot; &lt;&lt; std::flush;
+        client.connect(connOpts)-&gt;wait();
+        std::cout &lt;&lt; &quot;OK\n&quot; &lt;&lt; std::endl;
+
+        while (true) {
+            std::cout &lt;&lt; &quot;publish to topic &#39;&quot; &lt;&lt; TOPIC &lt;&lt; &quot;&#39;...&quot; &lt;&lt; std::flush;
+            client.publish(TOPIC, test_topic.c_str(), test_topic.length())-&gt;wait();
+            std::cout &lt;&lt; &quot;OK\n&quot; &lt;&lt; std::endl;
+            sleep(5);
+        }
+
+        std::cout &lt;&lt; &quot;Disconnecting from the MQTT server...&quot; &lt;&lt; std::flush;
+        client.disconnect()-&gt;wait();
+        std::cout &lt;&lt; &quot;OK&quot; &lt;&lt; std::endl;
+
+    }
+    catch (const mqtt::exception&amp; exc) {
+        std::cerr &lt;&lt; exc.what() &lt;&lt; std::endl;
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+</pre></div>
+</div>
+</section>
+<section id="subscribe">
+<h3><span class="section-number">6.4.3.4.2.2. </span>subscribe<a class="headerlink" href="#subscribe" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;cstdlib&gt;
+#include &lt;unistd.h&gt;
+#include &quot;mqtt/async_client.h&quot;
+
+//const std::string ADDRESS { &quot;tcp://localhost:1883&quot; };
+const std::string ADDRESS { &quot;tcp://broker.hivemq.com:1883&quot; };
+const std::string CLIENT_ID { &quot;paho_cpp_async_subcribe&quot; };
+const std::string TOPIC { &quot;test/topic_newversion&quot; };
+const int QOS = 1;
+
+class callback : public virtual mqtt::callback
+{
+public:
+    virtual void connection_lost(const std::string&amp; cause) override {
+        std::cout &lt;&lt; &quot;\nConnection lost&quot; &lt;&lt; std::endl;
+        if (!cause.empty())
+            std::cout &lt;&lt; &quot;\tcause: &quot; &lt;&lt; cause &lt;&lt; std::endl;
+    }
+
+    virtual void message_arrived(mqtt::const_message_ptr msg) override {
+        std::cout &lt;&lt; &quot;\nMessage arrived&quot; &lt;&lt; std::endl;
+        std::cout &lt;&lt; &quot;\ttopic: &#39;&quot; &lt;&lt; msg-&gt;get_topic() &lt;&lt; &quot;&#39;&quot; &lt;&lt; std::endl;
+        std::cout &lt;&lt; &quot;\tpayload: &#39;&quot; &lt;&lt; msg-&gt;to_string() &lt;&lt; &quot;&#39;\n&quot; &lt;&lt; std::endl;
+    }
+
+    virtual void delivery_complete(mqtt::delivery_token_ptr token) override {
+        std::cout &lt;&lt; &quot;\nDelivery complete for token: &quot;
+            &lt;&lt; (token ? token-&gt;get_message_id() : -1) &lt;&lt; std::endl;
+    }
+};
+
+int main(int argc, char* argv[])
+{
+    mqtt::async_client client(ADDRESS, CLIENT_ID);
+    callback cb;
+    client.set_callback(cb);
+
+    mqtt::connect_options connOpts;
+    connOpts.set_keep_alive_interval(20);
+    connOpts.set_clean_session(true);
+
+    try {
+        std::cout &lt;&lt; &quot;Connecting to the MQTT server...&quot; &lt;&lt; std::flush;
+        client.connect(connOpts)-&gt;wait();
+        std::cout &lt;&lt; &quot;OK\n&quot; &lt;&lt; std::endl;
+
+        std::cout &lt;&lt; &quot;Subscribing to topic &#39;&quot; &lt;&lt; TOPIC &lt;&lt; &quot;&#39;...&quot; &lt;&lt; std::flush;
+        client.subscribe(TOPIC, QOS)-&gt;wait();
+        std::cout &lt;&lt; &quot;OK\n&quot; &lt;&lt; std::endl;
+
+        while (true) {
+            sleep(1);
+        }
+
+        std::cout &lt;&lt; &quot;Disconnecting from the MQTT server...&quot; &lt;&lt; std::flush;
+        client.disconnect()-&gt;wait();
+        std::cout &lt;&lt; &quot;OK&quot; &lt;&lt; std::endl;
+
+    }
+    catch (const mqtt::exception&amp; exc) {
+        std::cerr &lt;&lt; exc.what() &lt;&lt; std::endl;
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+</pre></div>
+</div>
+<p><strong>编译</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">++</span> <span class="o">-</span><span class="n">o</span> <span class="n">publish</span> <span class="n">publish</span><span class="o">.</span><span class="n">cpp</span> <span class="o">-</span><span class="n">lpaho</span><span class="o">-</span><span class="n">mqttpp3</span> <span class="o">-</span><span class="n">lpaho</span><span class="o">-</span><span class="n">mqtt3as</span> <span class="o">-</span><span class="n">I</span><span class="o">../</span><span class="n">src</span><span class="o">/</span> <span class="o">-</span><span class="n">L</span><span class="o">../</span><span class="n">paho</span><span class="o">.</span><span class="n">mqtt</span><span class="o">.</span><span class="n">c</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">src</span> <span class="o">-</span><span class="n">L</span><span class="o">../</span><span class="n">build</span><span class="o">/</span><span class="n">src</span>
+<span class="n">g</span><span class="o">++</span> <span class="o">-</span><span class="n">o</span> <span class="n">subscribe</span> <span class="n">subscribe</span><span class="o">.</span><span class="n">cpp</span> <span class="o">-</span><span class="n">lpaho</span><span class="o">-</span><span class="n">mqttpp3</span> <span class="o">-</span><span class="n">lpaho</span><span class="o">-</span><span class="n">mqtt3as</span> <span class="o">-</span><span class="n">I</span><span class="o">../</span><span class="n">src</span><span class="o">/</span> <span class="o">-</span><span class="n">L</span><span class="o">../</span><span class="n">paho</span><span class="o">.</span><span class="n">mqtt</span><span class="o">.</span><span class="n">c</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">src</span> <span class="o">-</span><span class="n">L</span><span class="o">../</span><span class="n">build</span><span class="o">/</span><span class="n">src</span>
+</pre></div>
+</div>
+<p><strong>运行状态</strong></p>
+<img alt="../../../_images/pub_sub.png" src="../../../_images/pub_sub.png" />
+</section>
+</section>
+<section id="id1">
+<h2><span class="section-number">6.4.3.4.3. </span>MQTT服务端(代理)编译<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>EMQ X是一款开源的，高性能，可扩展的分布式MQTT消息服务器，可以支持千万级的并发连接和百万级的消息推送．</p>
+<section id="emq">
+<h3><span class="section-number">6.4.3.4.3.1. </span>EMQ依赖项安装<a class="headerlink" href="#emq" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">software</span><span class="o">-</span><span class="n">properties</span><span class="o">-</span><span class="n">common</span> <span class="n">apt</span><span class="o">-</span><span class="n">transport</span><span class="o">-</span><span class="n">https</span>
+<span class="n">wget</span> <span class="o">-</span><span class="n">O</span><span class="o">-</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">packages</span><span class="o">.</span><span class="n">erlang</span><span class="o">-</span><span class="n">solutions</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">erlang_solutions</span><span class="o">.</span><span class="n">asc</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span>
+<span class="n">echo</span> <span class="s2">&quot;deb https://packages.erlang-solutions.com/ubuntu focal contrib&quot;</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">erlang</span><span class="o">.</span><span class="n">list</span>
+
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">erlang</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3><span class="section-number">6.4.3.4.3.2. </span>EMQ编译<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">emqx</span><span class="o">/</span><span class="n">emqx</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">qmqx</span>
+<span class="n">make</span>
+<span class="n">make</span> <span class="n">dist</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="mqtt_packet.html" class="btn btn-neutral float-left" title="6.4.3.3. MQTT报文" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../video/index.html" class="btn btn-neutral float-right" title="6.5. 视频笔记" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,226 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>9.2.6. IP选路 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="9.2.7. TCP传输控制协议" href="tcp.html" />
+    <link rel="prev" title="9.2.5. ICMP internet控制报文协议" href="icmp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">9. net</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../overview/index.html">9.1. linux 网络概览</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">9.2. TCP/IP详解</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">9.2.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datalink_layer.html">9.2.2. 数据链路层</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ip_protocol.html">9.2.3. IP:网际协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="arp.html">9.2.4. ARP地址解析协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="icmp.html">9.2.5. ICMP internet控制报文协议</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">9.2.6. IP选路</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">9.2.6.1. 选路的原理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">9.2.6.2. 动态选路协议</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tcp.html">9.2.7. TCP传输控制协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="udp.html">9.2.8. UDP用户数据报协议</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../AVB/index.html">9.3. AVB笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tc8/index.html">9.4. TC-8测试</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">9. </span>net</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">9.2. </span>TCP/IP详解</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">9.2.6. </span>IP选路</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/net/tcp_ip/routing.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ip">
+<h1><span class="section-number">9.2.6. </span>IP选路<a class="headerlink" href="#ip" title="此标题的永久链接"></a></h1>
+<p>选路时IP最重要的功能之一，下图表示了IP层处理的简单流程</p>
+<img alt="../../_images/ip_routing.png" src="../../_images/ip_routing.png" />
+<section id="id1">
+<h2><span class="section-number">9.2.6.1. </span>选路的原理<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>IP层进行的选路实际上是一种选路机制，它搜索路由表并决定向哪个网络接口发送分组，这区别于选路策略，它只是一组决定把哪些路由放入路由表的规则。IP执行选路机制，而路由守护进程
+则一般提供选路策略。</p>
+<section id="id2">
+<h3><span class="section-number">9.2.6.1.1. </span>简单路由表<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>netstat -r命令可以列出当前内核维护的路由表,然后-n选项再次执行该命令，以数字形式打印出IP地址。(如果没有-n则netstat命令将搜索文件/etc/networks并列出其中的网络名)</p>
+<img alt="../../_images/netstat_r.png" src="../../_images/netstat_r.png" />
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>描述</p></td>
+</tr>
+<tr class="row-even"><td><p>Destination</p></td>
+<td><p>目的主机</p></td>
+</tr>
+<tr class="row-odd"><td><p>Gateway</p></td>
+<td><p>网关</p></td>
+</tr>
+<tr class="row-even"><td><p>Flags</p></td>
+<td><p>U该路由可以使用，G该路由是到一个网关如果没有该标志则说明是直连的，H该路由是到一个主机，D该路由由重定向报文创建</p></td>
+</tr>
+</tbody>
+</table>
+<p>主机路由表的复杂性取决于主机所在网络的拓扑结构</p>
+<ol class="arabic simple">
+<li><p>最简单的情况是主机没有跟任何网络相连，这种情况下路由表只包含环回接口这一项</p></li>
+<li><p>主机连接在一个局域网上，只能访问局域网主机，这时路由表包含两项:一项是环回接口,另一项是局域网</p></li>
+<li><p>如果主机能够通过单个路由器访问其他网络，一般情况下增一个默认表项指向该路由器</p></li>
+</ol>
+<p>每当初始化一个接口时，就为此接口自动创建一个直接路由.如果目的主机不是直接相连的则需要加入路由表,可以使用route add default gw 10.1.0.254</p>
+</section>
+</section>
+<section id="id3">
+<h2><span class="section-number">9.2.6.2. </span>动态选路协议<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>前面讨论的是静态选路，在配置接口时以默认方式生成路由表项(对直接连接的接口)，并通过route命令增加表项，或时通过ICMP重定向生成表项。在网络比较小且与其他网络只有单个连接点且没有
+多余路由时，采用这种方法是可行的。复杂网络中则采用动态选路。</p>
+<p>动态选路协议用于路由器间的通信，我们主要讨论RIP(即选路协议routing information protocol),大多是TCP/IP实现都提供这个应用广泛的协议。</p>
+<p>当相邻路由器之间进行通信，以告知对方每个路由器当前所连接的网络，这时就出现了动态选路。路由器之间必须采用选路协议进行通信，这样的选路协议有很多种。路由器上有一个进程称为
+路由守护程序(routing daemon)它运行选路协议，并于其相邻的一些路由器进行通信,从相邻的路由器接收信息并更新内核路由表。</p>
+<section id="rip">
+<h3><span class="section-number">9.2.6.2.1. </span>RIP选路信息协议<a class="headerlink" href="#rip" title="此标题的永久链接"></a></h3>
+<p>RIP报文包含在UDP数据报中，如下为RIP报文格式</p>
+<img alt="../../_images/udp_rip.png" src="../../_images/udp_rip.png" />
+<img alt="../../_images/rip.png" src="../../_images/rip.png" />
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>字段</p></td>
+<td><p>描述</p></td>
+</tr>
+<tr class="row-even"><td><p>命令</p></td>
+<td><p>1表示请求2表示应答，3和4舍弃不用，两个非正式命令轮询(5)、轮询表项(6)</p></td>
+</tr>
+<tr class="row-odd"><td><p>版本</p></td>
+<td><p>通常为1,第二版RIP设置为2</p></td>
+</tr>
+<tr class="row-even"><td><p>地址系列</p></td>
+<td><p>对于IP地址来说，值为2</p></td>
+</tr>
+<tr class="row-odd"><td><p>度量</p></td>
+<td><p>逐跳计数</p></td>
+</tr>
+</tbody>
+</table>
+<p>采用这种20字节格式的RIP报文可以通告多达25条路由。上限25是用来保证RIP报文的总长度为20×25+4=504，小于512字节。由于每个报文最多携带25个路由，因此为了发送整个路由表，经常需要多个报文。</p>
+<p>采用RIP协议的routed程序正常运行流程，RIP常用的UDP端口号试520</p>
+<ol class="arabic simple">
+<li><p>初始化：启动一个路由守护程序时，先判断q启动了哪些接口，并在每个接口上发送一个请求报文，要求其他路由器发送完整路由表。在点对点链路中，该请求时发送给其他终点的。如果网络支持广播的话，
+这种请求是以广播形式发送的。目的UDP端口号是520。这种请求报文的命令字段为1，但地址系列字段设置为0，而度量字段设置为16。这是一种要求另一端完整路由表的请求报文</p></li>
+<li><p>接收到请求: 如果这个请求是刚才提到的特殊请求，那么路由器就将完整的路由表发送给请求者。否则就处理请求中的每一个表项，如果有连接到指明地址的路由，则将度量设置成我们的值，否则将度量置为16(度量
+为16表示一种称为无穷大的特殊值，它意味着没有到达目的路由),然后发送响应</p></li>
+<li><p>接收到响应: 使响应生效，可能会更新路由表。</p></li>
+<li><p>定期选路更新: 每过30秒，所有或部分路由器会将完整路由器表发送给相邻路由器。发送路由表可以是以广播形式的，或是发送给点对点链路其他重点的。</p></li>
+<li><p>触发更新: 每当一条路由的度量发生改变时，就对它进行更新。不需要发送完整路由表，而只需要发送哪些发生改变的表项。</p></li>
+</ol>
+<p>每条路由都有与之相关的定时器，如果运行RIP的系统发现一条路由在3分钟内未更新，就将该路由的度量设置成无穷大(16)，并标注为删除</p>
+<p><strong>度量</strong></p>
+<p>RIP所使用的度量是以跳(hop)计算的，所有直接连接的接口的跳数为1</p>
+<p>待完善……</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="icmp.html" class="btn btn-neutral float-left" title="9.2.5. ICMP internet控制报文协议" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="tcp.html" class="btn btn-neutral float-right" title="9.2.7. TCP传输控制协议" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

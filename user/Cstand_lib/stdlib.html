@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.9.1. stdlib标准库 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="6.10. 信息安全篇" href="../security/index.html" />
+    <link rel="prev" title="6.9. C标准库函数" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/index.html">6.4. 通信中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">6.9. C标准库函数</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">6.9.1. stdlib标准库</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">6.9.1.1. stdlib定义的变量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">6.9.1.2. stdlib定义的宏</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">6.9.1.3. stdlib函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.9. </span>C标准库函数</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.9.1. </span>stdlib标准库</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user/Cstand_lib/stdlib.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="stdlib">
+<h1><span class="section-number">6.9.1. </span>stdlib标准库<a class="headerlink" href="#stdlib" title="此标题的永久链接"></a></h1>
+<p>stdlib.h头文件定义了四个变量类型，一些宏和各种通用工具函数</p>
+<section id="id1">
+<h2><span class="section-number">6.9.1.1. </span>stdlib定义的变量<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>变量</p></td>
+<td><p>变量说明</p></td>
+</tr>
+<tr class="row-even"><td><p>size_t</p></td>
+<td><p>无符号整数类型</p></td>
+</tr>
+<tr class="row-odd"><td><p>wchar_t</p></td>
+<td><p>宽字符常量大小的整数类型</p></td>
+</tr>
+<tr class="row-even"><td><p>div_t</p></td>
+<td><p>div函数返回的结构体</p></td>
+</tr>
+<tr class="row-odd"><td><p>ldiv_t</p></td>
+<td><p>ldiv函数返回的结构体</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h2><span class="section-number">6.9.1.2. </span>stdlib定义的宏<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>宏</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>NULL</p></td>
+<td><p>空指针常量</p></td>
+</tr>
+<tr class="row-odd"><td><p>EXIT_FAILURE</p></td>
+<td><p>exit函数失败返回返回的值</p></td>
+</tr>
+<tr class="row-even"><td><p>EXIT_SUCCESS</p></td>
+<td><p>exit函数成功返回的值</p></td>
+</tr>
+<tr class="row-odd"><td><p>RAND_MAX</p></td>
+<td><p>rand函数返回的最大值</p></td>
+</tr>
+<tr class="row-even"><td><p>MB_CUR_MAX</p></td>
+<td><p>表示在多字节字符集中的最大字符数，不能大于MB_LEN_MAX</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id3">
+<h2><span class="section-number">6.9.1.3. </span>stdlib函数<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>函数名</p></td>
+<td><p>函数描述符</p></td>
+</tr>
+<tr class="row-even"><td><p>double atof(const char *str)</p></td>
+<td><p>把参数str所指向的字符串转换为一个浮点数</p></td>
+</tr>
+<tr class="row-odd"><td><p>int atoi(const char *str)</p></td>
+<td><p>把参数str所指向的字符串转换为一个整数</p></td>
+</tr>
+<tr class="row-even"><td><p>long int atol(const char *str)</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>double strtod(const char *str, char **endptr)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>long int strtol(const char *str, char **endptr, int base)</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>unsigned long int strtoul(const char *str,char **endpptr,int base)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>void *calloc(size_t nitems, size_t size)</p></td>
+<td><p>分配所需的内存空间，返回指针</p></td>
+</tr>
+<tr class="row-odd"><td><p>void free(void *ptr)</p></td>
+<td><p>释放calloc, malloc, realloc分配的内存空间</p></td>
+</tr>
+<tr class="row-even"><td><p>void *malloc(size_t size)</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>void *realloc(void *ptr, size_t size)</p></td>
+<td><p>尝试调整之前malloc或calloc所分配的ptr所指向的内存块的大小</p></td>
+</tr>
+<tr class="row-even"><td><p>void abort(void)</p></td>
+<td><p>使一个异常程序终止</p></td>
+</tr>
+<tr class="row-odd"><td><p>int atexit(void (*func)(void))</p></td>
+<td><p>当程序正常终止时，调用指定的函数func</p></td>
+</tr>
+<tr class="row-even"><td><p>void exit(int status)</p></td>
+<td><p>使程序正常终止</p></td>
+</tr>
+<tr class="row-odd"><td><p>char *getenv(const char *name)</p></td>
+<td><p>搜索name所指向的环境变量</p></td>
+</tr>
+<tr class="row-even"><td><p>int system(const char *string)</p></td>
+<td><p>执行string命令</p></td>
+</tr>
+<tr class="row-odd"><td><p>int abs(int x)</p></td>
+<td><p>返回x的绝对值</p></td>
+</tr>
+<tr class="row-even"><td><p>long int labs(long int x)</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>div_t div(int number, int denom)</p></td>
+<td><p>分子除以分母</p></td>
+</tr>
+<tr class="row-even"><td><p>ldiv_t ldiv(long int number, long int denom)</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>int rand(void)</p></td>
+<td><p>返回一个0到RAND_MAX之间的伪随机数</p></td>
+</tr>
+<tr class="row-even"><td><p>void srand(unsigned int seed)</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>int mblen(const char *str, size_t n)</p></td>
+<td><p>返回参数str所指向的多字节字符的长度</p></td>
+</tr>
+<tr class="row-even"><td><p>size_t mbstowcs(schar_t *pwcs, const char *str, size_t n)</p></td>
+<td><p>把参数str所指向的字符串转换为pwcs所指向的数组</p></td>
+</tr>
+<tr class="row-odd"><td><p>int mbtowc(wchar_t *pwc, const char *str, size_t n)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>size_t wcstombs(char *str, const wchar_t *pwcs, size_t n)</p></td>
+<td><p>将数组pwcs中的字符转换为str字符串</p></td>
+</tr>
+<tr class="row-odd"><td><p>int wctomb(char *str, wchar_t wchar)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>void swab(char *from, char *to, int n)</p></td>
+<td><p>from和to为需要交换的字符串，n表示要交换的字节数</p></td>
+</tr>
+<tr class="row-odd"><td><p>void qsort(void *ditrict, int n, int m, int(*fc)())</p></td>
+<td><p>对无序数列进行快速排序，n表示待排序元素数量，m表示每个排序元素的大小,fc为比较元素大小的函数指针</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="6.9. C标准库函数" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../security/index.html" class="btn btn-neutral float-right" title="6.10. 信息安全篇" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

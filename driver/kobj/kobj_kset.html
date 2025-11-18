@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.7.1. 关于kobject kset 和ktype &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.8. 异步通知机制" href="../Async_notify/index.html" />
+    <link rel="prev" title="4.7. kobject详解" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.7. kobject详解</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.7.1. 关于kobject kset 和ktype</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#kobject">4.7.1.1. 内嵌kobject</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.7.1.2. kobject的初始化</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.7.1.3. 创建简单的kobject</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ktypesrelease">4.7.1.4. ktypes和release方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.7. </span>kobject详解</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.7.1. </span>关于kobject kset 和ktype</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/kobj/kobj_kset.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kobject-kset-ktype">
+<h1><span class="section-number">4.7.1. </span>关于kobject kset 和ktype<a class="headerlink" href="#kobject-kset-ktype" title="此标题的永久链接"></a></h1>
+<p>理解那些建立在kobject抽象之上的驱动模型的困难之一就是没有一个明确的入口,使用kobject需要了解几种不同的类型，而这些类型又会互相引用。</p>
+<ul class="simple">
+<li><p>kobject是一个struct kobject类型的对象，kobject包含一个名字和一个引用计数，同时一个kobject还包含一个父指针(允许对象被安排成层次结构)，一个特定的类型，通常
+情况下还有一个在sysfs虚拟文件系统里的表现。通常我们不关心kobject本身，而应该关注那些嵌入了Kobject的那些结构体，任何结构体都不允许包含一个以上的kobject</p></li>
+<li><p>ktype是嵌入了kobject的对象的类型，每个嵌入了kobject的对象都需要一个相应的ktype，ktype用来控制当kobject创建和销毁时所发生的操作</p></li>
+<li><p>kset是koject的一组集合，这些kobject可以是同样的ktype，也可以分别属于不同的ktype，kset是kobject集合的基本容器类型。kset也包含他们自己的kobject</p></li>
+</ul>
+<p>当你看到一个sysfs目录里全部是其他目录时，通常每一个目录都对应一个在同一个kset里的kobject</p>
+<p>kobject结构定义如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">kobject</span> <span class="p">{</span>
+    <span class="n">const</span> <span class="n">char</span>              <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_head</span>        <span class="n">entry</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">kobject</span>          <span class="o">*</span><span class="n">parent</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">kset</span>             <span class="o">*</span><span class="n">kset</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">kobj_type</span>        <span class="o">*</span><span class="n">ktype</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">kernfs_node</span>      <span class="o">*</span><span class="n">sd</span><span class="p">;</span> <span class="o">/*</span> <span class="n">sysfs</span> <span class="n">directory</span> <span class="n">entry</span> <span class="o">*/</span>
+    <span class="n">struct</span> <span class="n">kref</span>             <span class="n">kref</span><span class="p">;</span>
+<span class="c1">#ifdef CONFIG_DEBUG_KOBJECT_RELEASE</span>
+    <span class="n">struct</span> <span class="n">delayed_work</span>     <span class="n">release</span><span class="p">;</span>
+<span class="c1">#endif</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">state_initialized</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">state_in_sysfs</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">state_add_uevent_sent</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">state_remove_uevent_sent</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">uevent_suppress</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<section id="kobject">
+<h2><span class="section-number">4.7.1.1. </span>内嵌kobject<a class="headerlink" href="#kobject" title="此标题的永久链接"></a></h2>
+<p>就内核代码而言，基本上不会创建一个单独的kobject，kobject通常被用来控制一个更大的特定域对象。因此你将发现kobject都被嵌入到了其他的结构体当中。</p>
+<p>比如，driver/uio/uio.c里面uio代码包含了一个定义内存区域的uio设备</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">uio_map</span> <span class="p">{</span>
+    <span class="n">struct</span> <span class="n">kobject</span> <span class="n">kobj</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">uio_mem</span> <span class="o">*</span><span class="n">mem</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>如果你有一个struct uio_map结构体，使用它的成员kobj就能找到嵌套的kobject，但是操作kobject的代码往往会引出一个相反的问题：如果给定一个struct kobject
+指针，那么包含这个指针的结构体又是什么呢？这个时候需要使用container_of()宏函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">container_of</span><span class="p">(</span><span class="n">pointer</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">member</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h2><span class="section-number">4.7.1.2. </span>kobject的初始化<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>创建一个kobject的代码必须首先初始化这个对象，调用 <code class="docutils literal notranslate"><span class="pre">kobject_init()</span></code> 来设置一些内部字段(强制性的):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">kobject_init</span><span class="p">(</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobj</span><span class="p">,</span> <span class="n">struct</span> <span class="n">kobj_type</span> <span class="o">*</span><span class="n">ktype</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>因为每一个kobject都有一个关联的kobj_type，所以正确创建一个kobject时ktype是必须的，调用kobject_init()之后，必须使用kobject_add()在sysfs上注册kobject</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">kobject_add</span><span class="p">(</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobj</span><span class="p">,</span> <span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">parent</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">fmt</span><span class="p">,</span> <span class="o">...</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>这将为Kobject设置parent和name，如果这个kobject将关联于一个指定的kset，那么kobj-&gt;kset必须在kobject_add()之前被赋值，如果一个kset关联于一个kobject，那么在
+调用kobject_add()时parent可以时NULL，这时kobject的parent将会时这个kset本身</p>
+<p>还有一个函数可以同时初始化kobject并将其添加至kernel</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">kobject_init_and_add</span><span class="p">(</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobj</span><span class="p">,</span> <span class="n">struct</span> <span class="n">kobj_type</span> <span class="o">*</span><span class="n">ktype</span><span class="p">,</span>
+                        <span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">parent</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">fmt</span><span class="p">,</span> <span class="o">...</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>uevents</strong></p>
+<p>在一个kobject注册到核心之后，你需要通过kobject_uevent()向系统宣布它被创建了</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">kobject_uevent</span><span class="p">(</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobj</span><span class="p">,</span> <span class="n">enum</span> <span class="n">kobject_action</span> <span class="n">action</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>当kobject首次被添加进kernel时使用KOBJ_ADD动作，移除时使用KOBJ_REMOVE动作</p>
+<p><strong>引用计数</strong></p>
+<p>一个kobject的主要功能之一就是在它被嵌入的对象中作为一个引用计数器，只要存在对该对象的引用，对象(和支持它的代码)就必须继续存在，操作一个kobject的引用计数的底层函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobject_get</span><span class="p">(</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobj</span><span class="p">);</span>
+<span class="n">void</span> <span class="n">kobject_put</span><span class="p">(</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobj</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>另外如果使用kobject的理由仅仅是使用引用计数的话，那么可以使用struct kref替代kobject</p>
+</section>
+<section id="id2">
+<h2><span class="section-number">4.7.1.3. </span>创建简单的kobject<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>有时开发人员希望有一种创建一个在sysfs层次中简单目录的方式，而并不想搞乱本来就错综复杂的ksets,show,store函数，可以使用如下函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobject_create_and_add</span><span class="p">(</span><span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">parent</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>此函数将创建一个kobject并将其放置在指定的父kobject在sysfs中的目录下，要创建与这个kobject关联的属性，使用函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">sysfs_create_file</span><span class="p">(</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobj</span><span class="p">,</span> <span class="n">struct</span> <span class="n">attribute</span> <span class="o">*</span><span class="n">attr</span><span class="p">);</span>
+<span class="n">或</span>
+<span class="nb">int</span> <span class="n">sysfs_create_group</span><span class="p">(</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobj</span><span class="p">,</span> <span class="n">struct</span> <span class="n">attribute_group</span> <span class="o">*</span><span class="n">grp</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="ktypesrelease">
+<h2><span class="section-number">4.7.1.4. </span>ktypes和release方法<a class="headerlink" href="#ktypesrelease" title="此标题的永久链接"></a></h2>
+<p>一个被kobject保护的街头提不饿能在这个kobject引用计数到0之前被释放，而这个引用计数又不被创建这个kobject的代码所直接控制，所以必须在这个kobject的
+最后一个引用消失时异步通知这些代码。</p>
+<p>每个kobject必须有一个release方法，但是这个release方法并没有直接保存在kobject中而是关联在它的ktype成员中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">kobj_type</span> <span class="p">{</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">release</span><span class="p">)(</span><span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobj</span><span class="p">);</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">sysfs_ops</span> <span class="o">*</span><span class="n">sysfs_ops</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">attribute</span> <span class="o">**</span><span class="n">default_attrs</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>kset</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">kset</span> <span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="nb">list</span><span class="p">;</span>
+    <span class="n">spinlock_t</span> <span class="n">list_lock</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">kobject</span> <span class="n">kobj</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">kset_uevent_ops</span> <span class="o">*</span><span class="n">uevent_ops</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">__randomize_layout</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>kset仅仅是一个需要相互关联的kobject集合，在这里没有任何规定他们必须是同样的ktye,但如果不是同样type则一定要小心处理</p>
+<p>kset提供以下功能:</p>
+<ul class="simple">
+<li><p>它就像一个装有一堆对象袋子，kset可以被kernel用来跟踪像”所有的块设备”或者”所有的PCI设备驱动”这样的东西</p></li>
+<li><p>一个kset也是一个sysfs里的一个子目录，该目录中能看到这些相关的kobject，每个kset都包含一个kobject，这个kobject可以用来设置成其他kobject的parent。sysfs层次结构中顶层目录就是通过这样的方法构建的</p></li>
+<li><p>kset还可以支持kobject的”热插拔”，并会影响uevent事件如何报告给用户空间</p></li>
+</ul>
+<p>以面向对象的观点来看，kset是一个顶层容器类，kset包含有他们自己的kobject，这个kobject是在kset代码管理之下的</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">kset</span> <span class="o">*</span><span class="n">kset_create_and_add</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">struct</span> <span class="n">kset_uevent_ops</span> <span class="o">*</span><span class="n">u</span><span class="p">,</span> <span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">parent</span><span class="p">);</span>
+<span class="n">void</span> <span class="n">kset_unregister</span><span class="p">(</span><span class="n">struct</span> <span class="n">kset</span> <span class="o">*</span><span class="n">kset</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>如果一个kset希望控制那些与它相关联的kobject的uevent操作，可以使用struct kset_uevent_ops处理</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">kset_uevent_ops</span> <span class="p">{</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="nb">filter</span><span class="p">)(</span><span class="n">struct</span> <span class="n">kset</span> <span class="o">*</span><span class="n">kset</span><span class="p">,</span> <span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobj</span><span class="p">);</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">name</span><span class="p">)(</span><span class="n">struct</span> <span class="n">kset</span> <span class="o">*</span><span class="n">kset</span><span class="p">,</span> <span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobj</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">uevent</span><span class="p">)(</span><span class="n">struct</span> <span class="n">kset</span> <span class="o">*</span><span class="n">kset</span><span class="p">,</span> <span class="n">struct</span> <span class="n">kobject</span> <span class="o">*</span><span class="n">kobj</span><span class="p">,</span>
+                    <span class="n">struct</span> <span class="n">kobj_uevent_env</span> <span class="o">*</span><span class="n">env</span><span class="p">);</span>
+
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>filter函数允许kset阻止一个特定的kobject的uevent是否发送到用户空间，如果这个函数返回0，则uvent将不会被发出</p></li>
+<li><p>name函数用来重写那些将被uevent发送到用户空间的kset默认名称</p></li>
+<li><p>uevent函数将会向即将发送到用户空间的uevent添加更多的环境变量</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="4.7. kobject详解" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../Async_notify/index.html" class="btn btn-neutral float-right" title="4.8. 异步通知机制" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.2.4.1. ARM体系MMU &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.2.4.2. arm64 MMU" href="arm64_mmu.html" />
+    <link rel="prev" title="3.2.4. MMU" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.2. linux 内存管理</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../summary/index.html">3.2.1. 内存管理概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mm_qa/index.html">3.2.2. 内存管理之问答</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mm/index.html">3.2.3. linux內存管理</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">3.2.4. MMU</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.2.4.1. ARM体系MMU</a></li>
+<li class="toctree-l4"><a class="reference internal" href="arm64_mmu.html">3.2.4.2. arm64 MMU</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cache/index.html">3.2.5. 内存管理之cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../memory_base_kn/index.html">3.2.6. 内存基础知识</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.2. </span>linux 内存管理</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2.4. </span>MMU</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.2.4.1. </span>ARM体系MMU</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/mm/MMU/ARM_MMU.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="armmmu">
+<h1><span class="section-number">3.2.4.1. </span>ARM体系MMU<a class="headerlink" href="#armmmu" title="此标题的永久链接"></a></h1>
+<p>MMU全称为Memory Management Unit，即内存管理单元。在带有MMU的嵌入式linux中，CPU访问的地址都是虚拟地址，而MMU负责将程序中代码或者数据的虚拟地址翻译为物理地址。在
+执行期间，MMU会自动转换CPU发出的虚拟地址，无法人工进行操作，只需要配置好MMU相关属性即可</p>
+<p>虚拟地址是在编译和链接时定义的，可以简单的理解为有链接器和链接器脚本指定虚拟地址。除了翻译虚拟地址,MMU还可以配置内存区域的各项配置，如内存区域的访问权限，内存区域是否
+使能cache等功能</p>
+<section id="mmu">
+<h2><span class="section-number">3.2.4.1.1. </span>MMU基本概念<a class="headerlink" href="#mmu" title="此标题的永久链接"></a></h2>
+<section id="id1">
+<h3><span class="section-number">3.2.4.1.1.1. </span>页<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<p>MMU管理虚拟地址空间时，是按照页为单位来进行管理，在ARMv7的MMU，页大小共有16M(super section)、1M(section)、64k(large page)、4k(page)。页大小可以通过协处理器CP15进行配置，
+越小的页意味着内存的颗粒度越小，内存使用时的浪费也会越小，但也意味着使用的TLB行越多。</p>
+</section>
+<section id="id2">
+<h3><span class="section-number">3.2.4.1.1.2. </span>页帧<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>因为虚拟地址空间需要有对应的物理地址，这样才能在虚拟地址中存储数据，所以MMU管理物理地址空间时，按照页帧为单位进行管理，其大小分为64k或者4k，一段虚拟地址空间有可能存在多个
+页，这些页对应着多个页帧.页和页帧时不同地址空间下关于内存空间大小的概念</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">3.2.4.1.1.3. </span>页表及页表项<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>MMU在进行地址空间转换时，需要一些信息，存放这些信息的表就是页表。每个页表的最小单位就是页表项。页表存储在物理地址空间中，且一个页表项对应着一个页。在切换页表时，通过将页表的物理
+首地址设置到协处理器CP15中的TTBR寄存器(Translation Table Base Register), 此后MMU会通过该地址自动去物理地址空间中找到对应的页表，从而完成虚拟地址到物理地址的映射。</p>
+<p>在不考虑TLB和多级页表的情况下，可以简单的如下图所示</p>
+<img alt="../../../_images/tlb_s.webp" src="../../../_images/tlb_s.webp" />
+</section>
+<section id="tlb">
+<h3><span class="section-number">3.2.4.1.1.4. </span>TLB<a class="headerlink" href="#tlb" title="此标题的永久链接"></a></h3>
+<p>TLB全称为Translation lookaside buffer, 即旁路转换缓冲，它是MMU的cache，用于临时存放虚拟地址到物理地址映射所需要的信息。TLB访问步骤如下</p>
+<ol class="arabic simple">
+<li><p>CPU访问虚拟地址到MMU</p></li>
+<li><p>MMU根据规则查看虚拟地址是否在TLB中</p></li>
+<li><p>如果在TLB中，则称为TLB命中，从TLB中直接获取物理地址对内存进行访问</p></li>
+<li><p>如果不在TLB中，则称为TLB失效，此时MMU将进行translation table walking,即通过访问页表来获取物理地址，并将该虚拟地址的信息存入TLB，以便下次使用</p></li>
+</ol>
+<p>TLB由许多TLB行组成，如下图所示</p>
+<img alt="../../../_images/tlb_struct.webp" src="../../../_images/tlb_struct.webp" />
+<p>TLB行由3个部分组成，分别为标签，ASID和描述符</p>
+<p>标签: 该部分由虚拟地址的一部分bit组成，MMU通过将虚拟地址的一部分bit和TLB的所有标签对比进行搜索</p>
+<p>ASID: 全称为Address Space ID，一般用于多进程系统</p>
+<p>描述符: 由2个部分组成，分为物理地址(一部分bit)和内存区域属性组成。可以理解为cache中的数据</p>
+<p>一般情况下，切换进程时会切换页表，因为随着进程的切换，虚拟地址到物理的映射已经改变，此时需要清理TLB来保持TLB一致性，清理TLB一般通过协处理器CP15来完成，
+在linux内核中，有flush_tlb_all()和flush_tlb_range()函数来完成该工作</p>
+<ul class="simple">
+<li><p>MMU组成</p></li>
+</ul>
+<img alt="../../../_images/mmu_struct.webp" src="../../../_images/mmu_struct.webp" />
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">3.2.4.1.2. </span>MMU工作过程<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>ARMv7下的MMU具有2级页表，分为1级页表和2级页表。</p>
+<section id="id5">
+<h3><span class="section-number">3.2.4.1.2.1. </span>一级页表<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>1级页表也称主页表和段页表，下面简称L1页表，它将4GB的地址空间划分为4096个1MB大小的段，每个段的地址为32bit,所以1级页表拥有4096个32bit的页表项,支持4种内存大小，
+16M/1M的称之为段，64k/4k称之为页</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>存放在TTBR寄存器的地址需要16k对齐</p>
+</div>
+<p>一级页表项一共有4种格式，如下图所示</p>
+<img alt="../../../_images/L1_format.webp" src="../../../_images/L1_format.webp" />
+<p>每种格式都由物理地址部分+属性部分组成，各种格式的含义如下</p>
+<ol class="arabic simple">
+<li><p>1Mb段转换页表项(section)，映射到1MB的物理地址范围，其物理地址部分即为所需要映射的物理基地址</p></li>
+<li><p>物理地址部分指向2级页表的物理基地址</p></li>
+<li><p>16MB段转换页表项，是一种特殊的1MB段转换页表项，其物理地址部分即为所需要映射的物理基地址</p></li>
+<li><p>无效页表项,当访问该页表项时，将触发指令取指异常或者取数据异常</p></li>
+</ol>
+<ul class="simple">
+<li><p>一级页表转换</p></li>
+</ul>
+<p>以1MB段举例，假设L1页表的物理地址为0x12300000,现有一个虚拟地址0x00100000,其转换过程如图所示</p>
+<img alt="../../../_images/L1_trans.webp" src="../../../_images/L1_trans.webp" />
+<img alt="../../../_images/L1_trans1.webp" src="../../../_images/L1_trans1.webp" />
+<ol class="arabic simple">
+<li><p>查表过程：将虚拟地址高12bit,即0x001乘以4得到0x004, 0x004即为该虚拟地址所在段的页表项在页表中的偏移，所以该虚拟地址对应的页表项的物理地址为0x12300000+0x004=0x12300004</p></li>
+<li><p>根据查到的页表项，将页表项高12bit和虚拟地址底20bit结合即为该虚拟地址在该1Mb段内的物理地址</p></li>
+</ol>
+<p>完整的转换过程如下</p>
+<img alt="../../../_images/L1_process.webp" src="../../../_images/L1_process.webp" />
+</section>
+<section id="id6">
+<h3><span class="section-number">3.2.4.1.2.2. </span>二级页表<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h3>
+<p>2级页表一共有256个4字节大小的页表项，总共1kb大小的内存空间，L2页表的大部分内容与L1页表类似</p>
+<ul class="simple">
+<li><p>二级页表项</p></li>
+</ul>
+<p>二级页表项一共有3种格式，如下图所示</p>
+<img alt="../../../_images/L2_struct.webp" src="../../../_images/L2_struct.webp" />
+<ol class="arabic simple">
+<li><p>粗页表项: 其物理地址部分指向64kb大小的物理基地址</p></li>
+<li><p>细页表项: 其物理地址指向4kb大小的物理基地址</p></li>
+<li><p>无效页表项，当访问该页表项时，将触发取指或者取数据异常</p></li>
+</ol>
+<ul class="simple">
+<li><p>二级页表转换</p></li>
+</ul>
+<p>L2页表的转换过程与L1页表的转换过程类似，以4kb为例，如下图所示</p>
+<img alt="../../../_images/L2_translation.webp" src="../../../_images/L2_translation.webp" />
+<p>转换步骤如下</p>
+<ol class="arabic simple">
+<li><p>通过虚拟地址找出L1页表项并转换为L2页表的基地址</p></li>
+<li><p>根据L2页表基地址并集合虚拟地址的[19:12]bit找出虚拟地址对应的L2页表项</p></li>
+<li><p>将虚拟地址[11:0]bit和L2页表项的物理地址部分结合得出具体的物理地址</p></li>
+</ol>
+<p>完整转换过程如下</p>
+<img alt="../../../_images/L2_process.webp" src="../../../_images/L2_process.webp" />
+</section>
+</section>
+<section id="id7">
+<h2><span class="section-number">3.2.4.1.3. </span>MMU内存属性<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
+<section id="id8">
+<h3><span class="section-number">3.2.4.1.3.1. </span>内存区域权限<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<p>每个内存区域都有自己的权限，不符合权限的访问都会引发异常，如果是数据访问则引发数据异常，如果是指令访问，且该指令再执行期间都没有被flush，将
+引发预取指异常，引发异常的原因将会被设置在CP15的the fault address and fault status registers</p>
+<p>内存区域权限由AP、APX和Domain共同控制</p>
+</section>
+</section>
+<section id="id9">
+<h2><span class="section-number">3.2.4.1.4. </span>操作系统如何使用页表<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
+<section id="id10">
+<h3><span class="section-number">3.2.4.1.4.1. </span>进程与MMU<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h3>
+<p>操作系统会为每个进程分配一个页表，该页表使用物理地址存储。当进程使用类似malloc等需要映射代码或数据的操作时，操作系统会在随后马上修改页表以加入新的物理内存。
+当进程完成退出时，内核会将相关的页表项删除，以便分配给新的进程。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>当使能MMU之后，CPU直接寻址虚拟地址，而MMU负责虚拟地址到物理地址的转换和翻译工作，地址转换和翻译的依据是页表。页表项的内容是由操作系统负责填充的。如果下一级
+页表的基地址是虚拟地址，那么MMU还需要查询另外一个页表才能找到这个虚拟地址对应的物理地址，这样MMU就会陷入死循环，所以这里下一级页表的基地址采用的是物理地址。</p>
+</div>
+<p>关于页表的遍历，MMU会遍历页表，linux内核也会遍历页表，如通过 <code class="docutils literal notranslate"><span class="pre">walk_pgd</span></code> 、 <code class="docutils literal notranslate"><span class="pre">__create_pgd_mapping</span></code> 、 <code class="docutils literal notranslate"><span class="pre">follow_page</span></code> 等函数。通过MMU遍历页表比较容易理解，
+MMU从页表基地址寄存器得到了PGD页表(L0页表)基地址的物理地址，然后从虚拟地址中得到每级页表的索引值，从而找到对应的页表项，页表项中存储了下一级页表的物理基地址，
+以此类推，很容易遍历整个页表。但是站在软件的视角，linux内核的pgd_t, pud_t, pmd_t, pte_t数据结构中并没有存储指向下一级页表的指针。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">arch</span><span class="o">/</span><span class="n">arm64</span><span class="o">/</span><span class="n">include</span><span class="o">/</span><span class="n">asm</span><span class="o">/</span><span class="n">pgtable</span><span class="o">-</span><span class="n">types</span><span class="o">.</span><span class="n">h</span>
+<span class="n">typedef</span> <span class="n">u64</span> <span class="n">pteval_t</span><span class="p">;</span>
+<span class="n">typedef</span> <span class="n">u64</span> <span class="n">pmdval_t</span><span class="p">;</span>
+<span class="n">typedef</span> <span class="n">u64</span> <span class="n">pudval_t</span><span class="p">;</span>
+<span class="n">typedef</span> <span class="n">u64</span> <span class="n">pgdval_t</span><span class="p">;</span>
+
+<span class="n">typedef</span> <span class="n">struct</span> <span class="p">{</span> <span class="n">pteval_t</span> <span class="n">pte</span><span class="p">;</span> <span class="p">}</span> <span class="n">pte_t</span><span class="p">;</span>
+<span class="c1">#define pte_val(x)  ((x).pte)</span>
+<span class="c1">#define __pte(x)    ((pte_t) { (x) } )</span>
+
+<span class="c1">#if CONFIG_PGTABLE_LEVELS &gt; 2</span>
+<span class="n">typedef</span> <span class="n">struct</span> <span class="p">{</span> <span class="n">pmdval_t</span> <span class="n">pmd</span><span class="p">;</span> <span class="p">}</span> <span class="n">pmd_t</span><span class="p">;</span>
+<span class="c1">#define pmd_val(x)  ((x).pmd)</span>
+<span class="c1">#define __pmd(x)    ((pmd_t) { (x) } )</span>
+<span class="c1">#endif</span>
+
+<span class="c1">#if CONFIG_PGTABLE_LEVELS &gt; 3</span>
+<span class="n">typedef</span> <span class="n">struct</span> <span class="p">{</span> <span class="n">pudval_t</span> <span class="n">pud</span><span class="p">;</span> <span class="p">}</span> <span class="n">pud_t</span><span class="p">;</span>
+<span class="c1">#define pud_val(x)  ((x).pud)</span>
+<span class="c1">#define __pud(x)    ((pud_t) { (x) } )</span>
+<span class="c1">#endif</span>
+
+<span class="n">typedef</span> <span class="n">struct</span> <span class="p">{</span> <span class="n">pgdval_t</span> <span class="n">pgd</span><span class="p">;</span> <span class="p">}</span> <span class="n">pgd_t</span><span class="p">;</span>
+<span class="c1">#define pgd_val(x)  ((x).pgd)</span>
+<span class="c1">#define __pgd(x)    ((pgd_t) { (x) } )</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">walk_pagetable</span></code> 函数是软件遍历页表的例子，它的作用是遍历进程的页表查找虚拟地址对应页表中的PTE</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static pte_t *walk_pagetable(struct mm_struct *mm, unsigned long address)
+{
+        pgd_t *pgdp = NULL;
+        pud_t *pudp;
+        pmd_t *pmdp;
+pte_t *ptep;
+
+pgdp = pgd_offset(mm, address);
+if(!pgdp || pgd_none(*pgdp))
+    return NULL;
+
+pudp = pud_offset(pgdp, address);
+if(!pudp || pud_none(*pudp))
+    return NULL;
+
+pmdp = pmd_offset(pudp, address);
+if(!pmdp || pmd_none(*pmdp))
+    return NULL;
+
+if((pmd_val(*pmdp) &amp; PMD_TYPE_MASK) == PMD_TYPE_SECT)
+    return (pte_t *)pmdp;
+
+ptep = pte_offset_kernel(pmdp, address);
+if(!ptep || pte_none(*ptep))
+    return NULL;
+
+return ptep;
+}
+</pre></div>
+</div>
+<p>进程的内存描述符mm_struct中PGD成员存储了该进程的PGD页表基地址的虚拟地址，因此通过pgd_offset很方便可以找到PGD页表项的虚拟地址</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#define pgd_offset(mm, addr)    (pgd_offset_raw((mm)-&gt;pgd, (addr)))
+#define pgd_offset_raw(pgd, addr)   (pgd + pgd_index(addr))
+#define pgd_index(addr)     (((addr) &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD - 1))
+
+#define PTRS_PER_PGD        (1 &lt;&lt; (MAX_USER_VA_BITS - PGDIR_SHIFT))
+#define MAX_USER_VA_BITS    VA_BITS
+#define VA_BITS         (CONFIG_ARM64_VA_BITS)
+
+#define PGDIR_SHIFT     ARM64_HW_PGTABLE_LEVEL_SHIFT(4 - CONFIG_PGTABLE_LEVELS)
+#define ARM64_HW_PGTABLE_LEVEL_SHIFT(n) ((PAGE_SHIFT - 3) * (4 - (n)) + 3)
+#define PAGE_SHIFT      CONFIG_ARM64_PAGE_SHIFT
+
+// CONFIG_ARM64_PAGE_SHIFT在.config中定义，一般为CONFIG_ARM64_PAGE_SHIFT=12
+// CONFIG_PGTABLE_LEVELS在.config中定义，一般为CONFIG_PGTABLE_LEVELS=4
+// CONFIG_ARM64_VA_BITS在.config中定义，一般为CONFIG_ARM64_VA_BITS=48
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>比较难理解是Linux内核如何查找到下一级页表基地址的虚拟地址，因为pgd_t数据结构中并没有存储下一个指针来指向下一级页表的虚拟地址</p>
+</div>
+<p>在linux内核中，物理内存会线性映射到内核空间中，偏移量为PAGE_OFFSET，在内核空间中可以很方便的实现虚拟地址到物理地址映射的转换。linux提供了两个宏，其中  <code class="docutils literal notranslate"><span class="pre">__pa</span></code> 用于
+根据内核中线性映射的虚拟地址计算对应的物理地址。而  <code class="docutils literal notranslate"><span class="pre">__va</span></code> 宏用于根据内核线性映射中物理地址计算对应的虚拟地址</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="c1">#define pud_offset(dir, addr)       ((pud_t *)__va(pud_offset_phys((dir), (addr))))</span>
+ <span class="c1">#define pud_offset_phys(dir, addr)  (pgd_page_paddr(READ_ONCE(*(dir))) + pud_index(addr) * sizeof(pud_t))</span>
+ <span class="n">static</span> <span class="n">inline</span> <span class="n">phys_addr_t</span> <span class="n">pgd_page_paddr</span><span class="p">(</span><span class="n">pgd_t</span> <span class="n">pgd</span><span class="p">)</span>
+ <span class="p">{</span>
+     <span class="k">return</span> <span class="n">__pgd_to_phys</span><span class="p">(</span><span class="n">pgd</span><span class="p">);</span>
+ <span class="p">}</span>
+ <span class="c1">#define __pgd_to_phys(pgd)  __pte_to_phys(pgd_pte(pgd))</span>
+ <span class="c1">#define __pte_to_phys(pte)  (pte_val(pte) &amp; PTE_ADDR_MASK)</span>
+
+<span class="o">//</span><span class="n">arch</span><span class="o">/</span><span class="n">arm64</span><span class="o">/</span><span class="n">include</span><span class="o">/</span><span class="n">asm</span><span class="o">/</span><span class="n">memory</span><span class="o">.</span><span class="n">h</span>
+<span class="c1">#define __pa(x)  __virt_to_phys((unsigned long) (x))</span>
+<span class="c1">#define __va(x)  ((void *)__phys_to_virt((phys_addr_t) (x)))</span>
+
+<span class="c1">#define __phys_to_virt(x)   ((unsigned long)((x) - PHYS_OFFSET) | PAGE_OFFSET)</span>
+</pre></div>
+</div>
+<p>在PGD页表项中存储了指向下一级页表基地址的物理地址，因此通过__va宏，可以快速把物理地址转换成内核空间的虚拟地址。从而找到下一级页表基地址的虚拟地址</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="3.2.4. MMU" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="arm64_mmu.html" class="btn btn-neutral float-right" title="3.2.4.2. arm64 MMU" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

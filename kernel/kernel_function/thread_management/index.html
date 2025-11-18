@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.6.3. Linux内核API之进程管理 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.6.4. Linux内核API之进程调度" href="../thread_schedule/index.html" />
+    <link rel="prev" title="3.6.2. Linux内核API之模块机制" href="../module/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.6. linux 内核函数</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../summary/kernel_function.html">3.6.1. 内核函数汇总</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../module/index.html">3.6.2. Linux内核API之模块机制</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.6.3. Linux内核API之进程管理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">3.6.3.1. 数据结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">3.6.3.2. 函数接口</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../thread_schedule/index.html">3.6.4. Linux内核API之进程调度</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interrupt/index.html">3.6.5. Linux内核API之中断机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../memory/index.html">3.6.6. Linux内核API之内存管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../timer/index.html">3.6.7. Linux内核API之定时机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sync/index.html">3.6.8. Linux内核API之同步机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filesystem/index.html">3.6.9. Linux内核API之文件系统</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../device/index.html">3.6.10. Linux内核API之设备管理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.6. </span>linux 内核函数</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.6.3. </span>Linux内核API之进程管理</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/kernel_function/thread_management/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linuxapi">
+<h1><span class="section-number">3.6.3. </span>Linux内核API之进程管理<a class="headerlink" href="#linuxapi" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">3.6.3.1. </span>数据结构<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">enum</span> <span class="n">pid_type</span>
+<span class="p">{</span>
+    <span class="n">PIDTYPE_PID</span><span class="p">,</span>    <span class="o">//</span><span class="n">进程的进程号</span>
+    <span class="n">PIDTYPE_PGID</span><span class="p">,</span>   <span class="o">//</span><span class="n">进程组领头进程的进程号</span>
+    <span class="n">PIDTYPE_SID</span><span class="p">,</span>    <span class="o">//</span><span class="n">会话领头进程的进程号</span>
+    <span class="n">PIDTYPE_MAX</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct pid_namespace
+{
+    struct kref kref;   //引用计数器，进程每引用一次加1
+    struct pidmap pidmap[PIDMAP_ENTRIES];   //记录当前系统的PID使用情况
+    struct rcu_head rcu;
+    int last_pid;   //记录上一次分配给进程的PID值
+    unsigned int nr_hashed;
+    struct task_struct *child_reaper;   //保存指向该进程的task_struct值
+    struct kmem_cache *pid_cachep;      //指向该进程的cache中分配的空间
+    unsigned int level;                 //表示当前命名空间在命名空间层次结构中的深度
+    struct pid_namespace *parent;       //指向父命名空间的指针
+    #ifdef CONFIG_RPOC_FS
+    struct vfsmount *proc_self;
+    struct dentry *proc_self;
+    struct dentry *proc_thread_self;
+    #endif
+    #ifdef CONFIG_BSD_PROCESS_ACCT
+    struct bsd_acct_struct *bacct;
+    #endif
+    struct user_namespace *user_ns;
+    struct work_struct proc_work;
+    kgid_t pid_gid;
+    int hide_pid;
+    int reboot;
+    struct ns_common ns;
+};
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">pid</span>
+<span class="p">{</span>
+    <span class="n">atomic_t</span> <span class="n">count</span><span class="p">;</span> <span class="o">//</span><span class="n">使用此进程的任务数量</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">level</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">hlist_head</span> <span class="n">tasks</span><span class="p">[</span><span class="n">PIDTYPE_MAX</span><span class="p">];</span>
+    <span class="n">struct</span> <span class="n">upid</span> <span class="n">numbers</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct mm_struct
+{
+    struct vm_area_struct *mmap;    //指向线性区对象的链表头
+    struct rb_root mm_rb;
+    u32 vmacache_seqnum;    //每一个进程的vmacache大小
+    #ifdef CONFIG_MMU
+    //在进程地址空间中搜索有效线性地址区间的方法
+    unsigned long (*get_unmapped_area)(struct file *filp, unsigned long addr, unsigned long len,
+                            unsigned long pgoff, unsigned long flags);
+    #endif
+    unsigned long mmap_base;    //标识第一个分配的匿名线性区或文件内存映射的线性地址
+    unsigned long mmap_legacy_base; //mmap区域自下而上的分配区
+    unsigned long task_size;    //在vm空间任务大小
+    unsigned long highest_vm_end;   //最大vma的结束地址
+    pgd_t *pgd; //指向页全局目录
+    atomic_t mm_users;  //次使用计数器
+    atomic_t mm_count;  //主使用计数器
+    atomic_long_t nr_ptes;  //页表所在的页地址
+    int map_count;  //线性区vma的个数
+    spinlock_t page_table_lock; //线性区的自旋锁
+    struct rw_semaphore mmap_sem;   //线性区的读写信号量
+    struct list_head mmlist;    //指向内存描述符链表中的相邻元素
+    unsigned long hiwater_rss;
+    unsigned long hiwater_vm;
+
+    /*total_vm指进程地址空间的大小(页数)，locked_vm指锁住而不能换出的页的个数
+    shared_vm值共享文件内存映射中的页数，exec_vm指可执行内存映射中的页数*/
+    unsigned long total_vm, locked_vm, pinned_vm, shared_vm, exec_vm;
+
+    //stack_vm指用户堆栈中的页数
+    unsigned long stack_vm, def_flags;
+
+    //start_code指可执行代码的起始地址，end_code指可执行代码的最后地址，
+    //start_data指已初始化数据的地址，end_data指已初始化数据的最后地址
+    unsigned long start_code, end_code, start_data, end_data;
+
+    //start_brk指堆的起始地址，brk指堆的当前最后地址，start_stack指用于堆栈的起始地址
+    unsigned long start_brk, brk, start_stack;
+
+    //命令行参数起止地址，环境变量的起止地址
+    unsigned long arg_start, arg_end, env_start, env_end;
+    unsigned long saved_auxv[AT_VECTOR_SIZE];   //开始执行ELF程序时使用
+    struct mm_rss_stat rss_stat;
+    struct linux_binfmt *binfmt;
+    cpumask_var_t cpu_vm_mask_var;
+    mm_context_t context;   //mm上下文
+    unsigned long flags;
+    struct core_state *core_state;
+    #ifdef CONFIG_AIO
+    spinlock_t ioctx_lock;
+    struct kioctx_tabl __rcu *ioctx_table;
+    #endif
+    #ifdef CONFIG_MEMCG
+    struct task_struct __rcu *owner;
+    #endif
+    struct file *exe_file;
+    #ifdef CONFIG_MMU_NOTIFIER
+    struct mmu_notifier_mm *mmu_notifier_mm;
+    #endif
+}
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">3.6.3.2. </span>函数接口<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>__task_pid_nr_ns</p></li>
+</ul>
+<p>此函数用于获取进程的进程号，此进程应满足如下约束条件</p>
+<ol class="arabic simple">
+<li><p>如果参数type不等于PIDTYPE_PID,则参数task用其所属任务组中的第一个任务赋值，否则保持task不变</p></li>
+<li><p>此进程是参数task任务描述符中的进程</p></li>
+<li><p>保证进程进程描述符pid_namespace和参数ns相同</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;linux/sched.h&gt;</span>
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">task</span><span class="p">:</span> <span class="n">保存任务的基本信息</span>
+ <span class="o">*</span> <span class="nb">type</span><span class="p">:</span> <span class="n">pid类型</span>
+ <span class="o">*</span> <span class="n">ns</span><span class="p">:</span> <span class="n">对进程命名空间信息的描述</span>
+ <span class="o">*</span> <span class="k">return</span><span class="p">:</span> <span class="n">返回符合条件的进程的进程号</span>
+<span class="o">*/</span>
+<span class="n">pid_t</span> <span class="n">__task_pid_nr_ns</span><span class="p">(</span><span class="n">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">task</span><span class="p">,</span> <span class="n">enum</span> <span class="n">pid_type</span> <span class="nb">type</span><span class="p">,</span>
+                        <span class="n">struct</span> <span class="n">pid_namespace</span> <span class="o">*</span><span class="n">ns</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>测试代码</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">__init</span> <span class="n">__task_pid_nr_ns_init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="o">//</span><span class="n">获取当前进程的进程描述符</span>
+    <span class="n">struct</span> <span class="n">pid</span> <span class="o">*</span><span class="n">kpid</span> <span class="o">=</span> <span class="n">find_get_pid</span><span class="p">(</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">);</span>
+
+    <span class="o">//</span><span class="n">获取进程所属任务的任务描述符</span>
+    <span class="n">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">task</span> <span class="o">=</span> <span class="n">pid_task</span><span class="p">(</span><span class="n">kpid</span><span class="p">,</span> <span class="n">PIDTYPE_PID</span><span class="p">);</span>
+
+    <span class="o">//</span><span class="n">获取任务对应进程的进程描述符</span>
+    <span class="n">pid_t</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">__task_pid_nr_ns</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">PIDTYPE_PID</span><span class="p">,</span> <span class="n">kpid</span><span class="o">-&gt;</span><span class="n">numbers</span><span class="p">[</span><span class="n">kpid</span><span class="o">-&gt;</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">ns</span><span class="p">);</span>
+
+    <span class="n">printk</span><span class="p">(</span><span class="s2">&quot;the pid of find_get_pid is : </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">kpid</span><span class="o">-&gt;</span><span class="n">numbers</span><span class="p">[</span><span class="n">kpid</span><span class="o">-&gt;</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">nr</span><span class="p">);</span>
+    <span class="n">printk</span><span class="p">(</span><span class="s2">&quot;the result of the __task_pid_nr_ns is : </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ret</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>find_get_pid</p></li>
+</ul>
+<p>该函数根据提供的进程号获取对应的进程描述符，并使进程描述符中的字段count的值加1，即此进程的用户数加1</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;linux/pid.h&gt;</span>
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">nr</span><span class="p">:</span> <span class="n">进程对应的进程号</span>
+ <span class="o">*</span> <span class="k">return</span><span class="p">:</span> <span class="n">返回与提供的进程号对应的进程描述符</span>
+<span class="o">*/</span>
+<span class="n">struct</span> <span class="n">pid</span> <span class="o">*</span><span class="n">find_get_pid</span><span class="p">(</span><span class="nb">int</span> <span class="n">nr</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>find_pid_ns</p></li>
+</ul>
+<p>该函数获取进程的进程描述符，此进程应满足如下约束条件</p>
+<ol class="arabic simple">
+<li><p>进程的进程号和参数nr相同</p></li>
+<li><p>保证进程描述符的pid_namespace和参数ns相同</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;linux/pid.h&gt;</span>
+
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">nr</span><span class="p">:</span> <span class="n">进程描述符对应的进程号</span>
+ <span class="o">*</span> <span class="n">ns</span><span class="p">:</span> <span class="n">进程命名空间信息描述</span>
+ <span class="o">*</span> <span class="k">return</span><span class="p">:</span> <span class="n">保存符合条件的进程描述符信息</span>
+<span class="o">*/</span>
+<span class="n">struct</span> <span class="n">pid</span> <span class="o">*</span><span class="n">find_pid_ns</span><span class="p">(</span><span class="nb">int</span> <span class="n">nr</span><span class="p">,</span> <span class="n">struct</span> <span class="n">pid_namespace</span> <span class="o">*</span><span class="n">ns</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>测试代码</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">__init</span> <span class="n">find_pid_ns_init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="o">//</span><span class="n">获取当前进程的描述符</span>
+    <span class="n">struct</span> <span class="n">pid</span> <span class="o">*</span><span class="n">kpid</span> <span class="o">=</span> <span class="n">find_get_pid</span><span class="p">(</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">);</span>
+    <span class="o">//</span><span class="n">获取进程的描述符</span>
+    <span class="n">struct</span> <span class="n">pid</span> <span class="o">*</span><span class="n">fpid</span> <span class="o">=</span> <span class="n">find_pid_ns</span><span class="p">(</span><span class="n">kpid</span><span class="o">-&gt;</span><span class="n">numbers</span><span class="p">[</span><span class="n">kpid</span><span class="o">-&gt;</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">nr</span><span class="p">,</span>
+                                   <span class="n">kpid</span><span class="o">-&gt;</span><span class="n">numbers</span><span class="p">[</span><span class="n">kpid</span><span class="o">-&gt;</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">ns</span><span class="p">);</span>
+
+    <span class="n">printk</span><span class="p">(</span><span class="s2">&quot;the find_pid_ns result&#39;s count is: </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fpid</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">);</span>
+    <span class="n">printk</span><span class="p">(</span><span class="s2">&quot;the find_pid_ns result&#39;s level is: </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fpid</span><span class="o">-&gt;</span><span class="n">level</span><span class="p">);</span>
+    <span class="n">printk</span><span class="p">(</span><span class="s2">&quot;the find_pid_ns result&#39;s pid is: </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fpid</span><span class="o">-&gt;</span><span class="n">numbers</span><span class="p">[</span><span class="n">fpid</span><span class="o">-&gt;</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">nr</span><span class="p">);</span>
+    <span class="n">printk</span><span class="p">(</span><span class="s2">&quot;the pid of current thread is: </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">current</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>find_vpid</p></li>
+</ul>
+<p>此函数根据提供的局部进程号获取对应的进程描述符</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;linux/pid.h&gt;
+/*
+ * nr: 进程对应的局部进程号，一般与进程号相同
+ * return: 返回进程描述符信息
+*/
+struct pid *find_vpid(int nr)
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>get_task_mm</p></li>
+</ul>
+<p>此函数根据提供的任务描述符信息，获取其对应的内存信息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;linux/sched.h&gt;</span>
+<span class="o">/*</span>
+ <span class="o">*</span>  <span class="n">task</span><span class="p">:</span>　<span class="n">进程的任务描述符信息</span>
+ <span class="o">*</span>  <span class="k">return</span><span class="p">:</span> <span class="n">返回任务描述符对应的内存信息</span>
+<span class="o">*/</span>
+<span class="n">struct</span> <span class="n">mm_struct</span> <span class="o">*</span><span class="n">get_task_mm</span><span class="p">(</span><span class="n">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">task</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>测试代码</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">__init</span> <span class="n">get_task_mm_init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="o">//</span><span class="n">获取当前进程的描述符信息</span>
+    <span class="n">struct</span> <span class="n">pid</span> <span class="o">*</span><span class="n">kpid</span> <span class="o">=</span> <span class="n">find_get_pid</span><span class="p">(</span><span class="n">current</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">);</span>
+    <span class="o">//</span><span class="n">获取进程任务描述符信息</span>
+    <span class="n">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">task</span> <span class="o">=</span> <span class="n">pid_task</span><span class="p">(</span><span class="n">kpid</span><span class="p">,</span> <span class="n">PIDTYPE_PID</span><span class="p">);</span>
+    <span class="o">//</span><span class="n">获取任务的内存描述符</span>
+    <span class="n">struct</span> <span class="n">mm_struct</span> <span class="o">*</span><span class="n">mm_task</span> <span class="o">=</span> <span class="n">get_task_mm</span><span class="p">(</span><span class="n">task</span><span class="p">);</span>
+
+    <span class="n">printk</span><span class="p">(</span><span class="s2">&quot;the mm_users of the mm_struct is: </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">mm_task</span><span class="o">-&gt;</span><span class="n">mm_users</span><span class="p">);</span>
+    <span class="n">printk</span><span class="p">(</span><span class="s2">&quot;the mm_count of the mm_struct is: </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">mm_task</span><span class="o">-&gt;</span><span class="n">mm_count</span><span class="p">);</span>
+    <span class="n">printk</span><span class="p">(</span><span class="s2">&quot;the tgid of the mm_struct is: </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">mm_task</span><span class="o">-&gt;</span><span class="n">owner</span><span class="o">-&gt;</span><span class="n">tgid</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>ns_of_pid</p></li>
+</ul>
+<p>此函数用于获取进程的命名空间信息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;linux/pid.h&gt;</span>
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">pid</span><span class="p">:</span> <span class="n">进程描述符</span>
+ <span class="o">*</span> <span class="k">return</span><span class="p">:</span> <span class="n">返回进程命名空间信息</span>
+<span class="o">*/</span>
+<span class="n">static</span> <span class="n">inline</span> <span class="n">struct</span> <span class="n">pid_namespace</span> <span class="o">*</span><span class="n">ns_of_pid</span><span class="p">(</span><span class="n">struct</span> <span class="n">pid</span> <span class="o">*</span><span class="n">pid</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>pid_task</p></li>
+</ul>
+<p>此函数用于获取任务的任务描述符信息，此任务在进程pid的使用链表中，并且搜索的链表的起始元素的下标为参数type的值</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;linux/pid.h&gt;</span>
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">pid</span><span class="p">:</span> <span class="n">进程描述符</span>
+ <span class="o">*</span> <span class="n">pid_type</span><span class="p">:</span> <span class="n">pid类型</span>
+ <span class="o">*</span> <span class="k">return</span><span class="p">:</span> <span class="n">返回任务描述</span>
+<span class="o">*/</span>
+<span class="n">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">pid_task</span><span class="p">(</span><span class="n">struct</span> <span class="n">pid</span> <span class="o">*</span><span class="n">pid</span><span class="p">,</span> <span class="n">enum</span> <span class="n">pid_type</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../module/index.html" class="btn btn-neutral float-left" title="3.6.2. Linux内核API之模块机制" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../thread_schedule/index.html" class="btn btn-neutral float-right" title="3.6.4. Linux内核API之进程调度" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

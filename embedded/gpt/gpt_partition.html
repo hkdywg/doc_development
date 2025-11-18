@@ -1,0 +1,412 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.3.1. gpt分区表笔记 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.3.2. MBR分区表笔记" href="mbr_partition.html" />
+    <link rel="prev" title="8.3. gpt分区表" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.3. gpt分区表</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.3.1. gpt分区表笔记</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#guid">8.3.1.1. GUID以及分区表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gptlba">8.3.1.2. GPT分区表LBA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pythongpt">8.3.1.3. python生成GPT分区表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">8.3.1.4. gpt分区表实例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">8.3.1.5. gpt分区表查看</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mbr_partition.html">8.3.2. MBR分区表笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">8.8. 视频相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.3. </span>gpt分区表</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.3.1. </span>gpt分区表笔记</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/gpt/gpt_partition.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gpt">
+<h1><span class="section-number">8.3.1. </span>gpt分区表笔记<a class="headerlink" href="#gpt" title="此标题的永久链接"></a></h1>
+<p>gpt分区表中有一个比较重要的概念是LBA, 翻译为中文可解释为逻辑区块地址。是描述存储设备上数据所在区块的通用机制，一般用在硬盘或者SD卡这种记忆设备，我们俗称扇区</p>
+<section id="guid">
+<h2><span class="section-number">8.3.1.1. </span>GUID以及分区表<a class="headerlink" href="#guid" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>MBR分区方案</p></li>
+</ul>
+<p>传统的分区方案是将分区信息保存在磁盘的第一个扇区中的64个字节中，每个分区项占16个字节。由于MBR扇区只有64个字节用于分区表，所以只能记录4个分区信息，这就是硬盘主分区数目
+不能超过4个的原因，后来为了支持更多的分区引入了扩展分区及逻辑分区的概念，但每个分区项仍用16个字节存储。</p>
+<p>mbr分区有一个比较大的缺陷是不能支持超过2T容量的磁盘，因为这一方案用4个字节存储分区的总扇区数，最大能表示2的32次方的扇区个数，按每个扇区512字节计算，每个分区最大不能超过2T</p>
+<ul class="simple">
+<li><p>GPT 分区方案</p></li>
+</ul>
+<p>GUID分区表(简称GPT)是源自EFI标准的一种新的磁盘分区表结构的标准。相较于mbr有以下优点</p>
+<ol class="arabic simple">
+<li><p>支持2TB 以上的磁盘</p></li>
+<li><p>分区表自带备份，在磁盘的收尾部分分别保存了一份相同的分区表，其中一份被破坏后可通过另一份恢复</p></li>
+<li><p>增加CRC校验机制</p></li>
+<li><p>GPT使用一个16字节的全局唯一标识符(guid)来标识分区类型，这使分区类型不容易冲突</p></li>
+<li><p>每个分区可以有一个名称</p></li>
+</ol>
+<ul class="simple">
+<li><p>GPT分区表结构</p></li>
+</ul>
+<img alt="../../_images/gpt_layout.png" src="../../_images/gpt_layout.png" />
+</section>
+<section id="gptlba">
+<h2><span class="section-number">8.3.1.2. </span>GPT分区表LBA<a class="headerlink" href="#gptlba" title="此标题的永久链接"></a></h2>
+<section id="lba0">
+<h3><span class="section-number">8.3.1.2.1. </span>LBA0<a class="headerlink" href="#lba0" title="此标题的永久链接"></a></h3>
+<p>在GPT分区表的最开头处于兼容性考虑仍然存储了一份传统的MBR，这个MBR叫做保护性MBR(protective MBR)</p>
+<p>在这个MBR中只有一个标识为0xEE的分区，以此来表示这块磁盘使用GPT分区表</p>
+</section>
+<section id="lba1">
+<h3><span class="section-number">8.3.1.2.2. </span>LBA1<a class="headerlink" href="#lba1" title="此标题的永久链接"></a></h3>
+<p>分区表头(LBA1)定义了磁盘的可用空间以及组成分区的大小和数量,分区表头结构的详细信息如下</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>起始字节</p></td>
+<td><p>偏移量</p></td>
+<td><p>内容</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>8</p></td>
+<td><p>签名(“EFI PART”)</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>4</p></td>
+<td><p>修订</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>4</p></td>
+<td><p>分区表头的大小</p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>4</p></td>
+<td><p>分区表头(92字节)的CRC32校验,在计算时先把这个字段写作0处理</p></td>
+</tr>
+<tr class="row-even"><td><p>20</p></td>
+<td><p>4</p></td>
+<td><p>保留，必须是0</p></td>
+</tr>
+<tr class="row-odd"><td><p>24</p></td>
+<td><p>8</p></td>
+<td><p>当前LBA(这个分区表头的位置)</p></td>
+</tr>
+<tr class="row-even"><td><p>32</p></td>
+<td><p>8</p></td>
+<td><p>备份LBA(另一个分区表头的位置)</p></td>
+</tr>
+<tr class="row-odd"><td><p>40</p></td>
+<td><p>8</p></td>
+<td><p>第一个可用于分区的LBA(主分区表的最后一个LBA+1)</p></td>
+</tr>
+<tr class="row-even"><td><p>48</p></td>
+<td><p>8</p></td>
+<td><p>最后一个可用于分区的LBA(备份分区表的第一个LBA-1)</p></td>
+</tr>
+<tr class="row-odd"><td><p>56</p></td>
+<td><p>16</p></td>
+<td><p>磁盘GUID(在类unix系统中也叫UUID)</p></td>
+</tr>
+<tr class="row-even"><td><p>72</p></td>
+<td><p>8</p></td>
+<td><p>分区表项的起始LBA(在主分区中是2)</p></td>
+</tr>
+<tr class="row-odd"><td><p>80</p></td>
+<td><p>4</p></td>
+<td><p>分区表的数量(windows是128,没用这么多页先占用空间)</p></td>
+</tr>
+<tr class="row-even"><td><p>84</p></td>
+<td><p>4</p></td>
+<td><p>一个分区表项的大小</p></td>
+</tr>
+<tr class="row-odd"><td><p>88</p></td>
+<td><p>4</p></td>
+<td><p>分区表项的CRC32校验(计算的是所有分区表项的校验和即128*128字节)</p></td>
+</tr>
+<tr class="row-even"><td><p>92</p></td>
+<td><p>420</p></td>
+<td><p>保留，剩余字节必须是0(420是针对512字节的LBA磁盘)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="lba-2-33">
+<h3><span class="section-number">8.3.1.2.3. </span>LBA 2-33<a class="headerlink" href="#lba-2-33" title="此标题的永久链接"></a></h3>
+<p>LBA2-33的位置存放的是分区表项，分区表项的结构如下</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>起始字节</p></td>
+<td><p>偏移量</p></td>
+<td><p>内容</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>16</p></td>
+<td><p>分区类型GUID <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>16</p></td>
+<td><p>分区GUID</p></td>
+</tr>
+<tr class="row-even"><td><p>32</p></td>
+<td><p>8</p></td>
+<td><p>起始LBA(小端格式)</p></td>
+</tr>
+<tr class="row-odd"><td><p>40</p></td>
+<td><p>8</p></td>
+<td><p>末尾LBA</p></td>
+</tr>
+<tr class="row-even"><td><p>48</p></td>
+<td><p>8</p></td>
+<td><p>属性标签 <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>52</p></td>
+<td><p>72</p></td>
+<td><p>分区名</p></td>
+</tr>
+</tbody>
+</table>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">2</a><span class="fn-bracket">]</span></span>
+<p>GUID为固定值，以下列举常见几种</p>
+</aside>
+</aside>
+<img alt="../../_images/windows_guid.png" src="../../_images/windows_guid.png" />
+<img alt="../../_images/linux_guid.png" src="../../_images/linux_guid.png" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">3</a><span class="fn-bracket">]</span></span>
+<p>分区属性:低位4字节表示与主分区类型无关的属性，高位4字节表示与主分区类型有关的属性</p>
+</aside>
+</aside>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>BIT</p></td>
+<td><p>解释</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>系统分区</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>EFI隐藏分区</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>传统的BIOS的可引导分区标志</p></td>
+</tr>
+<tr class="row-odd"><td><p>60</p></td>
+<td><p>只读</p></td>
+</tr>
+<tr class="row-even"><td><p>62</p></td>
+<td><p>隐藏</p></td>
+</tr>
+<tr class="row-odd"><td><p>63</p></td>
+<td><p>不自动挂载，也就是不自动分配盘符</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="pythongpt">
+<h2><span class="section-number">8.3.1.3. </span>python生成GPT分区表<a class="headerlink" href="#pythongpt" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>使用python脚本生成gpt分区表</p></li>
+</ul>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/b29181d7d8191e041d0c434668e4503f/gen_gpt.py"><code class="xref download docutils literal notranslate"><span class="pre">gen_gpt.py</span></code></a></p></li>
+</ul>
+<p>gen_gpt.py 会解析分区表配置文件生成主分区表以及备份分区表</p>
+<p>配置文件的示例如下</p>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/ebac7d6ea2a8edb23313778aa97ee0ad/gpt_partition.conf"><code class="xref download docutils literal notranslate"><span class="pre">gpt配置文件</span></code></a></p></li>
+</ul>
+<p>可使用如下命令生成分区表</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">gen_gpt</span><span class="o">.</span><span class="n">py</span> <span class="n">gpt_partition</span><span class="o">.</span><span class="n">conf</span> <span class="n">main_partition</span><span class="o">.</span><span class="n">img</span> <span class="n">back_partition</span><span class="o">.</span><span class="n">img</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h2><span class="section-number">8.3.1.4. </span>gpt分区表实例<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>主分区表</p></li>
+</ul>
+<img alt="../../_images/main_partition.png" src="../../_images/main_partition.png" />
+<ul class="simple">
+<li><p>备份分区表</p></li>
+</ul>
+<img alt="../../_images/back_partition.png" src="../../_images/back_partition.png" />
+</section>
+<section id="id6">
+<h2><span class="section-number">8.3.1.5. </span>gpt分区表查看<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p>一般fdisk适用于MBR分区，而gdisk使用GPT分区．gdisk命令常用格式如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdisk</span> <span class="n">设备文件名</span><span class="p">(</span><span class="n">绝对路径</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>示例如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>yinwg@ubuntu:~/ywg_workspace/prj/gpt_ver$ gdisk system.img
+GPT fdisk (gdisk) version 1.0.5
+
+Warning! Disk size is smaller than the main header indicates! Loading
+secondary header from the last sector of the disk! You should use &#39;v&#39; to
+verify disk integrity, and perhaps options on the experts&#39; menu to repair
+the disk.
+Caution: invalid backup GPT header, but valid main header; regenerating
+backup header from main header.
+
+Warning! Error 25 reading partition table for CRC check!
+Warning! One or more CRCs don&#39;t match. You should repair the disk!
+Main header: OK
+Backup header: ERROR
+Main partition table: OK
+Backup partition table: ERROR
+
+Partition table scan:
+  MBR: protective
+  BSD: not present
+  APM: not present
+  GPT: damaged
+
+****************************************************************************
+Caution: Found protective or hybrid MBR and corrupt GPT. Using GPT, but disk
+verification and recovery are STRONGLY recommended.
+****************************************************************************
+
+Command (? for help): print
+Disk system.img: 526336 sectors, 257.0 MiB
+Sector size (logical): 512 bytes
+Disk identifier (GUID): CB0A9716-409B-FD40-8DD9-5FB082604799
+Partition table holds up to 128 entries
+Main partition table begins at sector 2 and ends at sector 33
+First usable sector is 34, last usable sector is 62160862
+Partitions will be aligned on 2048-sector boundaries
+Total free space is 2014 sectors (1007.0 KiB)
+
+Number  Start (sector)    End (sector)  Size       Code  Name
+   1            2048         2099199   1024.0 MiB  FFFF  system_A
+   2         2099200         4196351   1024.0 MiB  FFFF  system_B
+   3         4196352        62160862   27.6 GiB    FFFF  user
+
+Command (? for help):
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="8.3. gpt分区表" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="mbr_partition.html" class="btn btn-neutral float-right" title="8.3.2. MBR分区表笔记" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,181 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.6.1. 安全启动与加密 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.7. Yocto使用总结" href="../yocto/index.html" />
+    <link rel="prev" title="8.6. 安全启动与加密" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.6. 安全启动与加密</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.6.1. 安全启动与加密</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">8.6.1.1. 概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">8.6.1.2. 签名过程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">8.6.1.3. 安全校验</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">8.8. 视频相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.6. </span>安全启动与加密</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.6.1. </span>安全启动与加密</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/safeboot/safeboot.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">8.6.1. </span>安全启动与加密<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2><span class="section-number">8.6.1.1. </span>概述<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<section id="id3">
+<h3><span class="section-number">8.6.1.1.1. </span>系统启动流程图<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<img alt="../../_images/boot_flow.png" src="../../_images/boot_flow.png" />
+<p>上电分为冷启动和热启动两种，热启动特指休眠唤醒流程，其他方式如掉电上电，reboot命令均为冷启动。</p>
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">8.6.1.2. </span>签名过程<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>util_auth.sh 是对文件加密和签名的脚本，签名校验算法使用的是RSA2048，私钥使用标准的PEM PKCS#1格式，公钥和私钥文件分别为spl_rsa_uboot_img_pub.pem spl_rsa_uboot_img_priv.pem</p>
+<p>spl需要使用公钥进行验证，spl由两种方式获取公钥:</p>
+<ol class="arabic simple">
+<li><p>将公钥打包到spl的keybank中</p></li>
+<li><p>将公钥打包到image中，并需要将其hash烧写到efuse中，spl将会计算镜像中的hash，与efuse中烧写的hash进行对比</p></li>
+</ol>
+</section>
+<section id="id5">
+<h2><span class="section-number">8.6.1.3. </span>安全校验<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<p>下面主要介绍安全启动的两部分:</p>
+<ol class="arabic simple">
+<li><p>uboot校验linux内核，基于Android Verify Boot(AVB)移植实现</p></li>
+<li><p>linux内核使用dm-verity校验根文件系统，基于linux内核的device mapper及DM-verity(DM指代device mapper)</p></li>
+</ol>
+<section id="ubootlinux">
+<h3><span class="section-number">8.6.1.3.1. </span>uboot校验linux内核<a class="headerlink" href="#ubootlinux" title="此标题的永久链接"></a></h3>
+<p>在安全启动流程中，linux内核文件(包括dtb)会由uboot做整体校验. 此部分需要在uboot中增加avb的实现，应用到的功能包括avb init以及avb verity, avb init会初始化并寻找avb所需镜像所处的存储介质。
+avb verity 则负责将kernel以及校验文件内容读取并做校验</p>
+</section>
+<section id="linux">
+<h3><span class="section-number">8.6.1.3.2. </span>linux内核校验根文件系统<a class="headerlink" href="#linux" title="此标题的永久链接"></a></h3>
+<p>在uboot校验linux内核成功并向kernel提供DM-verify初始化所需元数据后，linux会初始化DM-verify并在使用根文件系统的过程中对每一个读取出来的擦写块进行校验。与普通启动存在区别的一点是，
+secure启动使能DM-verity后，根文件系统不再直接从mmcblk分区挂载，改为从DM设备(一般为/dev/dm-0)挂载</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="8.6. 安全启动与加密" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../yocto/index.html" class="btn btn-neutral float-right" title="8.7. Yocto使用总结" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

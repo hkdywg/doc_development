@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.9.1. 标准接口规范协议 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.9.2. 嵌入式系统常见总线" href="normal.html" />
+    <link rel="prev" title="8.9. 嵌入式系统常见总线" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">8.8. 视频相关</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.9. 嵌入式系统常见总线</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.9.1. 标准接口规范协议</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ddr">8.9.1.1. DDR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pci-pcie">8.9.1.2. PCI &amp; PCIE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usb">8.9.1.3. USB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#net">8.9.1.4. NET</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#i2c">8.9.1.5. I2C</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hdmi">8.9.1.6. HDMI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dp">8.9.1.7. DP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lvds">8.9.1.8. LVDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jtag">8.9.1.9. JTAG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#i2s">8.9.1.10. I2S</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lin">8.9.1.11. LIN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mipi">8.9.1.12. MIPI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#emmc">8.9.1.13. eMMC</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sdio">8.9.1.14. SDIO</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sata">8.9.1.15. SATA</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="normal.html">8.9.2. 嵌入式系统常见总线</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usb.html">8.9.3. USB2.0概述及协议基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usb_description.html">8.9.4. USB描述符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usb_packet_sample.html">8.9.5. U盘插入及拔出过程中的USB数据包示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.9. </span>嵌入式系统常见总线</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.9.1. </span>标准接口规范协议</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/bus/standard_protocal.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">8.9.1. </span>标准接口规范协议<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="ddr">
+<h2><span class="section-number">8.9.1.1. </span>DDR<a class="headerlink" href="#ddr" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/343995d0e9e22256d499a55b39c5a472/DDR2_JESD79-2C.pdf"><code class="xref download docutils literal notranslate"><span class="pre">DDR2_Specfic.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/6b4ddb6855076e680b982bf91e8045eb/DDR3_JESD79-3E.pdf"><code class="xref download docutils literal notranslate"><span class="pre">DDR3_Specfic.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/9b370f8b3ac78ad811b29cd6b38cc358/DDR4_JESD79-4.pdf"><code class="xref download docutils literal notranslate"><span class="pre">DDR4_Specfic.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/528a39791a642a516ddbf2a1d82e4e7e/GDDR4_Specific.pdf"><code class="xref download docutils literal notranslate"><span class="pre">GDDR4_Specfic.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/4928176668e6494cc99abfb887fdf326/DDR5_JESD79-5.pdf"><code class="xref download docutils literal notranslate"><span class="pre">GDDR5_Specfic.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="pci-pcie">
+<h2><span class="section-number">8.9.1.2. </span>PCI &amp; PCIE<a class="headerlink" href="#pci-pcie" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/d82d7ea0e5830a030ae2458c8298a1fb/PCI_V2.3.pdf"><code class="xref download docutils literal notranslate"><span class="pre">PCI_V2.3.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/06b84bf33e0c26a0711e3244ae60a5ae/PCI_V3.0.pdf"><code class="xref download docutils literal notranslate"><span class="pre">PCI_V3.0.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/6610dafab545af8b9f2f2de779c6012c/PCIE_V1.1.pdf"><code class="xref download docutils literal notranslate"><span class="pre">PCIE_V1.1.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/c39b0aace5fdb29356a8a917948fec41/PCIE_V2.0.pdf"><code class="xref download docutils literal notranslate"><span class="pre">PCIE_V2.0.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/d2f2495e73c44b8c3a8dfd4c399f50f0/PCIE_V4.0.pdf"><code class="xref download docutils literal notranslate"><span class="pre">PCIE_V4.0.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/cde755483a819e060fc9169e9d71f191/PCIE_V5.0.pdf"><code class="xref download docutils literal notranslate"><span class="pre">PCIE_V5.0.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="usb">
+<h2><span class="section-number">8.9.1.3. </span>USB<a class="headerlink" href="#usb" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/1ee3801bb731ecba00f34582162fa04a/USB_V2.0.pdf"><code class="xref download docutils literal notranslate"><span class="pre">USB_V2.0.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/770e192b393314fb4e8d8689628acb52/USB_V3.0.pdf"><code class="xref download docutils literal notranslate"><span class="pre">USB_V3.0.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/35cf863f797b0e68cc39673f8bea4a67/USB_Type-C_V1.4.pdf"><code class="xref download docutils literal notranslate"><span class="pre">USB_Type-C_V1.4.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="net">
+<h2><span class="section-number">8.9.1.4. </span>NET<a class="headerlink" href="#net" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/3a3fd9d059774e910be32dac08272a35/RGMII.pdf"><code class="xref download docutils literal notranslate"><span class="pre">RGMII_Spec.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/f576c3da692644f97179cb6ddfed4412/RMII.pdf"><code class="xref download docutils literal notranslate"><span class="pre">RMII_Spec.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/17d8ff7ffb9b35a56a703e4f579eba3e/SGMII.pdf"><code class="xref download docutils literal notranslate"><span class="pre">SGMII_Spec.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="i2c">
+<h2><span class="section-number">8.9.1.5. </span>I2C<a class="headerlink" href="#i2c" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/dce9f8f93da6244b29e47df619614e7b/I2C_V2.1.pdf"><code class="xref download docutils literal notranslate"><span class="pre">I2C_V2.1.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/e3b669f6dac9abe65b8798da46df03e1/I2C_V2.1_Chenese.pdf"><code class="xref download docutils literal notranslate"><span class="pre">I2C_V2.1-cn.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/458471e7ca21ffe466cd1403ae2d7eff/I2C_V5.0.pdf"><code class="xref download docutils literal notranslate"><span class="pre">I2C_V5.0.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/45864a3e04791524da7800952df90c6c/SMBUS_V2.0.pdf"><code class="xref download docutils literal notranslate"><span class="pre">SMBUS2.0_Spec.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="hdmi">
+<h2><span class="section-number">8.9.1.6. </span>HDMI<a class="headerlink" href="#hdmi" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/24b4ddb4dc6d61bcfd4cf157d52a6a7e/HDMI_Spec_1.3_GM1.pdf"><code class="xref download docutils literal notranslate"><span class="pre">HDMI_Spec_1.3.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="dp">
+<h2><span class="section-number">8.9.1.7. </span>DP<a class="headerlink" href="#dp" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/892024c3033a4fa8c97b2022ac08550a/DP_V1.4.pdf"><code class="xref download docutils literal notranslate"><span class="pre">DP_V1.4.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="lvds">
+<h2><span class="section-number">8.9.1.8. </span>LVDS<a class="headerlink" href="#lvds" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/67b4be6a7dc0d9898537a28111b75699/LVDS-std-TIA-EIA-644-A-2001d12ab7.pdf"><code class="xref download docutils literal notranslate"><span class="pre">LVDS_Spec.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="jtag">
+<h2><span class="section-number">8.9.1.9. </span>JTAG<a class="headerlink" href="#jtag" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/9973f0efc154b6d1ae2c0f00a3e87377/JTAG.pdf"><code class="xref download docutils literal notranslate"><span class="pre">IEEE_1149.1_JTAG.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="i2s">
+<h2><span class="section-number">8.9.1.10. </span>I2S<a class="headerlink" href="#i2s" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/8cbf27b219a1dc32fc829d28f8fde696/I2S.pdf"><code class="xref download docutils literal notranslate"><span class="pre">I2S_Spec.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="lin">
+<h2><span class="section-number">8.9.1.11. </span>LIN<a class="headerlink" href="#lin" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/f1726266d11e6c4d40a84c0472e9a1bc/LIN_V2.1.pdf"><code class="xref download docutils literal notranslate"><span class="pre">LIN_Spec.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="mipi">
+<h2><span class="section-number">8.9.1.12. </span>MIPI<a class="headerlink" href="#mipi" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/2c8ad1fd42a11d28aa7283fc6590ba61/MIPI%E4%B8%AD%E6%96%87%E5%85%A5%E9%97%A8.pdf"><code class="xref download docutils literal notranslate"><span class="pre">MIPI_中文入门.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/8992fccf8137cb4035ada0eb2351a362/MIPI_DSI_V1.2.0.pdf"><code class="xref download docutils literal notranslate"><span class="pre">MIPI_DSI_V1.2.0.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/3d9c5e97ee3a3a3bf72755b8a781fa27/MIPI_CSI-2_V1.3.pdf"><code class="xref download docutils literal notranslate"><span class="pre">MIPI_CSI-2_V1.3.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="emmc">
+<h2><span class="section-number">8.9.1.13. </span>eMMC<a class="headerlink" href="#emmc" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/85144a0ce56d3ff92011c04edde4f8bc/eMMC_V5.1.pdf"><code class="xref download docutils literal notranslate"><span class="pre">eMMC_V5.1.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="sdio">
+<h2><span class="section-number">8.9.1.14. </span>SDIO<a class="headerlink" href="#sdio" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/447e2e36e2a7f41d2486674eec6b9e96/SD%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C.pdf"><code class="xref download docutils literal notranslate"><span class="pre">SD使用手册.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/7469a7c96bed044eb057b583eff920a3/PartA1_ASSD_Extension_Simplified_Specification_Ver2.006ea0eb.pdf"><code class="xref download docutils literal notranslate"><span class="pre">SDIO_Part1.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/8790fbe970fc0f25641b73fe909e3aef/PartA2_SDHost_Controller_Simplified_Specification_Ver4.2039d479.pdf"><code class="xref download docutils literal notranslate"><span class="pre">SDIO_Part2.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/6abdf016490fbbd7fb579857a92d6e94/PartE1_SDIO_Simplified_Specification_Ver3.004dd8d7.pdf"><code class="xref download docutils literal notranslate"><span class="pre">SDIO_Part3.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/40e42e37d231f7b788f99edc1aba389a/PartE2_SDIOBluetooth_Type_A_Simplified_Specification_Ver1.00feb9e3.pdf"><code class="xref download docutils literal notranslate"><span class="pre">SDIO_Part4.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/f7473a0d282211ed899c1b62e87a258f/PartA5_SD_Extensions_API_Simplified_Specification_Ver1.005d30af.pdf"><code class="xref download docutils literal notranslate"><span class="pre">SDIO_Part5.pdf</span></code></a></p></li>
+</ul>
+</section>
+<section id="sata">
+<h2><span class="section-number">8.9.1.15. </span>SATA<a class="headerlink" href="#sata" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/d19db16d312c84d4cf061dacce7c2f9a/SATA.pdf"><code class="xref download docutils literal notranslate"><span class="pre">SATA_Spec.pdf</span></code></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="8.9. 嵌入式系统常见总线" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="normal.html" class="btn btn-neutral float-right" title="8.9.2. 嵌入式系统常见总线" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

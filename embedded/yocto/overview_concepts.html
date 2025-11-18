@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.7.1. yocto project concepts &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.7.2. yocto源目录结构" href="source_struct.html" />
+    <link rel="prev" title="8.7. Yocto使用总结" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.7. Yocto使用总结</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.7.1. yocto project concepts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#yocto-project-compoment">8.7.1.1. yocto project compoment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layers">8.7.1.2. layers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#openembedded">8.7.1.3. openembedded</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="source_struct.html">8.7.2. yocto源目录结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="task_variable.html">8.7.3. 任务以及变量汇总</a></li>
+<li class="toctree-l3"><a class="reference internal" href="task.html">8.7.4. 常见任务</a></li>
+<li class="toctree-l3"><a class="reference internal" href="recipet.html">8.7.5. recipet语法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="task_continue.html">8.7.6. 常见任务 二</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bitbake.html">8.7.7. bitbake 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">8.8. 视频相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.7. </span>Yocto使用总结</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.7.1. </span>yocto project concepts</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/yocto/overview_concepts.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="yocto-project-concepts">
+<h1><span class="section-number">8.7.1. </span>yocto project concepts<a class="headerlink" href="#yocto-project-concepts" title="此标题的永久链接"></a></h1>
+<p>yocto 官方参考文档: <a class="reference external" href="https://docs.yoctoproject.org/index.html">https://docs.yoctoproject.org/index.html</a></p>
+<p>bitbake 参考文档: <a class="reference external" href="https://docs.yoctoproject.org/bitbake/index.html">https://docs.yoctoproject.org/bitbake/index.html</a></p>
+<section id="yocto-project-compoment">
+<h2><span class="section-number">8.7.1.1. </span>yocto project compoment<a class="headerlink" href="#yocto-project-compoment" title="此标题的永久链接"></a></h2>
+<section id="bitbake">
+<h3><span class="section-number">8.7.1.1.1. </span>bitbake<a class="headerlink" href="#bitbake" title="此标题的永久链接"></a></h3>
+<p>bitbake是openembedded build system的核心工具，负责解析元数据，从中生成任务列表，然后执行这些任务</p>
+<p>yocto使用bitbake作为解释器来解析各种配置文件，配置文件包含以下三种类型</p>
+<ol class="arabic simple">
+<li><p>recipes: 提供特定软件的详细信息 (.bb)</p></li>
+<li><p>class data: 抽象常见的构建信息(比如如何构建linux内核)   (.bbclass)</p></li>
+<li><p>configuration data: 定义特定的machine设置，决策等 (.conf)</p></li>
+</ol>
+<p>要查看bitbake支持的选项列表，可以使用以下命令</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span> <span class="o">-</span><span class="n">h</span>
+<span class="n">bitbake</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>bitbake最常见的用法是，bitbake target, 如下所示</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span> <span class="n">core</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">minimal</span>
+</pre></div>
+</div>
+</section>
+<section id="recipes">
+<h3><span class="section-number">8.7.1.1.2. </span>recipes<a class="headerlink" href="#recipes" title="此标题的永久链接"></a></h3>
+<p>recipes指后缀为.bb的文件。通常，recipes包含单个软件的信息，包含该软件源，补丁文件，以及如何编译打包的配置。</p>
+</section>
+<section id="class">
+<h3><span class="section-number">8.7.1.1.3. </span>class<a class="headerlink" href="#class" title="此标题的永久链接"></a></h3>
+<p>类文件(.bbclass)包含在recipes之间共享的信息. meta/classes/base.bbclass被所有的recipe喝class文件自动包含，它包含了标准任务的基本定义，例如获取、解压、配置、编译、安装、打包，
+有些定义只是框架，内容是空的</p>
+</section>
+<section id="configurations">
+<h3><span class="section-number">8.7.1.1.4. </span>configurations<a class="headerlink" href="#configurations" title="此标题的永久链接"></a></h3>
+<p>配置文件(.conf)定义了管理Openenbedded构建过程中的各种配置变量，这些文件分为几个区域，这些区域定义了机器配置选项，编译器配置选项，
+一般通用配置选项和用户配置选项。 conf/local.conf</p>
+<p>主configuration文件是bitbake.conf，位于meta/conf/bitbake.conf</p>
+</section>
+</section>
+<section id="layers">
+<h2><span class="section-number">8.7.1.2. </span>layers<a class="headerlink" href="#layers" title="此标题的永久链接"></a></h2>
+<p>layer是包含相关元数据的集合，这些元数据告诉openembedded构建系统如何构建目标。layer被用来分类不同的任务单元，某些任务单元有共同的特性，可以放在一个layer下，方便模块化组织数据。
+例如要制定一套支持特定硬件的系统，可以把与底层相关的单元放在一个layer中，这个layer可以叫做Board support package layer</p>
+</section>
+<section id="openembedded">
+<h2><span class="section-number">8.7.1.3. </span>openembedded<a class="headerlink" href="#openembedded" title="此标题的永久链接"></a></h2>
+<p>下图展示了openembedded的工作流</p>
+<img alt="../../_images/YP-flow-diagram.png" src="../../_images/YP-flow-diagram.png" />
+<p>构建的工作流程由几个功能区组成：</p>
+<ol class="arabic simple">
+<li><p>用户配置：可用于构建过程中的元数据</p></li>
+<li><p>元数据层：提供软件的元数据</p></li>
+<li><p>源文件：上游版本，本地项目和SCM</p></li>
+<li><p>构建系统：该模块包含Bitbake如何获取源，应用补丁，完成编译，打包生成image</p></li>
+<li><p>package feeds: 包含输出包(rpm, deb, ipk)的目录</p></li>
+<li><p>image: 生成的最终文件</p></li>
+<li><p>app dev sdk: 交叉开发工具</p></li>
+</ol>
+<section id="id1">
+<h3><span class="section-number">8.7.1.3.1. </span>用户配置<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<p>用户配置用于定义构建，通过用户配置bitbake可以得到构建镜像文件的目标架构，下载源的存储位置以及其他属性</p>
+<img alt="../../_images/user-configuration.png" src="../../_images/user-configuration.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>scripts/oe-setup-builddir脚本使用$TEMPLATECONF变量来确定要定位的配置文件</p>
+</div>
+<p>local.conf文件定义了许多构建环境的基本变量</p>
+<ol class="arabic simple">
+<li><p>目标机器选择：由MACHINE变量控制</p></li>
+<li><p>下载目录: 由DL_DIR变量控制</p></li>
+<li><p>共享状态目录: 由SSTATE_DIR变量控制</p></li>
+<li><p>构建输出：由TMPDIR变量控制</p></li>
+<li><p>分发策略: 由DISTRO变量控制</p></li>
+<li><p>打包格式: 由PACKAGE_CLASSED变量控制</p></li>
+<li><p>SDK目标架构: 由SDKMACHINE变量控制</p></li>
+</ol>
+<p>bblayer.conf文件定义bitbake在构建过程中需要对哪些layer进行解析</p>
+</section>
+<section id="id2">
+<h3><span class="section-number">8.7.1.3.2. </span>元数据层<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>一般来说，由三种类型的层输入。</p>
+<ol class="arabic simple">
+<li><p>元数据(.bb+补丁): 包含用户提供的配方文件、补丁和附加文件的软件层</p></li>
+<li><p>bsp: 板级支持包</p></li>
+<li><p>分发层: 为特定分发构建的镜像提供顶级或通用策略</p></li>
+</ol>
+<img alt="../../_images/layer-input.png" src="../../_images/layer-input.png" />
+</section>
+<section id="bitbake-tool">
+<h3><span class="section-number">8.7.1.3.3. </span>bitbake tool<a class="headerlink" href="#bitbake-tool" title="此标题的永久链接"></a></h3>
+<p><strong>源码获取</strong></p>
+<p>构建recipe的第一步是获取和解压源代码</p>
+<img alt="../../_images/source-fetching.png" src="../../_images/source-fetching.png" />
+<p>该do_fetch和do_unpack任务获取源文件并将其解压到build目录</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>对于本地文件(<a class="reference external" href="file://">file://</a>)，bitbake将获取文件的校验和，并将校验和插入到do_fetch任务的签名中去。如果有本地文件修改则重新执行do_fetch和所有依赖它的任务</p>
+</div>
+<p>一些相关的特殊变量</p>
+<ol class="arabic simple">
+<li><p>TMPDIR: bitbake在构建期间执行所有工作的基本目录，默认是tmp</p></li>
+<li><p>PACKAGE_ARCH: 构建包的架构:</p></li>
+<li><p>TARGET_OS: 目标运行的操作系统</p></li>
+<li><p>PN: recipe的名称</p></li>
+<li><p>PV: recipe的版本</p></li>
+<li><p>PR: recipe的修订版本</p></li>
+<li><p>S: recipe解压路径</p></li>
+</ol>
+<p><strong>打补丁</strong></p>
+<p>do_patch任务使用recipt的SRC_URI和FILESPATH变量来定位适用的补丁文件, *.patch或*.diff文件为默认的补丁文件。</p>
+<img alt="../../_images/patching.png" src="../../_images/patching.png" />
+<p><strong>配置、编译、打包</strong></p>
+<img alt="../../_images/configuration-compile-autoreconf.png" src="../../_images/configuration-compile-autoreconf.png" />
+<p>构建过程中这一步包括以下任务:</p>
+<ol class="arabic simple">
+<li><p>do_prepare_recipe_sysroot: 此任务在${WORKDIR}中设置两个sysroot(recipe-sysroot和recipe-sysroot-native),以便在打包阶段任务所依赖do_populate_sysroot任务的内容</p></li>
+<li><p>do_configure: 此任务用于源代码编译前的配置</p></li>
+<li><p>do_compile: 编译源代码，编译发生在B变量指向的目录中，默认情况下B目录与S目录相同</p></li>
+<li><p>do_install: 安装任务，复制B目录文件到D目录</p></li>
+</ol>
+<p><strong>package splitting</strong></p>
+<img alt="../../_images/analysis-for-package-splitting.png" src="../../_images/analysis-for-package-splitting.png" />
+<p><strong>image 生成</strong></p>
+<img alt="../../_images/image-generation.png" src="../../_images/image-generation.png" />
+<p>image生成过程由几个阶段组成，取决于几个任务和变量。do_rootfs任务用于创建image根文件系统，此任务包含以下几个关键变量</p>
+<ol class="arabic simple">
+<li><p>IMAGE_INSTALL: 列出要用package feeds区域安装的基本软件合集</p></li>
+<li><p>PACKAGE_EXCLUDE: 执行不安装到image中的文件</p></li>
+<li><p>IMAGE_FEATURES: 指定image feature， 大多数会映射到安装包</p></li>
+<li><p>PACKAGE_CLASSES: 指定要使用的包后缀(rpm deb ipk)</p></li>
+<li><p>IMAE_LINGUAS: 确定安装到附加语言支持包的语言</p></li>
+<li><p>PACKAGE_INSTALL: 传递给包管理器以安装到image中的最终列表</p></li>
+<li><p>IMAGE_ROOTFS: image路径</p></li>
+</ol>
+<p>do_rootfs之后会执行IMAGE_PREPROCESS_COMMAND变量中定义的命令</p>
+<p>构建根文件系统后，do_image_*根据IMAGE_FSTYPES变量中的指定的iamge类型执行任务。</p>
+<p>最后一个任务是do_image_complete，此任务会执行IMAGE_POSTPROCESS_COMMAND中定义的函数列表</p>
+<p>构建过程完成之后会将image写入tmp/deploy/images/machine/文件夹</p>
+<ol class="arabic simple">
+<li><p>kernel-image: 内核二机制文件， KERNEL_IMAGETYPE变量定义了该文件名称</p></li>
+<li><p>root-filesystem-image: 目标设备的跟文件系统(<em>.ext4或</em>.bz2), IMAGE_FSTYPE定义了image类型</p></li>
+<li><p>内核模块:</p></li>
+<li><p>bootloader:</p></li>
+<li><p>符号链接: 指向最近的构建文件</p></li>
+</ol>
+<p><strong>sdk生成</strong></p>
+<img alt="../../_images/sdk-generation.png" src="../../_images/sdk-generation.png" />
+<p>该部分的任务主要由do_populate_sdk和do_populate_sdk_ext完成.最终生成交叉开发工具链安装脚本(.sh)文件</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="8.7. Yocto使用总结" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="source_struct.html" class="btn btn-neutral float-right" title="8.7.2. yocto源目录结构" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

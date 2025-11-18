@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.3. 进程管理与调度 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="3.3.1. 进程描述" href="process_overview/index.html" />
+    <link rel="prev" title="3.2.6. 内存基础知识" href="../mm/memory_base_kn/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3.3. 进程管理与调度</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_overview/index.html">3.3.1. 进程描述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_create/index.html">3.3.2. 进程创建</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_run/index.html">3.3.3. 进程运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/index.html">3.3.4. 进程调度</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/index.html">3.3.5. 调度普通进程-完全公平调度器CFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="thread_info/index.html">3.3.6. thread_info与内核栈stack的关系</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>kernel note</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.3. </span>进程管理与调度</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/kernel/process/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">3.3. </span>进程管理与调度<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<img alt="../../_images/task_topview.svg" src="../../_images/task_topview.svg" /><div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="process_overview/index.html">3.3.1. 进程描述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="process_overview/index.html#id2">3.3.1.1. 进程状态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_overview/index.html#id3">3.3.1.2. 进程描述符</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_overview/index.html#id4">3.3.1.3. 进程内核栈</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_overview/index.html#id5">3.3.1.3.1. 内核栈与线程描述符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_overview/index.html#thread-infothread-union">3.3.1.3.2. 内核栈数据接哦古描述thread_info和thread_union</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_overview/index.html#id6">3.3.1.4. 进程标记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_overview/index.html#id7">3.3.1.5. 表示进程亲属关系的成员</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_overview/index.html#id8">3.3.1.6. 优先级</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_overview/index.html#id9">3.3.1.7. 调度策略相关字段</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_overview/index.html#id10">3.3.1.8. 调度类</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_overview/index.html#id11">3.3.1.9. 进程地址空间</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_overview/index.html#id12">3.3.1.10. 判断标志</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_overview/index.html#id13">3.3.1.11. 时间</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_overview/index.html#id14">3.3.1.12. 信号处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_overview/index.html#id15">3.3.1.13. 其他</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="process_create/index.html">3.3.2. 进程创建</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="process_create/category/index.html">3.3.2.1. 进程类别</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_create/category/index.html#id2">3.3.2.1.1. 进程与线程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_create/category/index.html#id3">3.3.2.1.2. 内核线程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_create/category/index.html#id4">3.3.2.1.3. 进程的创建流程</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_create/category/index.html#forkexecve">3.3.2.1.3.1. 进程的复制fork和加载execve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_create/category/index.html#id5">3.3.2.1.3.2. 写时复制技术</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_create/category/index.html#id6">3.3.2.1.3.3. 线程的实现机制</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_create/category/index.html#id7">3.3.2.1.3.4. 内核线程与普通进程的异同</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_create/category/index.html#id8">3.3.2.1.3.5. 内核线程创建</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_create/init_task/index.html">3.3.2.2. init_task</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_create/init_task/index.html#idle">3.3.2.2.1. idle的创建</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_create/init_task/index.html#id1">3.3.2.2.1.1. 0号进程上下文信息-init_task描述符</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_create/init_task/index.html#init-thread-union">3.3.2.2.1.2. 进程堆栈init_thread_union</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_create/init_task/index.html#id2">3.3.2.2.1.3. 进程内存空间</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="process_create/init_task/index.html#id3">3.3.2.2.2. 0号进程的演化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_create/init_task/index.html#rest-initinitkthread">3.3.2.2.2.1. rest_init创建init和kthread进程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_create/init_task/index.html#id4">3.3.2.2.2.2. idle的运行与调度</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_create/kernel_init/index.html">3.3.2.3. kernel_init</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_create/kernel_init/index.html#init">3.3.2.3.1. init进程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_create/kernel_init/index.html#kerner-init">3.3.2.3.2. kerner_init分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_create/kernel_init/index.html#kernel-init-freeable">3.3.2.3.3. kernel_init_freeable流程分析</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_create/kthreadadd/index.html">3.3.2.4. kthreadd</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_create/kthreadadd/index.html#id1">3.3.2.4.1. 2号进程的创建</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_create/kthreadadd/index.html#id2">3.3.2.4.2. 2号进程的循环</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_create/do_fork/index.html">3.3.2.5. do_fork</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_create/do_fork/index.html#fork-vfork-clone">3.3.2.5.1. fork,vfork,clone系统调用的实现</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_create/do_fork/index.html#id1">3.3.2.5.1.1. fork vfork clone系统调用的实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="process_run/index.html">3.3.3. 进程运行</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="process_run/do_execve_index.html">3.3.3.1. linux进程启动过程分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_run/do_execve_index.html#execve">3.3.3.1.1. execve加载可执行程序的过程</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_run/elf_index.html">3.3.3.2. linux elf文件格式详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_run/load_elf_index.html">3.3.3.3. elf文件加载过程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_run/load_elf_index.html#linux">3.3.3.3.1. linux 可执行文件类型的注册机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_run/load_elf_index.html#load-elf-binary">3.3.3.3.2. 内核空间的加载过程load_elf_binary</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="process_schedule/index.html">3.3.4. 进程调度</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="process_schedule/inrtoduction.html">3.3.4.1. linux进程调度器概述</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/inrtoduction.html#id1">3.3.4.1.1. 背景知识</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/inrtoduction.html#id2">3.3.4.1.1.1. 什么是调度器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/inrtoduction.html#id3">3.3.4.1.1.2. 调度策略</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/inrtoduction.html#id4">3.3.4.1.1.3. 进程饥饿</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/inrtoduction.html#id5">3.3.4.1.2. linux进程分类</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/inrtoduction.html#id6">3.3.4.1.3. linux调度器设计</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/inrtoduction.html#id7">3.3.4.1.3.1. linux进程调度器的框架</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/inrtoduction.html#id8">3.3.4.1.4. 进程的调度</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_schedule/design.html">3.3.4.2. linux进程调度器的设计</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/design.html#task-struct">3.3.4.2.1. task_struct中调度相关成员</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/design.html#id1">3.3.4.2.1.1. 优先级</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/design.html#id2">3.3.4.2.1.2. 调度策略</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/design.html#id3">3.3.4.2.1.3. 调度类</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/design.html#id4">3.3.4.2.1.4. 就绪队列</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/design.html#id5">3.3.4.2.1.5. 调度实体</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/design.html#struct-task-group">3.3.4.2.1.6. 组调度(struct task_group)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/design.html#id6">3.3.4.2.2. 周期性调度器</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/design.html#id7">3.3.4.2.2.1. 周期性调度器主流程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_schedule/main_schedule.html">3.3.4.3. linux进程调度器之主调度器</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/main_schedule.html#schedule">3.3.4.3.1. schedule函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/main_schedule.html#id1">3.3.4.3.2. __schedule开始进程调度</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/main_schedule.html#pick-next-task">3.3.4.3.2.1. pick_next_task选择抢占的进程</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/main_schedule.html#context-switch">3.3.4.3.3. context_switch进程上下文切换</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/main_schedule.html#id2">3.3.4.3.3.1. 进程上下文切换</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/main_schedule.html#id3">3.3.4.3.3.2. context_switch流程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_schedule/preempt.html">3.3.4.4. 用户抢占和内核抢占</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/preempt.html#id2">3.3.4.4.1. 非抢占式内核与抢占式内核</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/preempt.html#id3">3.3.4.4.1.1. 非抢占式内核</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_schedule/preempt.html#id4">3.3.4.4.1.2. 抢占式内核</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/preempt.html#linux">3.3.4.4.2. linux用户抢占</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/preempt.html#id5">3.3.4.4.3. linux内核抢占</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/preempt.html#id6">3.3.4.4.4. 内核抢占的实现</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_schedule/context_switch.html">3.3.4.5. 进程上下文切换</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/context_switch.html#context-switch">3.3.4.5.1. context_switch注释</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/context_switch.html#prepare-arch-switch">3.3.4.5.2. prepare_arch_switch切换前的准备工作</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/context_switch.html#switch-to">3.3.4.5.3. switch_to完成进程切换</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_schedule/prioprity.html">3.3.4.6. linux进程优先级的处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="process_schedule/wakeup.html">3.3.4.7. linux唤醒抢占</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/wakeup.html#id1">3.3.4.7.1. linux进程的睡眠</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/wakeup.html#id2">3.3.4.7.2. linux进程的唤醒</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_schedule/wakeup.html#id3">3.3.4.7.3. 无效唤醒</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="process_cfs/index.html">3.3.5. 调度普通进程-完全公平调度器CFS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="process_cfs/cfs_summary.html">3.3.5.1. CFS调度器概述</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/cfs_summary.html#cfsfair-sched-class">3.3.5.1.1. cfs调度器类fair_sched_class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/cfs_summary.html#id1">3.3.5.1.2. cfs就绪队列</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_cfs/schedule_load_weight.html">3.3.5.2. CFS调度器负荷权重load_weight</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/schedule_load_weight.html#id1">3.3.5.2.1. 负荷权重</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/schedule_load_weight.html#struct-load-weight">3.3.5.2.1.1. 负荷权重struct load_weight</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/schedule_load_weight.html#load">3.3.5.2.1.2. 调度实体的负荷权重load</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/schedule_load_weight.html#id2">3.3.5.2.1.3. 进程的负荷权重</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/schedule_load_weight.html#id3">3.3.5.2.2. 优先级和权重的转换</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/schedule_load_weight.html#id4">3.3.5.2.2.1. 优先级-&gt;权重转换表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/schedule_load_weight.html#id5">3.3.5.2.2.2. 1.25的乘积因子</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/schedule_load_weight.html#id6">3.3.5.2.3. 进程负荷权重的计算</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/schedule_load_weight.html#scale-load">3.3.5.2.3.1. scale_load取得负荷权重的值</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/schedule_load_weight.html#id7">3.3.5.2.4. 就绪队列的负荷权重</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/schedule_load_weight.html#cfs">3.3.5.2.4.1. cfs就绪队列的负荷权重</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/schedule_load_weight.html#id8">3.3.5.2.4.2. 就绪队列的负荷权重计算</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_cfs/vruntime.html">3.3.5.3. 虚拟时钟vruntime和调度延迟</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/vruntime.html#id1">3.3.5.3.1. 虚拟运行时间</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/vruntime.html#id2">3.3.5.3.1.1. 虚拟运行时间的引入</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/vruntime.html#cfs">3.3.5.3.1.2. cfs虚拟时钟</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/vruntime.html#id3">3.3.5.3.2. 虚拟时钟相关的数据结构</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/vruntime.html#id4">3.3.5.3.2.1. 调度实体的虚拟时钟信息</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/vruntime.html#id5">3.3.5.3.2.2. 就绪队列上的虚拟时钟信息</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/vruntime.html#update-curr">3.3.5.3.3. update_curr函数计算进程虚拟时间</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/vruntime.html#cfs-min-vruntime">3.3.5.3.3.1. 重新设置cfs-&gt;min_vruntime</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/vruntime.html#entity-keyentity-befor">3.3.5.3.4. 红黑树的键值entity_key和entity_befor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/vruntime.html#id6">3.3.5.3.5. 延迟跟踪(调度延迟)与虚拟时间在调度实体内部的再分配</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/vruntime.html#id7">3.3.5.3.5.1. 调度延迟与其控制字段</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/vruntime.html#id8">3.3.5.3.5.2. 虚拟时间在调度实体内的分配</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_cfs/cfs_queue.html">3.3.5.4. CFS队列操作</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/cfs_queue.html#enqueue-task-fair">3.3.5.4.1. enqueue_task_fair入队操作</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/cfs_queue.html#id1">3.3.5.4.1.1. enqueue_task_fair函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_cfs/pick_next_task_fair.html">3.3.5.5. pick_next_task_fair选择下一个被调度的进程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/pick_next_task_fair.html#put-prev-task">3.3.5.5.1. put_prev_task函数</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/pick_next_task_fair.html#id1">3.3.5.5.1.1. 全局put_prev_task函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/pick_next_task_fair.html#cfsput-prev-task-fair">3.3.5.5.1.2. CFS的put_prev_task_fair函数</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/pick_next_task_fair.html#pick-next-entity">3.3.5.5.2. pick_next_entity函数</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/pick_next_task_fair.html#cfslastnext">3.3.5.5.2.1. cfs的last和next指针域</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/pick_next_task_fair.html#wakeup-preempt-entity">3.3.5.5.2.2. wakeup_preempt_entity检查是否可以被抢占</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_cfs/task_tick_fair.html">3.3.5.6. task_tick_fair周期性调度器</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/task_tick_fair.html#cfs">3.3.5.6.1. CFS的周期性调度</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/task_tick_fair.html#id1">3.3.5.6.1.1. task_tick_fair与周期性调度</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/task_tick_fair.html#entity-tick">3.3.5.6.1.2. entity_tick函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="process_cfs/task_tick_fair.html#check-preempt-tick">3.3.5.6.1.3. check_preempt_tick函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_cfs/cfs_task_wakeup.html">3.3.5.7. 唤醒抢占</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/cfs_task_wakeup.html#id2">3.3.5.7.1. 进程的创建</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process_cfs/cfs_task_wakeup.html#id3">3.3.5.7.2. 处理新进程</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="process_cfs/cfs_wake_affine.html">3.3.5.8. WAKE_AFFINE机制</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="thread_info/index.html">3.3.6. thread_info与内核栈stack的关系</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="thread_info/index.html#thread-info">3.3.6.1. thread_info简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_info/index.html#thread-union">3.3.6.2. thread_union实现</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_info/index.html#id1">3.3.6.3. thread_info接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_info/index.html#id2">3.3.6.4. 0号进程的thread_info</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_info/index.html#id3">3.3.6.5. 堆栈的生长方式与thread_info的关系</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../mm/memory_base_kn/index.html" class="btn btn-neutral float-left" title="3.2.6. 内存基础知识" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="process_overview/index.html" class="btn btn-neutral float-right" title="3.3.1. 进程描述" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

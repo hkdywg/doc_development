@@ -1,0 +1,263 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>10.1.5. free_rtos基础知识体系梳理 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="10.1.6. RTOS底层原理" href="rtos_lowlevel.html" />
+    <link rel="prev" title="10.1.4. FreeRTOS 队列" href="FreeRTOS_queue.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">10. rtos note</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">10.1. free_rtos学习笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="FreeRTOS_summary.html">10.1.1. FreeRTOS概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FreeRTOS_mm.html">10.1.2. FreeRTOS内存管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FreeRTOS_task.html">10.1.3. FreeRTOS任务管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FreeRTOS_queue.html">10.1.4. FreeRTOS 队列</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">10.1.5. free_rtos基础知识体系梳理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">10.1.5.1. 任务堆栈</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">10.1.5.2. 任务状态</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">10.1.5.3. 任务优先级</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">10.1.5.4. 任务调度</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">10.1.5.5. 临界区，锁与系统时间</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rtos_lowlevel.html">10.1.6. RTOS底层原理</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">10. </span>rtos note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">10.1. </span>free_rtos学习笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">10.1.5. </span>free_rtos基础知识体系梳理</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rtos/free_rtos/base_struct.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="free-rtos">
+<h1><span class="section-number">10.1.5. </span>free_rtos基础知识体系梳理<a class="headerlink" href="#free-rtos" title="此标题的永久链接"></a></h1>
+<p>FreeRTOS 在线手册　<a class="reference external" href="https://freertos.asicfans.com/">https://freertos.asicfans.com/</a></p>
+<p><strong>单任务系统</strong></p>
+<p>单任务系统中主要采用超级循环系统(前后台系统),应用程序是一个无限的循环，循环中调用相应的函数完成相应的操作，
+这部分可以看作后台行为．中断服务程序处理异步时间，这部分可以看作前台行为．后台也可以叫做任务级，前台也叫做中断级</p>
+<p>前后台系统编程主要有两种思路：轮询方式(实时性不能得到保障),中断方式</p>
+<p>中断与轮循结合的方式可以解决很多裸机应用，但随着系统的复杂，裸机的缺点就暴露出来了</p>
+<ul class="simple">
+<li><p>ISR函数变得非常复杂，并且需要很长的执行时间．当ISR嵌套可能会产生不可预测的执行时间和堆栈需求</p></li>
+<li><p>超级循环与ISR之间的数据交换通过全局变量进行．</p></li>
+<li><p>超级循环使得应用程序变得复杂，可扩展性差</p></li>
+</ul>
+<p><strong>多任务系统</strong></p>
+<p>采用多任务系统可以解决裸机开发中的几个缺点</p>
+<p>freertos是一款支持多任务运行的实时操作系统，具有时间片，抢占式和合作式三种调度方式．</p>
+<section id="id1">
+<h2><span class="section-number">10.1.5.1. </span>任务堆栈<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<img alt="../../_images/stack_size.png" src="../../_images/stack_size.png" />
+<p>上图中显示栈与堆空间的设置</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>在freertos操作系统中，主堆栈指针MSP是给系统栈空间使用的，进程栈指针PSP是给任务栈使用的．也就是说freertos任务中，所有栈空间的使用
+都是通过PSP指针进行指向的．实际应用中系统栈空间分配多大，主要看可能发生的中断嵌套层数．</p>
+</div>
+<section id="id2">
+<h3><span class="section-number">10.1.5.1.1. </span>任务栈大小确定<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>函数的栈大小计算起来是比较麻烦的，一般IDE开发环境都会有这样的一个功能，比如MDK会生成一个htm文件．用户可以通过这个文件知道每个被调用
+函数的最大栈需求以及各个函数的调用关系．但是MDK无法确定通过函数指针实现函数调用时的栈需求．另外，发生中断或者中断嵌套时的现场保护需要
+的栈空间也不会统计</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">10.1.5.1.2. </span>栈溢出检测机制<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>栈的生长方向一般是从高地址向地址生长的</p>
+<img alt="../../_images/stack_map.png" src="../../_images/stack_map.png" />
+<p>上图中array数组的申请就发生来栈溢出</p>
+<p>FreeRTOS提供了两种栈溢出检测机制，这两种检测都是任务切换时才会进行</p>
+<p>1) 在任务切换时检测任务栈指针是否越界了，如果越界来，在任务切换时会触发栈溢出钩子函数．用户可以在钩子函数里面做一些处理．这种方法不能保证
+所有的栈溢出都能检测到．比如在任务执行过程中出现过栈溢出，任务切换前栈指针又恢复到了正常水平．</p>
+<p>使用这种方法时用户需要在FreeRTOSConfig.h文件中配置如下宏定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define configCHECK_FOR_STACK_OVERFLOW 1</span>
+</pre></div>
+</div>
+<p>2) 任务创建的时候将任务栈的所有数据初始化为0xa5，任务切换时进行任务栈检测，检查末尾的16个字节是否都是0xa5,通过这种方式来检测任务栈是否溢出了，
+相比方法一这种方法速度稍微慢些，但有效的避免了方法一中的某些情况．但还是不能检测所有任务栈溢出情况，比如发生栈溢出来，但是末尾的16个字节没有
+修改，但是修改了溢出部分的数据</p>
+<p>使用这种方法时用户需要在FreeRTOSConfig.h文件中配置如下宏定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define configCHECK_FOR_STACK_OVERFLOW 2</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">10.1.5.2. </span>任务状态<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>FreeRTOS的任务状态(4种):运行态(running),就绪态(ready),阻塞态(blocked),挂起态(suspended)
+ucos任务状态(5种):睡眠状态，就绪状态，等待状态，中断服务状态，执行状态</p>
+</div>
+<ul class="simple">
+<li><p>运行态(running): 任务处于实际运行状态，即CPU的使用权被这个任务占用</p></li>
+<li><p>就绪态(ready): 指那些能够运行(没有阻塞或者挂起)但是当前没有运行的任务，因为同优先级或更高优先级的任务正在运行</p></li>
+<li><p>阻塞态(blocked): 由于等待信号量，消息队列，事件标志等处于的状态成为阻塞态，另外任务调用延迟函数也会处于阻塞态</p></li>
+<li><p>挂起态(suspended): 类似阻塞态，通过调用函数vTaskSuspend()对指定任务进行挂起，挂起后这个任务将不被执行，只有调用xTaskResume()才可以将这个任务从挂起状态恢复</p></li>
+</ul>
+<img alt="../../_images/task_trans.png" src="../../_images/task_trans.png" />
+</section>
+<section id="id5">
+<h2><span class="section-number">10.1.5.3. </span>任务优先级<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<ol class="arabic simple">
+<li><p>FreeRTOS中任务最高优先级是通过 <code class="docutils literal notranslate"><span class="pre">FreeRTOSConfig.h</span></code> 文件中的 <code class="docutils literal notranslate"><span class="pre">configMAX_PRIORITIES</span></code> 进行配置的．用户可以使用的优先级范围是0~configMAX_PRIORITIES</p></li>
+<li><p>用户配置的优先级数值越小，任务优先级越低．空闲任务的优先级是0</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">configMAX_PRIORITIES</span></code> 建议最大值不超过32</p></li>
+</ol>
+<img alt="../../_images/task_alloc.png" src="../../_images/task_alloc.png" />
+<ul class="simple">
+<li><p>IRQ任务: 指中断服务程序触发的任务，此类任务应该设置为所有任务里面优先级最高的</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>IRQ任务和高优先级任务必须设置为阻塞式(调用消息等待或延迟函数)，只有这样高优先级的任务才会释放CPU的使用权，从而
+低优先级的任务才会有机会执行</p>
+</div>
+</section>
+<section id="id6">
+<h2><span class="section-number">10.1.5.4. </span>任务调度<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p>FreeRTOS是一款支持多任务运行的实时操作系统，具有时间片，抢占式，合作式三种调度方式</p>
+<ol class="arabic simple">
+<li><p>合作式调度，主要用在资源有限的设备上面，现在基本不用了</p></li>
+<li><p>抢占式调度，每个任务都有不同的优先级，任务会一直运行到被高优先级的任务抢占或者遇到阻塞式的API函数</p></li>
+<li><p>时间片调度，每个任务都有相同的优先级，任务会运行固定的时间片个数或者遇到阻塞式API函数</p></li>
+</ol>
+<section id="id7">
+<h3><span class="section-number">10.1.5.4.1. </span>调度器<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>调度器就是使用相关的调度算法来决定当前需要执行的任务，所有的调度器有一个共同的特性：</p>
+<ol class="arabic simple">
+<li><p>调度器可以区分就绪态任务和挂起任务(延迟，信号量等待等原因挂起的任务), 调度器可以选择就绪态中的一个任务，然后激活它</p></li>
+</ol>
+<ul class="simple">
+<li><p>抢占式调度器</p></li>
+</ul>
+<img alt="../../_images/seize_task.png" src="../../_images/seize_task.png" />
+<ul class="simple">
+<li><p>时间片调度器</p></li>
+</ul>
+<img alt="../../_images/timing_task.png" src="../../_images/timing_task.png" />
+<p>在小型的嵌入式RTOS中，最常用的时间片调度算法就是Round-robin调度算法.</p>
+<p>用户需要在 <code class="docutils literal notranslate"><span class="pre">FreeRTOSConfig.h</span></code> 文件中使能宏定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define configUSE_TIME_SLICING 1</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id8">
+<h2><span class="section-number">10.1.5.5. </span>临界区，锁与系统时间<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
+<p>代码的临界区，一旦这部分代码开始执行，则不允许任何中断打断．为了保证这部分代码不被中断，需要进行关中断操作</p>
+<p><strong>锁</strong></p>
+<ol class="arabic simple">
+<li><p>调度锁: 调度锁就是RTOS提供的调度器开关函数，如果某个任务调用了调度锁开关函数，处于调度锁开关之间的代码在执行期间不会被高优先级的任务抢占，但中断是可以执行的</p></li>
+<li><p>任务锁: 为了防止当前任务的执行被其他高优先级的任务．FreeRTOS没有专门的任务锁函数，有以下两种实现方A.通过调度器加锁实现B.关闭任务切换中断PendSV和系统Systick</p></li>
+</ol>
+<p>任何操作系统都需要提供一个时钟节拍，以供系统处理注入延迟，超时等时间相关的事件．时钟节拍是特定的周期性中断，这个中断可以看成是系统心跳，
+系统节拍越快，系统的额外开销就越大. MCU中一般采用滴答定时器来实现系统时钟节拍</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="FreeRTOS_queue.html" class="btn btn-neutral float-left" title="10.1.4. FreeRTOS 队列" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="rtos_lowlevel.html" class="btn btn-neutral float-right" title="10.1.6. RTOS底层原理" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

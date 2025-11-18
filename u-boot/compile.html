@@ -1,0 +1,741 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2.1. uboot编译流程分析 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="2.2. source analysis" href="source_analysis/index.html" />
+    <link rel="prev" title="2. u-boot dev note" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../optee/index.html">1. tee</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. u-boot dev note</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.1. uboot编译流程分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#make-xxx-defconfig">2.1.1. make xxx_defconfig配置分析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#xxx-defconfig">2.1.1.1. xxx_defconfig依赖检查更新</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">2.1.1.2. xxx_defconfig目标命令执行</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#make">2.1.2. make执行流程分析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#allall-all-y">2.1.2.1. 目标_all和all对$(ALL-y)的依赖</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#u-boot">2.1.2.2. u-boot目标编译</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html">2.2. source analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="legacy-fit_img.html">2.3. Legacy-uImage &amp; FIT-uImage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsing_uimage.html">2.4. uboot解析uImage的kernel信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bootm.html">2.5. bootm原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transfer_param.html">2.6. uboot向kernel的传参机制–bootm与tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uboot_memory.html">2.7. uboot-kernel地址空间</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_core_startup.html">2.8. 多核异构平台系统启动分析</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>u-boot dev note</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2.1. </span>uboot编译流程分析</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/u-boot/compile.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="uboot">
+<h1><span class="section-number">2.1. </span>uboot编译流程分析<a class="headerlink" href="#uboot" title="此标题的永久链接"></a></h1>
+<p>u-boot官方在线文档 <a class="reference external" href="https://u-boot.readthedocs.io/en/latest/index.html">https://u-boot.readthedocs.io/en/latest/index.html</a></p>
+<p>在分析uboot编译过程之前，必须了解Makefile语法。由于u-boot的Makefile中存在相互调用，这里介绍以下make -f和make -c的区别</p>
+<ul class="simple">
+<li><p>-c选项：Makefile中的-c是递归调用子目录的Makefile，-c选项后跟目录，表示到子目录下执行子目录的makefile，顶层Makefile的export的变量还有make默认的变量是可以传递给子目录中的Makefile的</p></li>
+<li><p>-f选项：顶层Makefile使用make -f调用子目录中的文件（文件名可以随便，不必一定是Makefile)作为Makefile，顶层export的变量可以传递给底层</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>在顶层Makefile中使用make -f调用子目录中的文件工作目录仍是顶层目录，即CURDIR变量仍是顶层目录</p>
+</div>
+<p>Makefile的核心是依赖和命令，对于每个目标，首先会检查依赖如果依赖存在则执行命令更新目标，如果依赖不存在，则会以依赖为目标先生成依赖，最后执行命令生成目标</p>
+<section id="make-xxx-defconfig">
+<h2><span class="section-number">2.1.1. </span>make xxx_defconfig配置分析<a class="headerlink" href="#make-xxx-defconfig" title="此标题的永久链接"></a></h2>
+<section id="xxx-defconfig">
+<h3><span class="section-number">2.1.1.1. </span>xxx_defconfig依赖检查更新<a class="headerlink" href="#xxx-defconfig" title="此标题的永久链接"></a></h3>
+<p>在编译uboot时首先执行make xxx_defconfig生成.config文件。uboot根目录中Makefile中有唯一的规则目标</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>config: scripts_basic outputmakefile FORCE
+    $(Q)$(MAKE) $(build)=scripts/kconfig $@
+
+%config: scripts_basic outputmakefile FORCE
+    $(Q)$(MAKE) $(build)=scripts/kconfig $@
+</pre></div>
+</div>
+<p>build 在 scripts/Kbuild.include 中定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>build := -f $(srctree)/scripts/Makefile.build obj
+</pre></div>
+</div>
+<p>所以最后执行的命令就是</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="o">-</span><span class="n">f</span> <span class="n">scripts</span><span class="o">/</span><span class="n">Makefile</span><span class="o">.</span><span class="n">build</span> <span class="n">obj</span><span class="o">=</span><span class="n">scripts</span><span class="o">/</span><span class="n">kconfig</span> <span class="n">xxx_defconfig</span>
+</pre></div>
+</div>
+<p><strong>scripts_basic依赖</strong></p>
+<p>目标xxx_defconfig的生成依赖于scripts_basic，outputmakefile和FORCE,只有scripts_basic需要执行命令</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    # Basic helpers built in scripts/
+    PHONY += scripts_basic
+scripts_basic:
+    $(Q)$(MAKE) $(build)=scripts/basic
+    $(Q)rm -f .tmp_quiet_recordmcount
+    #展开后，规则如下
+    make -f ./scripts/Makefile.build obj=scripts/basic
+    #make命令会转到文件scripts/Makefile.build去执行
+</pre></div>
+</div>
+<p>事实上大量实际目标的编译都是调用scripts/Makefile.build完成的，文件scripts/Makefile.build的开头会根据传入的obj=scripts/basic参数设置src=sripts/basic</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Modified for U-Boot
+prefix := tpl
+src := $(patsubst $(prefix)/%,%,$(obj))
+ifeq ($(obj),$(src))
+prefix := spl
+src := $(patsubst $(prefix)/%,%,$(obj))
+ifeq ($(obj),$(src))
+prefix := .
+endif
+endif
+</pre></div>
+</div>
+<p>kbuild-dir根据src变量(等于obj变量)是绝对路径还是相对路径来确定当前编译的目录，若为绝对路径则该目录即src变量的值，若为相对路径则该变量就是src相对于源码根目录的目录。kbuild-file即
+在该目录下查找kbuild文件，若能找到则使用kbuild作为该目录的编译文件，若找不到则使用该目录下的Makefile作为该目录的编译文件，然后将该文件包含进来</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># The filename Kbuild has precedence over Makefile
+kbuild-dir := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
+kbuild-file := $(if $(wildcard $(kbuild-dir)/Kbuild),$(kbuild-dir)/Kbuild,$(kbuild-dir)/Makefile)
+include $(kbuild-file)
+</pre></div>
+</div>
+<p>这里展开替换后相当于</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">include</span> <span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">basic</span><span class="o">/</span><span class="n">Makefile</span>
+</pre></div>
+</div>
+<p>文件scripts/basic/Makefile中定义了编译在主机上执行的工具fixdep</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># fixdep:        Used to generate dependency information during build process
+
+hostprogs-y     := fixdep
+always          := $(hostprogs-y)
+
+# fixdep is needed to compile other host programs
+$(addprefix $(obj)/,$(filter-out fixdep,$(always))): $(obj)/fixdep
+</pre></div>
+</div>
+<p>fixdep用于更新每一个生成目标的依赖文件*.cmd。上面定义的这个$(always)在scripts/Makefile.build里会被添加到targets中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>targets += $(extra-y) $(MAKECMDGOALS) $(always)
+</pre></div>
+</div>
+<p>简而言之，scripts_basic的规则是</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scripts_basic</span><span class="p">:</span>
+        <span class="n">make</span> <span class="o">-</span><span class="n">f</span> <span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">Makefile</span><span class="o">.</span><span class="n">build</span> <span class="n">obj</span><span class="o">=</span><span class="n">scripts</span><span class="o">/</span><span class="n">basic</span>
+</pre></div>
+</div>
+<p>最终的结果就是编译scripts/basic/fixdep.c 生成主机上的可执行文件fixdep</p>
+<p><strong>outputmakefile依赖</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PHONY += outputmakefile
+# outputmakefile generates a Makefile in the output directory, if using a
+# separate output directory. This allows convenient use of make in the
+# output directory.
+outputmakefile:
+ifneq ($(KBUILD_SRC),)
+    $(Q)ln -fsn $(srctree) source
+    $(Q)$(CONFIG_SHELL) $(srctree)/scripts/mkmakefile \
+        $(srctree) $(objtree) $(VERSION) $(PATCHLEVEL)
+endif
+</pre></div>
+</div>
+<p>如果此时执行 make xxx_defconfig O=out,那么所有生成的目标都将放到out目录，outputmakefile会导出一个makefile到out目录进行编译</p>
+<p><strong>FORCE依赖</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PHONY</span> <span class="o">+=</span> <span class="n">FORCE</span>
+<span class="n">FORCE</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>FORCE被定义为一个空目标，如果一个目标添加FORCE依赖每次编译都会西安去执行FORCE(实际上什么都不做),然后运行命令更新目标，这样就能确保目标每次都被更新</p>
+</section>
+<section id="id1">
+<h3><span class="section-number">2.1.1.2. </span>xxx_defconfig目标命令执行<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<p>完成对xxx_defconfig的依赖更新后，接下来就是执行对顶层目标的命令完成对xxx_defconfig的更新,也就是执行以下命令</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">xxx_defconfig</span><span class="p">:</span> <span class="n">scripts_basic</span> <span class="n">outputmakefile</span> <span class="n">FORCE</span>
+    <span class="n">make</span> <span class="o">-</span><span class="n">f</span> <span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">Makefile</span><span class="o">.</span><span class="n">build</span> <span class="n">obj</span><span class="o">=</span><span class="n">scripts</span><span class="o">/</span><span class="n">kconfig</span> <span class="n">xxx_defconfig</span>
+</pre></div>
+</div>
+<p>这个命令会转到srcipts/Makefile.kbuild去执行,文件scripts/Makefile.kbuild的开头会根据传入的obj=scripts/kconfig参数设置src=scripts/kconfig, 然后搜寻$(srctree)/$(src)子目录下的makefile，
+由于src=scripts/kconfig参数不用于第一次调用的参数(src=scripts/basic)此处包含的makefile也不用于第一次的makefile了</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># The filename Kbuild has precedence over Makefile
+kbuild-dir := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
+kbuild-file := $(if $(wildcard $(kbuild-dir)/Kbuild),$(kbuild-dir)/Kbuild,$(kbuild-dir)/Makefile)
+include $(kbuild-file)
+</pre></div>
+</div>
+<p>这里展开后相当于</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">include</span> <span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">kconfig</span><span class="o">/</span><span class="n">Makefile</span>
+</pre></div>
+</div>
+<p>文件scripts/kconfig/Makefile中定义了所有匹配%config的目标</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PHONY += xconfig gconfig menuconfig config syncconfig update-po-config \
+%_defconfig: $(obj)/conf
+    $(Q)$&lt; $(silent) --defconfig=arch/$(SRCARCH)/configs/$@ $(Kconfig)
+</pre></div>
+</div>
+<p>展开为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">xxx_defconfig</span><span class="p">:</span> <span class="n">scripts</span><span class="o">/</span><span class="n">kconfig</span><span class="o">/</span><span class="n">conf</span>
+    <span class="n">scripts</span><span class="o">/</span><span class="n">kconfig</span><span class="o">/</span><span class="n">conf</span> <span class="o">--</span><span class="n">defconfig</span><span class="o">=</span><span class="n">arch</span><span class="o">/</span><span class="n">arm</span><span class="o">/</span><span class="n">configs</span><span class="o">/</span><span class="n">xxx_defconfig</span> <span class="n">Kconfig</span>
+</pre></div>
+</div>
+<p>此处xxx_defconfig依赖scripts/kconfig/conf,接下来检查并生成依赖</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hostprogs</span><span class="o">-</span><span class="n">y</span> <span class="o">:=</span> <span class="n">conf</span> <span class="n">nconf</span> <span class="n">mconf</span> <span class="n">kxgettext</span> <span class="n">qconf</span> <span class="n">gconf</span>
+<span class="n">conf</span><span class="o">-</span><span class="n">objs</span>   <span class="o">:=</span> <span class="n">conf</span><span class="o">.</span><span class="n">o</span>  <span class="n">zconf</span><span class="o">.</span><span class="n">tab</span><span class="o">.</span><span class="n">o</span>
+</pre></div>
+</div>
+<p>hostprogs-y指出conf被定义为主机上执行的程序，其依赖于另外两个文件 conf.o zconf.tab.o。通过编译conf.c和zconf.tab.c生成conf-objs并链接为scripts/kconfig/conf。生成
+依赖后就是执行目标的命令了</p>
+<p>conf工具从根目录下开始树状读取默认的kconf文件,分析其配置并保存在内存中，分析完默认的kconfig后再读取指定的文件(arch/arm/configs/xxx_defconfig)更新得到最后的符号表，并输出到.config文件中，
+至此完成了make xxx_defconfig执行配置涉及到的所有依赖和命令的分析</p>
+<p>make defconfig配置流程简图</p>
+<img alt="../_images/make_defconfig.png" src="../_images/make_defconfig.png" />
+</section>
+</section>
+<section id="make">
+<h2><span class="section-number">2.1.2. </span>make执行流程分析<a class="headerlink" href="#make" title="此标题的永久链接"></a></h2>
+<section id="allall-all-y">
+<h3><span class="section-number">2.1.2.1. </span>目标_all和all对$(ALL-y)的依赖<a class="headerlink" href="#allall-all-y" title="此标题的永久链接"></a></h3>
+<p>从顶层的Makefile开始查找，找到第一个目标为_all</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PHONY := _all
+_all:
+
+PHONY += all
+ifeq ($(KBUILD_EXTMOD),)    ##当我们定义了KBUILD_EXTMOD编译一个外部模块时，_all依赖Modules否则依赖all
+_all: all
+else
+_all: modules
+endif
+</pre></div>
+</div>
+<p>在Makefile中.PHONY后面的target表示也是一个伪造的target，而不是真实存在的文件target，注意makefile的target默认是文件</p>
+<p>接着往下分析,all自身依赖于$(ALL-y)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>all:                $(ALL-y) cfg
+ifeq ($(CONFIG_DM_I2C_COMPAT)$(CONFIG_SANDBOX),y)
+    @echo &quot;===================== WARNING ======================&quot;
+    @echo &quot;This board uses CONFIG_DM_I2C_COMPAT. Please remove&quot;
+    @echo &quot;(possibly in a subsequent patch in your series)&quot;
+    @echo &quot;before sending patches to the mailing list.&quot;
+    @echo &quot;====================================================&quot;
+endif
+    @# Check that this build does not use CONFIG options that we do not
+    @# know about unless they are in Kconfig. All the existing CONFIG
+    @# options are whitelisted, so new ones should not be added.
+    $(call cmd,cfgcheck,u-boot.cfg)
+</pre></div>
+</div>
+<p><strong>目标$(ALL-y)</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Always append ALL so that arch config.mk&#39;s can add custom ones
+ALL-y += u-boot.srec u-boot.bin u-boot.sym System.map binary_size_check
+
+ALL-$(CONFIG_ONENAND_U_BOOT) += u-boot-onenand.bin
+ifeq ($(CONFIG_SPL_FSL_PBL),y)
+ALL-$(CONFIG_RAMBOOT_PBL) += u-boot-with-spl-pbl.bin
+else
+ifneq ($(CONFIG_SECURE_BOOT), y)
+# For Secure Boot The Image needs to be signed and Header must also
+# be included. So The image has to be built explicitly
+ALL-$(CONFIG_RAMBOOT_PBL) += u-boot.pbl
+endif
+endif
+ALL-$(CONFIG_SPL) += spl/u-boot-spl.bin
+ifeq ($(CONFIG_MX6)$(CONFIG_SECURE_BOOT), yy)
+ALL-$(CONFIG_SPL_FRAMEWORK) += u-boot-ivt.img
+else
+ifeq ($(CONFIG_MX7)$(CONFIG_SECURE_BOOT), yy)
+ALL-$(CONFIG_SPL_FRAMEWORK) += u-boot-ivt.img
+else
+ALL-$(CONFIG_SPL_FRAMEWORK) += u-boot.img
+endif
+endif
+ALL-$(CONFIG_TPL) += tpl/u-boot-tpl.bin
+ALL-$(CONFIG_OF_SEPARATE) += u-boot.dtb
+ifeq ($(CONFIG_SPL_FRAMEWORK),y)
+ALL-$(CONFIG_OF_SEPARATE) += u-boot-dtb.img
+endif
+ALL-$(CONFIG_OF_HOSTFILE) += u-boot.dtb
+ifneq ($(CONFIG_SPL_TARGET),)
+ALL-$(CONFIG_SPL) += $(CONFIG_SPL_TARGET:&quot;%&quot;=%)
+endif
+ALL-$(CONFIG_REMAKE_ELF) += u-boot.elf
+ALL-$(CONFIG_EFI_APP) += u-boot-app.efi
+ALL-$(CONFIG_EFI_STUB) += u-boot-payload.efi
+
+ifneq ($(BUILD_ROM)$(CONFIG_BUILD_ROM),)
+ALL-$(CONFIG_X86_RESET_VECTOR) += u-boot.rom
+endif
+
+# Build a combined spl + u-boot image for sunxi
+ifeq ($(CONFIG_ARCH_SUNXI)$(CONFIG_SPL),yy)
+ALL-y += u-boot-sunxi-with-spl.bin
+endif
+
+# enable combined SPL/u-boot/dtb rules for tegra
+ifeq ($(CONFIG_TEGRA)$(CONFIG_SPL),yy)
+ALL-y += u-boot-tegra.bin u-boot-nodtb-tegra.bin
+ALL-$(CONFIG_OF_SEPARATE) += u-boot-dtb-tegra.bin
+endif
+
+# Add optional build target if defined in board/cpu/soc headers
+ifneq ($(CONFIG_BUILD_TARGET),)
+ALL-y += $(CONFIG_BUILD_TARGET:&quot;%&quot;=%)
+endif
+
+ifneq ($(CONFIG_SYS_INIT_SP_BSS_OFFSET),)
+ALL-y += init_sp_bss_offset_check
+endif
+</pre></div>
+</div>
+<p>以上的$(ALL-y)目标中看起来很复杂，但除了第一行的通用目标外，其他目标都是在特殊条件下才会生成，这里暂时不提</p>
+<p><strong>$(ALL-y)依赖u-boot.srec</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>u-boot.hex u-boot.srec: u-boot FORCE
+    $(call if_changed,objcopy)
+</pre></div>
+</div>
+<p><strong>$(ALL-y)依赖u-boot.bin</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ifeq ($(CONFIG_MULTI_DTB_FIT),y)
+
+fit-dtb.blob: dts/dt.dtb FORCE
+    $(call if_changed,mkimage)
+
+MKIMAGEFLAGS_fit-dtb.blob = -f auto -A $(ARCH) -T firmware -C none -O u-boot \
+    -a 0 -e 0 -E \
+    $(patsubst %,-b arch/$(ARCH)/dts/%.dtb,$(subst &quot;,,$(CONFIG_OF_LIST))) -d /dev/null
+
+u-boot-fit-dtb.bin: u-boot-nodtb.bin fit-dtb.blob
+    $(call if_changed,cat)
+
+u-boot.bin: u-boot-fit-dtb.bin FORCE
+    $(call if_changed,copy)
+else ifeq ($(CONFIG_OF_SEPARATE),y)
+u-boot-dtb.bin: u-boot-nodtb.bin dts/dt.dtb FORCE
+    $(call if_changed,cat)
+
+u-boot.bin: u-boot-dtb.bin FORCE
+    $(call if_changed,copy)
+else
+u-boot.bin: u-boot-nodtb.bin FORCE
+    $(call if_changed,copy)
+endif
+</pre></div>
+</div>
+<p>如果打开了device tree的支持，则有依赖关系</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">.</span><span class="n">bin</span><span class="o">----&gt;</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">dtb</span><span class="o">.</span><span class="n">bin</span><span class="o">-----&gt;</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">nodtb</span><span class="o">.</span><span class="n">bin</span> <span class="o">+</span> <span class="n">dts</span><span class="o">/</span><span class="n">dt</span><span class="o">.</span><span class="n">dtb</span>
+</pre></div>
+</div>
+<p>如果没有定义CONFIG_OF_SEPARATE则依赖关系如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">.</span><span class="n">bin</span> <span class="o">----&gt;</span> <span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">nodtb</span><span class="o">.</span><span class="n">bin</span>
+</pre></div>
+</div>
+<p>u-boot-nodtb.bin的依赖关系以及执行命令如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>u-boot-nodtb.bin: u-boot FORCE
+    $(call if_changed,objcopy)
+    $(call DO_STATIC_RELA,$&lt;,$@,$(CONFIG_SYS_TEXT_BASE))
+    $(BOARD_SIZE_CHECK)
+</pre></div>
+</div>
+<p>命令中if_changed函数定义在scripts/Kbuild.include文件中,顶层Makefile中通过以下命令包含</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scripts</span><span class="o">/</span><span class="n">Kbuild</span><span class="o">.</span><span class="n">include</span><span class="p">:</span> <span class="p">;</span>
+<span class="n">include</span> <span class="n">scripts</span><span class="o">/</span><span class="n">Kbuild</span><span class="o">.</span><span class="n">include</span>
+</pre></div>
+</div>
+<p>if_changed函数定义如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>if_changed = $(if $(strip $(any-prereq) $(arg-check)),                       \
+    @set -e;                                                             \
+    $(echo-cmd) $(cmd_$(1));                                             \
+    printf &#39;%s\n&#39; &#39;cmd_$@ := $(make-cmd)&#39; &gt; $(dot-target).cmd)
+</pre></div>
+</div>
+<p>该命令外层是一个if函数，然后又内嵌了一个strip函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>OBJCOPY             = $(CROSS_COMPILE)objcopy
+
+# Normally we fill empty space with 0xff
+quiet_cmd_objcopy = OBJCOPY $@
+cmd_objcopy = $(OBJCOPY) --gap-fill=0xff $(OBJCOPYFLAGS) \
+    $(OBJCOPYFLAGS_$(@F)) $&lt; $@
+</pre></div>
+</div>
+<p>所以$(call if_changed,objcopy)展开后：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>echo objcopy $@; objcopy $&lt; $@
+</pre></div>
+</div>
+<p>就是说利用objcopy命令将u-boot转换为u-boot-nodtb.bin</p>
+<p><strong>$(ALL-y)依赖u-boot.sym</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>u-boot.sym: u-boot FORCE
+    $(call if_changed,sym)
+</pre></div>
+</div>
+<p><strong>$(ALL-y)依赖System.map</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>System.map: u-boot
+        @$(call SYSTEM_MAP,$&lt;) &gt; $@
+</pre></div>
+</div>
+<p><strong>$(ALL-y)依赖u-boot.cfg</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>u-boot.cfg spl/u-boot.cfg tpl/u-boot.cfg: include/config.h FORCE
+    $(Q)$(MAKE) -f $(srctree)/scripts/Makefile.autoconf $(@)
+</pre></div>
+</div>
+<p>include/config.h在make xxx_defconfig时创建,include/config.h文件中会包含板级配置文件如#include &lt;configs/holo_ark_v3.h&gt;</p>
+<p><strong>$(ALL-y)依赖binary_size_check</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>binary_size_check: u-boot-nodtb.bin FORCE
+    @file_size=$(shell wc -c u-boot-nodtb.bin | awk &#39;{print $$1}&#39;) ; \
+    map_size=$(shell cat u-boot.map | \
+        awk &#39;/_image_copy_start/ {start = $$1} /_image_binary_end/ {end = $$1} END {if (start != &quot;&quot; &amp;&amp; end != &quot;&quot;) print &quot;ibase=16; &quot; toupper(end) &quot; - &quot; toupper(start)}&#39; \
+        | sed &#39;s/0X//g&#39; \
+        | bc); \
+    if [ &quot;&quot; != &quot;$$map_size&quot; ]; then \
+        if test $$map_size -ne $$file_size; then \
+            echo &quot;u-boot.map shows a binary size of $$map_size&quot; &gt;&amp;2 ; \
+            echo &quot;  but u-boot-nodtb.bin shows $$file_size&quot; &gt;&amp;2 ; \
+            exit 1; \
+        fi \
+    fi
+</pre></div>
+</div>
+<p>以上通用目标$(ALL-y)的依赖有一个共同点，除了u-boot.cfg依赖于include/config.h外其余目标都依赖于u-boot, 以下图中表示了_all依赖简图</p>
+<img alt="../_images/_all_dep.png" src="../_images/_all_dep.png" />
+</section>
+<section id="u-boot">
+<h3><span class="section-number">2.1.2.2. </span>u-boot目标编译<a class="headerlink" href="#u-boot" title="此标题的永久链接"></a></h3>
+<p>u-boot目标依赖及执行命令如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>u-boot:     $(u-boot-init) $(u-boot-main) u-boot.lds FORCE
+    +$(call if_changed,u-boot__)
+ifeq ($(CONFIG_KALLSYMS),y)
+    $(call cmd,smap)
+    $(call cmd,u-boot__) common/system_map.o
+endif
+</pre></div>
+</div>
+<p>其中u-boot-init和u-boot-main被定义为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>u-boot-init := $(head-y)
+u-boot-main := $(libs-y)
+</pre></div>
+</div>
+<p><strong>依赖项head-y libs-y</strong></p>
+<p>head-y 在arch/arm/Makefile中定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>head-y := arch/arm/cpu/$(CPU)/start.o
+</pre></div>
+</div>
+<p>所以head-y指的是start.S</p>
+<p>在顶层目录Makefile中搜索libs-y可以发现其包含许多目录，</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>libs-y += lib/
+libs-$(HAVE_VENDOR_COMMON_LIB) += board/$(VENDOR)/common/
+libs-$(CONFIG_OF_EMBED) += dts/
+libs-y += fs/
+libs-y += net/
+libs-y += disk/
+libs-y += drivers/
+libs-y += drivers/dma/
+libs-y += drivers/gpio/
+libs-y += drivers/i2c/
+libs-y += drivers/net/
+libs-y += drivers/net/phy/
+libs-y += drivers/pci/
+libs-y += drivers/power/ \
+    drivers/power/domain/ \
+    drivers/power/fuel_gauge/ \
+    drivers/power/mfd/ \
+    drivers/power/pmic/ \
+    drivers/power/battery/ \
+    drivers/power/regulator/
+libs-y += drivers/spi/
+libs-$(CONFIG_FMAN_ENET) += drivers/net/fm/
+libs-$(CONFIG_SYS_FSL_DDR) += drivers/ddr/fsl/
+libs-$(CONFIG_SYS_FSL_MMDC) += drivers/ddr/fsl/
+libs-$(CONFIG_ALTERA_SDRAM) += drivers/ddr/altera/
+libs-y += drivers/serial/
+libs-y += drivers/usb/dwc3/
+libs-y += drivers/usb/common/
+libs-y += drivers/usb/emul/
+libs-y += drivers/usb/eth/
+libs-y += drivers/usb/gadget/
+libs-y += drivers/usb/gadget/udc/
+libs-y += drivers/usb/host/
+libs-y += drivers/usb/musb/
+libs-y += drivers/usb/musb-new/
+libs-y += drivers/usb/phy/
+libs-y += drivers/usb/ulpi/
+libs-y += cmd/
+libs-y += common/
+libs-y += env/
+libs-$(CONFIG_API) += api/
+libs-$(CONFIG_HAS_POST) += post/
+libs-y += test/
+libs-y += test/dm/
+libs-$(CONFIG_UT_ENV) += test/env/
+libs-$(CONFIG_UT_OVERLAY) += test/overlay/
+</pre></div>
+</div>
+<p>另外libs-y还有如下规则定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>libs-y += $(if $(BOARDDIR),board/$(BOARDDIR)/)
+
+libs-y := $(sort $(libs-y))
+
+libs-y              := $(patsubst %/, %/built-in.o, $(libs-y))
+</pre></div>
+</div>
+<p>这条规则使得libs-y中的每个条目的最后一个斜杠替换成/built-in.o，可见libs-y被定义为各层驱动目录下built-in.o的集合，而这些built-in.o则由kbuild makefile将obj-y所
+包含的各个文件编译而成，具体可以研究 <code class="docutils literal notranslate"><span class="pre">scripts/Kbuild.include</span></code> 和 <code class="docutils literal notranslate"><span class="pre">scripts/Makefile.build</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ifneq ($(strip $(obj-y) $(obj-m) $(obj-) $(subdir-m) $(lib-target)),)
+builtin-target := $(obj)/built-in.o
+endif
+
+$(builtin-target): $(obj-y) FORCE
+    $(call if_changed,link_o_target)
+</pre></div>
+</div>
+<p>u-boot文件目标依赖：</p>
+<img alt="../_images/u-boot_dep.png" src="../_images/u-boot_dep.png" />
+<p><strong>依赖项u-boot.lds</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>u-boot.lds: $(LDSCRIPT) prepare FORCE
+    $(call if_changed_dep,cpp_lds)
+
+ifndef LDSCRIPT
+    #LDSCRIPT := $(srctree)/board/$(BOARDDIR)/u-boot.lds.debug
+    ifdef CONFIG_SYS_LDSCRIPT
+        # need to strip off double quotes
+        LDSCRIPT := $(srctree)/$(CONFIG_SYS_LDSCRIPT:&quot;%&quot;=%)
+    endif
+endif
+
+# If there is no specified link script, we look in a number of places for it
+ifndef LDSCRIPT
+    ifeq ($(wildcard $(LDSCRIPT)),)
+        LDSCRIPT := $(srctree)/board/$(BOARDDIR)/u-boot.lds
+    endif
+    ifeq ($(wildcard $(LDSCRIPT)),)
+        LDSCRIPT := $(srctree)/$(CPUDIR)/u-boot.lds
+    endif
+    ifeq ($(wildcard $(LDSCRIPT)),)
+        LDSCRIPT := $(srctree)/arch/$(ARCH)/cpu/u-boot.lds
+    endif
+endif
+</pre></div>
+</div>
+<p>如果没有定义LDSCRIPT和CONFIG_SYS_LDSCRIPT则默认使用u-boot自带的lds文件，包括board/$(BOARDDIR)和$(CPUDIR)目录下定制的针对board或cpu的lds文件，如果没有定制的lds文件则采用
+arch/arm/cpu目录下默认的lds链接文件u-boot.lds</p>
+<section id="prepare">
+<h4><span class="section-number">2.1.2.2.1. </span>prepare编译<a class="headerlink" href="#prepare" title="此标题的永久链接"></a></h4>
+<p>实际上prepare是一些列prepare伪目标和动作的组合，完成编译前的准备工作</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Listed in dependency order
+PHONY += prepare archprepare prepare0 prepare1 prepare2 prepare3
+
+prepare3: include/config/uboot.release
+ifneq ($(KBUILD_SRC),)
+    @$(kecho) &#39;  Using $(srctree) as source for U-Boot&#39;
+    $(Q)if [ -f $(srctree)/.config -o -d $(srctree)/include/config ]; then \
+        echo &gt;&amp;2 &quot;  $(srctree) is not clean, please run &#39;make mrproper&#39;&quot;; \
+        echo &gt;&amp;2 &quot;  in the &#39;$(srctree)&#39; directory.&quot;;\
+        /bin/false; \
+    fi;
+endif
+
+# prepare2 creates a makefile if using a separate output directory
+prepare2: prepare3 outputmakefile
+
+prepare1: prepare2 $(version_h) $(timestamp_h) \
+                   include/config/auto.conf
+
+archprepare: prepare1 scripts_basic
+
+prepare0: archprepare FORCE
+    $(Q)$(MAKE) $(build)=.
+
+# All the preparing..
+prepare: prepare0
+</pre></div>
+</div>
+<p>各个prepare目标的依赖关系如下</p>
+<img alt="../_images/prepare_dep.png" src="../_images/prepare_dep.png" />
+<p>在prepare1的依赖列表中，除了include/config/auto.conf之外，还有$(version_h)和$(timestamp_h),他们的依赖关系如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(version_h): include/config/uboot.release FORCE
+    $(call filechk,version.h)
+
+$(timestamp_h): $(srctree)/Makefile FORCE
+    $(call filechk,timestamp.h)
+</pre></div>
+</div>
+<p>对于位于最后的prepare3的依赖include/config/uboot.release它还有下级依赖</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>include/config/uboot.release: include/config/auto.conf FORCE
+    $(call filechk,uboot.release)
+</pre></div>
+</div>
+<p>对于include/config/auto.conf，Makefile还有一个匹配规则</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>include/config/%.conf: $(KCONFIG_CONFIG) include/config/auto.conf.cmd
+    $(Q)$(MAKE) -f $(srctree)/Makefile syncconfig
+    @# If the following part fails, include/config/auto.conf should be
+    @# deleted so &quot;make silentoldconfig&quot; will be re-run on the next build.
+    $(Q)$(MAKE) -f $(srctree)/scripts/Makefile.autoconf || \
+        { rm -f include/config/auto.conf; false; }
+    @# include/config.h has been updated after &quot;make silentoldconfig&quot;.
+    @# We need to touch include/config/auto.conf so it gets newer
+    @# than include/config.h.
+    @# Otherwise, &#39;make silentoldconfig&#39; would be invoked twice.
+    $(Q)touch include/config/auto.conf
+</pre></div>
+</div>
+<p>include/config/auto.conf依赖于$(KCONFIG_CONFIG)和include/config/auto.conf.cmd，其中：
+- $(KCONFIG_CONFIG)实际上就是.config文件
+- include/config/auto.conf.cmd是由fixdep在编译时生成的依赖文件</p>
+<p><strong>make编译流程图</strong></p>
+<img alt="../_images/make.png" src="../_images/make.png" />
+<p>完成目标依赖分析后，剩下的就是基于完整的目标依赖关系图，从最底层的依赖开始，逐行运行命令生成目标，直到生成顶层目标</p>
+<p><strong>补充 —-  config.h文件生成</strong></p>
+<p>此处进行函数定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>##scripts/Kbuild.include文件中
+define filchk
+    $(Q)set -e;             \
+    $(kecho) &#39;  CHK     $@&#39;;        \
+    mkdir -p $(dir $@);         \
+    $(filechk_$(1)) &lt; $&lt; &gt; $@.tmp;      \
+    if [ -r $@ ] &amp;&amp; cmp -s $@ $@.tmp; then  \
+        rm -f $@.tmp;           \
+    else                    \
+        $(kecho) &#39;  UPD     $@&#39;;    \
+        mv -f $@.tmp $@;        \
+    fi
+endef
+</pre></div>
+</div>
+<p>具体的文件生成则在以下文件中实现</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># scripts/Makefile.autoconf文件中
+# Prior to Kconfig, it was generated by mkconfig. Now it is created here.
+define filechk_config_h
+    (echo &quot;/* Automatically generated - do not edit */&quot;;        \
+    for i in $$(echo $(CONFIG_SYS_EXTRA_OPTIONS) | sed &#39;s/,/ /g&#39;); do \
+        echo \#define CONFIG_$$i                \
+        | sed &#39;/=/ {s/=/    /;q; } ; { s/$$/    1/; }&#39;; \
+    done;                               \
+    echo \#define CONFIG_BOARDDIR board/$(if $(VENDOR),$(VENDOR)/)$(BOARD);\
+    echo \#include \&lt;config_defaults.h\&gt;;               \
+    echo \#include \&lt;config_uncmd_spl.h\&gt;;              \
+    echo \#include \&lt;configs/$(CONFIG_SYS_CONFIG_NAME).h\&gt;;     \
+    echo \#include \&lt;asm/config.h\&gt;;                \
+    echo \#include \&lt;linux/kconfig.h\&gt;;             \
+    echo \#include \&lt;config_fallbacks.h\&gt;;)
+endef
+
+include/config.h: scripts/Makefile.autoconf create_symlink FORCE
+    $(call filechk,config_h)
+
+
+u-boot.cfg: include/config.h FORCE
+$(call cmd,u_boot_cfg)
+
+spl/u-boot.cfg: include/config.h FORCE
+    $(Q)mkdir -p $(dir $@)
+    $(call cmd,u_boot_cfg,-DCONFIG_SPL_BUILD)
+
+tpl/u-boot.cfg: include/config.h FORCE
+    $(Q)mkdir -p $(dir $@)
+    $(call cmd,u_boot_cfg,-DCONFIG_SPL_BUILD -DCONFIG_TPL_BUILD)
+
+include/autoconf.mk: u-boot.cfg
+    $(call cmd,autoconf)
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="2. u-boot dev note" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="source_analysis/index.html" class="btn btn-neutral float-right" title="2.2. source analysis" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

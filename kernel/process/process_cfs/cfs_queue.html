@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.3.5.4. CFS队列操作 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.3.5.5. pick_next_task_fair选择下一个被调度的进程" href="pick_next_task_fair.html" />
+    <link rel="prev" title="3.3.5.3. 虚拟时钟vruntime和调度延迟" href="vruntime.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.3. 进程管理与调度</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../process_overview/index.html">3.3.1. 进程描述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_create/index.html">3.3.2. 进程创建</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_run/index.html">3.3.3. 进程运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_schedule/index.html">3.3.4. 进程调度</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">3.3.5. 调度普通进程-完全公平调度器CFS</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="cfs_summary.html">3.3.5.1. CFS调度器概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="schedule_load_weight.html">3.3.5.2. CFS调度器负荷权重load_weight</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vruntime.html">3.3.5.3. 虚拟时钟vruntime和调度延迟</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.3.5.4. CFS队列操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pick_next_task_fair.html">3.3.5.5. pick_next_task_fair选择下一个被调度的进程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="task_tick_fair.html">3.3.5.6. task_tick_fair周期性调度器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cfs_task_wakeup.html">3.3.5.7. 唤醒抢占</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cfs_wake_affine.html">3.3.5.8. WAKE_AFFINE机制</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../thread_info/index.html">3.3.6. thread_info与内核栈stack的关系</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.3. </span>进程管理与调度</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.3.5. </span>调度普通进程-完全公平调度器CFS</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.3.5.4. </span>CFS队列操作</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/process/process_cfs/cfs_queue.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cfs">
+<h1><span class="section-number">3.3.5.4. </span>CFS队列操作<a class="headerlink" href="#cfs" title="此标题的永久链接"></a></h1>
+<p>完全公平调度器CFS中两个函数可用来增删队列的成员：enqueue_task_fair和dequeue_task_fair分别来向CFS就绪队列中添加或者删除进程</p>
+<section id="enqueue-task-fair">
+<h2><span class="section-number">3.3.5.4.1. </span>enqueue_task_fair入队操作<a class="headerlink" href="#enqueue-task-fair" title="此标题的永久链接"></a></h2>
+<section id="id1">
+<h3><span class="section-number">3.3.5.4.1.1. </span>enqueue_task_fair函数<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<p>向就绪队列中放置新进程的工作由函数enqueue_task_fair函数完成，该函数定义在 kernel/sched/fair.c中</p>
+<p>该函数将task_struct *p所指向的进程插入到rq所在的就绪队列中,除了指向所述的就绪队列rq和task_struct的指针外，该函数还有另外一个参数wakeup.这使得可以指定
+入队的进程是否最近才被唤醒并转换为运行状态(此时需指定wakeup=1),还是此前就是可运行的(那么wakeup=0)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+ * The enqueue_task method is called before nr_running is
+ * increased. Here we update the fair scheduling stats and
+ * then put the task into the rbtree:
+ */
+static void
+enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
+{
+    struct cfs_rq *cfs_rq;
+    struct sched_entity *se = &amp;p-&gt;se;
+    int idle_h_nr_running = task_has_idle_policy(p);
+
+    /*
+     * The code below (indirectly) updates schedutil which looks at
+     * the cfs_rq utilization to select a frequency.
+     * Let&#39;s add the task&#39;s estimated utilization to the cfs_rq&#39;s
+     * estimated utilization, before we update schedutil.
+     */
+    util_est_enqueue(&amp;rq-&gt;cfs, p);
+
+    /*
+     * If in_iowait is set, the code below may not trigger any cpufreq
+     * utilization updates, so do it here explicitly with the IOWAIT flag
+     * passed.
+     */
+    if (p-&gt;in_iowait)
+        cpufreq_update_util(rq, SCHED_CPUFREQ_IOWAIT);
+
+    for_each_sched_entity(se) {
+        if (se-&gt;on_rq)
+            break;
+        cfs_rq = cfs_rq_of(se);
+        enqueue_entity(cfs_rq, se, flags);
+
+        /*
+         * end evaluation on encountering a throttled cfs_rq
+         *
+         * note: in the case of encountering a throttled cfs_rq we will
+         * post the final h_nr_running increment below.
+         */
+        if (cfs_rq_throttled(cfs_rq))
+            break;
+        cfs_rq-&gt;h_nr_running++;
+        cfs_rq-&gt;idle_h_nr_running += idle_h_nr_running;
+
+        flags = ENQUEUE_WAKEUP;
+    }
+
+    for_each_sched_entity(se) {
+        cfs_rq = cfs_rq_of(se);
+        cfs_rq-&gt;h_nr_running++;
+        cfs_rq-&gt;idle_h_nr_running += idle_h_nr_running;
+
+        if (cfs_rq_throttled(cfs_rq))
+            break;
+
+        update_load_avg(cfs_rq, se, UPDATE_TG);
+        update_cfs_group(se);
+    }
+
+    if (!se) {
+        add_nr_running(rq, 1);
+        if (flags &amp; ENQUEUE_WAKEUP)
+            update_overutilized_status(rq);
+
+    }
+
+    if (cfs_bandwidth_used()) {
+        for_each_sched_entity(se) {
+            cfs_rq = cfs_rq_of(se);
+
+            if (list_add_leaf_cfs_rq(cfs_rq))
+                break;
+        }
+    }
+
+    assert_list_leaf_cfs_rq(rq);
+
+    hrtick_update(rq);
+}
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="vruntime.html" class="btn btn-neutral float-left" title="3.3.5.3. 虚拟时钟vruntime和调度延迟" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="pick_next_task_fair.html" class="btn btn-neutral float-right" title="3.3.5.5. pick_next_task_fair选择下一个被调度的进程" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.1.1. 虚拟文件系统概述 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="5.1.2. vfs数据结构" href="vfs_datastruct.html" />
+    <link rel="prev" title="5.1. linux 虚拟文件系统" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. file system note</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.1. linux 虚拟文件系统</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.1.1. 虚拟文件系统概述</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">5.1.1.1. 文件系统</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">5.1.1.2. 磁盘分区和目录</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">5.1.1.3. 虚拟文件系统的作用</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="vfs_datastruct.html">5.1.2. vfs数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs_store.html">5.1.3. 文件的存储</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs_mount.html">5.1.4. 文件系统mount</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vfs_realfs.html">5.1.5. vfs与real_fs关联</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs_io_read.html">5.1.6. 文件系统系统调用</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ext4/index.html">5.2. ext4文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sysfs/index.html">5.3. linux文件系统之sysfs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>file system note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.1. </span>linux 虚拟文件系统</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5.1.1. </span>虚拟文件系统概述</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/fs/vfs/vfs_architecture.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">5.1.1. </span>虚拟文件系统概述<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<img alt="../../_images/vfs_summary.png" src="../../_images/vfs_summary.png" />
+<p>存储系统 I/O 软件分层</p>
+<img alt="../../_images/IO_level.svg" src="../../_images/IO_level.svg" /><p>可以把存储系统的I/O由上到下分为三个层次，分别是文件系统层、通用块层、设备层。</p>
+<ul class="simple">
+<li><p>文件系统层，包括虚拟文件系统和具体的文件系统实现，他向上为应用程序提供标准的文件访问接口，向下会通过通用块层来存储和管理磁盘数据</p></li>
+<li><p>通用块层，包括块设备的I/O队列和I/O调度器，它会对文件系统的I/O请求进行排队 ，再通过I/O调度器选择一个I/O发给下一层的设备层</p></li>
+<li><p>设备层, 包括硬件设备、设备控制器和驱动程序，负责最终物理设备的I/O操作</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>为了提高文件访问的效率，会使用页缓存、索引节点缓存、目录项缓存等多种缓存机制，目的是为了减少对块设备的直接调用</p></li>
+<li><p>为了提高块设备的访问效率，会使用缓存区，来缓存块设备的数据</p></li>
+</ul>
+</div>
+<section id="id2">
+<h2><span class="section-number">5.1.1.1. </span>文件系统<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>文件系统是一种存储和组织计算机数据的方法，它使得对其访问和查找变得容易，文件系统使用文件和树形目录的抽象逻辑概念代替了硬盘等物理设备使用的数据块的概念。
+用户使用文件系统来保存数据不必关系数据实际保存在硬盘上的地址，只需要关心文件所属的目录和文件名</p>
+<p>linux中允许众多不用的文件系统共存，如ext4,vfat,nfs等。通过使用同一套文件I/O系统调用即可对linux中的任意文件进行操作而无需考虑其所在的具体文件系统格式。更进一步，
+对文件的操作可以跨文件系统而执行.比如可以使用cp命令从vfat文件系统中将文件拷贝到ext4文件系统中</p>
+<p>一切皆文件时unix/Linux的基本哲学之一。不仅普通的文件，目录，字符设备，块设备，套接字等都是以文件的形式被对待的</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">5.1.1.2. </span>磁盘分区和目录<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>所有磁盘分区都必须被挂载到目录上才能被使用。所谓的挂载就是利用一个目录当成进入点，将磁盘分区的数据放置在改目录下,也就是进入该目录尽可以读取该分区的意思。linux中根目录
+必须挂载到一个分区</p>
+<img alt="../../_images/root_partition.jpg" src="../../_images/root_partition.jpg" />
+</section>
+<section id="id4">
+<h2><span class="section-number">5.1.1.3. </span>虚拟文件系统的作用<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>虚拟文件系统(Virual File System, 简称VFS)，是linux内核中的一个软件层，用于给用户空间的程序提供文件系统接口。同时，它也提供了内核中的一个抽象功能。系统中的所有文件系统
+不但依赖VFS共存，而且也依靠VFS协同工作</p>
+<p>为了能够支持各种实际文件系统，VFS定义了所有文件系统都支持的基本的、概念上的接口和数据结构。同时实际文件系统也提供VFS所期望的抽象接口和数据结构。将自身的诸如文件、目录等
+概念在形式上与VFS的定义保持一致。换句话说，一个实际的文件系统想要被linux支持，就必须提供一个符合VFS标准的接口，才能与VFS协同工作。实际文件系统在统一的接口和数据结构下隐藏
+具体的实现细节，所以在VFS层和内核的其他部分来看，所有文件系统都是相同的</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="5.1. linux 虚拟文件系统" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="vfs_datastruct.html" class="btn btn-neutral float-right" title="5.1.2. vfs数据结构" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

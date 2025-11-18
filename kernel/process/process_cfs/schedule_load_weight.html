@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.3.5.2. CFS调度器负荷权重load_weight &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.3.5.3. 虚拟时钟vruntime和调度延迟" href="vruntime.html" />
+    <link rel="prev" title="3.3.5.1. CFS调度器概述" href="cfs_summary.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.3. 进程管理与调度</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../process_overview/index.html">3.3.1. 进程描述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_create/index.html">3.3.2. 进程创建</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_run/index.html">3.3.3. 进程运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_schedule/index.html">3.3.4. 进程调度</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">3.3.5. 调度普通进程-完全公平调度器CFS</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="cfs_summary.html">3.3.5.1. CFS调度器概述</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.3.5.2. CFS调度器负荷权重load_weight</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vruntime.html">3.3.5.3. 虚拟时钟vruntime和调度延迟</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cfs_queue.html">3.3.5.4. CFS队列操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pick_next_task_fair.html">3.3.5.5. pick_next_task_fair选择下一个被调度的进程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="task_tick_fair.html">3.3.5.6. task_tick_fair周期性调度器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cfs_task_wakeup.html">3.3.5.7. 唤醒抢占</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cfs_wake_affine.html">3.3.5.8. WAKE_AFFINE机制</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../thread_info/index.html">3.3.6. thread_info与内核栈stack的关系</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.3. </span>进程管理与调度</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.3.5. </span>调度普通进程-完全公平调度器CFS</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.3.5.2. </span>CFS调度器负荷权重load_weight</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/process/process_cfs/schedule_load_weight.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cfsload-weight">
+<h1><span class="section-number">3.3.5.2. </span>CFS调度器负荷权重load_weight<a class="headerlink" href="#cfsload-weight" title="此标题的永久链接"></a></h1>
+<p>linux内核使用cfs来调度我们常见的普通进程,其所属的调度器类为fair_sched_class，使用的调度策略包括SCHED_NORMAL和SCHED_BATCH,进程task_struct中
+struct sched_entity se字段就是标识cfs调度器类的调度实体</p>
+<p>linux对普通进程和实时进程分别使用静态优先级static_prio和实时优先级rt_priority来指定其默认的优先级别,然后通过normal_prio函数将他们分别转换为
+普通优先级normal_prio，最终换算出动态优先级prio,动态优先级prio才是内核调度的时候优先考虑的优先级字段</p>
+<p>但是cfs完全公平调度器在调度进程的时候,进程的重要性不仅是有优先级指定的,而且还考虑保存在task_struct-&gt;se.load的负荷权重</p>
+<section id="id1">
+<h2><span class="section-number">3.3.5.2.1. </span>负荷权重<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<section id="struct-load-weight">
+<h3><span class="section-number">3.3.5.2.1.1. </span>负荷权重struct load_weight<a class="headerlink" href="#struct-load-weight" title="此标题的永久链接"></a></h3>
+<p>负荷全中国用struct load_weight数据结构来表示,保存着进程权重值weight，其定义在include/linux/sched.h</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">load_weight</span> <span class="p">{</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">weight</span><span class="p">;</span>   <span class="o">//</span><span class="n">存储了权重的信息</span>
+    <span class="n">u32</span> <span class="n">inv_weight</span><span class="p">;</span>     <span class="o">//</span><span class="n">存储了权重值用于重除的结果</span> <span class="n">weight</span>  <span class="o">*</span> <span class="n">inv_weight</span> <span class="o">=</span> <span class="mi">2</span><span class="o">^</span><span class="mi">32</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="load">
+<h3><span class="section-number">3.3.5.2.1.2. </span>调度实体的负荷权重load<a class="headerlink" href="#load" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">sched_entity</span> <span class="p">{</span>
+    <span class="n">struct</span> <span class="n">load_weight</span> <span class="n">load</span><span class="p">;</span>        <span class="o">/*</span> <span class="k">for</span> <span class="n">load</span><span class="o">-</span><span class="n">balancing</span> <span class="o">*/</span>
+    <span class="o">....</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3><span class="section-number">3.3.5.2.1.3. </span>进程的负荷权重<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   struct task_struct {
+       ...
+       struct sched_entity se;
+       ...
+   }
+
+因此我们可以通过task_struct-&gt;se.load获取负荷权重的信息，而set_load_weight负责根据进程类型及其静态优先级计算负荷权重
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id3">
+<h2><span class="section-number">3.3.5.2.2. </span>优先级和权重的转换<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<section id="id4">
+<h3><span class="section-number">3.3.5.2.2.1. </span>优先级-&gt;权重转换表<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>一般这个概念是这样的，进程没降低一个nice值(优先级提升)，则多获得10%的CPU时间，每升高一个nice值，则放弃10%的cpu时间</p>
+<p>为执行该策略，内核需要将优先级转换为权重值,并提供了一张优先级-&gt;权重转换表sched_prio_to_weight，内核不仅维护了负荷权重自身,还baocunl另外一个数值,
+用于负荷重除的结果,即sched_prio_to_wmult数组,这两个数组中的数据是一一对应的</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define WEIGHT_IDLEPRIO             3   //sched_idle进程的负荷权重</span>
+<span class="c1">#define WMULT_IDLEPRIO              1431655765      //sched_idle进程负荷权重的重除值</span>
+
+<span class="n">extern</span> <span class="n">const</span> <span class="nb">int</span>            <span class="n">sched_prio_to_weight</span><span class="p">[</span><span class="mi">40</span><span class="p">];</span>
+<span class="n">extern</span> <span class="n">const</span> <span class="n">u32</span>            <span class="n">sched_prio_to_wmult</span><span class="p">[</span><span class="mi">40</span><span class="p">];</span>
+
+<span class="n">const</span> <span class="nb">int</span> <span class="n">sched_prio_to_weight</span><span class="p">[</span><span class="mi">40</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+ <span class="o">/*</span> <span class="o">-</span><span class="mi">20</span> <span class="o">*/</span>     <span class="mi">88761</span><span class="p">,</span>     <span class="mi">71755</span><span class="p">,</span>     <span class="mi">56483</span><span class="p">,</span>     <span class="mi">46273</span><span class="p">,</span>     <span class="mi">36291</span><span class="p">,</span>
+ <span class="o">/*</span> <span class="o">-</span><span class="mi">15</span> <span class="o">*/</span>     <span class="mi">29154</span><span class="p">,</span>     <span class="mi">23254</span><span class="p">,</span>     <span class="mi">18705</span><span class="p">,</span>     <span class="mi">14949</span><span class="p">,</span>     <span class="mi">11916</span><span class="p">,</span>
+ <span class="o">/*</span> <span class="o">-</span><span class="mi">10</span> <span class="o">*/</span>      <span class="mi">9548</span><span class="p">,</span>      <span class="mi">7620</span><span class="p">,</span>      <span class="mi">6100</span><span class="p">,</span>      <span class="mi">4904</span><span class="p">,</span>      <span class="mi">3906</span><span class="p">,</span>
+ <span class="o">/*</span>  <span class="o">-</span><span class="mi">5</span> <span class="o">*/</span>      <span class="mi">3121</span><span class="p">,</span>      <span class="mi">2501</span><span class="p">,</span>      <span class="mi">1991</span><span class="p">,</span>      <span class="mi">1586</span><span class="p">,</span>      <span class="mi">1277</span><span class="p">,</span>
+ <span class="o">/*</span>   <span class="mi">0</span> <span class="o">*/</span>      <span class="mi">1024</span><span class="p">,</span>       <span class="mi">820</span><span class="p">,</span>       <span class="mi">655</span><span class="p">,</span>       <span class="mi">526</span><span class="p">,</span>       <span class="mi">423</span><span class="p">,</span>
+ <span class="o">/*</span>   <span class="mi">5</span> <span class="o">*/</span>       <span class="mi">335</span><span class="p">,</span>       <span class="mi">272</span><span class="p">,</span>       <span class="mi">215</span><span class="p">,</span>       <span class="mi">172</span><span class="p">,</span>       <span class="mi">137</span><span class="p">,</span>
+ <span class="o">/*</span>  <span class="mi">10</span> <span class="o">*/</span>       <span class="mi">110</span><span class="p">,</span>        <span class="mi">87</span><span class="p">,</span>        <span class="mi">70</span><span class="p">,</span>        <span class="mi">56</span><span class="p">,</span>        <span class="mi">45</span><span class="p">,</span>
+ <span class="o">/*</span>  <span class="mi">15</span> <span class="o">*/</span>        <span class="mi">36</span><span class="p">,</span>        <span class="mi">29</span><span class="p">,</span>        <span class="mi">23</span><span class="p">,</span>        <span class="mi">18</span><span class="p">,</span>        <span class="mi">15</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="n">const</span> <span class="n">u32</span> <span class="n">sched_prio_to_wmult</span><span class="p">[</span><span class="mi">40</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+ <span class="o">/*</span> <span class="o">-</span><span class="mi">20</span> <span class="o">*/</span>     <span class="mi">48388</span><span class="p">,</span>     <span class="mi">59856</span><span class="p">,</span>     <span class="mi">76040</span><span class="p">,</span>     <span class="mi">92818</span><span class="p">,</span>    <span class="mi">118348</span><span class="p">,</span>
+ <span class="o">/*</span> <span class="o">-</span><span class="mi">15</span> <span class="o">*/</span>    <span class="mi">147320</span><span class="p">,</span>    <span class="mi">184698</span><span class="p">,</span>    <span class="mi">229616</span><span class="p">,</span>    <span class="mi">287308</span><span class="p">,</span>    <span class="mi">360437</span><span class="p">,</span>
+ <span class="o">/*</span> <span class="o">-</span><span class="mi">10</span> <span class="o">*/</span>    <span class="mi">449829</span><span class="p">,</span>    <span class="mi">563644</span><span class="p">,</span>    <span class="mi">704093</span><span class="p">,</span>    <span class="mi">875809</span><span class="p">,</span>   <span class="mi">1099582</span><span class="p">,</span>
+ <span class="o">/*</span>  <span class="o">-</span><span class="mi">5</span> <span class="o">*/</span>   <span class="mi">1376151</span><span class="p">,</span>   <span class="mi">1717300</span><span class="p">,</span>   <span class="mi">2157191</span><span class="p">,</span>   <span class="mi">2708050</span><span class="p">,</span>   <span class="mi">3363326</span><span class="p">,</span>
+ <span class="o">/*</span>   <span class="mi">0</span> <span class="o">*/</span>   <span class="mi">4194304</span><span class="p">,</span>   <span class="mi">5237765</span><span class="p">,</span>   <span class="mi">6557202</span><span class="p">,</span>   <span class="mi">8165337</span><span class="p">,</span>  <span class="mi">10153587</span><span class="p">,</span>
+ <span class="o">/*</span>   <span class="mi">5</span> <span class="o">*/</span>  <span class="mi">12820798</span><span class="p">,</span>  <span class="mi">15790321</span><span class="p">,</span>  <span class="mi">19976592</span><span class="p">,</span>  <span class="mi">24970740</span><span class="p">,</span>  <span class="mi">31350126</span><span class="p">,</span>
+ <span class="o">/*</span>  <span class="mi">10</span> <span class="o">*/</span>  <span class="mi">39045157</span><span class="p">,</span>  <span class="mi">49367440</span><span class="p">,</span>  <span class="mi">61356676</span><span class="p">,</span>  <span class="mi">76695844</span><span class="p">,</span>  <span class="mi">95443717</span><span class="p">,</span>
+ <span class="o">/*</span>  <span class="mi">15</span> <span class="o">*/</span> <span class="mi">119304647</span><span class="p">,</span> <span class="mi">148102320</span><span class="p">,</span> <span class="mi">186737708</span><span class="p">,</span> <span class="mi">238609294</span><span class="p">,</span> <span class="mi">286331153</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>对内核使用的范围[-20,19]中的每个nice级别，sched_prio_to_weight数组都有一个对应项</p>
+<p>nice[-20,19]-===&gt;下标[0,39]</p>
+<p>而权重weight用unsigned long 表示,因此内核无法直接存储1/weight而必须借助乘法和位移来执行除法的技术,sched_prio_to_wmult数组就存储了
+这些值,即sched_prio_to_vmult每个元素的值是2^32/prio_to_weight每个元素的值</p>
+<img alt="../../../_images/weight_mult.png" src="../../../_images/weight_mult.png" />
+</section>
+<section id="id5">
+<h3><span class="section-number">3.3.5.2.2.2. </span>1.25的乘积因子<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>各数组之间的乘积因子是1.25。两个进程A和B在nice级别0，即静态优先级120运行，因此两个进程的CPU份额相同,都是50%. nice级别为0的进程查其权重表可知是
+1024,每个进程的份额是1024/(1024+1024)=0.5,即50%</p>
+<p>如果B的优先级加一(优先级降低)成为nice=1,那么其CPU份额应该减少10%，换句话说进程A得到的总CPU应该是55%,而进程B应该是45%.优先级增加1导致权重减少，即1024/1.25=820
+而进程A仍然是1024，则进程A现在得到的CPU份额是1024/(1024+820)=0.55,而进程B的CPU份额是820/(1024+820)=0.45</p>
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">3.3.5.2.3. </span>进程负荷权重的计算<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p>set_load_weight负责根据非实时进程类型及其静态优先级计算负荷权重。而实时进程不需要cfs调度，因此无需计算器负荷权重值</p>
+<p>set_load_weight依据静态优先级设置进程的负荷权重</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span> <span class="n">set_load_weight</span><span class="p">(</span><span class="n">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="nb">bool</span> <span class="n">update_load</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="o">//</span><span class="n">由于数组中的下标是0</span><span class="o">~</span><span class="mi">39</span><span class="p">,</span><span class="n">普通进程的优先级是</span><span class="p">[</span><span class="mi">100</span><span class="o">~</span><span class="mi">139</span><span class="p">]</span>
+    <span class="o">//</span><span class="n">因此通过static_prio</span> <span class="o">-</span> <span class="n">MAX_RT_PRIO的方式将静态优先级转换为数组下标</span>
+    <span class="nb">int</span> <span class="n">prio</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">static_prio</span> <span class="o">-</span> <span class="n">MAX_RT_PRIO</span><span class="p">;</span>
+    <span class="o">//</span><span class="n">取得指向进程task负荷权重的指针load</span><span class="p">,</span><span class="n">下面修改load就是修改进程的负荷权重</span>
+    <span class="n">struct</span> <span class="n">load_weight</span> <span class="o">*</span><span class="n">load</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">se</span><span class="o">.</span><span class="n">load</span><span class="p">;</span>
+
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">SCHED_IDLE</span> <span class="n">tasks</span> <span class="n">get</span> <span class="n">minimal</span> <span class="n">weight</span><span class="p">:</span>
+     <span class="o">*/</span>
+     <span class="o">//</span><span class="n">SCHED_IDLE进程的负荷权重最小</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">task_has_idle_policy</span><span class="p">(</span><span class="n">p</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">load</span><span class="o">-&gt;</span><span class="n">weight</span> <span class="o">=</span> <span class="n">scale_load</span><span class="p">(</span><span class="n">WEIGHT_IDLEPRIO</span><span class="p">);</span>
+        <span class="n">load</span><span class="o">-&gt;</span><span class="n">inv_weight</span> <span class="o">=</span> <span class="n">WMULT_IDLEPRIO</span><span class="p">;</span>
+        <span class="n">p</span><span class="o">-&gt;</span><span class="n">se</span><span class="o">.</span><span class="n">runnable_weight</span> <span class="o">=</span> <span class="n">load</span><span class="o">-&gt;</span><span class="n">weight</span><span class="p">;</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">SCHED_OTHER</span> <span class="n">tasks</span> <span class="n">have</span> <span class="n">to</span> <span class="n">update</span> <span class="n">their</span> <span class="n">load</span> <span class="n">when</span> <span class="n">changing</span> <span class="n">their</span>
+     <span class="o">*</span> <span class="n">weight</span>
+     <span class="o">*/</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">update_load</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">sched_class</span> <span class="o">==</span> <span class="o">&amp;</span><span class="n">fair_sched_class</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">reweight_task</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">prio</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="o">//</span><span class="n">设置进程的负荷权重weight和权重的重除值inv_weight</span>
+        <span class="n">load</span><span class="o">-&gt;</span><span class="n">weight</span> <span class="o">=</span> <span class="n">scale_load</span><span class="p">(</span><span class="n">sched_prio_to_weight</span><span class="p">[</span><span class="n">prio</span><span class="p">]);</span>
+        <span class="n">load</span><span class="o">-&gt;</span><span class="n">inv_weight</span> <span class="o">=</span> <span class="n">sched_prio_to_wmult</span><span class="p">[</span><span class="n">prio</span><span class="p">];</span>
+        <span class="n">p</span><span class="o">-&gt;</span><span class="n">se</span><span class="o">.</span><span class="n">runnable_weight</span> <span class="o">=</span> <span class="n">load</span><span class="o">-&gt;</span><span class="n">weight</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="scale-load">
+<h3><span class="section-number">3.3.5.2.3.1. </span>scale_load取得负荷权重的值<a class="headerlink" href="#scale-load" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># define SCHED_FIXEDPOINT_SHIFT             10</span>
+
+<span class="c1"># define NICE_0_LOAD_SHIFT  (SCHED_FIXEDPOINT_SHIFT + SCHED_FIXEDPOINT_SHIFT)</span>
+<span class="c1"># define scale_load(w)              ((w) &lt;&lt; SCHED_FIXEDPOINT_SHIFT)</span>
+<span class="c1"># define scale_load_down(w) \</span>
+<span class="p">({</span> \
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">__w</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="p">);</span> \
+    <span class="k">if</span> <span class="p">(</span><span class="n">__w</span><span class="p">)</span> \
+        <span class="n">__w</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">2</span><span class="n">UL</span><span class="p">,</span> <span class="n">__w</span> <span class="o">&gt;&gt;</span> <span class="n">SCHED_FIXEDPOINT_SHIFT</span><span class="p">);</span> \
+    <span class="n">__w</span><span class="p">;</span> \
+<span class="p">})</span>
+<span class="c1">#else</span>
+<span class="c1"># define NICE_0_LOAD_SHIFT  (SCHED_FIXEDPOINT_SHIFT)</span>
+<span class="c1"># define scale_load(w)              (w)</span>
+<span class="c1"># define scale_load_down(w) (w)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id7">
+<h2><span class="section-number">3.3.5.2.4. </span>就绪队列的负荷权重<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
+<p>不仅进程，就绪队列也关联到一个负荷权重，这个不仅确保能够跟踪记录有多少进程在运行,而且还能将进程的权重添加到就绪队列中</p>
+<section id="cfs">
+<h3><span class="section-number">3.3.5.2.4.1. </span>cfs就绪队列的负荷权重<a class="headerlink" href="#cfs" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">rq</span>
+<span class="p">{</span>
+    <span class="o">...</span>
+    <span class="n">struct</span> <span class="n">load_weight</span> <span class="n">load</span><span class="p">;</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+
+
+<span class="n">struct</span> <span class="n">cfs_rq</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">load_weight</span> <span class="n">load</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">nr_running</span><span class="p">,</span> <span class="n">h_nr_runnning</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">struct</span> <span class="n">rt_rq中不需要负荷权重</span>
+
+<span class="n">struct</span> <span class="n">dl_rq中不需要负荷权重</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3><span class="section-number">3.3.5.2.4.2. </span>就绪队列的负荷权重计算<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<p>就绪队列的负荷权重存储的其实就是队列上的所有进程的负荷权重的总和,因此每次进程被加到就绪队列的时候，就需要在就绪队列的负荷权重中加上进程的负荷权重,
+同时由于就绪队列的不是一个单独被调度的实体,也就不需要优先级到负荷权重的转换,因而其不需要负荷权重的重除字段,即inv_weight=0</p>
+<p>因此进程从就绪队列上入队或者出队的时候,就绪队列的负荷权重就加上或者减去进程的负荷权重.内核提供了update_load_add等函数更新就绪队列负荷权重</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">用于进程进入就绪队列时调用</span>
+<span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">update_load_add</span><span class="p">(</span><span class="n">struct</span> <span class="n">load_weight</span> <span class="o">*</span><span class="n">lw</span><span class="p">,</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">inc</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">lw</span><span class="o">-&gt;</span><span class="n">weight</span> <span class="o">+=</span> <span class="n">inc</span><span class="p">;</span>
+    <span class="n">lw</span><span class="o">-&gt;</span><span class="n">inv_weight</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">//</span><span class="n">进程调出就绪队列时调用</span>
+<span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">update_load_sub</span><span class="p">(</span><span class="n">struct</span> <span class="n">load_weight</span> <span class="o">*</span><span class="n">lw</span><span class="p">,</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">dec</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">lw</span><span class="o">-&gt;</span><span class="n">weight</span> <span class="o">-=</span> <span class="n">dec</span><span class="p">;</span>
+    <span class="n">lw</span><span class="o">-&gt;</span><span class="n">inv_weight</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">update_load_set</span><span class="p">(</span><span class="n">struct</span> <span class="n">load_weight</span> <span class="o">*</span><span class="n">lw</span><span class="p">,</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">w</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">lw</span><span class="o">-&gt;</span><span class="n">weight</span> <span class="o">=</span> <span class="n">w</span><span class="p">;</span>
+    <span class="n">lw</span><span class="o">-&gt;</span><span class="n">inv_weight</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="cfs_summary.html" class="btn btn-neutral float-left" title="3.3.5.1. CFS调度器概述" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="vruntime.html" class="btn btn-neutral float-right" title="3.3.5.3. 虚拟时钟vruntime和调度延迟" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

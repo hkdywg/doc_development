@@ -1,0 +1,370 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.6.1. Makefile规则介绍 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="7.6.2. Makefile函数总结" href="function.html" />
+    <link rel="prev" title="7.6. Makfile应用笔记" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.6. Makfile应用笔记</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.6.1. Makefile规则介绍</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">7.6.1.1. Makefile规则</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#makfile">7.6.1.2. makfile变量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">7.6.1.3. 其他常用功能</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="function.html">7.6.2. Makefile函数总结</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gcc_compile.html">7.6.3. gcc编译选项总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.9. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.6. </span>Makfile应用笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.6.1. </span>Makefile规则介绍</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/misc/makefile/rule.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="makefile">
+<h1><span class="section-number">7.6.1. </span>Makefile规则介绍<a class="headerlink" href="#makefile" title="此标题的永久链接"></a></h1>
+<p>makefile定义了一些列的规则来指定，哪些文件需要先编译，哪些需要后编译，哪些需要重新编译</p>
+<p>makefile的好处是：
+- 自动化编译:一旦写好，只需要一个make命令，整个工程完全自动编译，极大的提高了软件开发的效率
+- 节约编译时间(没改动的不编译)</p>
+<p>make是一个命令工具，是一个解释makefile中指令的命令工具</p>
+<section id="id1">
+<h2><span class="section-number">7.6.1.1. </span>Makefile规则<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<section id="id2">
+<h3><span class="section-number">7.6.1.1.1. </span>基本规则<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>一个简单的Makefile主要有5部分(显示规则、隐晦规则、变量定义、文件指示、注释)，其样式如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">target</span><span class="p">:</span><span class="n">prerequistes</span>
+    <span class="n">command</span>
+    <span class="o">...</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>这是一个文件依赖关系，也就是说target是由一个或者多个目标文件依赖于prerequistites中的文件，其生成的规则定义在command中，而且只要prerequisites中的一个以上文件比target
+文件更新的话，command所定义的命令就会被执行，这是makefile的最基本规则，也是makefile中最核心的内容</p>
+<p>其中:
+- target:是目标文件，可以是object file，也可以是可执行文件，还可以是一个标签label
+- prerequistes:是目标文件的依赖文件，如果依赖文件不存在，则会寻找其他规则生成依赖文件
+- command：通过执行该命令由依赖问及那生成目标文件，注意每条命令前有且仅有一个tab保持缩进</p>
+<ol class="arabic simple">
+<li><p>显示规则：说明如果生成一个或者多个目标文件(包括生成的文件，文件的依赖文件，生成的命令)</p></li>
+<li><p>隐晦规则: make的自动推导功能所执行的规则</p></li>
+<li><p>变量定义：Makefile中定义的变量</p></li>
+<li><p>文件指示：Makefile中引用其他Makefile，指定Makefile中有效部分，定义一个多行命令</p></li>
+<li><p>注释：Makeile中只有行注释# ，如果要使用或者输出#字符则需要转义 #</p></li>
+</ol>
+<p>GNU make的工作方式:</p>
+<ol class="arabic simple">
+<li><p>读入主Makefile(主Makefile中可以引用其他Makefile)</p></li>
+<li><p>读入被include的其他Makefile</p></li>
+<li><p>初始化文件中的变量</p></li>
+<li><p>推导隐晦规则，并分析所有规则</p></li>
+<li><p>为所有的目标文件创建依赖关系链</p></li>
+<li><p>根据依赖关系决定哪些目标文件需要生成</p></li>
+<li><p>执行生成命令</p></li>
+</ol>
+<p>Makefile中的注释有以下两种方式
+- 单行注释： Makefile中以#字符后面的内容作为注释部分
+- 多行注释：如果需要多行注释，在注释行后面加行反斜线，则下一行也被注释</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">7.6.1.1.2. </span>通配符<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><ul>
+<li><p>: 表示任意一个或者多个字符</p></li>
+</ul>
+</li>
+<li><p>? : 表示任意一个字符</p></li>
+<li><p>[…] : 比如[abcd]表示abcd中的任意一个字符，[^abcd]表示除abcd意外的字符，[0~9]表示0~9中的任意一个数字</p></li>
+<li><p>~ : 表示用户的home目录</p></li>
+<li><p>% : 通配符，如%.o:%.c表示所有的目标文件及其依赖文件</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3><span class="section-number">7.6.1.1.3. </span>路径搜索<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>当一个Makefile中涉及到大量源文件时(这些源文件极有可能和Makefile不在同一个目录中)这时最好将源文件的路径明确在Makefile中，便于编译时的查找。Makefile中有个
+特殊的变量VPATH就是完成这个功能的，制定了VPATH之后，如果当前目录中没有找到相应文件或依赖文件Makefile会到VPATH指定的路径中再去寻找</p>
+<p>VPATH使用方法：
+- vpath &lt;dir&gt;: 当前目录中找不到文件时就去dir中搜索,多个dir之间用:隔开
+- vpath &lt;pattern&gt; &lt;dir&gt; : 符合&lt;pattern&gt;格式的文件，就从&lt;dir&gt;中搜索
+- vpath &lt;pattern&gt; ：清除符合&lt;pattern&gt;格式的文件搜索路径
+- vpath: 清除所有已经设置好的文件路径</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VPATH</span> <span class="n">src</span><span class="p">:</span><span class="o">../</span><span class="n">parent</span><span class="o">-</span><span class="nb">dir</span>  <span class="c1">##当前目录找不到文件时，按顺序从src目录 ../parent-dir目录中查找文件</span>
+<span class="n">VPATH</span> <span class="o">%.</span><span class="n">h</span> <span class="o">./</span><span class="n">header</span>  <span class="c1">##.h结尾的文件在./header目录中查找</span>
+<span class="n">VPATTH</span> <span class="o">%.</span><span class="n">h</span>  <span class="c1">##清除上一条设置的规则</span>
+<span class="n">VPATH</span>   <span class="c1">#清除所有VPATH的设置</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="makfile">
+<h2><span class="section-number">7.6.1.2. </span>makfile变量<a class="headerlink" href="#makfile" title="此标题的永久链接"></a></h2>
+<p>makefile中变量的名字可以包含字符、数字、下划线(可以是数字开头)，但不应该含有 <code class="docutils literal notranslate"><span class="pre">:</span></code> <code class="docutils literal notranslate"><span class="pre">#</span></code> <code class="docutils literal notranslate"><span class="pre">=</span></code> 或者空字符。变量是大小写敏感的。
+传统的Makefile变量名采用全大写的方式</p>
+<p>变量的赋值有以下几种运算符
+- =  基本的赋值，make会将整个makefile展开后再决定变量的值
+- :=  覆盖之前的赋值，变量的值决定于它在makefile中的位置，而不是整个makefile展开后的最终值
+- ?= 如果没有赋值就等于后面的值
+- += 添加等号后面的值</p>
+<section id="make">
+<h3><span class="section-number">7.6.1.2.1. </span>make环境变量<a class="headerlink" href="#make" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>MAKEFILES</p></li>
+</ul>
+<p>如果当前环境定义了一个MAKEFILES环境变量，make执行时首先将变量的值作为需要读入的makefile文件，多个文件之间使用空格分开．类似使用指示符include
+包含其他makefile文件一样</p>
+<ul class="simple">
+<li><p>MAKEFILES_LIST</p></li>
+</ul>
+<p>make程序在读取多个 Makefile 文件时，包括由环境变量 “MAKEFILES” 指定、命令行指定、当前工作下默认以及使用指示符”include” 指定包含的，
+在对这些文件进行解析执行之前 make 读取的文件名将会被自动依次追加到变量 “MAKEFILES_LIST” 的定义域中。</p>
+<p>这样可以通过测试此变量的最后一个字获取当前 make 程序正在处理的 Makfile 文件名。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>name1 := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
+include inc.mk
+name2 := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
+
+all:
+    @echo name1 = $(name1)
+    @echo name2 = $(name2)
+</pre></div>
+</div>
+<p>输出结果为:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">name1</span> <span class="o">=</span> <span class="n">Makefile</span>
+<span class="n">name2</span> <span class="o">=</span> <span class="n">inc</span><span class="o">.</span><span class="n">mk</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>VPATH</p></li>
+</ul>
+<p>GNU make 可以识别到一个特殊变量 “PATH”。通过变量 “PATH” 可以指定依赖文件的搜索路径，当规则的依赖文件在当前目录不存在时，make 会在此变量所指定的目录下去寻找这些依赖文件。
+其实，”VPATH” 变量所指定的是 Makefile 中所有文件的搜索路径，包括了规则的依赖文件和目标文件。定义变量 “VPATH” 时，使用空格或者冒号（:）将多个需要搜索的目录分开。例如：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VPATH</span> <span class="o">=</span> <span class="n">src</span><span class="p">:</span><span class="o">../</span><span class="n">headers</span>
+</pre></div>
+</div>
+<p>这样，就为所有规则的依赖指定了两个搜索目录，”src” 和 “../headers”。</p>
+<ul class="simple">
+<li><p>MAKELEVEL</p></li>
+</ul>
+<p>在多级递归调用的 make 执行过程中，变量 “MAKELEVEL” 代表了调用的深度。在 make 一级级的执行过程中变量 “MAKELEVEL” 的值不断发生变化。</p>
+<ul class="simple">
+<li><p>MAKEFLAGS</p></li>
+</ul>
+<p>在 make 的递归过程中，最上层make的命令行选项如 “-k”、”-s” 等会被自动的通过环境变量 “MAKEFLAGS” 传递给子 make 进程。</p>
+<p>传递过程中变量 “MAKEFLAGS” 的值会被主控 make 自动的设置为包含执行 make 时的命令行选项的字符串。</p>
+<p>执行多级的 make 调用时，当不希望传递 “MAKEFLAGS” 给子 make 时，需要再调用子程序 make 对这个变量进行赋空，例如：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>subsystem:
+    cd subdir &amp;&amp; $(MAKE) MAKEFLAGS=
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>CURDIR</p></li>
+</ul>
+<p>在 make 递归调用中，变量 “CURDIR” 代表 make 的工作目录。当使用 “-C” 选项进入一个子目录后，此变量将被重新赋值。</p>
+</section>
+<section id="shell">
+<h3><span class="section-number">7.6.1.2.2. </span>shell变量<a class="headerlink" href="#shell" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>变量名</p></td>
+<td><p>含义</p></td>
+</tr>
+<tr class="row-even"><td><p>RM</p></td>
+<td><p>rm -f</p></td>
+</tr>
+<tr class="row-odd"><td><p>AR</p></td>
+<td><p>ar</p></td>
+</tr>
+<tr class="row-even"><td><p>CC</p></td>
+<td><p>cc</p></td>
+</tr>
+<tr class="row-odd"><td><p>CXX</p></td>
+<td><p>g++</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h3><span class="section-number">7.6.1.2.3. </span>自动变量<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>自动变量</p></td>
+<td><p>含义</p></td>
+</tr>
+<tr class="row-even"><td><p>$&#64;</p></td>
+<td><p>目标集合</p></td>
+</tr>
+<tr class="row-odd"><td><p>$%</p></td>
+<td><p>当目标是函数库文件时，表示其中的目标文件名</p></td>
+</tr>
+<tr class="row-even"><td><p>$&lt;</p></td>
+<td><p>第一个依赖目标，如果依赖是多个，则逐个表示</p></td>
+</tr>
+<tr class="row-odd"><td><p>$?</p></td>
+<td><p>比目标新的依赖集合</p></td>
+</tr>
+<tr class="row-even"><td><p>$^</p></td>
+<td><p>所有依赖集合，去除重复的依赖</p></td>
+</tr>
+<tr class="row-odd"><td><p>$+</p></td>
+<td><p>所有依赖的集合，不会去除重复的依赖</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">7.6.1.3. </span>其他常用功能<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<section id="id7">
+<h3><span class="section-number">7.6.1.3.1. </span>定义命令包<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>如果Makefile中出现一些相同命令序列，那么我们可以为这些相同的命令序列定义一个变量，定义这种命令序列的语法以 <code class="docutils literal notranslate"><span class="pre">define</span></code> 开始， 以 <code class="docutils literal notranslate"><span class="pre">endef</span></code> 结束，如</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>define run-yacc
+yacc $(firstword $^)
+mv y.tab.c $@
+endef
+
+foo.c: foo.y
+    $(run-yacc)     #run-yacc中$^就是foo.y $@就是foo.c
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3><span class="section-number">7.6.1.3.2. </span>make参数<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>-B,--always-make    ##认为所有的目标都需要更新
+-C &lt;dir&gt;, --directory=&lt;dir&gt;  ##指定读取makefile的目录
+-debug [=&lt;opetarions&gt;]   #输出make的调试信息，如果没有参数则输出最简单的调试信息，operation可以取如下值
+            a: 也就是all，输出所有调试信息
+            b: 也就是basic，只输出简单的调试信息，输出不需要重编译的目标
+            v: 也就是verbose，在b选项的级别之上，输出信息包括哪个makefile被解析，不需要重编译的依赖文件
+            i: 也就是implicit,输出所有的隐含规则
+            j: 也就是jobs，输出执行规则中的详细信息，如命令的pid，返回码等
+            m: 也就是makefile，输出make读取makefile，更新makefile，执行makefile的信息
+-d ##相当于-debug=a
+-e,--enviroment-overriders  #指明环境变量的值覆盖makefile中定义的变量的值
+-f=&lt;file&gt;  #指定需要执行的makefile
+-i,--ignore-errors  #在执行时忽略所有的错误
+-n #仅输出执行过程中的命令序列，但不执行
+-p #输出makefile中的所有数据，包含所有的规则和变量
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="7.6. Makfile应用笔记" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="function.html" class="btn btn-neutral float-right" title="7.6.2. Makefile函数总结" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,810 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>11.2.3. zygote进程孵化器 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="12. arm64 arch" href="../../arm64/index.html" />
+    <link rel="prev" title="11.2.2. init.rc" href="init_rc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">11. android</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../compile/index.html">11.1. android编译系统</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">11.2. android init启动</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="init_startup.html">11.2.1. init天子一号进程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="init_rc.html">11.2.2. init.rc</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">11.2.3. zygote进程孵化器</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">11.2.3.1. zygote启动过程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#app-process64">11.2.3.2. app_process64</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#zygoteinit">11.2.3.3. ZygoteInit</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">11. </span>android</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">11.2. </span>android init启动</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">11.2.3. </span>zygote进程孵化器</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/android/init/Zygote.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="zygote">
+<h1><span class="section-number">11.2.3. </span>zygote进程孵化器<a class="headerlink" href="#zygote" title="此标题的永久链接"></a></h1>
+<p>在Android系统中, <code class="docutils literal notranslate"><span class="pre">JavaVM(Java虚拟机)</span></code> 以及运行系统关键服务的 <code class="docutils literal notranslate"><span class="pre">SystemServer</span></code> 都是由 <code class="docutils literal notranslate"><span class="pre">Zygote</span></code> 来创建的，我们称它为孵化器．
+它通过 <code class="docutils literal notranslate"><span class="pre">fork</span></code> 的形式来创建 <code class="docutils literal notranslate"><span class="pre">应用程序进程</span></code> 和 <code class="docutils literal notranslate"><span class="pre">SystemServer进程</span></code> ．</p>
+<section id="id1">
+<h2><span class="section-number">11.2.3.1. </span>zygote启动过程<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>在 <code class="docutils literal notranslate"><span class="pre">init.rc</span></code> 脚本中，启动了Zygote进程</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">on</span> <span class="n">late</span><span class="o">-</span><span class="n">init</span>
+    <span class="n">trigger</span> <span class="n">early</span><span class="o">-</span><span class="n">fs</span>
+
+    <span class="c1"># Mount fstab in init.{$device}.rc by mount_all command. Optional parameter</span>
+    <span class="c1"># &#39;--early&#39; can be specified to skip entries with &#39;latemount&#39;.</span>
+    <span class="c1"># /system and /vendor must be mounted by the end of the fs stage,</span>
+    <span class="c1"># while /data is optional.</span>
+    <span class="n">trigger</span> <span class="n">fs</span>
+    <span class="n">trigger</span> <span class="n">post</span><span class="o">-</span><span class="n">fs</span>
+
+    <span class="c1"># Mount fstab in init.{$device}.rc by mount_all with &#39;--late&#39; parameter</span>
+    <span class="c1"># to only mount entries with &#39;latemount&#39;. This is needed if &#39;--early&#39; is</span>
+    <span class="c1"># specified in the previous mount_all command on the fs stage.</span>
+    <span class="c1"># With /system mounted and properties form /system + /factory available,</span>
+    <span class="c1"># some services can be started.</span>
+    <span class="n">trigger</span> <span class="n">late</span><span class="o">-</span><span class="n">fs</span>
+
+    <span class="c1"># Now we can mount /data. File encryption requires keymaster to decrypt</span>
+    <span class="c1"># /data, which in turn can only be loaded when system properties are present.</span>
+    <span class="n">trigger</span> <span class="n">post</span><span class="o">-</span><span class="n">fs</span><span class="o">-</span><span class="n">data</span>
+
+    <span class="c1"># Load persist properties and override properties (if enabled) from /data.</span>
+    <span class="n">trigger</span> <span class="n">load_persist_props_action</span>
+
+    <span class="c1"># Should be before netd, but after apex, properties and logging is available.</span>
+    <span class="n">trigger</span> <span class="n">load_bpf_programs</span>
+
+    <span class="c1"># Now we can start zygote for devices with file based encryption</span>
+    <span class="c1"># 触发zygote-start</span>
+    <span class="n">trigger</span> <span class="n">zygote</span><span class="o">-</span><span class="n">start</span>
+
+    <span class="c1"># Remove a file to wake up anything waiting for firmware.</span>
+    <span class="n">trigger</span> <span class="n">firmware_mounts_complete</span>
+
+    <span class="n">trigger</span> <span class="n">early</span><span class="o">-</span><span class="n">boot</span>
+    <span class="n">trigger</span> <span class="n">boot</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">on</span> <span class="n">zygote</span><span class="o">-</span><span class="n">start</span> <span class="o">&amp;&amp;</span> <span class="nb">property</span><span class="p">:</span><span class="n">ro</span><span class="o">.</span><span class="n">crypto</span><span class="o">.</span><span class="n">state</span><span class="o">=</span><span class="n">unencrypted</span>
+    <span class="c1"># A/B update verifier that marks a successful boot.</span>
+    <span class="n">exec_start</span> <span class="n">update_verifier_nonencrypted</span>
+    <span class="n">start</span> <span class="n">statsd</span>
+    <span class="n">start</span> <span class="n">netd</span>
+    <span class="c1"># 启动zygote服务</span>
+    <span class="n">start</span> <span class="n">zygote</span>
+    <span class="n">start</span> <span class="n">zygote_secondary</span>
+</pre></div>
+</div>
+<p>init.rc文件中会import init.zygote64.rc文件</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># 服务进程名zygote</span>
+<span class="c1"># 运行的二进制文件是/system/bin/app_process64</span>
+<span class="c1"># 启动参数是 -Xzygote /system/bin --zygote --start_system-server</span>
+<span class="n">service</span> <span class="n">zygote</span> <span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">app_process64</span> <span class="o">-</span><span class="n">Xzygote</span> <span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="nb">bin</span> <span class="o">--</span><span class="n">zygote</span> <span class="o">--</span><span class="n">start</span><span class="o">-</span><span class="n">system</span><span class="o">-</span><span class="n">server</span>
+    <span class="k">class</span> <span class="nc">main</span>
+    <span class="n">priority</span> <span class="o">-</span><span class="mi">20</span>
+    <span class="n">user</span> <span class="n">root</span>
+    <span class="n">group</span> <span class="n">root</span> <span class="n">readproc</span> <span class="n">reserved_disk</span>
+    <span class="n">socket</span> <span class="n">zygote</span> <span class="n">stream</span> <span class="mi">660</span> <span class="n">root</span> <span class="n">system</span>        <span class="c1">#创建socket</span>
+    <span class="n">socket</span> <span class="n">usap_pool_primary</span> <span class="n">stream</span> <span class="mi">660</span> <span class="n">root</span> <span class="n">system</span>
+    <span class="n">onrestart</span> <span class="n">exec_background</span> <span class="o">-</span> <span class="n">system</span> <span class="n">system</span> <span class="o">--</span> <span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">vdc</span> <span class="n">volume</span> <span class="n">abort_fuse</span>  <span class="c1">#当前进程重启时执行的命令</span>
+    <span class="n">onrestart</span> <span class="n">write</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">power</span><span class="o">/</span><span class="n">state</span> <span class="n">on</span>
+    <span class="n">onrestart</span> <span class="n">restart</span> <span class="n">audioserver</span>
+    <span class="n">onrestart</span> <span class="n">restart</span> <span class="n">cameraserver</span>
+    <span class="n">onrestart</span> <span class="n">restart</span> <span class="n">media</span>
+    <span class="n">onrestart</span> <span class="n">restart</span> <span class="n">netd</span>
+    <span class="n">onrestart</span> <span class="n">restart</span> <span class="n">wificond</span>
+    <span class="n">writepid</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">cpuset</span><span class="o">/</span><span class="n">foreground</span><span class="o">/</span><span class="n">tasks</span>   <span class="c1">#创建子进程时，向/dev/cpuset/foreground/tasks写入pid</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">start</span></code> 命令有一个对应的执行函数 <code class="docutils literal notranslate"><span class="pre">do_start()</span></code> ,定义在 <code class="docutils literal notranslate"><span class="pre">system/core/init/builtins.cpp</span></code> 中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">Builtin</span><span class="o">-</span><span class="n">function</span><span class="o">-</span><span class="nb">map</span> <span class="n">start</span>
+<span class="n">const</span> <span class="n">BuiltinFunctionMap</span><span class="o">&amp;</span> <span class="n">GetBuiltinFunctionMap</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">constexpr</span> <span class="n">std</span><span class="p">::</span><span class="n">size_t</span> <span class="n">kMax</span> <span class="o">=</span> <span class="n">std</span><span class="p">::</span><span class="n">numeric_limits</span><span class="o">&lt;</span><span class="n">std</span><span class="p">::</span><span class="n">size_t</span><span class="o">&gt;</span><span class="p">::</span><span class="nb">max</span><span class="p">();</span>
+    <span class="o">//</span> <span class="n">clang</span><span class="o">-</span><span class="nb">format</span> <span class="n">off</span>
+    <span class="n">static</span> <span class="n">const</span> <span class="n">BuiltinFunctionMap</span> <span class="n">builtin_functions</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span><span class="s2">&quot;bootchart&quot;</span><span class="p">,</span>               <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_bootchart</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;chmod&quot;</span><span class="p">,</span>                   <span class="p">{</span><span class="mi">2</span><span class="p">,</span>     <span class="mi">2</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_chmod</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;chown&quot;</span><span class="p">,</span>                   <span class="p">{</span><span class="mi">2</span><span class="p">,</span>     <span class="mi">3</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_chown</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;class_reset&quot;</span><span class="p">,</span>             <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_class_reset</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;class_reset_post_data&quot;</span><span class="p">,</span>   <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_class_reset_post_data</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;class_restart&quot;</span><span class="p">,</span>           <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_class_restart</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;class_start&quot;</span><span class="p">,</span>             <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_class_start</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;class_start_post_data&quot;</span><span class="p">,</span>   <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_class_start_post_data</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;class_stop&quot;</span><span class="p">,</span>              <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_class_stop</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;copy&quot;</span><span class="p">,</span>                    <span class="p">{</span><span class="mi">2</span><span class="p">,</span>     <span class="mi">2</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_copy</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;domainname&quot;</span><span class="p">,</span>              <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_domainname</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;enable&quot;</span><span class="p">,</span>                  <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_enable</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;exec&quot;</span><span class="p">,</span>                    <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="n">kMax</span><span class="p">,</span> <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_exec</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;exec_background&quot;</span><span class="p">,</span>         <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="n">kMax</span><span class="p">,</span> <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_exec_background</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;exec_start&quot;</span><span class="p">,</span>              <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_exec_start</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;export&quot;</span><span class="p">,</span>                  <span class="p">{</span><span class="mi">2</span><span class="p">,</span>     <span class="mi">2</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_export</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;hostname&quot;</span><span class="p">,</span>                <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_hostname</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;ifup&quot;</span><span class="p">,</span>                    <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_ifup</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;init_user0&quot;</span><span class="p">,</span>              <span class="p">{</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_init_user0</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;insmod&quot;</span><span class="p">,</span>                  <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="n">kMax</span><span class="p">,</span> <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_insmod</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;installkey&quot;</span><span class="p">,</span>              <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_installkey</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;interface_restart&quot;</span><span class="p">,</span>       <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_interface_restart</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;interface_start&quot;</span><span class="p">,</span>         <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_interface_start</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;interface_stop&quot;</span><span class="p">,</span>          <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_interface_stop</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;load_persist_props&quot;</span><span class="p">,</span>      <span class="p">{</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_load_persist_props</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;load_system_props&quot;</span><span class="p">,</span>       <span class="p">{</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_load_system_props</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;loglevel&quot;</span><span class="p">,</span>                <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_loglevel</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;mark_post_data&quot;</span><span class="p">,</span>          <span class="p">{</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_mark_post_data</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;mkdir&quot;</span><span class="p">,</span>                   <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">6</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_mkdir</span><span class="p">}}},</span>
+        <span class="o">//</span> <span class="n">TODO</span><span class="p">:</span> <span class="n">Do</span> <span class="n">mount</span> <span class="n">operations</span> <span class="ow">in</span> <span class="n">vendor_init</span><span class="o">.</span>
+        <span class="o">//</span> <span class="n">mount_all</span> <span class="ow">is</span> <span class="n">currently</span> <span class="n">too</span> <span class="nb">complex</span> <span class="n">to</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">vendor_init</span> <span class="k">as</span> <span class="n">it</span> <span class="n">queues</span> <span class="n">action</span> <span class="n">triggers</span><span class="p">,</span>
+        <span class="o">//</span> <span class="n">imports</span> <span class="n">rc</span> <span class="n">scripts</span><span class="p">,</span> <span class="n">etc</span><span class="o">.</span>  <span class="n">It</span> <span class="n">should</span> <span class="n">be</span> <span class="n">simplified</span> <span class="ow">and</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">vendor_init</span> <span class="n">context</span><span class="o">.</span>
+        <span class="o">//</span> <span class="n">mount</span> <span class="ow">and</span> <span class="n">umount</span> <span class="n">are</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">same</span> <span class="n">context</span> <span class="k">as</span> <span class="n">mount_all</span> <span class="k">for</span> <span class="n">symmetry</span><span class="o">.</span>
+        <span class="p">{</span><span class="s2">&quot;mount_all&quot;</span><span class="p">,</span>               <span class="p">{</span><span class="mi">0</span><span class="p">,</span>     <span class="n">kMax</span><span class="p">,</span> <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_mount_all</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;mount&quot;</span><span class="p">,</span>                   <span class="p">{</span><span class="mi">3</span><span class="p">,</span>     <span class="n">kMax</span><span class="p">,</span> <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_mount</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;perform_apex_config&quot;</span><span class="p">,</span>     <span class="p">{</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_perform_apex_config</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;umount&quot;</span><span class="p">,</span>                  <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_umount</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;umount_all&quot;</span><span class="p">,</span>              <span class="p">{</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_umount_all</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;update_linker_config&quot;</span><span class="p">,</span>    <span class="p">{</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_update_linker_config</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;readahead&quot;</span><span class="p">,</span>               <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">2</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_readahead</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;remount_userdata&quot;</span><span class="p">,</span>        <span class="p">{</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_remount_userdata</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;restart&quot;</span><span class="p">,</span>                 <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_restart</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;restorecon&quot;</span><span class="p">,</span>              <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="n">kMax</span><span class="p">,</span> <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_restorecon</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;restorecon_recursive&quot;</span><span class="p">,</span>    <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="n">kMax</span><span class="p">,</span> <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_restorecon_recursive</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;rm&quot;</span><span class="p">,</span>                      <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_rm</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;rmdir&quot;</span><span class="p">,</span>                   <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_rmdir</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;setprop&quot;</span><span class="p">,</span>                 <span class="p">{</span><span class="mi">2</span><span class="p">,</span>     <span class="mi">2</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_setprop</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;setrlimit&quot;</span><span class="p">,</span>               <span class="p">{</span><span class="mi">3</span><span class="p">,</span>     <span class="mi">3</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_setrlimit</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;start&quot;</span><span class="p">,</span>                   <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_start</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;stop&quot;</span><span class="p">,</span>                    <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_stop</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;swapon_all&quot;</span><span class="p">,</span>              <span class="p">{</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_swapon_all</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;enter_default_mount_ns&quot;</span><span class="p">,</span>  <span class="p">{</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_enter_default_mount_ns</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;symlink&quot;</span><span class="p">,</span>                 <span class="p">{</span><span class="mi">2</span><span class="p">,</span>     <span class="mi">2</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_symlink</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;sysclktz&quot;</span><span class="p">,</span>                <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_sysclktz</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;trigger&quot;</span><span class="p">,</span>                 <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">1</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_trigger</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;verity_update_state&quot;</span><span class="p">,</span>     <span class="p">{</span><span class="mi">0</span><span class="p">,</span>     <span class="mi">0</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_verity_update_state</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;wait&quot;</span><span class="p">,</span>                    <span class="p">{</span><span class="mi">1</span><span class="p">,</span>     <span class="mi">2</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_wait</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;wait_for_prop&quot;</span><span class="p">,</span>           <span class="p">{</span><span class="mi">2</span><span class="p">,</span>     <span class="mi">2</span><span class="p">,</span>    <span class="p">{</span><span class="n">false</span><span class="p">,</span>  <span class="n">do_wait_for_prop</span><span class="p">}}},</span>
+        <span class="p">{</span><span class="s2">&quot;write&quot;</span><span class="p">,</span>                   <span class="p">{</span><span class="mi">2</span><span class="p">,</span>     <span class="mi">2</span><span class="p">,</span>    <span class="p">{</span><span class="n">true</span><span class="p">,</span>   <span class="n">do_write</span><span class="p">}}},</span>
+    <span class="p">};</span>
+    <span class="o">//</span> <span class="n">clang</span><span class="o">-</span><span class="nb">format</span> <span class="n">on</span>
+    <span class="k">return</span> <span class="n">builtin_functions</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>do_start()</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static Result&lt;void&gt; do_start(const BuiltinArguments&amp; args) {
+    Service* svc = ServiceList::GetInstance().FindService(args[1]);     //找到zygote service对应信息
+    if (!svc) return Error() &lt;&lt; &quot;service &quot; &lt;&lt; args[1] &lt;&lt; &quot; not found&quot;;
+    if (auto result = svc-&gt;Start(); !result.ok()) {                     //启动对应的进程
+        return ErrorIgnoreEnoent() &lt;&lt; &quot;Could not start service: &quot; &lt;&lt; result.error();
+    }
+    return {};
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">do_start()</span></code> 首先是通过 <code class="docutils literal notranslate"><span class="pre">FindService</span></code> 去 <code class="docutils literal notranslate"><span class="pre">ServiceList</span></code> 中遍历，根据名字匹配出对应的 <code class="docutils literal notranslate"><span class="pre">service</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Result</span><span class="o">&lt;</span><span class="n">void</span><span class="o">&gt;</span> <span class="n">Service</span><span class="p">::</span><span class="n">Start</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="o">...</span> <span class="o">...</span>
+
+    <span class="n">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">namespaces_</span><span class="o">.</span><span class="n">flags</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="n">clone</span><span class="p">(</span><span class="n">nullptr</span><span class="p">,</span> <span class="n">nullptr</span><span class="p">,</span> <span class="n">namespaces_</span><span class="o">.</span><span class="n">flags</span> <span class="o">|</span> <span class="n">SIGCHLD</span><span class="p">,</span> <span class="n">nullptr</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>   <span class="o">//</span><span class="n">从init进程中fork出zygote进程</span>
+    <span class="p">}</span>
+
+    <span class="o">...</span> <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="app-process64">
+<h2><span class="section-number">11.2.3.2. </span>app_process64<a class="headerlink" href="#app-process64" title="此标题的永久链接"></a></h2>
+<p>init.zygote64.rc启动文件的地址为 <code class="docutils literal notranslate"><span class="pre">system/bin/app_process64</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">app_process64</span></code> 对应的代码定义在 <code class="docutils literal notranslate"><span class="pre">frameworks/base/cmds/app_process/app_main.cpp</span></code></p>
+<p>在app_main.cpp中主要做的事情就是参数解析，这个函数有两种启动模式</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zygote模式</span></code> ,也就是初始化zygote进程，传递的参数有”–start-system-server –socket-name=zygote”, 前者表示启动SystemServer, 后者指定socket的名称</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">application模式</span></code> ，也就是普通应用程序，传递参数有”class名字”以及”class带的参数”</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int main(int argc, char* const argv[])
+{
+    //将参数argv放到argv_String字符串中
+    if (!LOG_NDEBUG) {
+      String8 argv_String;
+      for (int i = 0; i &lt; argc; ++i) {
+        argv_String.append(&quot;\&quot;&quot;);
+        argv_String.append(argv[i]);
+        argv_String.append(&quot;\&quot; &quot;);
+      }
+      ALOGV(&quot;app_process main with argv: %s&quot;, argv_String.string());
+    }
+
+    //AppRuntime定义于app_main.cpp中，继承自AndroidRuntime
+    //就是对Android运行环境的一种抽象，类似于java虚拟机对java程序的作用
+    AppRuntime runtime(argv[0], computeArgBlockSize(argc, argv));
+    // Process command line arguments
+    // ignore argv[0]
+    argc--;
+    argv++;
+    //这两个参数是java程序需要依赖的jar包，相当于import
+    const char* spaced_commands[] = { &quot;-cp&quot;, &quot;-classpath&quot; };
+    // Allow &quot;spaced commands&quot; to be succeeded by exactly 1 argument (regardless of -s).
+    bool known_command = false;
+
+    int i;
+    for (i = 0; i &lt; argc; i++) {
+        if (known_command == true) {
+          runtime.addOption(strdup(argv[i]));
+          // The static analyzer gets upset that we don&#39;t ever free the above
+          // string. Since the allocation is from main, leaking it doesn&#39;t seem
+          // problematic. NOLINTNEXTLINE
+          ALOGV(&quot;app_process main add known option &#39;%s&#39;&quot;, argv[i]);
+          known_command = false;
+          continue;
+        }
+
+        for (int j = 0;
+             j &lt; static_cast&lt;int&gt;(sizeof(spaced_commands) / sizeof(spaced_commands[0]));
+             ++j) {
+          if (strcmp(argv[i], spaced_commands[j]) == 0) {
+            known_command = true;
+            ALOGV(&quot;app_process main found known command &#39;%s&#39;&quot;, argv[i]);
+          }
+        }
+
+        //如果参数的第一个字符是&#39;-&#39; ,直接跳出循环
+        //之前传入的第一个参数是-Xzygote,所以执行到就直接跳出了
+        if (argv[i][0] != &#39;-&#39;) {
+            break;
+        }
+        if (argv[i][1] == &#39;-&#39; &amp;&amp; argv[i][2] == 0) {
+            ++i; // Skip --.
+            break;
+        }
+
+        runtime.addOption(strdup(argv[i]));
+        // The static analyzer gets upset that we don&#39;t ever free the above
+        // string. Since the allocation is from main, leaking it doesn&#39;t seem
+        // problematic. NOLINTNEXTLINE
+        ALOGV(&quot;app_process main add option &#39;%s&#39;&quot;, argv[i]);
+    }
+    // Parse runtime arguments.  Stop at first unrecognized option.
+    //从这里其实可以看出，通过app_main可以启动zygote, systemserver,以及普通的apk进程
+    bool zygote = false;
+    bool startSystemServer = false;
+    bool application = false;
+    String8 niceName;           //app_process的名称该为zygote
+    String8 className;          //启动apk进程时，对应的类名
+
+    //跳过一个参数，之前跳过了-Xzygote,这里继续跳过/system/bin,也就是所谓的&quot;parent dir&quot;
+    ++i;  // Skip unused &quot;parent dir&quot; argument.
+    while (i &lt; argc) {
+        const char* arg = argv[i++];
+        if (strcmp(arg, &quot;--zygote&quot;) == 0) {     //表示是zygote启动模式
+            zygote = true;
+            niceName = ZYGOTE_NICE_NAME;        //修改名字，zygote64或zygote
+        } else if (strcmp(arg, &quot;--start-system-server&quot;) == 0) { //表示启动system-server
+            startSystemServer = true;
+        } else if (strcmp(arg, &quot;--application&quot;) == 0) { //表示普通应用程序
+            application = true;
+        } else if (strncmp(arg, &quot;--nice-name=&quot;, 12) == 0) {
+            niceName.setTo(arg + 12);
+        } else if (strncmp(arg, &quot;--&quot;, 2) != 0) {
+            className.setTo(arg);
+            break;
+        } else {
+            --i;
+            break;
+        }
+    }
+
+    Vector&lt;String8&gt; args;
+    if (!className.isEmpty()) { //classname不为空，说明是application启动模式
+        // We&#39;re not in zygote mode, the only argument we need to pass
+        // to RuntimeInit is the application argument.
+        //
+        // The Remainder of args get passed to startup class main(). Make
+        // copies of them before we overwrite them with the process name.
+        args.add(application ? String8(&quot;application&quot;) : String8(&quot;tool&quot;));
+        runtime.setClassNameAndArgs(className, argc - i, argv + i);
+
+        if (!LOG_NDEBUG) {
+          String8 restOfArgs;
+          char* const* argv_new = argv + i;
+          int argc_new = argc - i;
+          for (int k = 0; k &lt; argc_new; ++k) {
+            restOfArgs.append(&quot;\&quot;&quot;);
+            restOfArgs.append(argv_new[k]);
+            restOfArgs.append(&quot;\&quot; &quot;);
+          }
+          ALOGV(&quot;Class name = %s, args = %s&quot;, className.string(), restOfArgs.string());
+        }
+    } else {        //zygote启动模式
+        // We&#39;re in zygote mode.
+        maybeCreateDalvikCache();       //创建Dalvik的缓存目录并定义权限
+
+        if (startSystemServer) {        //增加start-system-server参数
+            args.add(String8(&quot;start-system-server&quot;));
+        }
+
+        char prop[PROP_VALUE_MAX];      //获取平台对应的abi信息
+        if (property_get(ABI_LIST_PROPERTY, prop, NULL) == 0) {
+            LOG_ALWAYS_FATAL(&quot;app_process: Unable to determine ABI list from property %s.&quot;,
+                ABI_LIST_PROPERTY);
+            return 11;
+        }
+
+        String8 abiFlag(&quot;--abi-list=&quot;);
+        abiFlag.append(prop);
+        args.add(abiFlag);              //加入 --abi-list=
+
+        // In zygote mode, pass all remaining arguments to the zygote
+        // main() method.
+        for (; i &lt; argc; ++i) {
+            args.add(String8(argv[i]));
+        }
+    }
+
+    if (!niceName.isEmpty()) {      //修改进程别名
+        runtime.setArgv0(niceName.string(), true /* setProcName */);
+    }
+    if (zygote) {       //调用Runtime的start函数，启动ZygoteInit
+        runtime.start(&quot;com.android.internal.os.ZygoteInit&quot;, args, zygote);
+    } else if (className) {
+        runtime.start(&quot;com.android.internal.os.RuntimeInit&quot;, args, zygote);
+    } else {
+        fprintf(stderr, &quot;Error: no class name or --zygote supplied.\n&quot;);
+        app_usage();
+        LOG_ALWAYS_FATAL(&quot;app_process: no class name or --zygote supplied.&quot;);
+    }
+}
+</pre></div>
+</div>
+<p>由上可知， <code class="docutils literal notranslate"><span class="pre">Zygote</span></code> 是通过 <code class="docutils literal notranslate"><span class="pre">runtime.start</span></code> 函数启动，此处的 <code class="docutils literal notranslate"><span class="pre">runtime</span></code> 是 <code class="docutils literal notranslate"><span class="pre">AppRuntime</span></code></p>
+<p><strong>AndroidRuntime</strong></p>
+<p>由于 <code class="docutils literal notranslate"><span class="pre">AppRuntime</span></code> 继承自 <code class="docutils literal notranslate"><span class="pre">AndroidRuntime</span></code> ,且没有重写 <code class="docutils literal notranslate"><span class="pre">start()方法</span></code> ,因此 <code class="docutils literal notranslate"><span class="pre">zygote</span></code> 的流程进入到了 <code class="docutils literal notranslate"><span class="pre">AndroidRuntie.cpp</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>void AndroidRuntime::start(const char* className, const Vector&lt;String8&gt;&amp; options, bool zygote)
+{
+    //log输出，环境变换获取
+    ... ...
+    /* start the virtual machine */
+    JniInvocation jni_invocation;
+    jni_invocation.Init(NULL);      //初始化JNI,加载libart.so
+    JNIEnv* env;
+    //创建虚拟机，启动大多数参数由系统属性决定，最终startVm利用JNI_CreateJavaVm创建出虚拟机
+    if (startVm(&amp;mJavaVM, &amp;env, zygote, primary_zygote) != 0) {
+        return;
+    }
+
+    //回调AppRuntime的onVmCreated函数
+    //对于zygote进程的启动流程而言，无实际操作，表示虚拟创建完成，但里面是空实现
+    onVmCreated(env);
+
+    ... ...
+
+    char* slashClassName = toSlashClassName(className != NULL ? className : &quot;&quot;);
+    jclass startClass = env-&gt;FindClass(slashClassName); //找到class文件
+    if (startClass == NULL) {
+        ALOGE(&quot;JavaVM unable to locate class &#39;%s&#39;\n&quot;, slashClassName);
+        /* keep going */
+    } else {
+        jmethodID startMeth = env-&gt;GetStaticMethodID(startClass, &quot;main&quot;,
+            &quot;([Ljava/lang/String;)V&quot;);      //通过反射找到zygoteInit的main函数
+        if (startMeth == NULL) {
+            ALOGE(&quot;JavaVM unable to find main() in &#39;%s&#39;\n&quot;, className);
+            /* keep going */
+        } else {
+            env-&gt;CallStaticVoidMethod(startClass, startMeth, strArray); //调用zygoteInit的main函数
+
+        }
+    }
+
+
+}
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//frameworks/base/core/jni/AndroidRuntime.cpp
+/*
+ * Register android native functions with the VM.
+ */
+/*static*/ int AndroidRuntime::startReg(JNIEnv* env)
+{
+    ATRACE_NAME(&quot;RegisterAndroidNatives&quot;);
+    /*
+     * This hook causes all future threads created in this process to be
+     * attached to the JavaVM.  (This needs to go away in favor of JNI
+     * Attach calls.)
+     */
+    //定义Android创建线程的func:: javaCreateThreadEtc，这个函数内部通过linux的clone来创建线程
+    androidSetCreateThreadFunc((android_create_thread_fn) javaCreateThreadEtc);
+
+    ALOGV(&quot;--- registering native functions ---\n&quot;);
+
+    /*
+     * Every &quot;register&quot; function calls one or more things that return
+     * a local reference (e.g. FindClass).  Because we haven&#39;t really
+     * started the VM yet, they&#39;re all getting stored in the base frame
+     * and never released.  Use Push/Pop to manage the storage.
+     */
+    //创建一个200容量的局部引用作用域，这个局部引用其实就是局部变量
+    env-&gt;PushLocalFrame(200);
+    //注册JNI函数
+    if (register_jni_procs(gRegJNI, NELEM(gRegJNI), env) &lt; 0) {
+        env-&gt;PopLocalFrame(NULL);
+        return -1;
+    }
+    //释放局部引用作用域
+    env-&gt;PopLocalFrame(NULL);
+
+    //createJavaThread(&quot;fubar&quot;, quickTest, (void*) &quot;hello&quot;);
+
+    return 0;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">startReg</span></code> 函数主要通过 <code class="docutils literal notranslate"><span class="pre">register_jni_procs</span></code> 来注册JNI函数,其中 <code class="docutils literal notranslate"><span class="pre">gRegJNI</span></code> 是一个全局数组</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">const</span> <span class="n">RegJNIRec</span> <span class="n">gRegJNI</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_com_android_internal_os_RuntimeInit</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_com_android_internal_os_ZygoteInit_nativeZygoteInit</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_SystemClock</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_util_EventLog</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_util_Log</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_util_MemoryIntArray</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_app_admin_SecurityLog</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_content_AssetManager</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_content_StringBlock</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_content_XmlBlock</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_content_res_ApkAssets</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_text_AndroidCharacter</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_text_Hyphenator</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_InputDevice</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_KeyCharacterMap</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_Process</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_SystemProperties</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_Binder</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_Parcel</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_HidlMemory</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_HidlSupport</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_HwBinder</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_HwBlob</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_HwParcel</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_HwRemoteBinder</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_NativeHandle</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_ServiceManager</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_storage_StorageManager</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_VintfObject</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_VintfRuntimeInfo</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_service_DataLoaderService</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_DisplayEventReceiver</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_InputApplicationHandle</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_InputWindowHandle</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_Surface</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_SurfaceControl</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_SurfaceSession</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_CompositionSamplingListener</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_TextureView</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_com_google_android_gles_jni_EGLImpl</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_com_google_android_gles_jni_GLImpl</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_opengl_jni_EGL14</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_opengl_jni_EGL15</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_opengl_jni_EGLExt</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_opengl_jni_GLES10</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_opengl_jni_GLES10Ext</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_opengl_jni_GLES11</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_opengl_jni_GLES11Ext</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_opengl_jni_GLES20</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_opengl_jni_GLES30</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_opengl_jni_GLES31</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_opengl_jni_GLES31Ext</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_opengl_jni_GLES32</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_graphics_classes</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_graphics_BLASTBufferQueue</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_graphics_GraphicBuffer</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_graphics_SurfaceTexture</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_database_CursorWindow</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_database_SQLiteConnection</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_database_SQLiteGlobal</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_database_SQLiteDebug</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_Debug</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_FileObserver</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_GraphicsEnvironment</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_MessageQueue</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_SELinux</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_Trace</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_UEventObserver</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_net_LocalSocketImpl</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_net_NetworkUtils</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_MemoryFile</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_SharedMemory</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_os_incremental_IncrementalManager</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_com_android_internal_content_om_OverlayConfig</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_com_android_internal_os_ClassLoaderFactory</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_com_android_internal_os_Zygote</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_com_android_internal_os_ZygoteInit</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_com_android_internal_util_VirtualRefBasePtr</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_hardware_Camera</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_hardware_camera2_CameraMetadata</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_hardware_camera2_legacy_LegacyCameraDevice</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_hardware_camera2_legacy_PerfMeasurement</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_hardware_camera2_DngCreator</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_hardware_display_DisplayManagerGlobal</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_hardware_HardwareBuffer</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_hardware_SensorManager</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_hardware_SerialPort</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_hardware_UsbDevice</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_hardware_UsbDeviceConnection</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_hardware_UsbRequest</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_hardware_location_ActivityRecognitionHardware</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_AudioDeviceAttributes</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_AudioEffectDescriptor</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_AudioSystem</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_AudioRecord</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_AudioTrack</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_AudioAttributes</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_AudioProductStrategies</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_AudioVolumeGroups</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_AudioVolumeGroupChangeHandler</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_MediaMetrics</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_MicrophoneInfo</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_RemoteDisplay</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_ToneGenerator</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_media_midi</span><span class="p">),</span>
+
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_opengl_classes</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_server_NetworkManagementSocketTagger</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_ddm_DdmHandleNativeHeap</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_backup_BackupDataInput</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_backup_BackupDataOutput</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_backup_FileBackupHelperBase</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_backup_BackupHelperDispatcher</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_app_backup_FullBackup</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_app_Activity</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_app_ActivityThread</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_app_NativeActivity</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_util_jar_StrictJarFile</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_InputChannel</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_InputEventReceiver</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_InputEventSender</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_InputQueue</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_KeyEvent</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_MotionEvent</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_PointerIcon</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_VelocityTracker</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_VerifiedKeyEvent</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_view_VerifiedMotionEvent</span><span class="p">),</span>
+
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_content_res_ObbScanner</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_content_res_Configuration</span><span class="p">),</span>
+
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_animation_PropertyValuesHolder</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_android_security_Scrypt</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_com_android_internal_content_NativeLibraryHelper</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_com_android_internal_os_FuseAppLoop</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_com_android_internal_os_KernelCpuUidBpfMapReader</span><span class="p">),</span>
+        <span class="n">REG_JNI</span><span class="p">(</span><span class="n">register_com_android_internal_os_KernelSingleUidTimeReader</span><span class="p">),</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>在Andorid中，每个进程运行在对应的虚拟机上，因此zygote首先就会负责创建出虚拟机</p></li>
+<li><p>为了反射调用java代码，必须有对应的JNI函数，因此zygote进行JNI函数的注册</p></li>
+</ul>
+</div>
+</section>
+<section id="zygoteinit">
+<h2><span class="section-number">11.2.3.3. </span>ZygoteInit<a class="headerlink" href="#zygoteinit" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>public class ZygoteInit {
+    ... ...
+
+     public static void main(String argv[]) {
+        //调用native函数，确保当前没有其他线程在运行，主要还是处于安全的考虑
+        ZygoteHooks.startZygoteNoThreadCreation();
+        ... ...
+        try {
+        ... ...
+            boolean startSystemServer = false;
+            String zygoteSocketName = &quot;zygote&quot;;
+            String abiList = null;
+            boolean enableLazyPreload = false;
+            //解析参数，得到上述变量的值
+            for (int i = 1; i &lt; argv.length; i++) {
+                if (&quot;start-system-server&quot;.equals(argv[i])) {
+                    startSystemServer = true;
+                } else if (&quot;--enable-lazy-preload&quot;.equals(argv[i])) {
+                    enableLazyPreload = true;
+                } else if (argv[i].startsWith(ABI_LIST_ARG)) {
+                    abiList = argv[i].substring(ABI_LIST_ARG.length());
+                } else if (argv[i].startsWith(SOCKET_NAME_ARG)) {
+                    zygoteSocketName = argv[i].substring(SOCKET_NAME_ARG.length());
+                } else {
+                    throw new RuntimeException(&quot;Unknown command line argument: &quot; + argv[i]);
+                }
+            }
+            ... ...
+            if (!enableLazyPreload) {
+                bootTimingsTraceLog.traceBegin(&quot;ZygotePreload&quot;);
+                EventLog.writeEvent(LOG_BOOT_PROGRESS_PRELOAD_START,
+                        SystemClock.uptimeMillis());
+                preload(bootTimingsTraceLog);   //默认情况，预加载信息
+                EventLog.writeEvent(LOG_BOOT_PROGRESS_PRELOAD_END,
+                        SystemClock.uptimeMillis());
+                bootTimingsTraceLog.traceEnd(); // ZygotePreload
+            }
+
+          //创建zygoteserver对象
+          zygoteServer = new ZygoteServer(isPrimaryZygote);
+
+            if (startSystemServer) {
+                //启动systemserver
+                Runnable r = forkSystemServer(abiList, zygoteSocketName, zygoteServer);
+
+                // {@code r == null} in the parent (zygote) process, and {@code r != null} in the
+                // child (system_server) process.
+                if (r != null) {
+                    r.run();
+                    return;
+                }
+            }
+
+            Log.i(TAG, &quot;Accepting command socket connections&quot;);
+
+            // The select loop returns early in the child process after a fork and
+            // loops forever in the zygote.
+            //zygote进程进入无限循环，处理请求
+            caller = zygoteServer.runSelectLoop(abiList);
+
+        }
+     }
+};
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Zygote.main</span></code> 函数除了安全相关的内容外，主要的工作就是注册 server socket, 预加载，启动systemserver以及进入无限循环处理请求消息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">frameworks</span><span class="o">/</span><span class="n">base</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">java</span><span class="o">/</span><span class="n">android</span><span class="o">/</span><span class="n">internal</span><span class="o">/</span><span class="n">os</span><span class="o">/</span><span class="n">ZygoteInit</span><span class="o">.</span><span class="n">java</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">preload</span><span class="p">(</span><span class="n">TimingsTraceLog</span> <span class="n">bootTimingsTraceLog</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Log</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s2">&quot;begin preload&quot;</span><span class="p">);</span>
+    <span class="n">bootTimingsTraceLog</span><span class="o">.</span><span class="n">traceBegin</span><span class="p">(</span><span class="s2">&quot;BeginPreload&quot;</span><span class="p">);</span>
+    <span class="n">beginPreload</span><span class="p">();</span>
+    <span class="n">bootTimingsTraceLog</span><span class="o">.</span><span class="n">traceEnd</span><span class="p">();</span> <span class="o">//</span> <span class="n">BeginPreload</span>
+    <span class="n">bootTimingsTraceLog</span><span class="o">.</span><span class="n">traceBegin</span><span class="p">(</span><span class="s2">&quot;PreloadClasses&quot;</span><span class="p">);</span>
+    <span class="n">preloadClasses</span><span class="p">();</span>               <span class="o">//</span><span class="n">读取文件system</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">preloaded</span><span class="o">-</span><span class="n">classes</span><span class="p">,</span><span class="n">然后通过反射加载对应的类</span>
+    <span class="n">bootTimingsTraceLog</span><span class="o">.</span><span class="n">traceEnd</span><span class="p">();</span> <span class="o">//</span> <span class="n">PreloadClasses</span>
+    <span class="n">bootTimingsTraceLog</span><span class="o">.</span><span class="n">traceBegin</span><span class="p">(</span><span class="s2">&quot;CacheNonBootClasspathClassLoaders&quot;</span><span class="p">);</span>
+    <span class="n">cacheNonBootClasspathClassLoaders</span><span class="p">();</span>
+    <span class="n">bootTimingsTraceLog</span><span class="o">.</span><span class="n">traceEnd</span><span class="p">();</span> <span class="o">//</span> <span class="n">CacheNonBootClasspathClassLoaders</span>
+    <span class="n">bootTimingsTraceLog</span><span class="o">.</span><span class="n">traceBegin</span><span class="p">(</span><span class="s2">&quot;PreloadResources&quot;</span><span class="p">);</span>
+    <span class="n">preloadResources</span><span class="p">();</span>             <span class="o">//</span><span class="n">负责加载一些常用的系统资源</span>
+    <span class="n">bootTimingsTraceLog</span><span class="o">.</span><span class="n">traceEnd</span><span class="p">();</span> <span class="o">//</span> <span class="n">PreloadResources</span>
+    <span class="n">Trace</span><span class="o">.</span><span class="n">traceBegin</span><span class="p">(</span><span class="n">Trace</span><span class="o">.</span><span class="n">TRACE_TAG_DALVIK</span><span class="p">,</span> <span class="s2">&quot;PreloadAppProcessHALs&quot;</span><span class="p">);</span>
+    <span class="n">nativePreloadAppProcessHALs</span><span class="p">();</span>
+    <span class="n">Trace</span><span class="o">.</span><span class="n">traceEnd</span><span class="p">(</span><span class="n">Trace</span><span class="o">.</span><span class="n">TRACE_TAG_DALVIK</span><span class="p">);</span>
+    <span class="n">Trace</span><span class="o">.</span><span class="n">traceBegin</span><span class="p">(</span><span class="n">Trace</span><span class="o">.</span><span class="n">TRACE_TAG_DALVIK</span><span class="p">,</span> <span class="s2">&quot;PreloadGraphicsDriver&quot;</span><span class="p">);</span>
+    <span class="n">maybePreloadGraphicsDriver</span><span class="p">();</span>
+    <span class="n">Trace</span><span class="o">.</span><span class="n">traceEnd</span><span class="p">(</span><span class="n">Trace</span><span class="o">.</span><span class="n">TRACE_TAG_DALVIK</span><span class="p">);</span>
+    <span class="n">preloadSharedLibraries</span><span class="p">();</span>       <span class="o">//</span><span class="n">一些必要库</span>
+    <span class="n">preloadTextResources</span><span class="p">();</span>         <span class="o">//</span><span class="n">语言相关的字符信息</span>
+    <span class="o">//</span> <span class="n">Ask</span> <span class="n">the</span> <span class="n">WebViewFactory</span> <span class="n">to</span> <span class="n">do</span> <span class="nb">any</span> <span class="n">initialization</span> <span class="n">that</span> <span class="n">must</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">zygote</span> <span class="n">process</span><span class="p">,</span>
+    <span class="o">//</span> <span class="k">for</span> <span class="n">memory</span> <span class="n">sharing</span> <span class="n">purposes</span><span class="o">.</span>
+    <span class="n">WebViewFactory</span><span class="o">.</span><span class="n">prepareWebViewInZygote</span><span class="p">();</span>
+    <span class="n">endPreload</span><span class="p">();</span>
+    <span class="n">warmUpJcaProviders</span><span class="p">();</span>           <span class="o">//</span><span class="n">安全相关的</span>
+    <span class="n">Log</span><span class="o">.</span><span class="n">d</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span> <span class="s2">&quot;end preload&quot;</span><span class="p">);</span>
+
+    <span class="n">sPreloadComplete</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>为了让系统运行时更加流畅，在zygote启动的时候，调用 <code class="docutils literal notranslate"><span class="pre">preload</span></code> 进行了一些 <code class="docutils literal notranslate"><span class="pre">预加载操作</span></code></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="init_rc.html" class="btn btn-neutral float-left" title="11.2.2. init.rc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../arm64/index.html" class="btn btn-neutral float-right" title="12. arm64 arch" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

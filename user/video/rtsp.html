@@ -1,0 +1,492 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.5.4. RTSP协议 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="6.6. 车载应用汇总" href="../verhicle_app/index.html" />
+    <link rel="prev" title="6.5.3. RTP协议" href="rtp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/index.html">6.4. 通信中间件</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">6.5. 视频笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mp4_muxer.html">6.5.1. MP4文件格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="h264.html">6.5.2. H264结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rtp.html">6.5.3. RTP协议</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">6.5.4. RTSP协议</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">6.5.4.1. RTSP消息格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">6.5.4.2. RTSP基本交互过程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">6.5.4.3. RTSP方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.5. </span>视频笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.5.4. </span>RTSP协议</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user/video/rtsp.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rtsp">
+<h1><span class="section-number">6.5.4. </span>RTSP协议<a class="headerlink" href="#rtsp" title="此标题的永久链接"></a></h1>
+<p>RTSP全称 <code class="docutils literal notranslate"><span class="pre">Real</span> <span class="pre">Time</span> <span class="pre">Streaming</span> <span class="pre">Protocal</span></code> ,RTSP位于RTP和RTCP之上(RTCP用于控制传输，RTP用于数据传输),使用TCP或UDP完成数据传输</p>
+<section id="id1">
+<h2><span class="section-number">6.5.4.1. </span>RTSP消息格式<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>RTSP消息分为两大类，请求消息(Request)以及回应消息(Response)</p>
+<ul class="simple">
+<li><p>请求消息格式</p></li>
+</ul>
+<img alt="../../_images/rtsp_request_struct.png" src="../../_images/rtsp_request_struct.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>请求消息由方法+URI+RTSP版本开头，之后跟一条或多条消息．</p></li>
+<li><p>URI: 表示接收方的地址，如rtsp://192.168.1.5:8888</p></li>
+<li><p>CR: 表示回车</p></li>
+<li><p>LF: 表示换行</p></li>
+<li><p>最后一条消息要使用两个CR LF</p></li>
+</ul>
+</div>
+<ul class="simple">
+<li><p>抓包实例</p></li>
+</ul>
+<img alt="../../_images/rtsp_request_sample.png" src="../../_images/rtsp_request_sample.png" />
+<ul class="simple">
+<li><p>响应消息格式</p></li>
+</ul>
+<img alt="../../_images/rtsp_response_struct.png" src="../../_images/rtsp_response_struct.png" />
+<p>回应消息有RTSP版本+状态码+解释开头，之后跟一条或者多条消息</p>
+<ul class="simple">
+<li><p>状态码: 表示状态，同http的返回状态，如200,表示OK</p></li>
+<li><p>解释: 针对状态码的文本解释</p></li>
+<li><p>最后一条消息需要两个回车和换行</p></li>
+</ul>
+<img alt="../../_images/rtsp_response_sample.png" src="../../_images/rtsp_response_sample.png" />
+</section>
+<section id="id2">
+<h2><span class="section-number">6.5.4.2. </span>RTSP基本交互过程<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<img alt="../../_images/rtsp_process.png" src="../../_images/rtsp_process.png" />
+<ul class="simple">
+<li><dl class="simple">
+<dt>OPTIONS</dt><dd><ul>
+<li><p>C—&gt;S 客户端向服务器端发送OPTIONS,请求可用的方法</p></li>
+<li><p>S—&gt;C 服务器端回复客户端，消息中包含当前可用的方法</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>DESRIBE</dt><dd><ul>
+<li><p>C—&gt;S 客户端向服务器端请求媒体描述文件，一般通过rtsp开头的url来发起请求，格式为sdp</p></li>
+<li><p>S—&gt;C 服务器回复客户端sdp文件，该文件告诉客户端服务器有哪些音视频流，有什么属性，如编解码器信息，帧率等</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>SETUP</dt><dd><ul>
+<li><p>C—&gt;S 客户端向服务器端发起建立连接请求，请求建立会话连接，准备开始接收音视频数据，请求信息描述来期望音视频数据包基于UDP还是TCP传输，指定了RTP,RTCP端口，以及单播还是组播等信息</p></li>
+<li><p>S—&gt;C 服务器端收到客户端的请求后，根据客户端请求的端口号确定发送控制数据的端口以及音视频数据的端口</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>PLAY</dt><dd><ul>
+<li><p>C—&gt;S 客户端向服务器端请求播放媒体</p></li>
+<li><p>S—&gt;C 服务器端恢复客户端200 OK!，之后开始通过SETUP中指定的端口开始发送数据</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>TEARDOWN</dt><dd><ul>
+<li><p>C—&gt;S 结束播放的时候，客户端向服务器端发起结束请求</p></li>
+<li><p>S—&gt;C 服务器端收到消息后，向客户端发送200 OK,之后断开连接</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<section id="id3">
+<h3><span class="section-number">6.5.4.2.1. </span>RTSP抓包实例<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<img alt="../../_images/rtsp_process_package.png" src="../../_images/rtsp_process_package.png" />
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">6.5.4.3. </span>RTSP方法<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<section id="option">
+<h3><span class="section-number">6.5.4.3.1. </span>OPTION<a class="headerlink" href="#option" title="此标题的永久链接"></a></h3>
+<p>OPTIONS一般为RTSP客户端发起的第一条请求指令，该指令的目的是得到服务端提供了哪些方法</p>
+<ul class="simple">
+<li><p>OPTION请求消息格式</p></li>
+</ul>
+<img alt="../../_images/option_req_struct.png" src="../../_images/option_req_struct.png" />
+<ul class="simple">
+<li><p>OPTION应答消息格式</p></li>
+</ul>
+<img alt="../../_images/option_res_struct.png" src="../../_images/option_res_struct.png" />
+<ul class="simple">
+<li><p>RTSP OPTIONS请求</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OPTIONS</span> <span class="n">rtsp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.17.1.63</span><span class="p">:</span><span class="mi">554</span> <span class="n">RTSP</span><span class="o">/</span><span class="mf">1.0</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">CSeq</span><span class="p">:</span> <span class="mi">1</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">User</span><span class="o">-</span><span class="n">Agent</span><span class="p">:</span> <span class="n">Lavf58</span><span class="mf">.42.100</span>\<span class="n">r</span>\
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>RTSP OPTIONS应答</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RTSP</span><span class="o">/</span><span class="mf">1.0</span> <span class="mi">200</span> <span class="n">OK</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">CSeq</span><span class="p">:</span> <span class="mi">1</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">Public</span><span class="p">:</span> <span class="n">OPTIONS</span><span class="p">,</span> <span class="n">DESCRIBE</span><span class="p">,</span> <span class="n">PLAY</span><span class="p">,</span> <span class="n">PAUSE</span><span class="p">,</span> <span class="n">SETUP</span><span class="p">,</span> <span class="n">TEARDOWN</span><span class="p">,</span> <span class="n">SET_PARAMETER</span><span class="p">,</span> <span class="n">GET_PARAMETER</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">Date</span><span class="p">:</span>  <span class="n">Fri</span><span class="p">,</span> <span class="n">Apr</span> <span class="mi">10</span> <span class="mi">2020</span> <span class="mi">19</span><span class="p">:</span><span class="mi">07</span><span class="p">:</span><span class="mi">19</span> <span class="n">GMT</span>\<span class="n">r</span>\<span class="n">n</span>
+</pre></div>
+</div>
+</section>
+<section id="describe">
+<h3><span class="section-number">6.5.4.3.2. </span>DESCRIBE<a class="headerlink" href="#describe" title="此标题的永久链接"></a></h3>
+<p>客户端在发送OPTION请求之后，客户端会继续向服务器发送DESCRIBE消息，来获取会话描述信息(sdp).</p>
+<ul class="simple">
+<li><p>DESCRIBE请求格式</p></li>
+</ul>
+<img alt="../../_images/describe_req_struct.png" src="../../_images/describe_req_struct.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Accept: 指明接收数据的格式，如application/sdp表示接收sdp信息</p>
+</div>
+<p>对于DESCRIBE消息，服务端的回复有两种可能，如果需要认证，则首先返回401,并要求客户端认证，客户端再次发送包含认证信息的DESCRIBE指令，服务端收到带
+认证信息的DESCRIBE请求，返回sdp信息给客户端．如果不需要认证，则直接返回sdp</p>
+<ul class="simple">
+<li><p>需要认证的情况</p></li>
+</ul>
+<img alt="../../_images/describe_res_struct_1.png" src="../../_images/describe_res_struct_1.png" />
+<ol class="arabic simple">
+<li><p>服务端发送回复消息，状态为401,状态描述符为Unauhtorized(未认证)，发回WWW-Authenticate消息，告诉客户端认证所需信息</p></li>
+<li><p>客户端收到该消息之后，需要再次向服务器发送DESCRIBE请求，这一次消息体要增加Authorization字段</p></li>
+</ol>
+<img alt="../../_images/describe_res_struct_2.png" src="../../_images/describe_res_struct_2.png" />
+<p>服务端收到带认证信息的DESCRIBE请求之后，如果信息正确，则会回复200 ok的消息，同时返回sdp信息</p>
+<img alt="../../_images/describe_res_struct.png" src="../../_images/describe_res_struct.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>返回的状态码为200，状态描述为OK，包序列号与DESCRIBE请求的序列号相同，表示对该请求的回复</p></li>
+<li><p>Content-type: 表示回复内容类型，置位application/sdp</p></li>
+<li><p>Content-Base: 一般用RTSP URI表示</p></li>
+<li><p>Content-length: 表示返回的sdp信息的长度</p></li>
+</ul>
+</div>
+<p>第一次DESCRIBE请求</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DESCRIBE</span> <span class="n">rtsp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.17.1.63</span><span class="p">:</span><span class="mi">554</span> <span class="n">RTSP</span><span class="o">/</span><span class="mf">1.0</span>
+<span class="n">Accept</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">sdp</span>
+<span class="n">CSeq</span><span class="p">:</span> <span class="mi">2</span>
+<span class="n">User</span><span class="o">-</span><span class="n">Agent</span><span class="p">:</span> <span class="n">Lavf58</span><span class="mf">.42.100</span>
+</pre></div>
+</div>
+<p>服务端回复的401消息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RTSP</span><span class="o">/</span><span class="mf">1.0</span> <span class="mi">401</span> <span class="n">Unauthorized</span>
+<span class="n">CSeq</span><span class="p">:</span> <span class="mi">2</span>
+<span class="n">WWW</span><span class="o">-</span><span class="n">Authenticate</span><span class="p">:</span> <span class="n">Digest</span> <span class="n">realm</span><span class="o">=</span><span class="s2">&quot;IP Camera(23306)&quot;</span><span class="p">,</span> <span class="n">nonce</span><span class="o">=</span><span class="s2">&quot;a946c352dd3ad04cf9830d5e72ffb11e&quot;</span><span class="p">,</span> <span class="n">stale</span><span class="o">=</span><span class="s2">&quot;FALSE&quot;</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Fri</span><span class="p">,</span> <span class="n">Apr</span> <span class="mi">10</span> <span class="mi">2020</span> <span class="mi">19</span><span class="p">:</span><span class="mi">07</span><span class="p">:</span><span class="mi">19</span> <span class="n">GMT</span>
+</pre></div>
+</div>
+<p>第二次DESCRIBE请求</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DESCRIBE</span> <span class="n">rtsp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.17.1.63</span><span class="p">:</span><span class="mi">554</span> <span class="n">RTSP</span><span class="o">/</span><span class="mf">1.0</span>
+<span class="n">Accept</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">sdp</span>
+<span class="n">CSeq</span><span class="p">:</span> <span class="mi">3</span>
+<span class="n">User</span><span class="o">-</span><span class="n">Agent</span><span class="p">:</span> <span class="n">Lavf58</span><span class="mf">.42.100</span>
+<span class="n">Authorization</span><span class="p">:</span> <span class="n">Digest</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="p">,</span> <span class="n">realm</span><span class="o">=</span><span class="s2">&quot;IP Camera(23306)&quot;</span><span class="p">,</span> <span class="n">nonce</span><span class="o">=</span><span class="s2">&quot;a946c352dd3ad04cf9830d5e72ffb11e&quot;</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="s2">&quot;rtsp://192.17.1.63:554&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="s2">&quot;8f1987b6da1aeb3f3744e1307d850281&quot;</span>
+</pre></div>
+</div>
+<p>验证OK消息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RTSP</span><span class="o">/</span><span class="mf">1.0</span> <span class="mi">200</span> <span class="n">OK</span>
+<span class="n">CSeq</span><span class="p">:</span> <span class="mi">3</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">application</span><span class="o">/</span><span class="n">sdp</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Base</span><span class="p">:</span> <span class="n">rtsp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.17.1.63</span><span class="p">:</span><span class="mi">554</span><span class="o">/</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">712</span>
+
+<span class="n">v</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">o</span><span class="o">=-</span> <span class="mi">1586545639954157</span> <span class="mi">1586545639954157</span> <span class="n">IN</span> <span class="n">IP4</span> <span class="mf">192.17.1.63</span>
+<span class="n">s</span><span class="o">=</span><span class="n">Media</span> <span class="n">Presentation</span>
+<span class="n">e</span><span class="o">=</span><span class="n">NONE</span>
+<span class="n">b</span><span class="o">=</span><span class="n">AS</span><span class="p">:</span><span class="mi">5100</span>
+<span class="n">t</span><span class="o">=</span><span class="mi">0</span> <span class="mi">0</span>
+<span class="n">a</span><span class="o">=</span><span class="n">control</span><span class="p">:</span><span class="n">rtsp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.17.1.63</span><span class="p">:</span><span class="mi">554</span><span class="o">/</span>
+<span class="n">m</span><span class="o">=</span><span class="n">video</span> <span class="mi">0</span> <span class="n">RTP</span><span class="o">/</span><span class="n">AVP</span> <span class="mi">96</span>
+<span class="n">c</span><span class="o">=</span><span class="n">IN</span> <span class="n">IP4</span> <span class="mf">0.0.0.0</span>
+<span class="n">b</span><span class="o">=</span><span class="n">AS</span><span class="p">:</span><span class="mi">5000</span>
+<span class="n">a</span><span class="o">=</span><span class="n">recvonly</span>
+<span class="n">a</span><span class="o">=</span><span class="n">x</span><span class="o">-</span><span class="n">dimensions</span><span class="p">:</span><span class="mi">1920</span><span class="p">,</span><span class="mi">1080</span>
+<span class="n">a</span><span class="o">=</span><span class="n">control</span><span class="p">:</span><span class="n">rtsp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.17.1.63</span><span class="p">:</span><span class="mi">554</span><span class="o">/</span><span class="n">trackID</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">a</span><span class="o">=</span><span class="n">rtpmap</span><span class="p">:</span><span class="mi">96</span> <span class="n">H264</span><span class="o">/</span><span class="mi">90000</span>
+<span class="n">a</span><span class="o">=</span><span class="n">fmtp</span><span class="p">:</span><span class="mi">96</span> <span class="n">profile</span><span class="o">-</span><span class="n">level</span><span class="o">-</span><span class="nb">id</span><span class="o">=</span><span class="mi">420029</span><span class="p">;</span> <span class="n">packetization</span><span class="o">-</span><span class="n">mode</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">sprop</span><span class="o">-</span><span class="n">parameter</span><span class="o">-</span><span class="n">sets</span><span class="o">=</span><span class="n">Z01AKI2NQDwBE</span><span class="o">/</span><span class="n">LgLcBAQFAAAD6AAAw1DoYACYFAABfXgu8uNDAATAoAAL68F3lwoA</span><span class="o">==</span><span class="p">,</span><span class="n">aO44gA</span><span class="o">==</span>
+<span class="n">m</span><span class="o">=</span><span class="n">audio</span> <span class="mi">0</span> <span class="n">RTP</span><span class="o">/</span><span class="n">AVP</span> <span class="mi">8</span>
+<span class="n">c</span><span class="o">=</span><span class="n">IN</span> <span class="n">IP4</span> <span class="mf">0.0.0.0</span>
+<span class="n">b</span><span class="o">=</span><span class="n">AS</span><span class="p">:</span><span class="mi">50</span>
+<span class="n">a</span><span class="o">=</span><span class="n">recvonly</span>
+<span class="n">a</span><span class="o">=</span><span class="n">control</span><span class="p">:</span><span class="n">rtsp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.17.1.63</span><span class="p">:</span><span class="mi">554</span><span class="o">/</span><span class="n">trackID</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">a</span><span class="o">=</span><span class="n">rtpmap</span><span class="p">:</span><span class="mi">8</span> <span class="n">PCMA</span><span class="o">/</span><span class="mi">8000</span>
+<span class="n">a</span><span class="o">=</span><span class="n">Media_header</span><span class="p">:</span><span class="n">MEDIAINFO</span><span class="o">=</span><span class="mi">494</span><span class="n">D4B48010300000400000111710110401F000000FA000000000000000000000000000000000000</span><span class="p">;</span>
+<span class="n">a</span><span class="o">=</span><span class="n">appversion</span><span class="p">:</span><span class="mf">1.0</span>
+</pre></div>
+</div>
+</section>
+<section id="setup">
+<h3><span class="section-number">6.5.4.3.3. </span>SETUP<a class="headerlink" href="#setup" title="此标题的永久链接"></a></h3>
+<p>SETUP请求的作用是指明媒体流应该以什么方式传输，每个流PLAY之前必须执行SETUP．发送SETUP请求时，客户端会指定两个端口，一个端口用于接收RTP数据．另一个端口接收RTCP数据，
+偶数端口用来接收RTP数据，相邻的奇数端口用于接收RTCP数据</p>
+<p>SETUP请求消息格式</p>
+<img alt="../../_images/setup_struct.png" src="../../_images/setup_struct.png" />
+<ul class="simple">
+<li><p>TRANSPORT: 表明媒体流的传输方式，具体包括传输协议如RTP/UDP.指出是单播，组播还是广播．声明两个端口</p></li>
+<li><p>Session: 标识会话ID</p></li>
+<li><p>Authorization: 标识认证信息</p></li>
+</ul>
+<p>SETUP回应消息格式</p>
+<img alt="../../_images/setup_res_struct.png" src="../../_images/setup_res_struct.png" />
+<p>如果没有异常情况，RTSP服务器的回复比较简单，回复200 OK消息．同时在Transport字段中增加sever_port,指明对等的服务端RTP和RTCP传输的端口．增加ssrc字段，增加
+mode字段，同时返回一个session id,用于标识本次会话连接，之后客户端发起PLAY请求的时候需要使用该字段</p>
+<p>request</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SETUP</span> <span class="n">rtsp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.17.1.63</span><span class="p">:</span><span class="mi">554</span><span class="o">/</span><span class="n">trackID</span><span class="o">=</span><span class="mi">1</span> <span class="n">RTSP</span><span class="o">/</span><span class="mf">1.0</span>
+<span class="n">Transport</span><span class="p">:</span> <span class="n">RTP</span><span class="o">/</span><span class="n">AVP</span><span class="o">/</span><span class="n">UDP</span><span class="p">;</span><span class="n">unicast</span><span class="p">;</span><span class="n">client_port</span><span class="o">=</span><span class="mi">26968</span><span class="o">-</span><span class="mi">26969</span>
+<span class="n">CSeq</span><span class="p">:</span> <span class="mi">4</span>
+<span class="n">User</span><span class="o">-</span><span class="n">Agent</span><span class="p">:</span> <span class="n">Lavf58</span><span class="mf">.42.100</span>
+<span class="n">Authorization</span><span class="p">:</span> <span class="n">Digest</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="p">,</span> <span class="n">realm</span><span class="o">=</span><span class="s2">&quot;IP Camera(23306)&quot;</span><span class="p">,</span> <span class="n">nonce</span><span class="o">=</span><span class="s2">&quot;a946c352dd3ad04cf9830d5e72ffb11e&quot;</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="s2">&quot;rtsp://192.17.1.63:554/trackID=1&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="s2">&quot;e29ca030062df6022faa77fefde40b28&quot;</span>
+</pre></div>
+</div>
+<p>response</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RTSP</span><span class="o">/</span><span class="mf">1.0</span> <span class="mi">200</span> <span class="n">OK</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">CSeq</span><span class="p">:</span> <span class="mi">4</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">Session</span><span class="p">:</span> <span class="mi">337474243</span><span class="p">;</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">Transport</span><span class="p">:</span> <span class="n">RTP</span><span class="o">/</span><span class="n">AVP</span><span class="o">/</span><span class="n">UDP</span><span class="p">;</span><span class="n">unicast</span><span class="p">;</span><span class="n">client_port</span><span class="o">=</span><span class="mi">26968</span><span class="o">-</span><span class="mi">26969</span><span class="p">;</span><span class="n">server_port</span><span class="o">=</span><span class="mi">8284</span><span class="o">-</span><span class="mi">8285</span><span class="p">;</span><span class="n">ssrc</span><span class="o">=</span><span class="mi">4</span><span class="n">a7fb757</span><span class="p">;</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;play&quot;</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Fri</span><span class="p">,</span> <span class="n">Apr</span> <span class="mi">10</span> <span class="mi">2020</span> <span class="mi">19</span><span class="p">:</span><span class="mi">07</span><span class="p">:</span><span class="mi">19</span> <span class="n">GMT</span>\<span class="n">r</span>\<span class="n">n</span>
+\<span class="n">r</span>\<span class="n">n</span>
+</pre></div>
+</div>
+</section>
+<section id="play">
+<h3><span class="section-number">6.5.4.3.4. </span>PLAY<a class="headerlink" href="#play" title="此标题的永久链接"></a></h3>
+<p>PLAY消息是客户端发送的播放请求，发送播放请求的时候可以指定播放区间．发起播放请求后，如果连接正常，则服务端开始播放，即开始向客户端按照之前在
+TRANSPORT中约定好的方式发送音视频数据包</p>
+<img alt="../../_images/play_req_struct.png" src="../../_images/play_req_struct.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Range: 是PLAY消息特有的，代表请求播放的时间段，使用ntp时间来表示</p>
+</div>
+<p>PLAY回复消息格式</p>
+<img alt="../../_images/play_res_struct.png" src="../../_images/play_res_struct.png" />
+<p>RTSP PLAY(request)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PLAY</span> <span class="n">rtsp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.17.1.63</span><span class="p">:</span><span class="mi">554</span><span class="o">/</span> <span class="n">RTSP</span><span class="o">/</span><span class="mf">1.0</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">Range</span><span class="p">:</span> <span class="n">npt</span><span class="o">=</span><span class="mf">0.000</span><span class="o">-</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">CSeq</span><span class="p">:</span> <span class="mi">6</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">User</span><span class="o">-</span><span class="n">Agent</span><span class="p">:</span> <span class="n">Lavf58</span><span class="mf">.42.100</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">Session</span><span class="p">:</span> <span class="mi">337474243</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">Authorization</span><span class="p">:</span> <span class="n">Digest</span> <span class="n">username</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="p">,</span> <span class="n">realm</span><span class="o">=</span><span class="s2">&quot;IP Camera(23306)&quot;</span><span class="p">,</span> <span class="n">nonce</span><span class="o">=</span><span class="s2">&quot;a946c352dd3ad04cf9830d5e72ffb11e&quot;</span><span class="p">,</span> <span class="n">uri</span><span class="o">=</span><span class="s2">&quot;rtsp://192.17.1.63:554/&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="s2">&quot;9ea6c2659d3bce8d129ca3549ecc7fbf&quot;</span>\<span class="n">r</span>\<span class="n">n</span>\<span class="n">r</span>\<span class="n">n</span>
+</pre></div>
+</div>
+<p>RTSP PLAY(response)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RTSP</span><span class="o">/</span><span class="mf">1.0</span> <span class="mi">200</span> <span class="n">OK</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">CSeq</span><span class="p">:</span> <span class="mi">6</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">Session</span><span class="p">:</span> <span class="mi">337474243</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">RTP</span><span class="o">-</span><span class="n">Info</span><span class="p">:</span> <span class="n">url</span><span class="o">=</span><span class="n">rtsp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.17.1.63</span><span class="p">:</span><span class="mi">554</span><span class="o">/</span><span class="n">trackID</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">seq</span><span class="o">=</span><span class="mi">3658</span><span class="p">;</span><span class="n">rtptime</span><span class="o">=</span><span class="mi">1710363406</span><span class="p">,</span><span class="n">url</span><span class="o">=</span><span class="n">rtsp</span><span class="p">:</span><span class="o">//</span><span class="mf">192.17.1.63</span><span class="p">:</span><span class="mi">554</span><span class="o">/</span><span class="n">trackID</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span><span class="n">seq</span><span class="o">=</span><span class="mi">6598</span><span class="p">;</span><span class="n">rtptime</span><span class="o">=</span><span class="mi">4065225152</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Fri</span><span class="p">,</span> <span class="n">Apr</span> <span class="mi">10</span> <span class="mi">2020</span> <span class="mi">19</span><span class="p">:</span><span class="mi">07</span><span class="p">:</span><span class="mi">20</span> <span class="n">GMT</span>\<span class="n">r</span>\<span class="n">n</span>\<span class="n">r</span>\<span class="n">n</span>
+</pre></div>
+</div>
+</section>
+<section id="pause">
+<h3><span class="section-number">6.5.4.3.5. </span>PAUSE<a class="headerlink" href="#pause" title="此标题的永久链接"></a></h3>
+<p>暂停请求会使得流传输暂时中断(相当于暂停),如果请求的URI指向一个流地址，则仅针对该流的回放和录制会被中断</p>
+<p>PAUSE请求格式</p>
+<img alt="../../_images/pause_req_struct.png" src="../../_images/pause_req_struct.png" />
+<p>PAUSE回应格式</p>
+<img alt="../../_images/pause_res_struct.png" src="../../_images/pause_res_struct.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>PAUSE rtsp://example.com/fizzle/foo RTSP/1.0\r\n
+CSeq：834\r\n
+Session：12345678\r\n\r\n
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>RTSP/1.0  200 OK\r\n
+CSeq:834\r\n
+Session：12345678\r\n\r\n
+</pre></div>
+</div>
+</section>
+<section id="teardown">
+<h3><span class="section-number">6.5.4.3.6. </span>TEARDOWN<a class="headerlink" href="#teardown" title="此标题的永久链接"></a></h3>
+<p>TEARDOWN是拆卸的意思，对于RTSP而言，就是结束流传输，同时释放与之相关的资源，TEARDOWN之后，整个RTSP连接也就结束了．</p>
+<ul class="simple">
+<li><p>TEARDOWN请求消息格式</p></li>
+</ul>
+<img alt="../../_images/teardown_req_struct.png" src="../../_images/teardown_req_struct.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>TEARDOWN rtsp://192.17.1.73:554/Streaming/Channels/101/?transportmode=unicast&amp;profile=Profile_1 RTSP/1.0\r\n
+CSeq: 10\r\n
+Authorization: Digest username=&quot;admin&quot;, realm=&quot;bcad28138995&quot;, nonce=&quot;a1a5b9d3865180dccbaffb1cb2eb2a27&quot;, uri=&quot;rtsp://192.17.1.73:554/Streaming/Channels/101/&quot;, response=&quot;c5c005ef16638dfa326dcfc0c3f54aab&quot;\r\n
+User-Agent: LibVLC/3.0.11 (LIVE555 Streaming Media v2016.11.28)\r\n
+Session: 1659421772\r\n\r\n
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>TEARDOWN回应消息格式</p></li>
+</ul>
+<img alt="../../_images/teardown_res_struct.png" src="../../_images/teardown_res_struct.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RTSP</span><span class="o">/</span><span class="mf">1.0</span> <span class="mi">200</span> <span class="n">OK</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">CSeq</span><span class="p">:</span> <span class="mi">10</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">Session</span><span class="p">:</span> <span class="mi">1659421772</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Thu</span><span class="p">,</span> <span class="n">Aug</span> <span class="mi">27</span> <span class="mi">2020</span> <span class="mi">18</span><span class="p">:</span><span class="mi">31</span><span class="p">:</span><span class="mi">13</span> <span class="n">GMT</span>\<span class="n">r</span>\<span class="n">n</span>\<span class="n">r</span>\<span class="n">n</span>
+</pre></div>
+</div>
+</section>
+<section id="get-parameter">
+<h3><span class="section-number">6.5.4.3.7. </span>GET_PARAMETER<a class="headerlink" href="#get-parameter" title="此标题的永久链接"></a></h3>
+<p>GET_PARAMETER用来向服务器获取参数，一般用于获取时间范围．当发送的请求中没有相关请求参数时，则用作保持RTSP连接</p>
+<ul class="simple">
+<li><p>GET PARAMETER请求消息格式</p></li>
+</ul>
+<img alt="../../_images/get_req_struct.png" src="../../_images/get_req_struct.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET_PARAMETER rtsp://192.17.1.73:554/Streaming/Channels/101/?transportmode=unicast&amp;profile=Profile_1 RTSP/1.0\r\n
+CSeq: 7\r\n
+Authorization: Digest username=&quot;admin&quot;, realm=&quot;bcad28138995&quot;, nonce=&quot;a1a5b9d3865180dccbaffb1cb2eb2a27&quot;, uri=&quot;rtsp://192.17.1.73:554/Streaming/Channels/101/&quot;, response=&quot;4764a1f2772821f5528ebbb2ad18c3f9&quot;\r\n
+User-Agent: LibVLC/3.0.11 (LIVE555 Streaming Media v2016.11.28)\r\n
+Session: 1659421772\r\n\r\n
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>GET PARAMETER回应消息格式</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RTSP</span><span class="o">/</span><span class="mf">1.0</span> <span class="mi">200</span> <span class="n">OK</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">CSeq</span><span class="p">:</span> <span class="mi">7</span>\<span class="n">r</span>\<span class="n">n</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Thu</span><span class="p">,</span> <span class="n">Aug</span> <span class="mi">27</span> <span class="mi">2020</span> <span class="mi">18</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mi">00</span> <span class="n">GMT</span>\<span class="n">r</span>\<span class="n">n</span>
+</pre></div>
+</div>
+</section>
+<section id="set-parameter">
+<h3><span class="section-number">6.5.4.3.8. </span>SET_PARAMETER<a class="headerlink" href="#set-parameter" title="此标题的永久链接"></a></h3>
+<p>SET_PARAMETER方法用于给URI指定的流地址设置参数</p>
+<ul class="simple">
+<li><p>SET_PARAMETER请求消息格式</p></li>
+</ul>
+<img alt="../../_images/set_req_struct.png" src="../../_images/set_req_struct.png" />
+<ul class="simple">
+<li><p>SET_PARAMETER回应消息格式</p></li>
+</ul>
+<img alt="../../_images/setup_res_struct.png" src="../../_images/setup_res_struct.png" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="rtp.html" class="btn btn-neutral float-left" title="6.5.3. RTP协议" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../verhicle_app/index.html" class="btn btn-neutral float-right" title="6.6. 车载应用汇总" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

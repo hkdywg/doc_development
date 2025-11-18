@@ -1,0 +1,147 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>linux内存分布 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">linux内存分布</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/mm/summary/memory_distribute.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux">
+<h1>linux内存分布<a class="headerlink" href="#linux" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2>虚拟内存<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>最初的操作系统并没有那么完善，开始的时候程序是直接装载到物理内存中的，这就导致了下面的一些问题</p>
+<ul class="simple">
+<li><p>程序编写困难: 操作系统是同时运行好多程序的，编写的程序如果直接操作物理内存的话，需要考虑程序操作的内存地址是否已经被其他程序占用</p></li>
+<li><p>修改内存数据导致程序崩溃: 一个应用程序可以访问所有的物理内存，如果一个应用程序恶意修改其他应用程序的内存地址的话，可能导致其他程序崩溃</p></li>
+</ul>
+<p>虚拟内存概念的出现解决了上面的问题，应用程序不再直接操作物理内存，对每个应用程序来说，他们相当于拥有了所有的内存空间．</p>
+<p>每个进程都拥有自己的虚拟内存地址，不用的硬件对应不用的虚拟内存</p>
+<p>对于32位的处理器x86来说，每个进程可以拥有4G的虚拟内存，其中</p>
+<ul class="simple">
+<li><p>0x08048000~0xBFFFFFFF(3G大小，最低的128M内存没用)表示用户空间</p></li>
+<li><p>0xC0000000~0xFFFFFFFF(1G)表示内核空间</p></li>
+</ul>
+<p>对于64位的处理器来说，一般会保留48位的虚拟内存，大概是256TB的虚拟内存空间</p>
+<img alt="../../../_images/mm_level.png" src="../../../_images/mm_level.png" />
+<p>上图为4级页表下的虚拟地址分布</p>
+</section>
+<section id="id2">
+<h2>从进程的角度看内存分配<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>在linux系统中，应用程序通常采用ELF格式，ELF结构图如下图所示</p>
+<img alt="../../../_images/elf_struct.png" src="../../../_images/elf_struct.png" />
+<p>程序在编译，链接时会尽量把相同权限属性的段分配在同一空间里，如把可读，可执行的段放在一起，包括代码段，init段．
+把可读可写的段放在一起，包括数据段和未初始化的数据段等．ELF把这些属性相似并链接在一起的段叫做分段．进程在加载时按照
+这些分段来映射可执行文件的</p>
+<p>linux操作系统提供了proc文件系统来窥探linux内核的执行情况，每个进程在执行之后，在/proc/pid/maps节点会列出当前进程的地址映射情况</p>
+</section>
+<section id="id3">
+<h2>从内核角度看内存分配<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<img alt="../../../_images/kernel_mm_level.png" src="../../../_images/kernel_mm_level.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

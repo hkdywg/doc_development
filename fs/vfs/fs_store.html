@@ -1,0 +1,225 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.1.3. 文件的存储 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="5.1.4. 文件系统mount" href="fs_mount.html" />
+    <link rel="prev" title="5.1.2. vfs数据结构" href="vfs_datastruct.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. file system note</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.1. linux 虚拟文件系统</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="vfs_architecture.html">5.1.1. 虚拟文件系统概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vfs_datastruct.html">5.1.2. vfs数据结构</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.1.3. 文件的存储</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">5.1.3.1. 连续空间存放方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">5.1.3.2. 非连续空间存放方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">5.1.3.3. 空闲空间管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">5.1.3.4. 目录的存储</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">5.1.3.5. 软链接和硬链接</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fs_mount.html">5.1.4. 文件系统mount</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vfs_realfs.html">5.1.5. vfs与real_fs关联</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs_io_read.html">5.1.6. 文件系统系统调用</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ext4/index.html">5.2. ext4文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sysfs/index.html">5.3. linux文件系统之sysfs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>file system note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.1. </span>linux 虚拟文件系统</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5.1.3. </span>文件的存储</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/fs/vfs/fs_store.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">5.1.3. </span>文件的存储<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<p>文件的数据是要存储在硬盘上面的，数据在磁盘上的存放方式，就像程序在内存中存放的方式那样，有以下两种：</p>
+<ul class="simple">
+<li><p>连续空间存放方式</p></li>
+<li><p>非连续空间存放方式</p></li>
+</ul>
+<p>其中，非连续空间存放方式又可以分为 <code class="docutils literal notranslate"><span class="pre">链表方式</span></code> 和 <code class="docutils literal notranslate"><span class="pre">索引方式</span></code></p>
+<section id="id2">
+<h2><span class="section-number">5.1.3.1. </span>连续空间存放方式<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>顾名思义，文件是存放在磁盘连续的物理空间中，这种存放方式读写效率比较高. inode会描述文件起始块的位置和长度</p>
+<img alt="../../_images/continue_store.png" src="../../_images/continue_store.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>连续空间存放方式虽然读写效率高，但是有 <code class="docutils literal notranslate"><span class="pre">磁盘空间碎片</span></code> 和 <code class="docutils literal notranslate"><span class="pre">文件长度不易扩展</span></code> 的缺陷</p>
+</div>
+</section>
+<section id="id3">
+<h2><span class="section-number">5.1.3.2. </span>非连续空间存放方式<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>非连续空间存放方式又可以分为 <code class="docutils literal notranslate"><span class="pre">链表方式</span></code> 和 <code class="docutils literal notranslate"><span class="pre">索引方式</span></code></p>
+<p><strong>链表方式</strong></p>
+<p>链表的方式存放是离散的、不连续的，于是可以消除磁盘碎片，提供磁盘空间利用率，同时文件内的长度可以动态扩展。链表可以分为 <code class="docutils literal notranslate"><span class="pre">隐式链表</span></code> 和 <code class="docutils literal notranslate"><span class="pre">显示链表</span></code></p>
+<p>文件要以「隐式链表」的方式存放的话，实现的方式是文件头要包含「第一块」和「最后一块」的位置，并且每个数据块里面留出一个指针空间，用来存放下一个数据块的位置，
+这样一个数据块连着一个数据块，从链头开是就可以顺着指针找到所有的数据块，所以存放的方式可以是不连续的。</p>
+<img alt="../../_images/non_continue_link_1.png" src="../../_images/non_continue_link_1.png" />
+<p>隐式链表的存放方式的缺点在于无法直接访问数据块，只能通过指针顺序访问文件，以及数据块指针消耗了一定的存储空间。隐式链接分配的稳定性较差，
+系统在运行过程中由于软件或者硬件错误导致链表中的指针丢失或损坏，会导致文件数据的丢失。</p>
+<p>如果取出每个磁盘块的指针，把它放在内存的一个表中，就可以解决上述隐式链表的两个不足。那么，这种实现方式是「显式链接」，它指把用于链接文件各数据块的指针，
+显式地存放在内存的一张链接表中，该表在整个磁盘仅设置一张，每个表项中存放链接指针，指向下一个数据块号。</p>
+<p><strong>索引方式</strong></p>
+<p>索引的实现是为每个文件创建一个「索引数据块」，里面存放的是指向文件数据块的指针列表，说白了就像书的目录一样，要找哪个章节的内容，看目录查就可以。</p>
+<p>另外，文件头需要包含指向「索引数据块」的指针，这样就可以通过文件头知道索引数据块的位置，再通过索引数据块里的索引信息找到对应的数据块。</p>
+<img alt="../../_images/index_store.png" src="../../_images/index_store.png" />
+<p>由于索引数据也是存放在磁盘块的，如果文件很小，明明只需一块就可以存放的下，但还是需要额外分配一块来存放索引数据，所以缺陷之一就是存储索引带来的开销。</p>
+<p>如果文件很大，大到一个索引数据块放不下索引信息，这时又要如何处理大文件的存放呢？我们可以通过组合的方式，来处理大文件的存。</p>
+<p>先来看看链表 + 索引的组合，这种组合称为「链式索引块」，它的实现方式是在索引数据块留出一个存放下一个索引数据块的指针，于是当一个索引数据块的索引信息用完了，
+就可以通过指针的方式，找到下一个索引数据块的信息。那这种方式也会出现前面提到的链表方式的问题，万一某个指针损坏了，后面的数据也就会无法读取了。</p>
+<img alt="../../_images/link_index_store.png" src="../../_images/link_index_store.png" />
+<p>还有另外一种组合方式是索引 + 索引的方式，这种组合称为「多级索引块」，实现方式是通过一个索引块来存放多个索引数据块，一层套一层索引，像极了俄罗斯套娃是吧。</p>
+<img alt="../../_images/multi_index_store.png" src="../../_images/multi_index_store.png" />
+<p>那早期 Unix 文件系统是组合了前面的文件存放方式的优点，如下图：</p>
+<img alt="../../_images/fs_multi_index.png" src="../../_images/fs_multi_index.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct ext2_inode {
+    ... ...
+    /**
+     * 指向数据块的指针。
+     * 前12个块是直接数据块。
+     * 第13块是一级间接块号。
+     * 14-&gt;二级间接块。
+     * 15-&gt;三级间接块。
+     */
+    __le32  i_block[EXT2_N_BLOCKS];/* Pointers to blocks */
+    ... ...
+}
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2><span class="section-number">5.1.3.3. </span>空闲空间管理<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>前面说到的文件的存储是针对已经被占用的数据块组织和管理，接下来的问题是，如果我要保存一个数据块，
+我应该放在硬盘上的哪个位置呢？难道需要将所有的块扫描一遍，找个空的地方随便放吗？</p>
+<p>在 Linux 文件系统就采用了位图的方式来管理空闲空间，不仅用于数据空闲块的管理，还用于 inode 空闲块的管理，因为 inode 也是存储在磁盘的，自然也要有对其管理。</p>
+<p>位图是利用二进制的一位来表示磁盘中一个盘块的使用情况，磁盘上所有的盘块都有一个二进制位与之对应。</p>
+<p>当值为 0 时，表示对应的盘块空闲，值为 1 时，表示对应的盘块已分配。</p>
+<p>Linux Ext2 整个文件系统的结构和块组的内容，文件系统都由大量块组组成，在硬盘上相继排布：</p>
+<img alt="../../_images/ext2_group.png" src="../../_images/ext2_group.png" />
+</section>
+<section id="id5">
+<h2><span class="section-number">5.1.3.4. </span>目录的存储<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<p>和普通文件不同的是，普通文件的块里面保存的是文件数据，而目录文件的块里面保存的是目录里面一项一项的文件信息。</p>
+<p>在目录文件的块中，最简单的保存格式就是列表，就是一项一项地将目录下的文件信息（如文件名、文件 inode、文件类型等）列在表里。</p>
+<p>列表中每一项就代表该目录下的文件的文件名和对应的 inode，通过这个 inode，就可以找到真正的文件。</p>
+<img alt="../../_images/dentry_hash.png" src="../../_images/dentry_hash.png" />
+</section>
+<section id="id6">
+<h2><span class="section-number">5.1.3.5. </span>软链接和硬链接<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p>硬链接是多个目录项中的「索引节点」指向一个文件，也就是指向同一个 inode，但是 inode 是不可能跨越文件系统的，
+每个文件系统都有各自的 inode 数据结构和列表，所以硬链接是不可用于跨文件系统的。由于多个目录项都是指向一个 inode，
+那么只有删除文件的所有硬链接以及源文件时，系统才会彻底删除该文件。</p>
+<img alt="../../_images/hard_link.png" src="../../_images/hard_link.png" />
+<p>软链接相当于重新创建一个文件，这个文件有独立的 inode，但是这个文件的内容是另外一个文件的路径，所以访问软链接的时候，实际上相当于访问到了另外一个文件，
+所以软链接是可以跨文件系统的，甚至目标文件被删除了，链接文件还是在的，只不过指向的文件找不到了而已。</p>
+<img alt="../../_images/soft_link.png" src="../../_images/soft_link.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="vfs_datastruct.html" class="btn btn-neutral float-left" title="5.1.2. vfs数据结构" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="fs_mount.html" class="btn btn-neutral float-right" title="5.1.4. 文件系统mount" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

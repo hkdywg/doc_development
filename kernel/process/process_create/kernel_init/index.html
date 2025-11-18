@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.3.2.3. kernel_init &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../../search.html" />
+    <link rel="next" title="3.3.2.4. kthreadd" href="../kthreadadd/index.html" />
+    <link rel="prev" title="3.3.2.2. init_task" href="../init_task/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">3.3. 进程管理与调度</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../process_overview/index.html">3.3.1. 进程描述</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">3.3.2. 进程创建</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../category/index.html">3.3.2.1. 进程类别</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../init_task/index.html">3.3.2.2. init_task</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.3.2.3. kernel_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../kthreadadd/index.html">3.3.2.4. kthreadd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../do_fork/index.html">3.3.2.5. do_fork</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../process_run/index.html">3.3.3. 进程运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../process_schedule/index.html">3.3.4. 进程调度</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../process_cfs/index.html">3.3.5. 调度普通进程-完全公平调度器CFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../thread_info/index.html">3.3.6. thread_info与内核栈stack的关系</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3.3. </span>进程管理与调度</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.3.2. </span>进程创建</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.3.2.3. </span>kernel_init</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/kernel/process/process_create/kernel_init/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kernel-init">
+<h1><span class="section-number">3.3.2.3. </span>kernel_init<a class="headerlink" href="#kernel-init" title="此标题的永久链接"></a></h1>
+<p>0号进程创建1号进程的方式如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kernel_thread</span><span class="p">(</span><span class="n">kernel_init</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">CLONE_FS</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>1号进程的执行函数就是 <code class="docutils literal notranslate"><span class="pre">kernel_init</span></code> ，这个函数定义在 <code class="docutils literal notranslate"><span class="pre">init/main.c</span></code> 中,代码实现如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static int __ref kernel_init(void *unused)
+{
+    int ret;
+
+    kernel_init_freeable();
+    /* need to finish all async __init code before freeing the memory */
+    async_synchronize_full();
+    ftrace_free_init_mem();
+    free_initmem();
+    mark_readonly();
+
+    /*
+     * Kernel mappings are now finalized - update the userspace page-table
+     * to finalize PTI.
+     */
+    pti_finalize();
+
+    system_state = SYSTEM_RUNNING;
+    numa_default_policy();
+
+    rcu_end_inkernel_boot();
+
+    if (ramdisk_execute_command) {
+        ret = run_init_process(ramdisk_execute_command);
+        if (!ret)
+            return 0;
+        pr_err(&quot;Failed to execute %s (error %d)\n&quot;,
+               ramdisk_execute_command, ret);
+    }
+
+    /*
+     * We try each of these until one succeeds.
+     *
+     * The Bourne shell can be used instead of init if we are
+     * trying to recover a really broken machine.
+     */
+    if (execute_command) {
+        ret = run_init_process(execute_command);
+        if (!ret)
+            return 0;
+        panic(&quot;Requested init %s failed (error %d).&quot;,
+              execute_command, ret);
+    }
+    if (!try_to_run_init_process(&quot;/sbin/init&quot;) ||
+        !try_to_run_init_process(&quot;/etc/init&quot;) ||
+        !try_to_run_init_process(&quot;/bin/init&quot;) ||
+        !try_to_run_init_process(&quot;/bin/sh&quot;))
+        return 0;
+
+    panic(&quot;No working init found.  Try passing init= option to kernel. &quot;
+          &quot;See Linux Documentation/admin-guide/init.rst for guidance.&quot;);
+}
+</pre></div>
+</div>
+<p>kernel_init 函数执行内核的部分初始化工作,及系统配置,并创建若干个用于高速缓存和虚拟内存管理的内核线程</p>
+<section id="init">
+<h2><span class="section-number">3.3.2.3.1. </span>init进程<a class="headerlink" href="#init" title="此标题的永久链接"></a></h2>
+<p>1号进程调用do_execve运行可执行程序init，并演变为用户态1号进程,即init进程。init进程有许多重要的任务,比如启动getty(用于用户登录)、实现运行级别、以及处理孤立进程</p>
+<p>0号进程—-&gt;1号内核进程—-&gt;1号用户进程—-&gt;getty进程—-&gt;shell进程</p>
+<p>内核会在几个位置来查询init,按优先级顺序依次为 1. /sbin/init  2. /etc/init  3./bin/init  4/bin/sh</p>
+<p>init程序是一个可以由用户编写的进程,以下是init的几个变种</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>init包</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sysvinit</p></td>
+<td><p>早期使用的初始化进程工具,目前逐渐淡出linux的历史舞台</p></td>
+</tr>
+<tr class="row-odd"><td><p>upstart</p></td>
+<td><p>debian,ubuntu等系统使用的init daemon</p></td>
+</tr>
+<tr class="row-even"><td><p>systemd</p></td>
+<td><p>systemd是linux中最新的初始化系统(init),可以提高系统的启动速度</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="kerner-init">
+<h2><span class="section-number">3.3.2.3.2. </span>kerner_init分析<a class="headerlink" href="#kerner-init" title="此标题的永久链接"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>执行流程</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>kernel_init_freeable</p></td>
+<td><p>完成初始化工作,准备文件系统,准备模块信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>async_synchronize_full</p></td>
+<td><p>用来加速linux kernel开机的效率</p></td>
+</tr>
+<tr class="row-even"><td><p>free_initmem</p></td>
+<td><p>free_initmem(in arch/arm/mm/init.c)释放kernel介于__init_begin到__init_end属于init Section的函数的所有内存,并把page个数加到
+tatolram_pages中,作为后续kernel在配置mem时可以使用的pages</p></td>
+</tr>
+<tr class="row-odd"><td><p>system_state</p></td>
+<td><p>设置运行状态为SYSTEM_RUNNING</p></td>
+</tr>
+<tr class="row-even"><td><p>加载init进程</p></td>
+<td><p>a.如果ramdisk_execute_command不为0就执行该命令为init user process
+b.如果execute_command不为0，就行执行该命令称为init user process
+c.依序执行/sbin/init /etc/init /bin/init /bin/sh</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="kernel-init-freeable">
+<h2><span class="section-number">3.3.2.3.3. </span>kernel_init_freeable流程分析<a class="headerlink" href="#kernel-init-freeable" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static noinline void __init kernel_init_freeable(void)
+{
+    /*
+     * Wait until kthreadd is all set-up.
+     */
+    wait_for_completion(&amp;kthreadd_done);
+    //等待kernel thread kthreadd(pid=2)创建完毕
+
+    /* Now the scheduler is fully set up and can do blocking allocations */
+    gfp_allowed_mask = __GFP_BITS_MASK;
+    //设置bitmask,使得init进程可以使用PM并且运行I/O阻塞操作
+
+
+    /*
+     * init can allocate pages on any node
+     */
+    set_mems_allowed(node_states[N_MEMORY]);
+    //分配物理页面
+
+    cad_pid = task_pid(current);
+    //设置目前运行进程init的pid号到cad_pid(cad_pid用来接收ctrl-alt-del reboot signal的进程，如果设置cad=1表示可以处理来自ctl-alt-del的动作)，
+    //最后会调用ctrl_alt_del(void)函数并确认cad是否为1确定后将执行cad_work=deferred_cad,执行kernel_restart
+
+    smp_prepare_cpus(setup_max_cpus);
+    //体系结构相关的函数,实例在arch/arm64/kernel/smp.c中,调用smp_prepare_cpus时会以全局的setup_max_cpus为参数表示在编译核心时设定的CPU最大数量
+
+    workqueue_init();
+    //工作者队列初始化
+
+    init_mm_internals();
+
+    do_pre_smp_initcalls();
+    //实例在init/main.c中,会透过函数do_one_initcall执行symbol中__initcall_start与__initcall0_start之间的函数
+    lockup_detector_init();
+
+    smp_init();
+    //实例在kernel/smp.c中,函数主要是bootstrap处理器,运行active多核心架构下的其他处理器
+    sched_init_smp();
+
+    page_alloc_init_late();
+    /* Initialize page ext after all struct pages are initialized. */
+    page_ext_init();
+
+    do_basic_setup();
+    //实例在init/main.c中
+
+    /* Open the /dev/console on the rootfs, this should never fail */
+    if (ksys_open((const char __user *) &quot;/dev/console&quot;, O_RDWR, 0) &lt; 0)
+        pr_err(&quot;Warning: unable to open an initial console.\n&quot;);
+
+    (void) ksys_dup(0);
+    (void) ksys_dup(0);
+    /*
+     * check if there is an early userspace init.  If yes, let it do all
+     * the work
+     */
+
+    if (!ramdisk_execute_command)
+        ramdisk_execute_command = &quot;/init&quot;;
+
+    if (ksys_access((const char __user *)
+            ramdisk_execute_command, 0) != 0) {
+        ramdisk_execute_command = NULL;
+        prepare_namespace();
+    }
+
+    /*
+     * Ok, we have completed the initial bootup, and
+     * we&#39;re essentially up and running. Get rid of the
+     * initmem segments and start the user-mode stuff..
+     *
+     * rootfs is available now, try loading the public keys
+     * and default modules
+     */
+
+    integrity_load_keys();
+}
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Ok</span><span class="p">,</span> <span class="n">the</span> <span class="n">machine</span> <span class="ow">is</span> <span class="n">now</span> <span class="n">initialized</span><span class="o">.</span> <span class="kc">None</span> <span class="n">of</span> <span class="n">the</span> <span class="n">devices</span>
+ <span class="o">*</span> <span class="n">have</span> <span class="n">been</span> <span class="n">touched</span> <span class="n">yet</span><span class="p">,</span> <span class="n">but</span> <span class="n">the</span> <span class="n">CPU</span> <span class="n">subsystem</span> <span class="ow">is</span> <span class="n">up</span> <span class="ow">and</span>
+ <span class="o">*</span> <span class="n">running</span><span class="p">,</span> <span class="ow">and</span> <span class="n">memory</span> <span class="ow">and</span> <span class="n">process</span> <span class="n">management</span> <span class="n">works</span><span class="o">.</span>
+ <span class="o">*</span>
+ <span class="o">*</span> <span class="n">Now</span> <span class="n">we</span> <span class="n">can</span> <span class="k">finally</span> <span class="n">start</span> <span class="n">doing</span> <span class="n">some</span> <span class="n">real</span> <span class="n">work</span><span class="o">..</span>
+ <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">__init</span> <span class="n">do_basic_setup</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">cpuset_init_smp</span><span class="p">();</span>
+    <span class="n">driver_init</span><span class="p">();</span>
+    <span class="o">//</span><span class="n">函数实现位于drivers</span><span class="o">/</span><span class="n">base</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">c中</span><span class="p">,</span><span class="n">初始化linux</span> <span class="n">driver</span> <span class="n">system</span> <span class="n">model</span>
+    <span class="n">init_irq_proc</span><span class="p">();</span>
+    <span class="o">//</span><span class="n">初始化</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">irq与其下的file</span> <span class="n">node</span>
+    <span class="n">do_ctors</span><span class="p">();</span>
+    <span class="o">//</span> <span class="n">init</span><span class="o">/</span><span class="n">main</span><span class="o">.</span><span class="n">c中实现</span><span class="p">,</span><span class="n">执行位于__ctors_start和__ctors_end中得代码段</span>
+    <span class="n">usermodehelper_enable</span><span class="p">();</span>
+    <span class="o">//</span><span class="n">kernel</span><span class="o">/</span><span class="n">kmod</span><span class="o">.</span><span class="n">c中实现</span><span class="p">,</span><span class="n">产生khelper</span> <span class="n">workqueue</span>
+    <span class="n">do_initcalls</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span> <span class="n">__init</span> <span class="n">do_initcalls</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">level</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">level</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="n">ARRAY_SIZE</span><span class="p">(</span><span class="n">initcall_levels</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">level</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">do_initcall_level</span><span class="p">(</span><span class="n">level</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="o">//</span><span class="n">initcall函数调用</span><span class="p">,</span><span class="n">编译到内核中驱动在此函数中加载</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../init_task/index.html" class="btn btn-neutral float-left" title="3.3.2.2. init_task" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../kthreadadd/index.html" class="btn btn-neutral float-right" title="3.3.2.4. kthreadd" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

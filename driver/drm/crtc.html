@@ -1,0 +1,888 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.14.4. crtc代码分析 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.14.5. plane代码分析" href="plane.html" />
+    <link rel="prev" title="4.14.3. encoder代码分析" href="encoder.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.14. DRM框架分析</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="drm_frame.html">4.14.1. DRM框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="connector.html">4.14.2. connector代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="encoder.html">4.14.3. encoder代码分析</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.14.4. crtc代码分析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#struct-drm-crtc">4.14.4.1. struct drm_crtc结构体</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#crtcapi">4.14.4.2. crtc相关的API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#func">4.14.4.3. func的一些介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rcar-du-crtc-create">4.14.4.4. rcar_du_crtc_create</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="plane.html">4.14.5. plane代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_drm.html">4.14.6. VKMS示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.14. </span>DRM框架分析</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.14.4. </span>crtc代码分析</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/drm/crtc.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="crtc">
+<h1><span class="section-number">4.14.4. </span>crtc代码分析<a class="headerlink" href="#crtc" title="此标题的永久链接"></a></h1>
+<section id="struct-drm-crtc">
+<h2><span class="section-number">4.14.4.1. </span>struct drm_crtc结构体<a class="headerlink" href="#struct-drm-crtc" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct drm_crtc {
+    /** @dev: parent DRM device */
+    struct drm_device *dev;
+    /** @port: OF node used by drm_of_find_possible_crtcs(). */
+    struct device_node *port;
+    /**
+     * @head:
+     *
+     * List of all CRTCs on @dev, linked from &amp;drm_mode_config.crtc_list.
+     * Invariant over the lifetime of @dev and therefore does not need
+     * locking.
+     */
+    struct list_head head;
+
+    /** @name: human readable name, can be overwritten by the driver */
+    char *name;
+
+    /**
+     * @mutex:
+     *
+     * This provides a read lock for the overall CRTC state (mode, dpms
+     * state, ...) and a write lock for everything which can be update
+     * without a full modeset (fb, cursor data, CRTC properties ...). A full
+     * modeset also need to grab &amp;drm_mode_config.connection_mutex.
+     *
+     * For atomic drivers specifically this protects @state.
+     */
+    struct drm_modeset_lock mutex;
+
+    /** @base: base KMS object for ID tracking etc. */
+    struct drm_mode_object base;
+
+    /**
+     * @primary:
+     * Primary plane for this CRTC. Note that this is only
+     * relevant for legacy IOCTL, it specifies the plane implicitly used by
+     * the SETCRTC and PAGE_FLIP IOCTLs. It does not have any significance
+     * beyond that.
+     */
+    struct drm_plane *primary;
+
+    /**
+     * @cursor:
+     * Cursor plane for this CRTC. Note that this is only relevant for
+     * legacy IOCTL, it specifies the plane implicitly used by the SETCURSOR
+     * and SETCURSOR2 IOCTLs. It does not have any significance
+     * beyond that.
+     */
+    struct drm_plane *cursor;
+
+    /**
+     * @index: Position inside the mode_config.list, can be used as an array
+     * index. It is invariant over the lifetime of the CRTC.
+     */
+    unsigned index;
+
+    /**
+     * @cursor_x: Current x position of the cursor, used for universal
+     * cursor planes because the SETCURSOR IOCTL only can update the
+     * framebuffer without supplying the coordinates. Drivers should not use
+     * this directly, atomic drivers should look at &amp;drm_plane_state.crtc_x
+     * of the cursor plane instead.
+     */
+    int cursor_x;
+    /**
+     * @cursor_y: Current y position of the cursor, used for universal
+     * cursor planes because the SETCURSOR IOCTL only can update the
+     * framebuffer without supplying the coordinates. Drivers should not use
+     * this directly, atomic drivers should look at &amp;drm_plane_state.crtc_y
+     * of the cursor plane instead.
+     */
+    int cursor_y;
+
+    /**
+     * @enabled:
+     *
+     * Is this CRTC enabled? Should only be used by legacy drivers, atomic
+     * drivers should instead consult &amp;drm_crtc_state.enable and
+     * &amp;drm_crtc_state.active. Atomic drivers can update this by calling
+     * drm_atomic_helper_update_legacy_modeset_state().
+     */
+    bool enabled;
+
+    /**
+     * @mode:
+     *
+     * Current mode timings. Should only be used by legacy drivers, atomic
+     * drivers should instead consult &amp;drm_crtc_state.mode. Atomic drivers
+     * can update this by calling
+     * drm_atomic_helper_update_legacy_modeset_state().
+     */
+    struct drm_display_mode mode;
+
+    /**
+     * @hwmode:
+     *
+     * Programmed mode in hw, after adjustments for encoders, crtc, panel
+     * scaling etc. Should only be used by legacy drivers, for high
+     * precision vblank timestamps in
+     * drm_calc_vbltimestamp_from_scanoutpos().
+     *
+     * Note that atomic drivers should not use this, but instead use
+     * &amp;drm_crtc_state.adjusted_mode. And for high-precision timestamps
+     * drm_calc_vbltimestamp_from_scanoutpos() used &amp;drm_vblank_crtc.hwmode,
+     * which is filled out by calling drm_calc_timestamping_constants().
+     */
+    struct drm_display_mode hwmode;
+
+    /**
+     * @x:
+     * x position on screen. Should only be used by legacy drivers, atomic
+     * drivers should look at &amp;drm_plane_state.crtc_x of the primary plane
+     * instead. Updated by calling
+     * drm_atomic_helper_update_legacy_modeset_state().
+     */
+    int x;
+    /**
+     * @y:
+     * y position on screen. Should only be used by legacy drivers, atomic
+     * drivers should look at &amp;drm_plane_state.crtc_y of the primary plane
+     * instead. Updated by calling
+     * drm_atomic_helper_update_legacy_modeset_state().
+     */
+    int y;
+
+    /** @funcs: CRTC control functions */
+    const struct drm_crtc_funcs *funcs;
+
+    /**
+     * @gamma_size: Size of legacy gamma ramp reported to userspace. Set up
+     * by calling drm_mode_crtc_set_gamma_size().
+     */
+    uint32_t gamma_size;
+
+    /**
+     * @gamma_store: Gamma ramp values used by the legacy SETGAMMA and
+     * GETGAMMA IOCTls. Set up by calling drm_mode_crtc_set_gamma_size().
+     */
+    uint16_t *gamma_store;
+
+    /** @helper_private: mid-layer private data */
+    const struct drm_crtc_helper_funcs *helper_private;
+
+    /** @properties: property tracking for this CRTC */
+    struct drm_object_properties properties;
+
+    /**
+     * @state:
+     *
+     * Current atomic state for this CRTC.
+     *
+     * This is protected by @mutex. Note that nonblocking atomic commits
+     * access the current CRTC state without taking locks. Either by going
+     * through the &amp;struct drm_atomic_state pointers, see
+     * for_each_oldnew_crtc_in_state(), for_each_old_crtc_in_state() and
+     * for_each_new_crtc_in_state(). Or through careful ordering of atomic
+     * commit operations as implemented in the atomic helpers, see
+     * &amp;struct drm_crtc_commit.
+     */
+    struct drm_crtc_state *state;
+
+    /**
+     * @commit_list:
+     *
+     * List of &amp;drm_crtc_commit structures tracking pending commits.
+     * Protected by @commit_lock. This list holds its own full reference,
+     * as does the ongoing commit.
+     *
+     * &quot;Note that the commit for a state change is also tracked in
+     * &amp;drm_crtc_state.commit. For accessing the immediately preceding
+     * commit in an atomic update it is recommended to just use that
+     * pointer in the old CRTC state, since accessing that doesn&#39;t need
+     * any locking or list-walking. @commit_list should only be used to
+     * stall for framebuffer cleanup that&#39;s signalled through
+     * &amp;drm_crtc_commit.cleanup_done.&quot;
+     */
+    struct list_head commit_list;
+
+    /**
+     * @commit_lock:
+     *
+     * Spinlock to protect @commit_list.
+     */
+    spinlock_t commit_lock;
+
+#ifdef CONFIG_DEBUG_FS
+    /**
+     * @debugfs_entry:
+     *
+     * Debugfs directory for this CRTC.
+     */
+    struct dentry *debugfs_entry;
+#endif
+
+    /**
+     * @crc:
+     *
+     * Configuration settings of CRC capture.
+     */
+    struct drm_crtc_crc crc;
+
+    /**
+     * @fence_context:
+     *
+     * timeline context used for fence operations.
+     */
+    unsigned int fence_context;
+
+    /**
+     * @fence_lock:
+     *
+     * spinlock to protect the fences in the fence_context.
+     */
+    spinlock_t fence_lock;
+    /**
+     * @fence_seqno:
+     *
+     * Seqno variable used as monotonic counter for the fences
+     * created on the CRTC&#39;s timeline.
+     */
+    unsigned long fence_seqno;
+
+    /**
+     * @timeline_name:
+     *
+     * The name of the CRTC&#39;s fence timeline.
+     */
+    char timeline_name[32];
+
+    /**
+     * @self_refresh_data: Holds the state for the self refresh helpers
+     *
+     * Initialized via drm_self_refresh_helper_init().
+     */
+    struct drm_self_refresh_data *self_refresh_data;
+};
+</pre></div>
+</div>
+</section>
+<section id="crtcapi">
+<h2><span class="section-number">4.14.4.2. </span>crtc相关的API<a class="headerlink" href="#crtcapi" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>drm_crtc_init_with_planes</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int drm_crtc_init_with_planes(struct drm_device *dev, struct drm_crtc *crtc,
+                  struct drm_plane *primary,
+                  struct drm_plane *cursor,
+                  const struct drm_crtc_funcs *funcs,
+                  const char *name, ...)
+{
+    struct drm_mode_config *config = &amp;dev-&gt;mode_config;
+    int ret;
+
+    WARN_ON(primary &amp;&amp; primary-&gt;type != DRM_PLANE_TYPE_PRIMARY);
+    WARN_ON(cursor &amp;&amp; cursor-&gt;type != DRM_PLANE_TYPE_CURSOR);
+
+    /* crtc index is used with 32bit bitmasks */
+    if (WARN_ON(config-&gt;num_crtc &gt;= 32))
+        return -EINVAL;
+
+    WARN_ON(drm_drv_uses_atomic_modeset(dev) &amp;&amp;
+        (!funcs-&gt;atomic_destroy_state ||
+         !funcs-&gt;atomic_duplicate_state));
+
+    crtc-&gt;dev = dev;
+    crtc-&gt;funcs = funcs;
+
+    INIT_LIST_HEAD(&amp;crtc-&gt;commit_list);
+    spin_lock_init(&amp;crtc-&gt;commit_lock);
+
+    drm_modeset_lock_init(&amp;crtc-&gt;mutex);
+    //创建类型为DRM_MODE_OBJECT_CRTC的struct drm_mode_object结构体
+    ret = drm_mode_object_add(dev, &amp;crtc-&gt;base, DRM_MODE_OBJECT_CRTC);
+    if (ret)
+        return ret;
+
+    //设置名称
+    if (name) {
+        va_list ap;
+
+        va_start(ap, name);
+        crtc-&gt;name = kvasprintf(GFP_KERNEL, name, ap);
+        va_end(ap);
+    } else {
+        crtc-&gt;name = kasprintf(GFP_KERNEL, &quot;crtc-%d&quot;,
+                       drm_num_crtcs(dev));
+    }
+    if (!crtc-&gt;name) {
+        drm_mode_object_unregister(dev, &amp;crtc-&gt;base);
+        return -ENOMEM;
+    }
+
+    crtc-&gt;fence_context = dma_fence_context_alloc(1);
+    spin_lock_init(&amp;crtc-&gt;fence_lock);
+    snprintf(crtc-&gt;timeline_name, sizeof(crtc-&gt;timeline_name),
+         &quot;CRTC:%d-%s&quot;, crtc-&gt;base.id, crtc-&gt;name);
+
+    //初始化properties
+    crtc-&gt;base.properties = &amp;crtc-&gt;properties;
+
+    list_add_tail(&amp;crtc-&gt;head, &amp;config-&gt;crtc_list);
+    crtc-&gt;index = config-&gt;num_crtc++;
+    /初始化primary plane, cursor plane
+    crtc-&gt;primary = primary;
+    crtc-&gt;cursor = cursor;
+    if (primary &amp;&amp; !primary-&gt;possible_crtcs)
+        primary-&gt;possible_crtcs = drm_crtc_mask(crtc);
+    if (cursor &amp;&amp; !cursor-&gt;possible_crtcs)
+        cursor-&gt;possible_crtcs = drm_crtc_mask(crtc);
+
+    //调试相关的初始化
+    ret = drm_crtc_crc_init(crtc);
+    if (ret) {
+        drm_mode_object_unregister(dev, &amp;crtc-&gt;base);
+        return ret;
+    }
+
+    //attach一些properties变量
+    if (drm_core_check_feature(dev, DRIVER_ATOMIC)) {
+        drm_object_attach_property(&amp;crtc-&gt;base, config-&gt;prop_active, 0);
+        drm_object_attach_property(&amp;crtc-&gt;base, config-&gt;prop_mode_id, 0);
+        drm_object_attach_property(&amp;crtc-&gt;base,
+                       config-&gt;prop_out_fence_ptr, 0);
+        drm_object_attach_property(&amp;crtc-&gt;base,
+                       config-&gt;prop_vrr_enabled, 0);
+    }
+
+    return 0;
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>drm_mode_setcrtc</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int drm_mode_setcrtc(struct drm_device *dev, void *data,
+             struct drm_file *file_priv)
+{
+    struct drm_mode_config *config = &amp;dev-&gt;mode_config;
+    struct drm_mode_crtc *crtc_req = data;
+    struct drm_crtc *crtc;
+    struct drm_plane *plane;
+    struct drm_connector **connector_set = NULL, *connector;
+    struct drm_framebuffer *fb = NULL;
+    struct drm_display_mode *mode = NULL;
+    struct drm_mode_set set;
+    uint32_t __user *set_connectors_ptr;
+    struct drm_modeset_acquire_ctx ctx;
+    int ret;
+    int i;
+
+    if (!drm_core_check_feature(dev, DRIVER_MODESET))
+        return -EOPNOTSUPP;
+
+    /*
+     * Universal plane src offsets are only 16.16, prevent havoc for
+     * drivers using universal plane code internally.
+     */
+    if (crtc_req-&gt;x &amp; 0xffff0000 || crtc_req-&gt;y &amp; 0xffff0000)
+        return -ERANGE;
+
+    //找到需要的crtc实体
+    crtc = drm_crtc_find(dev, file_priv, crtc_req-&gt;crtc_id);
+    if (!crtc) {
+        DRM_DEBUG_KMS(&quot;Unknown CRTC ID %d\n&quot;, crtc_req-&gt;crtc_id);
+        return -ENOENT;
+    }
+    DRM_DEBUG_KMS(&quot;[CRTC:%d:%s]\n&quot;, crtc-&gt;base.id, crtc-&gt;name);
+
+    plane = crtc-&gt;primary;
+
+    /* allow disabling with the primary plane leased */
+    if (crtc_req-&gt;mode_valid &amp;&amp; !drm_lease_held(file_priv, plane-&gt;base.id))
+        return -EACCES;
+
+    mutex_lock(&amp;crtc-&gt;dev-&gt;mode_config.mutex);
+    DRM_MODESET_LOCK_ALL_BEGIN(dev, ctx,
+                   DRM_MODESET_ACQUIRE_INTERRUPTIBLE, ret);
+
+    //得到或者生成primary plane的framebuffer
+    if (crtc_req-&gt;mode_valid) {
+        /* If we have a mode we need a framebuffer. */
+        /* If we pass -1, set the mode with the currently bound fb */
+        if (crtc_req-&gt;fb_id == -1) {
+            struct drm_framebuffer *old_fb;
+
+            if (plane-&gt;state)
+                old_fb = plane-&gt;state-&gt;fb;
+            else
+                old_fb = plane-&gt;fb;
+
+            if (!old_fb) {
+                DRM_DEBUG_KMS(&quot;CRTC doesn&#39;t have current FB\n&quot;);
+                ret = -EINVAL;
+                goto out;
+            }
+
+            fb = old_fb;
+            /* Make refcounting symmetric with the lookup path. */
+            drm_framebuffer_get(fb);
+        } else {
+            fb = drm_framebuffer_lookup(dev, file_priv, crtc_req-&gt;fb_id);
+            if (!fb) {
+                DRM_DEBUG_KMS(&quot;Unknown FB ID%d\n&quot;,
+                        crtc_req-&gt;fb_id);
+                ret = -ENOENT;
+                goto out;
+            }
+        }
+       //创建struct drm_display_mode结构体，并把应用层传递下来的参数赋值给结构体
+        mode = drm_mode_create(dev);
+        if (!mode) {
+            ret = -ENOMEM;
+            goto out;
+        }
+        if (!file_priv-&gt;aspect_ratio_allowed &amp;&amp;
+            (crtc_req-&gt;mode.flags &amp; DRM_MODE_FLAG_PIC_AR_MASK) != DRM_MODE_FLAG_PIC_AR_NONE) {
+            DRM_DEBUG_KMS(&quot;Unexpected aspect-ratio flag bits\n&quot;);
+            ret = -EINVAL;
+            goto out;
+        }
+
+        //赋值操作
+        ret = drm_mode_convert_umode(dev, mode, &amp;crtc_req-&gt;mode);
+        if (ret) {
+            DRM_DEBUG_KMS(&quot;Invalid mode (ret=%d, status=%s)\n&quot;,
+                      ret, drm_get_mode_status_name(mode-&gt;status));
+            drm_mode_debug_printmodeline(mode);
+            goto out;
+        }
+
+        /*
+         * Check whether the primary plane supports the fb pixel format.
+         * Drivers not implementing the universal planes API use a
+         * default formats list provided by the DRM core which doesn&#39;t
+         * match real hardware capabilities. Skip the check in that
+         * case.
+         */
+        if (!plane-&gt;format_default) {
+            //检查pixel format是否支持
+            ret = drm_plane_check_pixel_format(plane,
+                               fb-&gt;format-&gt;format,
+                               fb-&gt;modifier);
+            if (ret) {
+                struct drm_format_name_buf format_name;
+                DRM_DEBUG_KMS(&quot;Invalid pixel format %s, modifier 0x%llx\n&quot;,
+                          drm_get_format_name(fb-&gt;format-&gt;format,
+                                  &amp;format_name),
+                          fb-&gt;modifier);
+                goto out;
+            }
+        }
+
+        //检查framebuffer是否足够大，能否满足crtc viewport
+        ret = drm_crtc_check_viewport(crtc, crtc_req-&gt;x, crtc_req-&gt;y,
+                          mode, fb);
+        if (ret)
+            goto out;
+
+    }
+
+    if (crtc_req-&gt;count_connectors == 0 &amp;&amp; mode) {
+        DRM_DEBUG_KMS(&quot;Count connectors is 0 but mode set\n&quot;);
+        ret = -EINVAL;
+        goto out;
+    }
+
+    if (crtc_req-&gt;count_connectors &gt; 0 &amp;&amp; (!mode || !fb)) {
+        DRM_DEBUG_KMS(&quot;Count connectors is %d but no mode or fb set\n&quot;,
+              crtc_req-&gt;count_connectors);
+        ret = -EINVAL;
+        goto out;
+    }
+
+    if (crtc_req-&gt;count_connectors &gt; 0) {
+        u32 out_id;
+
+        /* Avoid unbounded kernel memory allocation */
+        if (crtc_req-&gt;count_connectors &gt; config-&gt;num_connector) {
+            ret = -EINVAL;
+            goto out;
+        }
+
+        connector_set = kmalloc_array(crtc_req-&gt;count_connectors,
+                          sizeof(struct drm_connector *),
+                          GFP_KERNEL);
+        if (!connector_set) {
+            ret = -ENOMEM;
+            goto out;
+        }
+
+        for (i = 0; i &lt; crtc_req-&gt;count_connectors; i++) {
+            connector_set[i] = NULL;
+            set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req-&gt;set_connectors_ptr;
+            if (get_user(out_id, &amp;set_connectors_ptr[i])) {
+                ret = -EFAULT;
+                goto out;
+            }
+            //找到crtc绑定链接的connector
+            connector = drm_connector_lookup(dev, file_priv, out_id);
+            if (!connector) {
+                DRM_DEBUG_KMS(&quot;Connector id %d unknown\n&quot;,
+                        out_id);
+                ret = -ENOENT;
+                goto out;
+            }
+            DRM_DEBUG_KMS(&quot;[CONNECTOR:%d:%s]\n&quot;,
+                    connector-&gt;base.id,
+                    connector-&gt;name);
+
+            connector_set[i] = connector;
+        }
+    }
+
+    set.crtc = crtc;
+    set.x = crtc_req-&gt;x;
+    set.y = crtc_req-&gt;y;
+    set.mode = mode;
+    set.connectors = connector_set;
+    set.num_connectors = crtc_req-&gt;count_connectors;
+    set.fb = fb;
+    //设置struct drm_mode_set结构体
+    if (drm_drv_uses_atomic_modeset(dev))
+        ret = crtc-&gt;funcs-&gt;set_config(&amp;set, &amp;ctx);
+    else
+        ret = __drm_mode_set_config_internal(&amp;set, &amp;ctx);
+
+out:
+    if (fb)
+        drm_framebuffer_put(fb);
+
+    if (connector_set) {
+        for (i = 0; i &lt; crtc_req-&gt;count_connectors; i++) {
+            if (connector_set[i])
+                drm_connector_put(connector_set[i]);
+        }
+    }
+    kfree(connector_set);
+    drm_mode_destroy(dev, mode);
+
+    /* In case we need to retry... */
+    connector_set = NULL;
+    fb = NULL;
+    mode = NULL;
+
+    DRM_MODESET_LOCK_ALL_END(ctx, ret);
+    mutex_unlock(&amp;crtc-&gt;dev-&gt;mode_config.mutex);
+
+    return ret;
+}
+</pre></div>
+</div>
+</section>
+<section id="func">
+<h2><span class="section-number">4.14.4.3. </span>func的一些介绍<a class="headerlink" href="#func" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//crtc控制接口，一般填写helper函数
+struct drm_crtc_funcs {
+    //重置软硬件state, 由drm_mode_config_reset调用，一般赋值为
+    //drm_atomic_helper_crtc_reset
+    void (*reset)(struct drm_crtc *crtc);
+
+    //设置鼠标图片，width/height应该是鼠标的宽高，handle是鼠标图片buf(drm_gem_obj
+    //该接口已经废弃，使用鼠标层代替
+    int (*cursor_set)(struct drm_crtc *crtc, struct drm_file *file_priv,
+              uint32_t handle, uint32_t width, uint32_t height);
+
+    //同上，多了hot_x, hot_y
+    int (*cursor_set2)(struct drm_crtc *crtc, struct drm_file *file_priv,
+               uint32_t handle, uint32_t width, uint32_t height,
+               int32_t hot_x, int32_t hot_y);
+
+    //移动鼠标操作
+    int (*cursor_move)(struct drm_crtc *crtc, int x, int y);
+
+    //gamma设置
+    int (*gamma_set)(struct drm_crtc *crtc, u16 *r, u16 *g, u16 *b,
+             uint32_t size,
+             struct drm_modeset_acquire_ctx *ctx);
+
+    //drm_mode_config_cleanup调用该接口
+    void (*destroy)(struct drm_crtc *crtc);
+
+    //设置crtc的fb/connector/mode的属性，对应用户态drmModeSetCrtc接口atomic modeset操作
+    //使用drm_atomic_helper_set_config接口赋值
+    int (*set_config)(struct drm_mode_set *set,
+              struct drm_modeset_acquire_ctx *ctx);
+
+    //page翻转接口，vsync同步的
+    int (*page_flip)(struct drm_crtc *crtc,
+             struct drm_framebuffer *fb,
+             struct drm_pending_vblank_event *event,
+             uint32_t flags,
+             struct drm_modeset_acquire_ctx *ctx);
+
+    //和page_flip类似，但该接口会等待特定的vbank
+    int (*page_flip_target)(struct drm_crtc *crtc,
+                struct drm_framebuffer *fb,
+                struct drm_pending_vblank_event *event,
+                uint32_t flags, uint32_t target,
+                struct drm_modeset_acquire_ctx *ctx);
+
+    //设置属性
+    int (*set_property)(struct drm_crtc *crtc,
+                struct drm_property *property, uint64_t val);
+
+    //拷贝crtc的drm_crtc_state对象，一般赋值为drm_atomic_helper_crtc_duplicate_state
+    struct drm_crtc_state *(*atomic_duplicate_state)(struct drm_crtc *crtc);
+
+    void (*atomic_destroy_state)(struct drm_crtc *crtc,
+                     struct drm_crtc_state *state);
+
+    //atomic操作中设置特定属性到state中，该接口一般可由drm_atomic_set_property调用
+    int (*atomic_set_property)(struct drm_crtc *crtc,
+                   struct drm_crtc_state *state,
+                   struct drm_property *property,
+                   uint64_t val);
+    //获取atomic属性
+    int (*atomic_get_property)(struct drm_crtc *crtc,
+                   const struct drm_crtc_state *state,
+                   struct drm_property *property,
+                   uint64_t *val);
+
+    //drm_dev_register之后，调用该接口进行额外的crtc操作
+    int (*late_register)(struct drm_crtc *crtc);
+
+    //与late接口相反
+    void (*early_unregister)(struct drm_crtc *crtc);
+
+    //以下接口与crc相关
+    int (*set_crc_source)(struct drm_crtc *crtc, const char *source);
+
+    int (*verify_crc_source)(struct drm_crtc *crtc, const char *source,
+                 size_t *values_cnt);
+    const char *const *(*get_crc_sources)(struct drm_crtc *crtc,
+                          size_t *count);
+
+    //打印crtc的atomic state属性，一般由drm_atomic_print_state调用
+    void (*atomic_print_state)(struct drm_printer *p,
+                   const struct drm_crtc_state *state);
+
+    //获取硬件vblank counter计数
+    u32 (*get_vblank_counter)(struct drm_crtc *crtc);
+
+    //使能vblank中断
+    int (*enable_vblank)(struct drm_crtc *crtc);
+
+    void (*disable_vblank)(struct drm_crtc *crtc);
+};
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>struct drm_crtc_helper_funcs</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct drm_crtc_helper_funcs {
+    //电源管理接口，一般由drm_helper_connector_dpms调用
+    void (*dpms)(struct drm_crtc *crtc, int mode);
+
+    //为modeset做准备，一般就是调用dpms接口关闭crtc(DRM_MODE_DPMS_OFF)
+    void (*prepare)(struct drm_crtc *crtc);
+
+    //与prepare接口对应，在modeset完成后，调用该接口来enable crtc
+    void (*commit)(struct drm_crtc *crtc);
+
+    //检查显示mode的有效性
+    enum drm_mode_status (*mode_valid)(struct drm_crtc *crtc,
+                       const struct drm_display_mode *mode);
+
+    //验证并修正mode,由drm_atomic_helper_check_modeset调用
+    bool (*mode_fixup)(struct drm_crtc *crtc,
+               const struct drm_display_mode *mode,
+               struct drm_display_mode *adjusted_mode);
+
+    //设置display mode, crtc_set_mode会调用该接口
+    int (*mode_set)(struct drm_crtc *crtc, struct drm_display_mode *mode,
+            struct drm_display_mode *adjusted_mode, int x, int y,
+            struct drm_framebuffer *old_fb);
+
+    //更新crtc的display mode, 但不会修改其primary plane配置
+    void (*mode_set_nofb)(struct drm_crtc *crtc);
+
+    //设置fb和显示位置，drm_crtc_helper_set_config会调用该接口
+    int (*mode_set_base)(struct drm_crtc *crtc, int x, int y,
+                 struct drm_framebuffer *old_fb);
+
+    int (*mode_set_base_atomic)(struct drm_crtc *crtc,
+                    struct drm_framebuffer *fb, int x, int y,
+                    enum mode_set_atomic);
+
+    //关闭crtc
+    void (*disable)(struct drm_crtc *crtc);
+
+    //检查待更新的drm_crtc_state
+    int (*atomic_check)(struct drm_crtc *crtc,
+                struct drm_crtc_state *state);
+
+    //多plane的atomic update之前需要调用该接口
+    void (*atomic_begin)(struct drm_crtc *crtc,
+                 struct drm_crtc_state *old_crtc_state);
+    //多plane的atomic update之后需要调用该接口
+    void (*atomic_flush)(struct drm_crtc *crtc,
+                 struct drm_crtc_state *old_crtc_state);
+
+    //atomic enable crtc
+    void (*atomic_enable)(struct drm_crtc *crtc,
+                  struct drm_crtc_state *old_crtc_state);
+
+    void (*atomic_disable)(struct drm_crtc *crtc,
+                   struct drm_crtc_state *old_crtc_state);
+};
+</pre></div>
+</div>
+</section>
+<section id="rcar-du-crtc-create">
+<h2><span class="section-number">4.14.4.4. </span>rcar_du_crtc_create<a class="headerlink" href="#rcar-du-crtc-create" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rcar_du_crtc_create</span>
+    <span class="n">drm_crtc_init_with_planes</span>
+    <span class="n">drm_crtc_helper_add</span>
+    <span class="n">drm_crtc_vblank_off</span>
+    <span class="n">rcar_du_crtc_crc_init</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">drm_crtc_helper_funcs</span> <span class="n">crtc_helper_funcs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">atomic_check</span> <span class="o">=</span> <span class="n">rcar_du_crtc_atomic_check</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">atomic_begin</span> <span class="o">=</span> <span class="n">rcar_du_crtc_atomic_begin</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">atomic_flush</span> <span class="o">=</span> <span class="n">rcar_du_crtc_atomic_flush</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">atomic_enable</span> <span class="o">=</span> <span class="n">rcar_du_crtc_atomic_enable</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">atomic_disable</span> <span class="o">=</span> <span class="n">rcar_du_crtc_atomic_disable</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">mode_valid</span> <span class="o">=</span> <span class="n">rcar_du_crtc_mode_valid</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="encoder.html" class="btn btn-neutral float-left" title="4.14.3. encoder代码分析" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="plane.html" class="btn btn-neutral float-right" title="4.14.5. plane代码分析" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

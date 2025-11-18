@@ -1,0 +1,378 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.4.1.2. opendds简单示例 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="6.4.1.3. condition和listener" href="condition_listener.html" />
+    <link rel="prev" title="6.4.1.1. opendds 简介" href="summary.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">6.4. 通信中间件</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">6.4.1. opendds</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="summary.html">6.4.1.1. opendds 简介</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">6.4.1.2. opendds简单示例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="condition_listener.html">6.4.1.3. condition和listener</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configure.html">6.4.1.4. opendds配置选项</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../some_ip/index.html">6.4.2. SOME/IP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mqtt/index.html">6.4.3. mqtt协议</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6.4. </span>通信中间件</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.4.1. </span>opendds</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.4.1.2. </span>opendds简单示例</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user/communication/opendds/simple_example.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="opendds">
+<h1><span class="section-number">6.4.1.2. </span>opendds简单示例<a class="headerlink" href="#opendds" title="此标题的永久链接"></a></h1>
+<section id="dcps">
+<h2><span class="section-number">6.4.1.2.1. </span>使用DCPS<a class="headerlink" href="#dcps" title="此标题的永久链接"></a></h2>
+<section id="id1">
+<h3><span class="section-number">6.4.1.2.1.1. </span>定义数据类型<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<p>dds使用的每种数据类型都是使用IDL定义的，OpenDDS使用 <code class="docutils literal notranslate"><span class="pre">#pragma</span></code> 指令来标识dds传输和处理的数据类型．这些数据类型由 <code class="docutils literal notranslate"><span class="pre">TAO</span> <span class="pre">IDL</span></code> 和 <code class="docutils literal notranslate"><span class="pre">OpenDDS</span> <span class="pre">IDL</span></code> 编译器处理，
+以生成必要的代码，以便opendds传输这些类型的数据．</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">Messenger</span> <span class="p">{</span>
+<span class="c1">#pragma DCPS_DATA_TYPE &quot;Messenger::Message&quot;</span>
+<span class="c1">#pragma DCPS_DATA_KEY &quot;Messenger::Message subject_id&quot;</span>
+<span class="n">struct</span> <span class="n">Message</span> <span class="p">{</span>
+        <span class="n">string</span> <span class="n">from</span><span class="p">;</span>
+        <span class="n">string</span> <span class="n">subject</span><span class="p">;</span>
+        <span class="n">long</span> <span class="n">subject_id</span><span class="p">;</span>
+        <span class="n">string</span> <span class="n">text</span><span class="p">;</span>
+        <span class="n">long</span> <span class="n">count</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>#pragram 标记用于opendds的数据类型，全范围型必须配合pragram使用．opendds要求数据类型是一个结构，该结构可以包含纯量类型(short, long, float等)，以及
+enumerations, strings,sequences, arrays, structures,和unions．</p>
+<p>此Opendds 范例定义了structure Messenger 在Messenger module 之中。</p>
+</section>
+<section id="idl">
+<h3><span class="section-number">6.4.1.2.1.2. </span>处理IDL<a class="headerlink" href="#idl" title="此标题的永久链接"></a></h3>
+<p>首先由TAO IDL编译器处理</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tao_idl</span> <span class="n">Messager</span><span class="o">.</span><span class="n">idl</span>
+</pre></div>
+</div>
+<p>此外，我们需要使用opendds idl编译器处理IDL文件，以生成opendds需要编译和解密消息的序列化和密钥支持代码，以及data reader和data writer支持的类型代码．
+此idl编译器位于 <code class="docutils literal notranslate"><span class="pre">${DDS_ROOT}/bin</span></code> 中，并为每个处理的IDL文件生成三个文件．这三个文件都以原始IDL文件名开头,例如运行以下命令</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opendds_idl</span> <span class="n">Messager</span><span class="o">.</span><span class="n">idl</span>
+</pre></div>
+</div>
+<p>生成MessagerTypeSupport.idl, MessagerTypeSupportImpl.h和MessagerTypeSupportImpl.cpp,这些文件应该与使用这些消息类型的opendds应用程序链接．</p>
+<p>一般情况下，我们不需要直接调用TAO或OpenDDS IDL编译器，使用 <code class="docutils literal notranslate"><span class="pre">MPC</span></code> 可以简化这个过程</p>
+<ul class="simple">
+<li><p>publisher和subscriber共同的MPC文件部分</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="p">(</span><span class="o">*</span><span class="n">idl</span><span class="p">):</span> <span class="n">dcps</span> <span class="p">{</span>
+    <span class="n">TypeSupport_Files</span> <span class="p">{</span>
+        <span class="n">Messager</span><span class="o">.</span><span class="n">idl</span>
+    <span class="p">}</span>
+    <span class="n">custom_only</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>dcps父项目添加了类型支持自定义构建规则，上面的TypeSupport_Files部分告诉MPC使用OpenDDS IDL编译器从Messager.idl生成消息类型支持文件．</p>
+</div>
+<ul class="simple">
+<li><p>publisher部分</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="p">(</span><span class="o">*</span><span class="n">Publisher</span><span class="p">):</span> <span class="n">dcpsexe_with_tcp</span> <span class="p">{</span>
+    <span class="n">exenme</span> <span class="o">=</span> <span class="n">publisher</span>
+    <span class="n">aafter</span> <span class="o">+=</span> <span class="o">*</span><span class="n">idl</span>
+    <span class="n">TypeSupport_Files</span> <span class="p">{</span>
+        <span class="n">Messager</span><span class="o">.</span><span class="n">idl</span>
+    <span class="p">}</span>
+    <span class="n">Source_Files</span> <span class="p">{</span>
+        <span class="n">Publisher</span><span class="o">.</span><span class="n">cpp</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>dcpsexe_with_tcp项目链接在DCPS库中</p>
+<ul class="simple">
+<li><p>subscriber部分</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="p">(</span><span class="o">*</span><span class="n">Subscriber</span><span class="p">):</span> <span class="n">dcpsexe_with_tcp</span> <span class="p">{</span>
+    <span class="n">exename</span> <span class="o">=</span> <span class="n">subscriber</span>
+    <span class="n">after</span> <span class="o">+=</span> <span class="o">*</span><span class="n">idl</span>
+    <span class="n">TypeSupport_Files</span> <span class="p">{</span>
+        <span class="n">Messager</span><span class="o">.</span><span class="n">idl</span>
+    <span class="p">}</span>
+    <span class="n">Source_Files</span> <span class="p">{</span>
+        <span class="n">Subscriber</span><span class="o">.</span><span class="n">cpp</span>
+        <span class="n">DataReaderListenerImpl</span><span class="o">.</span><span class="n">cpp</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="publisher">
+<h3><span class="section-number">6.4.1.2.1.3. </span>publisher<a class="headerlink" href="#publisher" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>初始化参与者</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int main()
+{
+    try {
+        //TheParticipantFactoryWithArgs在Service_Participant.h中定义，并以命令行参数来初始化
+        //Domain Participant Factory,这些参数用于初始化ORB也就是opendds服务本身
+        DDS::DomainParticipantFactory_var dpf = TheParticipantFactoryWithArgs(argc, argv);
+        //创建参与者,domain id范围(0x00000000 ~ 0x7FFFFFFF)
+        DDS:DomainParticipant_var participant = dpf-&gt;create_participant(42, //domain ID
+        PARTICIPANT_QOS_DEFAULT,
+        0, //No listener required
+        OpenDDS::DCPS::DEFAULT_STATUS_MASK);
+    }
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>注册数据类型和创建topic</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Messenger</span><span class="p">::</span><span class="n">MessageTypeSupport_var</span> <span class="n">mts</span> <span class="o">=</span>
+    <span class="n">new</span> <span class="n">Messenger</span><span class="p">::</span><span class="n">MessageTypeSupportImpl</span><span class="p">();</span>
+    <span class="o">//</span><span class="n">注册字符串数据类型</span>
+<span class="k">if</span><span class="p">(</span><span class="n">DDS</span><span class="p">::</span><span class="n">RETCODE</span> <span class="o">!=</span> <span class="n">mts</span><span class="o">-&gt;</span><span class="n">register_type</span><span class="p">(</span><span class="n">participant</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">std</span><span class="p">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;register_type failed&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="p">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">CORBA</span><span class="p">::</span><span class="n">String_vaar</span> <span class="n">type_name</span> <span class="o">=</span> <span class="n">mts</span><span class="o">-&gt;</span><span class="n">get_type_name</span><span class="p">();</span>
+<span class="o">//</span><span class="n">使用默认的QOS规则创建名为test_topic的topic</span>
+<span class="n">DDS</span><span class="p">::</span><span class="n">Topic_var</span> <span class="n">topic</span> <span class="o">=</span> <span class="n">participant</span><span class="o">-&gt;</span><span class="n">create_topic</span><span class="p">(</span><span class="s2">&quot;test_topic&quot;</span><span class="p">,</span>
+        <span class="n">type_name</span><span class="p">,</span>
+        <span class="n">TOPIC_QOS_DEFAULT</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">OpenDDS</span><span class="p">::</span><span class="n">DCPS</span><span class="p">::</span><span class="n">DEFAULT_STATUS_MASK</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>创建publisher</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">使用默认QOS规则创建publisher</span>
+<span class="n">DDS</span><span class="p">::</span><span class="n">Publisher_var</span> <span class="n">pub</span> <span class="o">=</span> <span class="n">participant</span><span class="o">-&gt;</span><span class="n">create_publisher</span><span class="p">(</span><span class="n">PUBLISHER_QOS_DEFULT</span><span class="p">,</span>
+                        <span class="mi">0</span><span class="p">,</span>
+                        <span class="n">OpenDDS</span><span class="p">::</span><span class="n">DCPS</span><span class="p">::</span><span class="n">DEFAULT_STATUS_MASK</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>创建DataWriter并等待Subscriber</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DDS</span><span class="p">::</span><span class="n">DataWriter_var</span> <span class="n">writer</span> <span class="o">=</span> <span class="n">pub</span><span class="o">-&gt;</span><span class="n">create_datawriter</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span>  <span class="o">//</span><span class="n">使用创建的topic</span>
+                        <span class="n">DATAWRITER_QOS_DEFAULT</span><span class="p">,</span>
+                        <span class="mi">0</span><span class="p">,</span>                                  <span class="o">//</span><span class="n">不需要监听</span>
+                        <span class="n">OpenDDS</span><span class="p">::</span><span class="n">DCPS</span><span class="p">::</span><span class="n">DEFAULT_STATUS_MASK</span><span class="p">);</span>
+
+<span class="o">//</span><span class="n">将datawriter指向messageDataWriter</span>
+<span class="n">Messenger</span><span class="p">::</span><span class="n">MessageDataWriter_var</span> <span class="n">messge_writer</span> <span class="o">=</span> <span class="n">Messenger</span><span class="p">::</span><span class="n">MessageDataWriter</span><span class="p">::</span><span class="n">_narrow</span><span class="p">(</span><span class="n">writer</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>等待用户所涉及的基本步骤是</p>
+<ol class="arabic simple">
+<li><p>从我们创建的datawriter获取状态条件</p></li>
+<li><p>在条件中启用publication matched状态</p></li>
+<li><p>创建等待集</p></li>
+<li><p>将状态条件附加到等待集</p></li>
+<li><p>获取发布匹配状态</p></li>
+<li><p>如果匹配的当前计数为一个或多个，则从等待集中分离条件并继续发布</p></li>
+<li><p>等待等待集</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DDS</span><span class="p">::</span><span class="n">StatusCondition_var</span> <span class="n">condition</span> <span class="o">=</span> <span class="n">writer</span><span class="o">-&gt;</span><span class="n">get_statuscondition</span><span class="p">();</span>
+<span class="n">condition</span><span class="o">-&gt;</span><span class="n">set_enabled_statuses</span><span class="p">(</span><span class="n">DDS</span><span class="p">::</span><span class="n">PUBLICTION_MATCHED_STATUS</span><span class="p">);</span>
+<span class="n">DDS</span><span class="p">::</span><span class="n">WaitSet_var</span> <span class="n">ws</span> <span class="o">=</span> <span class="n">new</span> <span class="n">DDS</span><span class="p">::</span><span class="n">WaitSet</span><span class="p">;</span>
+<span class="n">ws</span><span class="o">-&gt;</span><span class="n">attach_condition</span><span class="p">(</span><span class="n">condition</span><span class="p">);</span>
+<span class="k">while</span><span class="p">(</span><span class="n">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">DDS</span><span class="p">::</span><span class="n">PublicationMatchedStatus</span> <span class="n">matches</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">writer</span><span class="o">-&gt;</span><span class="n">get_publication_matched_status</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">!=</span> <span class="n">DDS</span><span class="p">::</span><span class="n">RETCODE_OK</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">matches</span><span class="o">.</span><span class="n">current_count</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="n">DDS</span><span class="p">::</span><span class="n">ConditionSeq</span> <span class="n">conditions</span><span class="p">;</span>
+    <span class="n">DDS</span><span class="p">::</span><span class="n">Duration_t</span> <span class="n">timeout</span> <span class="o">=</span> <span class="p">{</span><span class="mi">60</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ws</span><span class="o">-&gt;</span><span class="n">wait</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span> <span class="o">!=</span> <span class="n">DDS</span><span class="p">::</span><span class="n">RETCODE_OK</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">ws</span><span class="o">-&gt;</span><span class="n">detach_condition</span><span class="p">(</span><span class="n">conditon</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>消息发布</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Messenger</span><span class="p">::</span><span class="n">Messge</span> <span class="n">message</span><span class="p">;</span>
+<span class="n">message</span><span class="o">.</span><span class="n">subject_id</span> <span class="o">=</span> <span class="mi">99</span><span class="p">;</span>
+<span class="n">message</span><span class="o">.</span><span class="kn">from</span> <span class="o">=</span> <span class="s2">&quot;ywg&quot;</span><span class="p">;</span>
+<span class="n">message</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;review&quot;</span><span class="p">;</span>
+<span class="n">message</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;test opendds publish&quot;</span><span class="p">;</span>
+<span class="n">message</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">DDS</span><span class="p">::</span><span class="n">ReturnCode_t</span> <span class="n">error</span> <span class="o">=</span> <span class="n">message_writer</span><span class="o">-&gt;</span><span class="n">write</span><span class="p">(</span><span class="n">messge</span><span class="p">,</span> <span class="n">DDS</span><span class="p">::</span><span class="n">HANDLE_NIL</span><span class="p">);</span>
+    <span class="o">++</span><span class="n">message</span><span class="o">.</span><span class="n">count</span><span class="p">;</span>
+    <span class="o">++</span><span class="n">message</span><span class="o">.</span><span class="n">subject_id</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="subscriber">
+<h3><span class="section-number">6.4.1.2.1.4. </span>subscriber<a class="headerlink" href="#subscriber" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>初始化参与者</p></li>
+<li><p>注册数据类型和创建主题</p></li>
+<li><p>创建subscriber</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DDS</span><span class="p">::</span><span class="n">Subscriber_var</span> <span class="n">sub</span> <span class="o">=</span> <span class="n">participant</span><span class="o">-&gt;</span><span class="n">create_subscriber</span><span class="p">(</span><span class="n">SUBSCRIBER_QOS_DEFAULT</span><span class="p">,</span>
+                        <span class="mi">0</span><span class="p">,</span>
+                        <span class="n">OpenDDS</span><span class="p">::</span><span class="n">DCPS</span><span class="p">::</span><span class="n">DEFAULT_STATUS_MASK</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>创建datareader和listener</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DDS</span><span class="p">::</span><span class="n">DataReaderListener_var</span> <span class="n">listener</span> <span class="o">=</span>  <span class="n">new</span> <span class="n">DataReaderListenerImpl</span><span class="p">;</span>
+<span class="n">DDS</span><span class="p">::</span><span class="n">DataReader_var</span> <span class="n">dr</span> <span class="o">=</span> <span class="n">sub</span><span class="o">-&gt;</span><span class="n">create_datareader</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span>
+                    <span class="n">DAATAREADER_QOS_DEFAULT</span><span class="p">,</span>
+                    <span class="n">listener</span><span class="p">,</span>
+                    <span class="n">OpenDDS</span><span class="p">::</span><span class="n">DCPS</span><span class="p">::</span><span class="n">DEFALT_STATUS_MASK</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3><span class="section-number">6.4.1.2.1.5. </span>运行<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>首先需要启动 <code class="docutils literal notranslate"><span class="pre">DCPSInfoRepo</span></code> 服务，以便发布者和订阅者可以找到另外一个</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果通过将环境配置为使用RTPS发现来使用对等发现，则不需要执行此步骤. DCPSInfoRepo可执行文件位于${DDS_ROOT}/bin中</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="nb">bin</span><span class="o">/</span><span class="n">DCPSInfoRepo</span> <span class="o">-</span><span class="n">o</span> <span class="n">simple</span><span class="o">.</span><span class="n">ior</span>
+<span class="c1">#-o参数表示DCPSInfoRepo生成连接信息到simple.ior文件中,供发布者和订阅者使用</span>
+
+<span class="o">./</span><span class="n">subscriber</span> <span class="o">-</span><span class="n">DCPSInforRepo</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">simple</span><span class="o">.</span><span class="n">ior</span>
+<span class="o">./</span><span class="n">publisher</span> <span class="o">-</span><span class="n">DCPSInforRepo</span> <span class="n">file</span><span class="p">:</span><span class="o">//</span><span class="n">simple</span><span class="o">.</span><span class="n">ior</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="summary.html" class="btn btn-neutral float-left" title="6.4.1.1. opendds 简介" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="condition_listener.html" class="btn btn-neutral float-right" title="6.4.1.3. condition和listener" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

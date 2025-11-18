@@ -1,0 +1,218 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.8.2. LCD timing &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.8.3. MIPI CSI传输协议解析" href="mipi_csi.html" />
+    <link rel="prev" title="8.8.1. 视频传输接口协议" href="video_interface.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.8. 视频相关</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="video_interface.html">8.8.1. 视频传输接口协议</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.8.2. LCD timing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">8.8.2.1. LCD timing时序示意图</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lcd">8.8.2.2. LCD相关计算</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html">8.8.3. MIPI CSI传输协议解析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_dsi.html">8.8.4. MIPI DSI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bt656.html">8.8.5. BT656</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.8. </span>视频相关</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.8.2. </span>LCD timing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/video/LCD_timing.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lcd-timing">
+<h1><span class="section-number">8.8.2. </span>LCD timing<a class="headerlink" href="#lcd-timing" title="此标题的永久链接"></a></h1>
+<p>关于LCD timing时序参数常见有三种图:Linux对LCD的抽象图,数据手册中的示意图,Timing时序波形图</p>
+<section id="id1">
+<h2><span class="section-number">8.8.2.1. </span>LCD timing时序示意图<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p><strong>Linux对LCD的抽象图</strong></p>
+<img alt="../../_images/linux_lcd_timing.png" src="../../_images/linux_lcd_timing.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">fb_videomode</span> <span class="p">{</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="n">u32</span> <span class="n">refresh</span><span class="p">;</span>        <span class="o">/*</span> <span class="n">刷新频率或帧率</span> <span class="o">*/</span>
+    <span class="n">u32</span> <span class="n">xres</span><span class="p">;</span>           <span class="o">/*</span> <span class="n">分辨率</span> <span class="n">x</span> <span class="o">*/</span>
+    <span class="n">u32</span> <span class="n">yres</span><span class="p">;</span>           <span class="o">/*</span> <span class="n">分辨率</span> <span class="n">y</span> <span class="o">*/</span>
+    <span class="n">u32</span> <span class="n">pixclock</span><span class="p">;</span>       <span class="o">/*</span> <span class="n">像素时钟</span> <span class="o">*/</span>
+    <span class="n">u32</span> <span class="n">left_margin</span><span class="p">;</span>    <span class="o">/*</span> <span class="n">HBP</span> <span class="n">在每行像素数据开始输出前</span><span class="p">,</span><span class="n">需要插入的空闲像素时钟周期数</span><span class="o">*/</span>
+    <span class="n">u32</span> <span class="n">right_margin</span><span class="p">;</span>   <span class="o">/*</span> <span class="n">HFP</span> <span class="n">在每行像素数据结束到LCD行同步时钟脉冲之间</span><span class="p">,</span><span class="n">插入的空闲像素时钟数</span><span class="o">*/</span>
+    <span class="n">u32</span> <span class="n">upper_margin</span><span class="p">;</span>   <span class="o">/*</span> <span class="n">VBP</span> <span class="n">在垂直同步脉冲之后</span><span class="p">,</span><span class="n">每帧开头前的无效行数</span><span class="o">*/</span>
+    <span class="n">u32</span> <span class="n">lower_margin</span><span class="p">;</span>   <span class="o">/*</span> <span class="n">VFP</span> <span class="n">每帧数据输出结束到下一帧垂直同步时钟周期开始前的无效行数</span><span class="o">*/</span>
+    <span class="n">u32</span> <span class="n">hsync_len</span><span class="p">;</span>      <span class="o">/*</span> <span class="n">HSYNC</span> <span class="n">行同步时钟脉冲宽度</span><span class="p">(</span><span class="n">水平同步</span><span class="p">)</span><span class="o">*/</span>
+    <span class="n">u32</span> <span class="n">vsync_len</span><span class="p">;</span>      <span class="o">/*</span> <span class="n">VSYNC</span> <span class="n">场同步</span><span class="p">(</span><span class="n">帧同步或垂直同步</span><span class="p">)</span><span class="n">时钟脉冲宽度</span><span class="o">*/</span>
+    <span class="n">u32</span> <span class="n">vmode</span><span class="p">;</span>
+    <span class="n">u32</span> <span class="n">flag</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>常见概念</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>词汇</p></td>
+<td><p>解释</p></td>
+</tr>
+<tr class="row-even"><td><p>margin</p></td>
+<td><p>边缘,显示区域外的空白</p></td>
+</tr>
+<tr class="row-odd"><td><p>Hblank</p></td>
+<td><p>行消隐,实际就是HFP+Hsync+HBP的时间,因为此期间并未有效显示,看作消隐状态</p></td>
+</tr>
+<tr class="row-even"><td><p>Vblank</p></td>
+<td><p>场消隐,实际就是VFP+Vsync+VBP的时间,因为此期间并未有效显示,看作消隐状态</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>数据手册中的示意图</strong></p>
+<img alt="../../_images/datasheet_lcd_timing.png" src="../../_images/datasheet_lcd_timing.png" />
+<p><strong>Timing时序波形图</strong></p>
+<ul class="simple">
+<li><p>Vertial timing</p></li>
+</ul>
+<img alt="../../_images/vertial_timing.png" src="../../_images/vertial_timing.png" />
+<ul class="simple">
+<li><p>Horizontal timing</p></li>
+</ul>
+<img alt="../../_images/horizontal_timing.png" src="../../_images/horizontal_timing.png" />
+</section>
+<section id="lcd">
+<h2><span class="section-number">8.8.2.2. </span>LCD相关计算<a class="headerlink" href="#lcd" title="此标题的永久链接"></a></h2>
+<p><strong>Pixelclock</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pclk</span><span class="o">=</span><span class="p">(</span><span class="n">left_margin</span><span class="o">+</span><span class="n">xres</span><span class="o">+</span><span class="n">right_margin</span><span class="o">+</span><span class="n">hsync_len</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">upper_margin</span><span class="o">+</span><span class="n">yres</span><span class="o">+</span><span class="n">lower_margin</span><span class="o">+</span><span class="n">vsync_len</span><span class="p">)</span><span class="o">*</span><span class="n">refresh</span>
+<span class="n">或</span>
+<span class="n">pclk</span><span class="o">=</span><span class="p">(</span><span class="n">HBP</span><span class="o">+</span><span class="n">xres</span><span class="o">+</span><span class="n">HFP</span><span class="o">+</span><span class="n">Hsync</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">VBP</span><span class="o">+</span><span class="n">yes</span><span class="o">+</span><span class="n">VFP</span><span class="o">+</span><span class="n">Vsync</span><span class="p">)</span><span class="o">*</span><span class="n">Refresh</span>
+</pre></div>
+</div>
+<p><strong>mipi clk</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">H</span><span class="o">-</span><span class="n">Total</span><span class="o">-</span><span class="n">pixel</span> <span class="o">=</span> <span class="n">H</span><span class="o">-</span><span class="n">Active</span><span class="o">-</span><span class="n">Pixel</span> <span class="o">+</span> <span class="n">HFP</span> <span class="o">+</span> <span class="n">HBP</span> <span class="o">+</span> <span class="n">HSYNC</span> <span class="s2">&quot;有版本会包含skew参数,一般为0&quot;</span>
+<span class="n">V</span><span class="o">-</span><span class="n">Total</span><span class="o">-</span><span class="n">line</span> <span class="o">=</span> <span class="n">V</span><span class="o">-</span><span class="n">Active</span><span class="o">-</span><span class="n">Line</span>  <span class="o">+</span> <span class="n">VFP</span> <span class="o">+</span> <span class="n">VBP</span> <span class="o">+</span> <span class="n">VSYNC</span>
+<span class="n">Pclk</span> <span class="o">=</span> <span class="n">H</span><span class="o">-</span><span class="n">Total</span><span class="o">-</span><span class="n">pixel</span> <span class="o">*</span> <span class="n">V</span><span class="o">-</span><span class="n">Total</span><span class="o">-</span><span class="n">line</span> <span class="o">*</span> <span class="n">Refresh</span>
+<span class="n">Bitclk</span> <span class="o">=</span> <span class="n">Pclk</span> <span class="o">*</span> <span class="n">bpp</span> <span class="o">/</span><span class="n">lane_num</span>  <span class="s2">&quot;bpp设置是byte个数，例3byte，就是3*8=24bit&quot;</span>
+<span class="n">Mipi</span> <span class="n">Clk</span> <span class="o">=</span> <span class="n">Bitclk</span> <span class="o">/</span> <span class="mi">2</span> <span class="s2">&quot;根据mipi通讯协议，CLK_N、CLK_P这两根时钟线的上升沿/下降沿均可获取数据，双沿采样，所以要除以2&quot;</span>
+<span class="n">Mipi</span> <span class="n">Clk</span> <span class="o">=</span> <span class="p">(</span><span class="n">Pclk</span> <span class="o">*</span> <span class="n">bpp</span> <span class="o">/</span><span class="n">lane_num</span><span class="p">)</span> <span class="o">/</span><span class="mi">2</span> <span class="s2">&quot;知道pclk、bpp、lane_num,也可以计算mipi clk&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="video_interface.html" class="btn btn-neutral float-left" title="8.8.1. 视频传输接口协议" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="mipi_csi.html" class="btn btn-neutral float-right" title="8.8.3. MIPI CSI传输协议解析" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

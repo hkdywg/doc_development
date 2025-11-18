@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.3.6. thread_info与内核栈stack的关系 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.4. linux kernel debug tools" href="../../debug/index.html" />
+    <link rel="prev" title="3.3.5.8. WAKE_AFFINE机制" href="../process_cfs/cfs_wake_affine.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.3. 进程管理与调度</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../process_overview/index.html">3.3.1. 进程描述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_create/index.html">3.3.2. 进程创建</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_run/index.html">3.3.3. 进程运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_schedule/index.html">3.3.4. 进程调度</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_cfs/index.html">3.3.5. 调度普通进程-完全公平调度器CFS</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.3.6. thread_info与内核栈stack的关系</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#thread-info">3.3.6.1. thread_info简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#thread-union">3.3.6.2. thread_union实现</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">3.3.6.3. thread_info接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">3.3.6.4. 0号进程的thread_info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">3.3.6.5. 堆栈的生长方式与thread_info的关系</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.3. </span>进程管理与调度</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.3.6. </span>thread_info与内核栈stack的关系</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/process/thread_info/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="thread-infostack">
+<h1><span class="section-number">3.3.6. </span>thread_info与内核栈stack的关系<a class="headerlink" href="#thread-infostack" title="此标题的永久链接"></a></h1>
+<section id="thread-info">
+<h2><span class="section-number">3.3.6.1. </span>thread_info简介<a class="headerlink" href="#thread-info" title="此标题的永久链接"></a></h2>
+<p>thread_info结构被称为迷你进程描述符，是因为在这个结构中并没有直接包含与进程相关的字段，而是通过task字段指向某个具体的
+进程描述符．通常这块内存区域的大小是8k,也就是两个页的大小．一个进程的内核栈和thred_info结构之间的关系图如下</p>
+<img alt="../../../_images/thread_info.png" src="../../../_images/thread_info.png" />
+<p>从上图可知，内核是从该内存区域的顶层向下(从高地址向低地址)增长的，而thread_info结构则是从该区域向上增长．内核栈的栈顶地址
+存储在esp寄存器中．所以当进程从用户态切换到内核态后，esp寄存器指向这个区域的末端</p>
+<p>由于一个页大小是4k,一个页的起始地址都是4K的整数倍，即后12位都为０，取得esp内核栈栈顶的地址，将其后12位取0，就可以得到内存区域的
+起始地址，该地址即是thread_info的地址．通过thread_info又可以得到task_struct的地址而得到进程pid</p>
+</section>
+<section id="thread-union">
+<h2><span class="section-number">3.3.6.2. </span>thread_union实现<a class="headerlink" href="#thread-union" title="此标题的永久链接"></a></h2>
+<p>thread_info与内核堆栈在内核中的定义位于:include/linux/sched.h文件中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">union</span> <span class="n">thread_union</span> <span class="p">{</span>
+<span class="c1">#ifndef CONFIG_ARCH_TASK_STRUCT_ON_STACK</span>
+    <span class="n">struct</span> <span class="n">task_struct</span> <span class="n">task</span><span class="p">;</span>
+<span class="c1">#endif</span>
+<span class="c1">#ifndef CONFIG_THREAD_INFO_IN_TASK</span>
+    <span class="n">struct</span> <span class="n">thread_info</span> <span class="n">thread_info</span><span class="p">;</span>
+<span class="c1">#endif</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">stack</span><span class="p">[</span><span class="n">THREAD_SIZE</span><span class="o">/</span><span class="n">sizeof</span><span class="p">(</span><span class="n">long</span><span class="p">)];</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h2><span class="section-number">3.3.6.3. </span>thread_info接口<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>内核将thread_info与内核堆栈放在固定的空间里，内核只要知道堆栈的位置，那么内核堆栈对应的thread_info结构的地址就可以获得</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">struct</span> <span class="n">thread_info</span> <span class="o">*</span><span class="n">current_thread_info</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">struct</span> <span class="n">thread_info</span><span class="o">*</span><span class="p">)(</span><span class="n">current_stack_pointer</span> <span class="o">&amp;</span> <span class="o">~</span><span class="p">(</span><span class="n">THREAD_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="n">register</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">current_stack_pointer</span> <span class="n">asm</span><span class="p">(</span><span class="s2">&quot;sp&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">3.3.6.4. </span>0号进程的thread_info<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>在linux中，0号进程就是内核启动之后的第一个进程，其通过init_task变量定义，其定义在init/init_task.c文件中,起中stack成员指向init_stack结构</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">task_struct</span> <span class="n">init_task</span>
+<span class="c1">#ifdef CONFIG_ARCH_TASK_STRUCT_ON_STACK</span>
+    <span class="n">__init_task_data</span>
+<span class="c1">#endif</span>
+<span class="o">=</span> <span class="p">{</span>
+<span class="c1">#ifdef CONFIG_THREAD_INFO_IN_TASK</span>
+
+    <span class="o">.</span><span class="n">thread_info</span> <span class="o">=</span> <span class="n">INIT_THREAD_INFO</span><span class="p">(</span><span class="n">init_task</span><span class="p">),</span>
+    <span class="o">.</span><span class="n">stack_refcount</span> <span class="o">=</span> <span class="n">ATOMIC_INIT</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<span class="c1">#endif</span>
+    <span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">stack</span> <span class="o">=</span> <span class="n">init_stack</span><span class="p">,</span>        <span class="o">//</span><span class="mi">0</span><span class="n">号进程的stack指向了init_stack</span>
+    <span class="o">.</span><span class="n">usage</span> <span class="o">=</span> <span class="n">ATOMIC_INIT</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+    <span class="o">...</span>
+    <span class="o">...</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">init_stack</span></code> 其定义在include/asm-generic/vmlinux.lds.h中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define INIT_TASK_DATA(align)               \</span>
+    <span class="o">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="n">align</span><span class="p">);</span>                       \
+    <span class="n">__start_init_task</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>                  \
+    <span class="n">init_thread_union</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>                  \
+    <span class="n">init_stack</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>                         \
+    <span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">data</span><span class="o">..</span><span class="n">init_task</span><span class="p">))</span>               \
+    <span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">data</span><span class="o">..</span><span class="n">init_thread_info</span><span class="p">))</span>        \
+    <span class="o">.</span> <span class="o">=</span> <span class="n">__start_init_task</span> <span class="o">+</span> <span class="n">THREAD_SIZE</span><span class="p">;</span>    \
+    <span class="n">__end_init_task</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>0号进程的stack定义位于链接脚本里，其中关于init_stack的定义通过INIT_TASK_DATA宏进行定义，链接脚本中定义了链接符号
+__start_init_task指向了堆栈开始的地址，并且init_thread_union与init_stack的地址都指向了这里．并且将__end_init_task指向
+了堆栈的顶部</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">3.3.6.5. </span>堆栈的生长方式与thread_info的关系<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>堆栈的生长方式分为向上增长和向下增长，通常堆栈是向下增长的，此时内核使用thread_union结构将thread_info和内核堆栈绑定到一起，
+并且thread_info位于区域的底部，而堆栈的站定位于区域的顶部</p>
+<img alt="../../../_images/stack_info.png" src="../../../_images/stack_info.png" />
+<p>如果堆栈的生长方向是向上的，那么thread_union的结构如下</p>
+<img alt="../../../_images/stack_info_1.png" src="../../../_images/stack_info_1.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../process_cfs/cfs_wake_affine.html" class="btn btn-neutral float-left" title="3.3.5.8. WAKE_AFFINE机制" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../debug/index.html" class="btn btn-neutral float-right" title="3.4. linux kernel debug tools" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

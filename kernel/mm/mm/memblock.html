@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.2.3.2. linux物理内存初始化(memblock) &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.2.3.3. 物理内存的软件划分" href="phys_addr.html" />
+    <link rel="prev" title="3.2.3.1. 内存架构和linux物理内存模型" href="mm_module.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.2. linux 内存管理</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../summary/index.html">3.2.1. 内存管理概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mm_qa/index.html">3.2.2. 内存管理之问答</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">3.2.3. linux內存管理</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="mm_module.html">3.2.3.1. 内存架构和linux物理内存模型</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.2.3.2. linux物理内存初始化(memblock)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="phys_addr.html">3.2.3.3. 物理内存的软件划分</a></li>
+<li class="toctree-l4"><a class="reference internal" href="frame_alloc.html">3.2.3.4. 页帧分配器的实现</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../MMU/index.html">3.2.4. MMU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cache/index.html">3.2.5. 内存管理之cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../memory_base_kn/index.html">3.2.6. 内存基础知识</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.2. </span>linux 内存管理</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2.3. </span>linux內存管理</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.2.3.2. </span>linux物理内存初始化(memblock)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/mm/mm/memblock.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux-memblock">
+<h1><span class="section-number">3.2.3.2. </span>linux物理内存初始化(memblock)<a class="headerlink" href="#linux-memblock" title="此标题的永久链接"></a></h1>
+<p>内核初始化完成后，系统中的内存的分配和释放时由buddy系统，slab分配器来管理．但在buddy系统，slab分配器可用之前，内存的分配和
+释放是由memblock分配器来管理物理内存的使用情况. memblock是唯一能够在早期启动阶段管理内存的内存分配器．</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>memblock管理的内存为物理地址，非虚拟地址</p>
+</div>
+<section id="early-boot-memory">
+<h2><span class="section-number">3.2.3.2.1. </span>early boot memory<a class="headerlink" href="#early-boot-memory" title="此标题的永久链接"></a></h2>
+<p>early boot memory即系统上电到内核内存管理模型创建之前这段时间的内存管理，严格来说他是系统启动过程中的一个中间阶段的内存管理，当
+sparse内存模型数据初始化完成之前后，将会从early boot memory中接管内存管理权限．</p>
+<p>sparse内存模型本身的内存管理数据也是需要复杂的初始化过程，而这个初始化过程也需要申请内存，比如mem_map. 因此需要在sparse模型之前需要一个内存管理
+子系统为其分配内存，尤其针对NUMA系统，需要指明各个node上申请到的相应内存</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">include</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">memblock</span><span class="o">.</span><span class="n">h</span>
+
+<span class="n">struct</span> <span class="n">memblock</span> <span class="p">{</span>
+    <span class="nb">bool</span> <span class="n">bottom_up</span><span class="p">;</span>
+    <span class="n">phys_addr_t</span> <span class="n">current_limit</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">memblock_type</span> <span class="n">memory</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">memblock_type</span> <span class="n">reserved</span><span class="p">;</span>
+    <span class="c1">#ifdef CONFIG_HAVE_MEMBLOCK_PHYS_MAP</span>
+    <span class="n">struct</span> <span class="n">memblock_type</span> <span class="n">physmem</span><span class="p">;</span>
+    <span class="c1">#endif</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>bottom_up: 申请内存时分配器分配方式，true表示从低地址到高地址分配，false表示从高地址到低地址分配</p></li>
+<li><p>current_limit: 内存块大小限制，一般可在memblock_alloc申请内存时进行检查限制</p></li>
+<li><p>memory: 可以被memblock管理分配的内存(系统启动时，会因为内核镜像加载等原因，需要提前预留内存，这些都不在memory之中)</p></li>
+<li><p>reserved: 预留已经分配的空间，主要包括memblock之前占用的内存以及通过memblock_alloc从memory中申请的内存空间</p></li>
+<li><p>physmem: 所有物理内存的集合</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">include</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">memblock</span><span class="o">.</span><span class="n">h</span>
+
+<span class="n">struct</span> <span class="n">memblock_type</span> <span class="p">{</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">cnt</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="nb">max</span><span class="p">;</span>
+    <span class="n">phys_addr_t</span> <span class="n">total_size</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">memblock_region</span> <span class="o">*</span><span class="n">regions</span><span class="p">;</span>
+    <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>cnt: 该memblock_type内包含多少个regions</p></li>
+<li><p>max: memblock_type内包含regions的最大个数，默认为128</p></li>
+<li><p>total_size: 该memblock_type内所有regions加起来的size大小</p></li>
+<li><p>regions: regions数组，指向的是数组的首地址</p></li>
+<li><p>name: memblock_type的名称</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">include</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">memblock</span><span class="o">.</span><span class="n">h</span>
+
+<span class="n">struct</span> <span class="n">memblock_region</span> <span class="p">{</span>
+    <span class="n">phys_addr_t</span> <span class="n">base</span><span class="p">;</span>
+    <span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">;</span>
+    <span class="n">enum</span> <span class="n">memblock_flags</span> <span class="n">flags</span><span class="p">;</span>
+    <span class="c1">#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP</span>
+    <span class="nb">int</span> <span class="n">nid</span><span class="p">;</span>
+    <span class="c1">#endif</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>memblock_regions代表了一块物理内存区域</p>
+<ul class="simple">
+<li><p>base: 该region的物理地址</p></li>
+<li><p>size: 该region区域的大小</p></li>
+<li><p>flags: region区域的flags</p></li>
+<li><p>nid: nid</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">include</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">memblock</span><span class="o">.</span><span class="n">h</span>
+
+<span class="n">enum</span> <span class="n">memblock_flags</span> <span class="p">{</span>
+    <span class="n">MEMBLOCK_NONE</span> <span class="o">=</span> <span class="mh">0x0</span><span class="p">,</span>
+    <span class="n">MEMBLOCK_HOTPLUG</span> <span class="o">=</span> <span class="mh">0x1</span><span class="p">,</span>
+    <span class="n">MEMBLOCK_MIRROR</span> <span class="o">=</span> <span class="mh">0x2</span><span class="p">,</span>
+    <span class="n">MEMBLOCK_NOMAP</span> <span class="o">=</span> <span class="mh">0x4</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>MEMBLOCK_NONE: 表示没有特殊需求，正常使用</p></li>
+<li><p>MEMBLOCK_HTPLUG: 该块内存支持热插拔，用于后续创建zone时，归ZONE_MOVABLE管理</p></li>
+<li><p>MEMBLOCK_MIRROR: 用于mirror功能，内存镜像是内存冗余技术的一种，工作原理与硬盘的热备份类似，将内存数据做两个复制，分别存放在主内存和镜像内存中</p></li>
+<li><p>MEMBLOCK_NOMAP: 不能被kernel用于直接映射(即线性映射区域)</p></li>
+</ul>
+<p><strong>各数据结构之间的关系</strong></p>
+<img alt="../../../_images/memblock_relative.png" src="../../../_images/memblock_relative.png" />
+<p>下面通过一个例子来更好的理解，用一个memblock_region实例来描述memory类型的1GB可用物理内存区间，并用两个memblock_region实例描述reserved类型的两个
+子区间，指示两个子内存区间正在被使用而保留</p>
+<img alt="../../../_images/memblock_unit.png" src="../../../_images/memblock_unit.png" />
+</section>
+<section id="memblock">
+<h2><span class="section-number">3.2.3.2.2. </span>memblock初始化<a class="headerlink" href="#memblock" title="此标题的永久链接"></a></h2>
+<p>在bootloader做好初始化工作后，将kernel image加载到内存后，就会跳到kernel部分继续执行，跑的先是汇编部分的代码，进行各种设置和环境初始化后，就会跳到
+kernel的第一个函数 <code class="docutils literal notranslate"><span class="pre">start_kernel</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">init</span><span class="o">/</span><span class="n">main</span><span class="o">.</span><span class="n">c</span>
+
+<span class="n">asmlinkage</span> <span class="n">__visible</span> <span class="n">void</span> <span class="n">__init</span> <span class="n">start_kernel</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="o">...</span>
+    <span class="n">cgroup_init_early</span><span class="p">();</span>
+    <span class="o">...</span>
+    <span class="n">boot_cpu_init</span><span class="p">();</span>
+    <span class="n">page_address_init</span><span class="p">();</span>
+    <span class="n">early_security_init</span><span class="p">();</span>
+    <span class="n">setup_arch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">command_line</span><span class="p">);</span>
+    <span class="o">...</span>
+    <span class="n">mm_init</span><span class="p">();</span>
+    <span class="o">...</span>
+    <span class="n">sched_init</span><span class="p">();</span>
+    <span class="o">...</span>
+    <span class="n">console_init</span><span class="p">();</span>
+    <span class="o">...</span>
+    <span class="n">setup_per_cpu_pageset</span><span class="p">();</span>
+    <span class="o">...</span>
+    <span class="n">fork_init</span><span class="p">();</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>这里内容较多，我们重点关注 <code class="docutils literal notranslate"><span class="pre">setup_arch</span></code> 函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">arch</span><span class="o">/</span><span class="n">arm64</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">c</span>
+
+<span class="n">void</span> <span class="n">__init</span> <span class="n">setup_arch</span><span class="p">(</span><span class="n">char</span> <span class="o">**</span><span class="n">cmdline_p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">init_mm</span><span class="o">.</span><span class="n">start_code</span> <span class="o">=</span> <span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)</span><span class="n">_text</span><span class="p">;</span>
+    <span class="n">init_mm</span><span class="o">.</span><span class="n">end_code</span> <span class="o">=</span> <span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)</span><span class="n">_etext</span><span class="p">;</span>
+    <span class="n">init_mm</span><span class="o">.</span><span class="n">end_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)</span><span class="n">_edata</span><span class="p">;</span>
+    <span class="n">init_mm</span><span class="o">.</span><span class="n">brk</span> <span class="o">=</span> <span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)</span><span class="n">_end</span><span class="p">;</span>
+
+    <span class="o">*</span><span class="n">cmdline_p</span> <span class="o">=</span> <span class="n">boot_command_line</span><span class="p">;</span>
+
+    <span class="n">early_fixmap_init</span><span class="p">();</span>
+    <span class="n">early_ioremap_init</span><span class="p">();</span>
+
+    <span class="n">setup_machine_fdt</span><span class="p">(</span><span class="n">__fdt_pointer</span><span class="p">);</span>
+    <span class="o">...</span>
+    <span class="n">arm64_memblock_init</span><span class="p">();</span>
+
+    <span class="n">paging_init</span><span class="p">();</span>
+    <span class="o">...</span>
+    <span class="n">bootmem_init</span><span class="p">();</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<img alt="../../../_images/setup_arch.png" src="../../../_images/setup_arch.png" />
+<p><code class="docutils literal notranslate"><span class="pre">setup_arch</span></code> 中完成memblock的初始化，物理内存映射，sparse初始化等工作</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>arch/arm64/kernel/setup.c
+
+static void __init setup_machine_fdt(phys_addr_t dt_phys)
+{
+    int size;
+    void *dt_virt = fixmap_remap_fdt(dt_phys, &amp;size, PAGE_KERNEL);
+
+    const char *name;
+
+    if(dt_virt)
+        memblock_reserve(dt_phys, size);
+
+    if(!dt_virt || !early_init_dt_scan(dt_virt)) {
+        pr_erit(&quot;\n&quot;
+        &quot;Error: invalid device tree blob at physsical address %pa (virtual address 0x%p)\n&quot;,
+        &amp;dt_phys, dt_virt);
+
+        while(true)
+            cpu_relax();
+    }
+
+    fixmap_remap_fdt(dt_phys, &amp;size, PAGE_KERNEL_RO);
+
+    name = of_flat_dt_get_machine_name();
+    if(!name)
+        return;
+
+    dump_stack_set_arch_desc(&quot;%s (DT)&quot;, name);
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>拿到dtb的物理地址后，会通过fixmap_remap_fdt进行mapping,其中包括pgd, pud, pte等mapping,当mapping成功后会返回dt_virt，并通过memblock_reserve添加到
+memblock.reserved中</p></li>
+<li><p>接着是early_init_dt_scan，通过解析dtb文件的memory节点获得可用物理内存的起始地址和大小，并通过类memblock_add的api往memory.regions数组添加一个memblock_region
+实例，用于管理这个物理内存区域</p></li>
+</ul>
+<img alt="../../../_images/start_kernel_func.png" src="../../../_images/start_kernel_func.png" />
+<p>当物理内存都添加进系统之后，arm64_memblock_init会对整个物理内存进行整理，主要的工作就是将一些特殊的区域添加进reserved内容中．函数执行完后，如下图所示</p>
+<img alt="../../../_images/memblock_init.png" src="../../../_images/memblock_init.png" />
+</section>
+<section id="id1">
+<h2><span class="section-number">3.2.3.2.3. </span>memblock物理内存映射<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>物理内存在通过memblock_add添加进系统之后，这部分的物理内存到虚拟内存的映射还没有建立．即使可以通过memblock_alloc分配一段物理内存，但是还不能访问，
+需要在paging_init执行之后</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">__init</span> <span class="n">paging_init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">pgd_t</span> <span class="o">*</span><span class="n">pgdp</span> <span class="o">=</span> <span class="n">pgd_set_fixmap</span><span class="p">(</span><span class="n">__pa_symbol</span><span class="p">(</span><span class="n">swapper_pg_dir</span><span class="p">));</span>
+
+    <span class="n">map_kernel</span><span class="p">(</span><span class="n">pgdp</span><span class="p">);</span>
+    <span class="n">map_mem</span><span class="p">(</span><span class="n">pgdp</span><span class="p">);</span>
+
+    <span class="n">pgd_clear_fixmap</span><span class="p">();</span>
+
+    <span class="n">cpu_replace_ttbrl</span><span class="p">(</span><span class="n">lm_alias</span><span class="p">(</span><span class="n">swapper_pg_dir</span><span class="p">));</span>
+    <span class="n">init_mm</span><span class="o">.</span><span class="n">pgd</span> <span class="o">=</span> <span class="n">swapper_pg_dir</span><span class="p">;</span>
+
+    <span class="n">mmeblock_free</span><span class="p">(</span><span class="n">__pa_symbol</span><span class="p">(</span><span class="n">init_pg_dir</span><span class="p">),</span>
+        <span class="n">__pa_symbol</span><span class="p">(</span><span class="n">init_pg_end</span><span class="p">)</span> <span class="o">-</span> <span class="n">__pa_symbol</span><span class="p">(</span><span class="n">init_pg_dir</span><span class="p">));</span>
+
+    <span class="n">memblock_allow_resize</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>pgd_set_fixmap: swapper_pg_dir页表的物理地址映射到fixmap的FIX_PGD区域，然后使用swapper_pg_dir页表作为内核的pgd页表．因为页表都是处于虚拟地址空间
+构建的，所以这里需要转成虚拟地址pgdp．而此时伙伴系统也没有ready，只能通过fixmap预先设定用于映射PGD的页表，现在pgdp是分配FIX_PGD的物理内存空间对应的虚拟地址</p></li>
+<li><p>map_kernel: 将内核的各个段(.text .init .data .bss)映射到虚拟内存空间，这样内核就可以正常运行了</p></li>
+<li><p>map_mem: 将memblock子系统添加的物理内存进行映射，主要是把通过memblock_add添加到系统中的物理内存进行映射，主要如果memblock设置了MEMBLOCK_NOMAP标志的话则就不对其地址进行映射</p></li>
+<li><p>cpu_replace_ttbr1: 将TTBR1寄存器指向新准备的swapper_pg_dir页表，TTBR1寄存器是虚拟内存管理的重要组成部分，用于存储当前使用的页表的首地址</p></li>
+<li><p>将init_pg_dir指向的区域释放</p></li>
+</ul>
+<p><strong>__create_pgd_mapping</strong></p>
+<p>map_kernel是映射内核启动时需要的各个段，map_mem是映射memblock添加的物理内存．但是页表映射都会调用到 <code class="docutils literal notranslate"><span class="pre">__create_pgd_mapping</span></code> 函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span> <span class="n">__create_pgd_mapping</span><span class="p">(</span><span class="n">pgd_t</span> <span class="o">*</span><span class="n">pgdir</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">phys</span><span class="p">,</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">virt</span><span class="p">,</span>
+    <span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">pgprot_t</span> <span class="n">prot</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="p">(</span><span class="o">*</span><span class="n">pgtable_alloc</span><span class="p">)(</span><span class="nb">int</span><span class="p">),</span> <span class="nb">int</span> <span class="n">flags</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">addr</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="nb">next</span><span class="p">;</span>
+    <span class="n">pgd_t</span> <span class="o">*</span><span class="n">pgdp</span> <span class="o">=</span> <span class="n">pgd_offset_pgd</span><span class="p">(</span><span class="n">pgdir</span><span class="p">,</span> <span class="n">virt</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">WARN_ON</span><span class="p">((</span><span class="n">phys</span> <span class="o">^</span> <span class="n">virt</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">PAGE_MASK</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">phys</span> <span class="o">&amp;=</span> <span class="n">PAGE_MASK</span><span class="p">;</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="n">virt</span> <span class="o">&amp;</span> <span class="n">PAGE_MASK</span><span class="p">;</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">PAGE_ALIGN</span><span class="p">(</span><span class="n">virt</span> <span class="o">+</span> <span class="n">size</span><span class="p">);</span>
+
+    <span class="n">do</span> <span class="p">{</span>
+        <span class="nb">next</span> <span class="o">=</span> <span class="n">pgd_addr_end</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+        <span class="n">alloc_init_pud</span><span class="p">(</span><span class="n">pgdp</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="nb">next</span><span class="p">,</span> <span class="n">phys</span><span class="p">,</span> <span class="n">prot</span><span class="p">,</span> <span class="n">pgtable_alloc</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
+        <span class="n">phys</span> <span class="o">+=</span> <span class="nb">next</span> <span class="o">-</span> <span class="n">addr</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="n">pgdp</span><span class="o">++</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="nb">next</span><span class="p">,</span> <span class="n">addr</span> <span class="o">!=</span> <span class="n">end</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<img alt="../../../_images/create_pgd_mapping.png" src="../../../_images/create_pgd_mapping.png" />
+<p>总体来说，就是逐级页表建立映射关系，同时中间会进行权限的控制</p>
+<p>从上面的代码流程分析，可以看出pgd/pud/pmd/pte的页表项虽然保存的都是物理地址，但是上面pgd/pud/pmd/pte的计算分析都是基于虚拟地址</p>
+<p>假设内核需要访问虚拟地址virt_addr对应的物理地址为phys的内容</p>
+<ul class="simple">
+<li><p>通过存放内核页表的寄存器TTBR1得到swapper_pg_dir页表的物理地址，然后转换成pgd页表的虚拟地址</p></li>
+<li><p>根据virt_addr计算对应的pgd entry(pgd页表的地址+vrt_addr计算出的offset)，PGD entry存放的是PUD页表的物理地址，然后转换成PUD页表基地址的虚拟地址</p></li>
+<li><p>PUD和PMD的处理过程类似</p></li>
+<li><p>最后从PMD entry中找到PTE页表的虚拟地址，根据vir_addr计算得到对应的pte entry,从pte entry中得到phys所在的物理页帧地址</p></li>
+<li><p>加上根据virt_addr计算得到的偏移后得到virt对应的物理地址</p></li>
+</ul>
+<img alt="../../../_images/virt_to_phys.png" src="../../../_images/virt_to_phys.png" />
+<p>以虚拟地址0xffff000140e09000为例</p>
+<img alt="../../../_images/virt_phys_addr.png" src="../../../_images/virt_phys_addr.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="mm_module.html" class="btn btn-neutral float-left" title="3.2.3.1. 内存架构和linux物理内存模型" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="phys_addr.html" class="btn btn-neutral float-right" title="3.2.3.3. 物理内存的软件划分" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

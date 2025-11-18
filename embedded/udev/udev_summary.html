@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.13.1. uedev简介 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="9. net" href="../../net/index.html" />
+    <link rel="prev" title="8.13. udev" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">8.8. 视频相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.13. udev</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.13.1. uedev简介</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#udev">8.13.1.1. udev规则</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.13. </span>udev</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.13.1. </span>uedev简介</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/udev/udev_summary.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="uedev">
+<h1><span class="section-number">8.13.1. </span>uedev简介<a class="headerlink" href="#uedev" title="此标题的永久链接"></a></h1>
+<p>udev完全工作在用户空间，当一个设备被插入或者移除时，内核会通过netlink套接字发送设备详细信息到用户空间，udev获取到设备信息，根据信息内容在/dev下创建并命名设备节点。</p>
+<ul class="simple">
+<li><p>冷插拔的设备怎么办</p></li>
+</ul>
+<p>由于冷插拔的设备在开机时就已经存在，在udev启动前已经被插入，针对这种情况，sysfs的设备都存在 <code class="docutils literal notranslate"><span class="pre">uevent</span></code> 文件，向该文件写入 <code class="docutils literal notranslate"><span class="pre">add</span></code> ，内核会重新发送netlink，之后udev就可以
+受到设备的详细信息了，从而创建/dev下对应的设备节点。</p>
+<section id="udev">
+<h2><span class="section-number">8.13.1.1. </span>udev规则<a class="headerlink" href="#udev" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>配置文件</p></li>
+</ul>
+<p>udev的配置文件位于/etc/udev/和/lib/udev</p>
+<p>udev的主配置文件是/etc/udev/udev.conf，它包含一套变量，允许用户修改udev默认值，可以设置的变量如下：</p>
+<p>udev_root 设备目录，默认是/dev</p>
+<p>udev_log  日志等级(表示严重程度)，跟syslog一致，例如err,info,debug</p>
+<ul class="simple">
+<li><p>规则文件</p></li>
+</ul>
+<p>udev的规则文件一般位于/lib/udev/rules.d/，也可以位于/etc/udev/rules.d/</p>
+<p>规则文件是按照字母顺序处理的，对于相同名字的规则文件，/etc/udev/rules.d比/lib/udev/rules.d优先</p>
+<p>规则文件必须以.rules作为扩展名，否则不被当作规则文件。</p>
+<p>规则文件的每一行哦第时key=vaule的格式，key有两种类型，1) <code class="docutils literal notranslate"><span class="pre">匹配型key</span></code> 2) <code class="docutils literal notranslate"><span class="pre">赋值型key</span></code></p>
+<p>当所有匹配型key都匹配时，该规则即被采用，赋值型key就会获得相应的值。</p>
+<p>一条规则有多个key=value组成，以英文逗号个凯，每个key有一个操作，取决于操作符，有效的操作符如下：</p>
+<ol class="arabic simple">
+<li><p>== 比较是否相等</p></li>
+<li><p>!= 比较是否不想等</p></li>
+<li><p>= 给一个key赋值，表示一个列表的key会被重置，并且把这个唯一的值传给它</p></li>
+<li><p>+= 将一个值增加到key中</p></li>
+<li><p>:= 将一个值传给一个key，并且不允许再修改这个key</p></li>
+</ol>
+<ul class="simple">
+<li><p>匹配型key</p></li>
+</ul>
+<p>下面的key可以匹配设备属性，部分key也可以用于匹配sysfs中父设备属性，不仅仅是产生事件的那个设备。如果在一个规则中，有多个key
+匹配了一个父设备，则这些key必须匹配同一个父设备。</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>key</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ACTION</p></td>
+<td><p>匹配事件的动作名</p></td>
+</tr>
+<tr class="row-odd"><td><p>DEVPATH</p></td>
+<td><p>匹配事件的设备devpath</p></td>
+</tr>
+<tr class="row-even"><td><p>KERNEL</p></td>
+<td><p>匹配事件的设备名</p></td>
+</tr>
+<tr class="row-odd"><td><p>NAME</p></td>
+<td><p>匹配网络接口或者设备节点名字，NAME只有在前面的规则中赋值之后才可以使用</p></td>
+</tr>
+<tr class="row-even"><td><p>SYMLINK</p></td>
+<td><p>匹配设备节点的符号连接名字，只有在赋值之后才可以使用</p></td>
+</tr>
+<tr class="row-odd"><td><p>SUBSYSTEM</p></td>
+<td><p>匹配设备子系统</p></td>
+</tr>
+<tr class="row-even"><td><p>DRIVER</p></td>
+<td><p>匹配设备的驱动名，只对绑定到一个驱动的设备有用</p></td>
+</tr>
+<tr class="row-odd"><td><p>ATTR{filename}</p></td>
+<td><p>匹配事件设备的sysfs属性</p></td>
+</tr>
+<tr class="row-even"><td><p>KERNELS</p></td>
+<td><p>向上搜索devpath，知道找到一个匹配的设备名</p></td>
+</tr>
+<tr class="row-odd"><td><p>SUBSYSTEMS</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p>DRIVERS</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p>ATTRS{filename}</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p>ENV{key}</p></td>
+<td><p>环境变量取值</p></td>
+</tr>
+<tr class="row-odd"><td><p>TAG</p></td>
+<td><p>设备的TAG</p></td>
+</tr>
+<tr class="row-even"><td><p>TEST{ }</p></td>
+<td><p>测试一个文件是否存在</p></td>
+</tr>
+<tr class="row-odd"><td><p>PROGRAM</p></td>
+<td><p>执行一个程序，如果程序成功返回，key为true，可以从RESULT把这个key读取</p></td>
+</tr>
+<tr class="row-even"><td><p>RESULT</p></td>
+<td><p>匹配最近一次PROGRAM调用的返回字符串，应该在PROGRAM之后使用</p></td>
+</tr>
+</tbody>
+</table>
+<p>支持一些shell的通配符</p>
+<ol class="arabic simple">
+<li><ul class="simple">
+<li><p>代表0到无穷多个任意字符</p></li>
+</ul>
+</li>
+<li><p>? 代表【一定有一个】任意字符</p></li>
+<li><p>[] 代表一定有一个在括号内的字符</p></li>
+</ol>
+<ul class="simple">
+<li><p>赋值型KEY</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>key</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NAME</p></td>
+<td><p>根据这个规则创建的设备文件的文件名</p></td>
+</tr>
+<tr class="row-odd"><td><p>SYMLINK</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>OWNER</p></td>
+<td><p>设备文件的属组</p></td>
+</tr>
+<tr class="row-odd"><td><p>GROUP</p></td>
+<td><p>设备文件所在的组</p></td>
+</tr>
+<tr class="row-even"><td><p>MODE</p></td>
+<td><p>设备文件的权限，采用8进制</p></td>
+</tr>
+<tr class="row-odd"><td><p>ATTR{key}</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>TAG</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>RUN</p></td>
+<td><p>为设备而执行的程序列表</p></td>
+</tr>
+<tr class="row-even"><td><p>LABEL</p></td>
+<td><p>GOTO 可以跳到的地方</p></td>
+</tr>
+<tr class="row-odd"><td><p>GOTO</p></td>
+<td><p>跳到下一个带有匹配名字的LABEL处</p></td>
+</tr>
+<tr class="row-even"><td><p>IMPORT</p></td>
+<td><p>导入一个文件或者一个程序执行后而生成的规则集到当前文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>WAIT_FOR</p></td>
+<td><p>等待一个特定的设备文件的创建，主要是用作时序和依赖问题</p></td>
+</tr>
+<tr class="row-even"><td><p>OPTIONS</p></td>
+<td><p>特定选项：last_rule对这类设备终端规则执行。ignore_divice忽略当前规则</p></td>
+</tr>
+</tbody>
+</table>
+<p>NAME、SYMLINK、PROGRAM、OWNER、GROUP、MODE、RUN这些filed支持一个简单的，类似于printf函数的格式字符串替换，可以的字符串替换如下；</p>
+<ol class="arabic simple">
+<li><p>$kernel,%k  :该设备在内核中的名字(%k替换$kernel)</p></li>
+<li><p>$number,%n  :该设备的内核号码，例如sda1的内核号码是1</p></li>
+<li><p>$devpath,%p :该设备的devpath</p></li>
+<li><p>$id,%b      :向上搜索devpath，寻找SUBSYSTEMS，KERNELS，DRIVERS和ATTRS时，被匹配的设备名字</p></li>
+<li><p>$driver     :…被匹配的驱动名字</p></li>
+<li><p>$attr{file}, %s{file}   :一个被发现的设备的sysfs属性的值，如果该设备没有该属性，且前面的KERNELS ，SUBSYSTEMS，DRIVERS或ATTRS测试选择的是一个父设备，那么就用父设备的属性，如果属性是一个符号链，符号链的最后一个元素作为返回值。</p></li>
+<li><p>$env{key},%E{key}   :一个设备的属性值</p></li>
+<li><p>$major,%M   :主设备号</p></li>
+<li><p>$minor,%m   :次设备号</p></li>
+<li><p>$result,%c  :由PROGRAM调用的外部程序返回的字符串，如果这个字符串包含空格，可以用%c{N}选中第N个字段。如果这个数字N后面有一个+字符，则表示选中这个字段开始的后面所有字符</p></li>
+<li><p>$parent,%p  :父设备的节点名字</p></li>
+<li><p>$name       :设备节点的名字，用一个空格作为分割符，该值只有在前面的规则赋值之后才存在</p></li>
+<li><p>$links      :当前符号链的列表，用空格隔开</p></li>
+<li><p>$root,%r    :udev_root的值</p></li>
+<li><p>$sys,%S     :sysfs挂载点</p></li>
+<li><p>$tempmpde,%N    :在真正的设备节点创建之前，创建的一个临时设备节点的名字，这个临时节点供外部程序使用。</p></li>
+</ol>
+<ul class="simple">
+<li><p>查询设备信息</p></li>
+</ul>
+<p>例如：设备sda的SYSFS{size}可以通过cat /sys/block/sda/size得到。SYSFS{model}信息可以通过cat /sys/block/sda/device/model得到</p>
+<p>或者可以通过udevadm命令获取设备信息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="nd">@ArkV3</span><span class="p">:</span><span class="o">/</span><span class="n">dev</span><span class="c1"># udevadm info --query=all --name=/dev/mmcblk0</span>
+<span class="n">P</span><span class="p">:</span> <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">f80000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc0</span><span class="o">/</span><span class="n">mmc0</span><span class="p">:</span><span class="mi">0001</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk0</span>
+<span class="n">N</span><span class="p">:</span> <span class="n">mmcblk0</span>
+<span class="n">S</span><span class="p">:</span> <span class="n">disk</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="nb">id</span><span class="o">/</span><span class="n">mmc</span><span class="o">-</span><span class="n">S0J57X_0x11bc20a7</span>
+<span class="n">S</span><span class="p">:</span> <span class="n">disk</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="n">path</span><span class="o">/</span><span class="n">platform</span><span class="o">-</span><span class="mi">4</span><span class="n">f80000</span><span class="o">.</span><span class="n">sdhci</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">DEVLINKS</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">disk</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="nb">id</span><span class="o">/</span><span class="n">mmc</span><span class="o">-</span><span class="n">S0J57X_0x11bc20a7</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">disk</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="n">path</span><span class="o">/</span><span class="n">platform</span><span class="o">-</span><span class="mi">4</span><span class="n">f80000</span><span class="o">.</span><span class="n">sdhci</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">DEVNAME</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">mmcblk0</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">DEVPATH</span><span class="o">=/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">f80000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc0</span><span class="o">/</span><span class="n">mmc0</span><span class="p">:</span><span class="mi">0001</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk0</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">DEVTYPE</span><span class="o">=</span><span class="n">disk</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">ID_NAME</span><span class="o">=</span><span class="n">S0J57X</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">ID_PART_TABLE_TYPE</span><span class="o">=</span><span class="n">dos</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">ID_PART_TABLE_UUID</span><span class="o">=</span><span class="mi">19</span><span class="n">c5099c</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">ID_PATH</span><span class="o">=</span><span class="n">platform</span><span class="o">-</span><span class="mi">4</span><span class="n">f80000</span><span class="o">.</span><span class="n">sdhci</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">ID_PATH_TAG</span><span class="o">=</span><span class="n">platform</span><span class="o">-</span><span class="mi">4</span><span class="n">f80000_sdhci</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">ID_SERIAL</span><span class="o">=</span><span class="mh">0x11bc20a7</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">MAJOR</span><span class="o">=</span><span class="mi">179</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">MINOR</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">SUBSYSTEM</span><span class="o">=</span><span class="n">block</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">TAGS</span><span class="o">=</span><span class="p">:</span><span class="n">systemd</span><span class="p">:</span>
+<span class="n">E</span><span class="p">:</span> <span class="n">USEC_INITIALIZED</span><span class="o">=</span><span class="mi">2619079</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>调试</p></li>
+</ul>
+<p>以下内容为通过udevadm monitor监测SD卡的拔出以及插入事件</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="nd">@ArkV3</span><span class="p">:</span><span class="o">~</span><span class="c1"># udevadm monitor</span>
+<span class="n">monitor</span> <span class="n">will</span> <span class="nb">print</span> <span class="n">the</span> <span class="n">received</span> <span class="n">events</span> <span class="k">for</span><span class="p">:</span>
+<span class="n">UDEV</span> <span class="o">-</span> <span class="n">the</span> <span class="n">event</span> <span class="n">which</span> <span class="n">udev</span> <span class="n">sends</span> <span class="n">out</span> <span class="n">after</span> <span class="n">rule</span> <span class="n">processing</span>
+<span class="n">KERNEL</span> <span class="o">-</span> <span class="n">the</span> <span class="n">kernel</span> <span class="n">uevent</span>
+
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95305.858326</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p2</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95305.863476</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95305.863909</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p2</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95305.865764</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">virtual</span><span class="o">/</span><span class="n">bdi</span><span class="o">/</span><span class="mi">179</span><span class="p">:</span><span class="mi">96</span> <span class="p">(</span><span class="n">bdi</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95305.865813</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95305.866439</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">virtual</span><span class="o">/</span><span class="n">bdi</span><span class="o">/</span><span class="mi">179</span><span class="p">:</span><span class="mi">96</span> <span class="p">(</span><span class="n">bdi</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95305.869234</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95305.869314</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95305.884325</span><span class="p">]</span> <span class="n">unbind</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95305.884538</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95305.887321</span><span class="p">]</span> <span class="n">unbind</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95305.887671</span><span class="p">]</span> <span class="n">remove</span>   <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95312.630739</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95312.634149</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95312.644368</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">virtual</span><span class="o">/</span><span class="n">bdi</span><span class="o">/</span><span class="mi">179</span><span class="p">:</span><span class="mi">96</span> <span class="p">(</span><span class="n">bdi</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95312.646727</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">virtual</span><span class="o">/</span><span class="n">bdi</span><span class="o">/</span><span class="mi">179</span><span class="p">:</span><span class="mi">96</span> <span class="p">(</span><span class="n">bdi</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95312.652352</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95312.652402</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95312.652431</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p2</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">KERNEL</span><span class="p">[</span><span class="mf">95312.652881</span><span class="p">]</span> <span class="n">bind</span>     <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95312.713507</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95312.827378</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p1</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95312.827647</span><span class="p">]</span> <span class="n">add</span>      <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">mmcblk1</span><span class="o">/</span><span class="n">mmcblk1p2</span> <span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95312.830561</span><span class="p">]</span> <span class="n">bind</span>     <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="8.13. udev" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../net/index.html" class="btn btn-neutral float-right" title="9. net" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

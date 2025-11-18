@@ -1,0 +1,441 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.3.5. shell内建命令 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="7.4. 程序调试" href="../program_debug/index.html" />
+    <link rel="prev" title="7.3.4. 正则表达式" href="regular_expression.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.3. shell 使用笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="shell_rule.html">7.3.1. shell基本语法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Makefile_shell/index.html">7.3.2. Makefile与shell的区别</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell_advanced.html">7.3.3. shell三剑客grep sed awk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="regular_expression.html">7.3.4. 正则表达式</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.3.5. shell内建命令</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.9. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.3. </span>shell 使用笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.3.5. </span>shell内建命令</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/misc/shell/built-in_command.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="shell">
+<h1><span class="section-number">7.3.5. </span>shell内建命令<a class="headerlink" href="#shell" title="此标题的永久链接"></a></h1>
+<p>所谓的shell内建命令，就是由bash自身提供的命令，而不是文件系统中的某个可执行文件</p>
+<p>例如，用于进入或者切换目录的cd命令，该命令不是一个外部文件，只要在shell中就可以运行这个命令</p>
+<p>可以用type来确定一个命令是否是内建命令:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>yinwg@yinwg-ThinkPad-E470:~/tmp/shell$ type cd
+cd 是 shell 内建
+
+yinwg@yinwg-ThinkPad-E470:~/tmp/shell$ type ifconfig
+ifconfig 是 /sbin/ifconfig
+</pre></div>
+</div>
+<p>可见cd是一个shell内建命令，而ifconfig是一i个外部文件</p>
+<p>通常来说，内建命令比外部命令执行的更快，执行外部命令时不但会触发磁盘i/o还需要fork出一个单独的进程来执行，执行完成后再退出。而执行内建命令相当于调用当前shell进程的一个函数</p>
+<p><strong>bash shell内建命令</strong></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>命令</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>:</p></td>
+<td><p>扩展参数列表，执行重定向操作</p></td>
+</tr>
+<tr class="row-odd"><td><p>.</p></td>
+<td><p>读取并执行指定文件中的命令(在当前shell环境中)</p></td>
+</tr>
+<tr class="row-even"><td><p>alias</p></td>
+<td><p>为指定的命令定义一个别名</p></td>
+</tr>
+<tr class="row-odd"><td><p>bg</p></td>
+<td><p>将作业以后台模式运行</p></td>
+</tr>
+<tr class="row-even"><td><p>bind</p></td>
+<td><p>将键盘序列绑定到一个readline函数或宏</p></td>
+</tr>
+<tr class="row-odd"><td><p>break</p></td>
+<td><p>退出for while select until循环</p></td>
+</tr>
+<tr class="row-even"><td><p>builtin</p></td>
+<td><p>执行指定的shell内建命令</p></td>
+</tr>
+<tr class="row-odd"><td><p>caller</p></td>
+<td><p>返回活动子函数调用的上下文</p></td>
+</tr>
+<tr class="row-even"><td><p>cd</p></td>
+<td><p>将当前目录切换为指定目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>command</p></td>
+<td><p>指行指定的命令，无需进行通常的shell查找</p></td>
+</tr>
+<tr class="row-even"><td><p>compgen</p></td>
+<td><p>为指定的单词生产可能的补全选项</p></td>
+</tr>
+<tr class="row-odd"><td><p>complete</p></td>
+<td><p>显示指定的单词是如何补全的</p></td>
+</tr>
+<tr class="row-even"><td><p>compopt</p></td>
+<td><p>修改指定单词的补全选项</p></td>
+</tr>
+<tr class="row-odd"><td><p>continue</p></td>
+<td><p>继续执行for while select until循环的下一次迭代</p></td>
+</tr>
+<tr class="row-even"><td><p>declare</p></td>
+<td><p>声明一个变量或变量类型</p></td>
+</tr>
+<tr class="row-odd"><td><p>dirs</p></td>
+<td><p>显示当前存储目录的列表</p></td>
+</tr>
+<tr class="row-even"><td><p>disown</p></td>
+<td><p>从进程作业表中删除指定的作业</p></td>
+</tr>
+<tr class="row-odd"><td><p>echo</p></td>
+<td><p>将指定字符串输出到STDOUT</p></td>
+</tr>
+<tr class="row-even"><td><p>enable</p></td>
+<td><p>启用或禁用指定的内建shell命令</p></td>
+</tr>
+<tr class="row-odd"><td><p>eval</p></td>
+<td><p>将指定的参数拼接成一个命令，然后执行该命令</p></td>
+</tr>
+<tr class="row-even"><td><p>exec</p></td>
+<td><p>用指定命令替换shell进程</p></td>
+</tr>
+<tr class="row-odd"><td><p>exit</p></td>
+<td><p>强制shell以指定的退出状态码退出</p></td>
+</tr>
+<tr class="row-even"><td><p>export</p></td>
+<td><p>设置子shell子进程可用的变量</p></td>
+</tr>
+<tr class="row-odd"><td><p>fc</p></td>
+<td><p>从历史记录中选择命令列表</p></td>
+</tr>
+<tr class="row-even"><td><p>fg</p></td>
+<td><p>将作业以前台模式运行</p></td>
+</tr>
+<tr class="row-odd"><td><p>getopts</p></td>
+<td><p>分析指定的位置参数</p></td>
+</tr>
+<tr class="row-even"><td><p>hash</p></td>
+<td><p>查找并记住指定命令的全路径名</p></td>
+</tr>
+<tr class="row-odd"><td><p>help</p></td>
+<td><p>显示帮助文件</p></td>
+</tr>
+<tr class="row-even"><td><p>history</p></td>
+<td><p>显示命令历史记录</p></td>
+</tr>
+<tr class="row-odd"><td><p>jobs</p></td>
+<td><p>列出活动作业</p></td>
+</tr>
+<tr class="row-even"><td><p>kill</p></td>
+<td><p>向指定进程ID发送一个系统信号</p></td>
+</tr>
+<tr class="row-odd"><td><p>let</p></td>
+<td><p>计算一个数学表达式中的每个参数</p></td>
+</tr>
+<tr class="row-even"><td><p>local</p></td>
+<td><p>在函数中创建一个作用域受限的变量</p></td>
+</tr>
+<tr class="row-odd"><td><p>logout</p></td>
+<td><p>退出登录shell</p></td>
+</tr>
+<tr class="row-even"><td><p>mapfile</p></td>
+<td><p>从STDIN读取数据行，并将其加入索引数组</p></td>
+</tr>
+<tr class="row-odd"><td><p>popd</p></td>
+<td><p>从目录栈中删除记录</p></td>
+</tr>
+<tr class="row-even"><td><p>printf</p></td>
+<td><p>使用格式化字符串显示文本</p></td>
+</tr>
+<tr class="row-odd"><td><p>pushd</p></td>
+<td><p>向目录栈添加一个目录</p></td>
+</tr>
+<tr class="row-even"><td><p>pwd</p></td>
+<td><p>显示当前工作目录的路径名</p></td>
+</tr>
+<tr class="row-odd"><td><p>read</p></td>
+<td><p>从STDIN读取一行数据并将其赋给一个变量</p></td>
+</tr>
+<tr class="row-even"><td><p>readarray</p></td>
+<td><p>从STDIN读取数据行并将其放入索引数组</p></td>
+</tr>
+<tr class="row-odd"><td><p>readonly</p></td>
+<td><p>从STDIN读取一行数据并将其赋值给一个不可修改的变量</p></td>
+</tr>
+<tr class="row-even"><td><p>return</p></td>
+<td><p>强制函数以某个值退出，这个值可以被调用脚本提取</p></td>
+</tr>
+<tr class="row-odd"><td><p>set</p></td>
+<td><p>设置并显示环境变量的值和shell属性</p></td>
+</tr>
+<tr class="row-even"><td><p>shift</p></td>
+<td><p>将位置参数一次向下降一个位置</p></td>
+</tr>
+<tr class="row-odd"><td><p>shopt</p></td>
+<td><p>打开/关闭控制shell可选行为的变量值</p></td>
+</tr>
+<tr class="row-even"><td><p>source</p></td>
+<td><p>读取并执行指定文件中的命令(在当前shell环境中)</p></td>
+</tr>
+<tr class="row-odd"><td><p>suspend</p></td>
+<td><p>暂停shell的执行，直到收到一个SIGCONT信号</p></td>
+</tr>
+<tr class="row-even"><td><p>test</p></td>
+<td><p>基于指定条件返回退出状态码0或1</p></td>
+</tr>
+<tr class="row-odd"><td><p>times</p></td>
+<td><p>显示累计的用户和系统时间</p></td>
+</tr>
+<tr class="row-even"><td><p>trap</p></td>
+<td><p>如果收到了指定的系统信号，执行指定的命令</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p>显示指定的单词如果作为命令将会被如何解释</p></td>
+</tr>
+<tr class="row-even"><td><p>typeset</p></td>
+<td><p>申明一个变量或者变量类型</p></td>
+</tr>
+<tr class="row-odd"><td><p>ulimit</p></td>
+<td><p>为系统用户设置指定的资源上限</p></td>
+</tr>
+<tr class="row-even"><td><p>umask</p></td>
+<td><p>为新建的文件和目录设置默认权限</p></td>
+</tr>
+<tr class="row-odd"><td><p>unalias</p></td>
+<td><p>删除指定的别名</p></td>
+</tr>
+<tr class="row-even"><td><p>unset</p></td>
+<td><p>删除指定的环境变量或shell属性</p></td>
+</tr>
+<tr class="row-odd"><td><p>wait</p></td>
+<td><p>等待指定的进程完成，并返回退出状态码</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>alias unallias用法</strong></p>
+<p>alias用来设置命令别名，可以将一些比较长的命令进行简化。alias命令的作用只限于该次登入的操作</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">alias</span> <span class="n">新的命令</span><span class="o">=</span><span class="s1">&#39;原命令 -选项/参数&#39;</span>
+
+<span class="n">alias</span> <span class="o">-</span><span class="n">p</span> <span class="c1">#打印已经设置号的命令别名</span>
+
+<span class="n">alias</span> <span class="n">ll</span><span class="o">=</span><span class="s2">&quot;ls -l --color=tty&quot;</span>
+<span class="n">alias</span> <span class="n">rm</span><span class="o">=</span><span class="s1">&#39;rm -i&#39;</span>
+
+<span class="n">unalias</span> <span class="o">-</span><span class="n">a</span>  <span class="c1">#取消所有命令别名</span>
+
+<span class="n">unalias</span> <span class="n">ll</span>
+</pre></div>
+</div>
+<p><strong>作业控制bg fg jobs disown wait suspend kill用法</strong></p>
+<p>bg命令用于将作业放到后台运行，使前台可以执行其他任务，与命令后面加 <cite>&amp;</cite> 的效果使一样的</p>
+<p>jobs命令用于显示linux中的任务列表即任务状态，包括后台运行的任务。该命令可以显示任务号以及对应的进程号，其中任务号是以普通用户的视角进行的，而
+进程号则是从系统管理员的角度来看的。一个任务可以对应一个或者多个进程号</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jobs</span> <span class="p">(</span><span class="n">选项</span><span class="p">)</span> <span class="p">(</span><span class="n">参数</span><span class="p">)</span>
+<span class="o">-</span><span class="n">l</span><span class="p">:</span><span class="n">显示进程号</span>
+<span class="o">-</span><span class="n">p</span><span class="p">:</span><span class="n">仅显示任务对应的进程号</span>
+<span class="o">-</span><span class="n">n</span><span class="p">:</span><span class="n">显示任务状态的变化</span>
+<span class="o">-</span><span class="n">r</span><span class="p">:</span><span class="n">仅输出运行状态</span><span class="p">(</span><span class="n">running</span><span class="p">)</span><span class="n">的任务</span>
+<span class="o">-</span><span class="n">s</span><span class="p">:</span><span class="n">仅输出停止状态</span><span class="p">(</span><span class="n">stopped</span><span class="p">)</span><span class="n">的任务</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bg</span> <span class="mi">1</span>    <span class="c1">#后台执行任务号为1的任务</span>
+<span class="n">fg</span> <span class="mi">1</span>    <span class="c1">#将任务号为1的任务放在前台执行</span>
+</pre></div>
+</div>
+<p>disown命令用于从当前shell中移除作业</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>disown [-h] [-ar] [jobspec ... | pid ...]
+-h:标记每个作业标识符，这些作业将不会在shell中收到sighub信号
+-a:移除所有作业
+-r:移除运行的作业
+jobspec:要移除的作业标识符
+pid:要移除的作业pid
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>disown只是移除作业，其实作业并没有停止运行</p>
+</div>
+<p>wait命令用来等待指令完成，直到其执行完毕后返回终端。该指令在等待作业时，在作业标识号前必须添加备份号”%”</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wait</span> <span class="o">%</span><span class="mi">3</span> <span class="c1">#等待作业号为3的作业完成</span>
+</pre></div>
+</div>
+<p>suspend命令执行shell的挂起操作,直到收到一个SIGCONT信号</p>
+<p>kill发送信号到作业或者进程</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kill</span> <span class="o">-</span><span class="n">s</span> <span class="n">sig</span> <span class="n">信号名称</span>
+<span class="n">kill</span> <span class="o">-</span><span class="n">n</span> <span class="n">sig</span> <span class="n">信号名称对应的数字</span>
+<span class="o">-</span><span class="n">l</span> <span class="n">列出信号名称</span>
+</pre></div>
+</div>
+<p><strong>bind命令 builtin命令</strong></p>
+<p>bind命令用于显示和设置命令行的键盘序列绑定功能，通过这一命令可以提高命令行中操作效率</p>
+<p>builtin命令用于执行指定shell内部命令，当系统中定义了与shell内部命令相同的函数时，使用builtin显式地执行shell内部命令，从而忽略定义的shell函数。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>bind：用法： bind [-lpvsPSVX] [-m 键映射] [-f 文件名] [-q 名称] [-u 名称] [-r 键序列] [-x 键序列:shell-命令] [键序列:readline-函数 或 readline-命令]
+bing (选项)
+-f&lt;按键配置文件&gt;：载入指定的按键配置文件
+-l:列出所有功能
+-m&lt;按键配置&gt;：指定的按键配置
+-q&lt;功能&gt;:显示指定功能的按键
+-v:列出目前的按键配置与其功能
+</pre></div>
+</div>
+<p>实例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bind</span> <span class="o">-</span><span class="n">x</span> <span class="s1">&#39;&quot;\C-l&quot;:ls -l&#39;</span>      <span class="c1">#直接按CTRL+L就列出目录</span>
+</pre></div>
+</div>
+<p><strong>declare</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>declare (选项) (参数)
+选项:
+-f:仅显示函数
+r:将变量设置为只读
+x:指定的变量会成为环境变量，可供shell以外的程序来使用
+i:设置值可以是数值，字符串或运算式
+参数:
+shell变量  格式为&quot;变量名=值&quot;
+</pre></div>
+</div>
+<p><strong>trap命令</strong></p>
+<p>trap用于捕捉信号和其他事件执行命令</p>
+<p>信号是一种进程间的通信机制，应用程序收到信号后，有三种处理方式：忽略、默认、或捕捉。如果是SIG_IGN，就忽略信号，如果是SIG_DFT,则会采用系统默认的处理动作，通常是终止进程
+或者忽略该信号。如果给该信号指定了一个处理函数(捕捉)，则会中断当前进程正在执行的任务转而去执行该信号的处理函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">trap</span> <span class="s2">&quot;rm -f $</span><span class="si">{WORKDIR}</span><span class="s2">/tmpfile;exit&quot;</span> <span class="mi">2</span>  <span class="c1">#收到信号2时执行删除文件操作</span>
+<span class="n">trap</span> <span class="s1">&#39;&#39;</span> <span class="mi">2</span>   <span class="c1">#忽略信号</span>
+<span class="n">trap</span> <span class="mi">1</span> <span class="mi">2</span>    <span class="c1">#重置</span>
+</pre></div>
+</div>
+<p><strong>shift命令</strong></p>
+<p>shift用来移动位置参数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cat test.sh
+#!/bin/bash
+
+echo $1 $2 $3
+shift 2
+echo $1 $2 $3
+
+bash test.sh a b c d e f
+a b c
+c d e
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="regular_expression.html" class="btn btn-neutral float-left" title="7.3.4. 正则表达式" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../program_debug/index.html" class="btn btn-neutral float-right" title="7.4. 程序调试" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

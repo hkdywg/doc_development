@@ -1,0 +1,207 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.2.2.2. 内存管理顶层视角问答 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.2.3. linux內存管理" href="../mm/index.html" />
+    <link rel="prev" title="3.2.2.1. 内存管理预备知识问答" href="prepare_qa.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.2. linux 内存管理</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../summary/index.html">3.2.1. 内存管理概述</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">3.2.2. 内存管理之问答</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="prepare_qa.html">3.2.2.1. 内存管理预备知识问答</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.2.2.2. 内存管理顶层视角问答</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../mm/index.html">3.2.3. linux內存管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../MMU/index.html">3.2.4. MMU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cache/index.html">3.2.5. 内存管理之cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../memory_base_kn/index.html">3.2.6. 内存基础知识</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.2. </span>linux 内存管理</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2.2. </span>内存管理之问答</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.2.2.2. </span>内存管理顶层视角问答</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/mm/mm_qa/topview_eq.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">3.2.2.2. </span>内存管理顶层视角问答<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<ul class="simple">
+<li><p>在系统启动时，ARM Linux内核如何知道系统中有多大的内存空间？</p></li>
+<li><p>在32bit Linux内核中，用户空间和内核空间的比例通常是3:1，可以修改成2:2吗？</p></li>
+<li><p>物理内存页面如何添加到伙伴系统中，是一页一页添加，还是以2的几次幂来加入呢？</p></li>
+<li><p>内核的一级页表存放在什么地方？二级页表又存放在什么地方？</p></li>
+<li><p>用户进程的一级页表存放在什么地方？二级页表呢？</p></li>
+<li><p>在ARM32系统中，页表是如何映射的？在ARM64系统中，页表又是如何映射的？</p></li>
+<li><p>请简述Linux内核在理想情况下页面分配器(page allocator)是如何分配出连续物理页面的。</p></li>
+<li><p>在页面分配器中，如何从分配掩码(gfp_mask)中确定可以从哪些zone中分配内存？</p></li>
+<li><p>页面分配器是按照什么方向来扫描zone的？</p></li>
+<li><p>为用户进程分配物理内存，分配掩码应该选用GFP_KERNEL，还是GFP_HIGHUSER_MOVABLE呢？</p></li>
+<li><p>slab分配器是如何分配和释放小块内存的？</p></li>
+<li><p>slab分配器中有一个着色的概念(cache color)，着色有什么作用？</p></li>
+<li><p>slab分配其中的slab对象有没有根据Per-CPU做一些优化？</p></li>
+<li><p>slab增长并导致大量不用的空闲对象，该如何解决？</p></li>
+<li><p>请问kmalloc、vmalloc和malloc之间有什么区别以及实现上的差异？</p></li>
+<li><p>使用用户态的API函数malloc()分配内存时，会马上为其分配物理内存吗？</p></li>
+<li><p>假设不考虑libc的因素，malloc分配100Byte，那么实际上内核是为其分配100Byte吗？</p></li>
+<li><p>假设两个用户进程打印的malloc()分配的虚拟地址是一样的，那么在内核中这两块虚拟内存是否打架了呢？</p></li>
+<li><p>vm_normal_page()函数返回的是什么样页面的struct page数据结构？为什么内存管理代码中需要这个函数？</p></li>
+<li><p>请简述get_user_page()函数的作用和实现流程？</p></li>
+<li><p>请简述follow_page()函数的作用和实现流程？</p></li>
+<li><p>请简述私有映射和共享映射的区别。</p></li>
+<li><p>为什么第二次调用mmap时，Linux内核没有捕捉到地址重叠并返回失败呢？</p></li>
+<li><p>struct page数据结构中的_count和_mapcount有什么区别？</p></li>
+<li><p>匿名页面和page cache页面有什么区别？</p></li>
+<li><p>struct page数据结构中有一个锁，请问trylock_page()和lock_page()有什么区别？</p></li>
+<li><p>在Linux 2.4.x内核中，如何从一个page找到所有映射该页面的VMA？反响映射可以带来哪些便利？</p></li>
+<li><p>阅读Linux 4.0内核RMAP机制的代码，画出父子进程之间VMA、AVC、anon_vma和page等数据结构之间的关系图。</p></li>
+<li><p>在Linux 2.6.34中，RMAP机制采用了新的实现，在Linux 2.6.33和之前的版本中称为旧版本RMAP机制。那么在旧版本RMAP机制中，如果父进程有1000个子进程，每个子进程都有一个VMA，这个VMA里面有1000个匿名页面，当所有的子进程的VMA同时发生写复制时会是什么情况呢？</p></li>
+<li><p>当page加入lru链表中，被其他线程释放了这个page，那么lru链表如何知道这个page已经被释放了。</p></li>
+<li><p>kswapd内核线程何时会被唤醒？</p></li>
+<li><p>LRU链表如何知道page的活动频繁程度？</p></li>
+<li><p>kswapd按照什么原则来换出页面？</p></li>
+<li><p>kswapd按照什么方向来扫描zone？</p></li>
+<li><p>kswapd以什么标准来退出扫描LRU？</p></li>
+<li><p>手持设备例如Android系统，没有swap分区或者swap文件，kswapd会扫描匿名页面LRU吗？</p></li>
+<li><p>swappiness的含义是什么？kswapd如何计算匿名页面和page cache之间的扫描比重？</p></li>
+<li><p>当系统充斥着大量只访问一次的文件访问(use-one streaming IO)时，kswapd如何来规避这种风暴？</p></li>
+<li><p>在回收page cache时，对于dirty的page cache，kswapd会马上回写吗？</p></li>
+<li><p>内核有哪些页面会被kswapd写回交换分区？</p></li>
+<li><p>ARM32 Linux如何模拟这个Linux版本的L_PTE_YOUNG比特位呢？</p></li>
+<li><p>如何理解Refault Distance算法？</p></li>
+<li><p>请简述匿名页面的生命周期。在什么情况下会产生匿名页面？在什么条件下会释放匿名页面？</p></li>
+<li><p>KSM是基于什么原理来合并页面的？</p></li>
+<li><p>在KSM机制里，合并过程中把page设置成写保护的函数write_protect_page()有这样一个判断：。这个判断的依据是什么？</p></li>
+<li><p>如果多个VMA的虚拟页面同时映射了同一个匿名页面，那么此时page-&gt;index应该等于多少？</p></li>
+<li><p>为什么Dirty COW小程序可以修改一个只读文件的内容？</p></li>
+<li><p>在Dirty COW内存漏洞中，如果Diryt COW程序没有madviseThread线程，即只有procselfmemThread线程，能否修改foo文件的内容呢？</p></li>
+<li><p>假设在内核空间获取了某个文件对应的page cache页面的struct page数据结构，而对应的VMA属性是只读，那么内核空间是否可以成功修改该文件呢？</p></li>
+<li><p>如果用户进程使用只读属性(PROT_READ)来mmap映射一个文件到用户空间，然后使用memcpy来写这段内存空间，会是什么样的情况？</p></li>
+<li><p>请画出内存管理中常用的数据结构的关系图，如mm_struct、vma、vaddr、page、pfn、pte、zone、paddr和pg_data等，并思考如下转换关系。</p></li>
+<li><p>请画出在最糟糕的情况下分配若干个连续物理页面的流程图。</p></li>
+<li><p>在Android中新添加了LMK(Low Memory Killer)，请描述LMK和OOM Killer之间的关系。</p></li>
+<li><p>请描述一致性DMA映射dma_alloc_coherent()函数在AEM中是如何管理cache一致性的？</p></li>
+<li><p>请描述流式DMA映射dma_map_single()函数在ARM中是如何管理cache一致性的？</p></li>
+<li><p>为什么在Linux 4.8内核中要把基于zone的LRU链表机制迁移到基于Node呢？</p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="prepare_qa.html" class="btn btn-neutral float-left" title="3.2.2.1. 内存管理预备知识问答" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../mm/index.html" class="btn btn-neutral float-right" title="3.2.3. linux內存管理" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

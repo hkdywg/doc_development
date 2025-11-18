@@ -1,220 +1,223 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN" >
+<html class="writer-html5" lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>4. file system note &mdash; ywg_dev_doc 0.1 文档</title>
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5. file system note &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
-        <script src="../_static/translations.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="5. application development node" href="../user/index.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="../driver/mmc/sdcard/index.html" /> 
+    <link rel="next" title="5.1. linux 虚拟文件系统" href="vfs/index.html" />
+    <link rel="prev" title="4.16.1. A核与M核异构通信过程解析" href="../driver/rpmsg/rpmsg_summary.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
           
-
-          
+          <a href="../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../u-boot/index.html">1. u-boot dev note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../kernel/index.html">2. kernel note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. linux driver modules note</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">4. file system note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user/index.html">5. application development node</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. file system note</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vfs/index.html">5.1. linux 虚拟文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ext4/index.html">5.2. ext4文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sysfs/index.html">5.3. linux文件系统之sysfs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">6. application development node</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../misc/index.html">7. misc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../issues/index.html">8. Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arm64/index.html">12. arm64 arch</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">ywg_dev_doc</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-      <li><span class="section-number">4. </span>file system note</li>
-    
-    
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5. </span>file system note</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../_sources/fs/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
+            <a href="../_sources/fs/index.rst.txt" rel="nofollow"> 查看页面源码</a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="file-system-note">
-<h1><span class="section-number">4. </span>file system note<a class="headerlink" href="#file-system-note" title="永久链接至标题">¶</a></h1>
+             
+  <section id="file-system-note">
+<h1><span class="section-number">5. </span>file system note<a class="headerlink" href="#file-system-note" title="此标题的永久链接"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="vfs/index.html">5.1. linux 虚拟文件系统</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vfs/vfs_architecture.html">5.1.1. 虚拟文件系统概述</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="vfs/vfs_architecture.html#id2">5.1.1.1. 文件系统</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vfs/vfs_architecture.html#id3">5.1.1.2. 磁盘分区和目录</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vfs/vfs_architecture.html#id4">5.1.1.3. 虚拟文件系统的作用</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="vfs/vfs_datastruct.html">5.1.2. vfs数据结构</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="vfs/vfs_datastruct.html#id1">5.1.2.1. 概念</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vfs/vfs_datastruct.html#id2">5.1.2.2. vfs数据结构</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="vfs/vfs_datastruct.html#id3">5.1.2.2.1. 自举块</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vfs/vfs_datastruct.html#id4">5.1.2.2.2. 超级块</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vfs/vfs_datastruct.html#id5">5.1.2.2.3. 索引节点</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vfs/vfs_datastruct.html#id6">5.1.2.2.4. 目录项</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vfs/vfs_datastruct.html#id7">5.1.2.2.5. 文件对象</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vfs/vfs_datastruct.html#id8">5.1.2.2.6. 文件系统相关</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vfs/vfs_datastruct.html#id9">5.1.2.2.7. 文件系统相关</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vfs/vfs_datastruct.html#id10">5.1.2.2.8. 进程相关</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="vfs/vfs_datastruct.html#id11">5.1.2.3. 示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="vfs/fs_store.html">5.1.3. 文件的存储</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="vfs/fs_store.html#id2">5.1.3.1. 连续空间存放方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vfs/fs_store.html#id3">5.1.3.2. 非连续空间存放方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vfs/fs_store.html#id4">5.1.3.3. 空闲空间管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vfs/fs_store.html#id5">5.1.3.4. 目录的存储</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vfs/fs_store.html#id6">5.1.3.5. 软链接和硬链接</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="vfs/fs_mount.html">5.1.4. 文件系统mount</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="vfs/fs_mount.html#id1">5.1.4.1. 根文件系统安装</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="vfs/fs_mount.html#rootfs">5.1.4.1.1. rootfs安装</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vfs/fs_mount.html#id2">5.1.4.1.2. 实际根文件系统安装</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="vfs/fs_mount.html#id3">5.1.4.2. 普通文件系统安装</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="vfs/vfs_realfs.html">5.1.5. vfs与real_fs关联</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="vfs/vfs_realfs.html#id1">5.1.5.1. 文件系统的注册与挂载</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="vfs/vfs_realfs.html#id2">5.1.5.1.1. 文件系统类型的注册</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="vfs/vfs_realfs.html#vfs">5.1.5.2. VFS与具体的文件系统操作挂钩</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="vfs/fs_io_read.html">5.1.6. 文件系统系统调用</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="vfs/fs_io_read.html#open">5.1.6.1. open()系统调用关系</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="vfs/fs_io_read.html#sys-open">5.1.6.1.1. sys_open</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vfs/fs_io_read.html#do-sys-open">5.1.6.1.2. do_sys_open</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vfs/fs_io_read.html#do-filp-open">5.1.6.1.3. do_filp_open</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vfs/fs_io_read.html#do-last">5.1.6.1.4. do_last</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="vfs/fs_io_read.html#sys-read">5.1.6.2. sys_read</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ext4/index.html">5.2. ext4文件系统</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ext4/ext4_struct.html">5.2.1. ext4文件系统结构</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ext4/ext4_struct.html#id1">5.2.1.1. ext4磁盘布局</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ext4/ext4_struct.html#group-descriptors">5.2.1.2. Group descriptors组描述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ext4/ext4_struct.html#block-bitmap">5.2.1.3. Block bitmap块位图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ext4/ext4_struct.html#inode-bitmap">5.2.1.4. Inode bitmap索引节点位图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ext4/ext4_struct.html#inode-table">5.2.1.5. Inode table索引节点表</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ext4/ext4_struct.html#inodeblock">5.2.1.5.1. 通过inode定位到block</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ext4/ext4_struct.html#directory-entries">5.2.1.5.2. Directory Entries目录项</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sysfs/index.html">5.3. linux文件系统之sysfs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sysfs/sysfs.html">5.3.1. sysfs 文件系统简介</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sysfs/sysfs.html#id1">5.3.1.1. sysfs简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sysfs/sysfs.html#id2">5.3.1.2. sysfs目录结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sysfs/sysfs.html#id3">5.3.1.3. sysfs中的要素关系</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="sysfs/sysfs_source.html">5.3.2. sysfs源码分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sysfs/sysfs_source.html#id1">5.3.2.1. sysfs的初始化和挂载</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sysfs/sysfs_source.html#id2">5.3.2.2. 在sysfs文件系统中创建目录</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sysfs/sysfs_source.html#id3">5.3.2.3. 在sysfs文件系统中创建一般属性文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sysfs/sysfs_source.html#id4">5.3.2.4. 在sysfs文件系统中创建二进制文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sysfs/sysfs_source.html#id5">5.3.2.5. sysfs文件系统中的链接文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../user/index.html" class="btn btn-neutral float-right" title="5. application development node" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../driver/mmc/sdcard/index.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../driver/rpmsg/rpmsg_summary.html" class="btn btn-neutral float-left" title="4.16.1. A核与M核异构通信过程解析" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="vfs/index.html" class="btn btn-neutral float-right" title="5.1. linux 虚拟文件系统" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; 版权所有 2020, yinwg
-
-    </p>
+    <p>&#169; 版权所有 2019, yinwg。</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

@@ -1,250 +1,471 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN" >
+<html class="writer-html5" lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>7.4. 性能优化 &mdash; ywg_dev_doc 0.1 文档</title>
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.5. 性能优化 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
-        <script src="../../_static/translations.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="8. Issues" href="../../issues/index.html" />
-    <link rel="prev" title="7.3. 调试手段" href="../program_debug/index.html" /> 
+    <link rel="next" title="7.6. vim使用手册" href="../vim/index.html" />
+    <link rel="prev" title="7.4.2. debug问题汇总" href="../program_debug/debug_problem.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
           
-
-          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">1. u-boot dev note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">2. kernel note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. linux driver modules note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">4. file system note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">5. application development node</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.1. git 使用笔记</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.2. shell 使用笔记</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.3. 调试手段</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">7.4. 性能优化</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id2">7.4.1. 分析系统瓶颈</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">7.4.2. 分析内存瓶颈</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#io">7.4.3. 分析IO瓶颈</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">7.4.4. 分析系统调用</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">7.4.5. 优化程序代码</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7.5. 性能优化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">7.5.1. 分析系统瓶颈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">7.5.2. 分析内存瓶颈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#io">7.5.3. 分析IO瓶颈</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">7.5.4. 分析系统调用</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">7.5.5. 优化程序代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">7.5.6. 监控工具</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#top">7.5.6.1. top</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vmstat">7.5.6.2. vmstat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#uptime">7.5.6.3. uptime</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pspstree">7.5.6.4. ps和pstree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#free">7.5.6.5. free</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iostat">7.5.6.6. iostat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sar">7.5.6.7. sar</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../issues/index.html">8. Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.6. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile/index.html">7.7. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmake/index.html">7.8. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.9. 链接脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assembly/index.html">7.10. 汇编语言</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.11. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../markdown/index.html">7.12. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_commond/index.html">7.13. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64体系架构</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">ywg_dev_doc</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../index.html"><span class="section-number">7. </span>misc</a> &raquo;</li>
-        
-      <li><span class="section-number">7.4. </span>性能优化</li>
-    
-    
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.5. </span>性能优化</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../../_sources/misc/performance_optimzation/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
+            <a href="../../_sources/misc/performance_optimzation/index.rst.txt" rel="nofollow"> 查看页面源码</a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="id1">
-<h1><span class="section-number">7.4. </span>性能优化<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
-<div class="section" id="id2">
-<h2><span class="section-number">7.4.1. </span>分析系统瓶颈<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+             
+  <section id="id1">
+<h1><span class="section-number">7.5. </span>性能优化<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2><span class="section-number">7.5.1. </span>分析系统瓶颈<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>性能优化就是找到系统处理中的瓶颈以及除去这些的过程。</p>
+<p>性能优化其实是对OS各子系统达到平衡的定义，这些子系统包括： <code class="docutils literal notranslate"><span class="pre">CPU</span></code> <code class="docutils literal notranslate"><span class="pre">Memory</span></code> <code class="docutils literal notranslate"><span class="pre">IO</span></code> <code class="docutils literal notranslate"><span class="pre">Network</span></code> .这些子系统之间是相互依赖的，任何一个子系统的高负荷都会
+导致其他子系统出现问题。</p>
+<p>比如：</p>
+<p>1.大量的页调入请求导致内存队列的拥堵</p>
+<p>2.网卡的大吞吐量可能导致更多的CPU开销</p>
+<p>3.大量的写磁盘请求会导致CPU以及IO的问题</p>
+<p>perf 应用教程</p>
+<p><a class="reference external" href="http://www.brendangregg.com/perf.html">http://www.brendangregg.com/perf.html</a></p>
+<img alt="../../_images/linux_observability_tools.png" src="../../_images/linux_observability_tools.png" />
+</section>
+<section id="id3">
+<h2><span class="section-number">7.5.2. </span>分析内存瓶颈<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>在linux的内存分配机制中，优先使用物理内存,当物理内存还有空闲时不会释放其占用的内存，就算占用内存的程序已经关闭，该程序所占用的内存可以用来做缓存使用对于开启过的程序
+或者是刚存取过的数据会比较快</p>
+<p>一般有这样的一个经验公式：应用程序可用内存大于70%时,表示系统内存资源充足,不影响系统性能</p>
+<p>虚拟内存时Linux kernel 使用虚拟内存机制来利用磁盘对内存的空间进行扩展,kernel将在那时不用的内存写入到磁盘从而释放出更多的可用内存,当这些数据再次被使用时会被重新加载到内存中
+。做虚拟内存的磁盘空间被称作时swap space. 对于硬盘的读写相对于内存来说速度要慢许多因此使用了虚拟内存的程序，速度相应会变慢，虚拟内存的使用往往被认为时内存出现瓶颈的标志。</p>
+<p>内存分页(memory paging)和内存交换(memory swapping)</p>
+<p>memory paging 是一个定时将内存数据同步回磁盘的过程。当系统内存不足时，系统回将最近不常用的内存段交换到交换空间, 出现pageout. 当程序要读的文件在内存中没有找到，这时候出现
+page fault 从磁盘中读取到内存.</p>
+<p>pmap 命令可以用来查看进程的内存映射使用这个命令可以找出内存瓶颈的原因。</p>
+<p>vmstat 命令可以查看cpu使用率, 内存使用, 虚拟内存交换情况, io读写情况</p>
+<p>一般情况下vmstat工具可以通过两个数字参数完成, 第一参数是采样的时间间隔, 第二个参数是采样的次数.</p>
+<p>r 在运行队列中等待的进程数</p>
+<p>b 在等待io的进程数</p>
+<p>swpd 指切换到内存交换去的内存数量(以K为单位)，如果swpd的值不为0,或者比较大,只要si so的值长期为0, 这种情况一般不用担心, 不会影响系统性能,</p>
+<p>free 表示空闲的物理内存</p>
+<p>buffer  表示buffers cache的内存数量, 一般对块设备的读写才需要缓冲</p>
+<p>cache 表示page cache的内存数量, 一般作为文件系统的cached . 频繁访问的文件都会被cached，如果cached的值比较大, 说明cached的文件比较多. 也就是常说的高速缓存</p>
+<p>si 从磁盘交换到内存的交换页数量, 单位KB/s</p>
+<p>so 从内存交换到磁盘的交换页数量,单位是KB/s</p>
+<p>一般情况下, si so的值都为0, 如果si so的值长期不为0，则表示系统内存不足</p>
+<p>在linux中, 分页(paging)和交换(swapping)是有区别的，分页是吧独立的页移动到磁盘上的一个交换分区. 交换是一个大型操作, 把进程所有的地址空间一次性全部移动到交换分区.
+交换可能是有两种因素引起的</p>
+<ol class="arabic simple">
+<li><p>进程进入睡眠模式,这种事情经常发生,因为进程依赖于交互操作,编辑器,shell等,应用程序把大多数的时间花在等待用户输入数据上,在此期间进程是非激活的</p></li>
+<li><p>进程异常行为.</p></li>
+</ol>
+<p>分页可能是严重的性能问题</p>
+<ul class="simple">
+<li><p>性能调优选项</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>使用bigpages hugetlb和共享内存调优swap空间</p></li>
+<li><p>增加或者减少页大小</p></li>
+<li><p>调整page-out 率</p></li>
+<li><p>增加内存</p></li>
+</ol>
+<p>优化内存子系统需要持续的观察,确保所作出的修改不会对其他的子系统产生不好的影响，如果要修改/proc/sys/vm下的虚拟内存参数, 建议每次只该一个参数, 然后观察性能变化</p>
+<p>linux上大多数应用并不直接把数据写入磁盘，他们先写入由虚拟内存管理器维护的文件系统缓冲中,最后刷入数据到磁盘.</p>
+<ul class="simple">
+<li><p>/proc/sys/vm/swappiness</p></li>
+</ul>
+<p>这个参数用来定义如何把内存交换到磁盘,通过修改此参数中的百分比,可以控制swap行为,如果不希望发生交换,那应该设很小的值. 可以通过echo 或者 sysctl改变交换行为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sysctl</span> <span class="o">-</span><span class="n">w</span> <span class="n">vm</span><span class="o">.</span><span class="n">swappiness</span><span class="o">=</span><span class="mi">100</span>
+</pre></div>
 </div>
-<div class="section" id="id3">
-<h2><span class="section-number">7.4.2. </span>分析内存瓶颈<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p>/proc/sys/vm/dirty_background_ratio</p></li>
+</ul>
+<p>此参数定义了达到的内存百分比时，pdflush守护进程把数据写入到磁盘,如果希望更大写入则把默认值增加到10% ,值越大写入的频率越低</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sysctl</span> <span class="o">-</span><span class="n">w</span> <span class="n">vm</span><span class="o">.</span><span class="n">dirty_background_ratio</span><span class="o">=</span><span class="mi">25</span>
+</pre></div>
 </div>
-<div class="section" id="io">
-<h2><span class="section-number">7.4.3. </span>分析IO瓶颈<a class="headerlink" href="#io" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p>/proc/sys/vm/dirty_ratio</p></li>
+</ul>
+<p>此参数设置了应用程序生成的脏页被写入磁盘的百分比</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sysctl</span> <span class="o">-</span><span class="n">w</span> <span class="n">vm</span><span class="o">.</span><span class="n">dirty_ratio</span><span class="o">=</span><span class="mi">20</span>
+</pre></div>
 </div>
-<div class="section" id="id4">
-<h2><span class="section-number">7.4.4. </span>分析系统调用<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p>swap分区</p></li>
+</ul>
+<p>磁盘上空闲的分区可以创建为swap分区,如果没有空闲分区怎可以创建swap文件, swap分区是优于swap文件的,swap的I/O操作可以绕过文件系统,节省了写入文件的开销,比写入swap文件的性能更好</p>
+<p>另一种提升swap分区和文件性能的办法是建立多个swap分区，linux可以并行的读写多个swap分区</p>
+<p>swap分区可以在/etc/fstab文件中创建</p>
+<ul class="simple">
+<li><p>HugeTLBfs</p></li>
+</ul>
+<p>对于大量使用虚拟地址空间的应用来说，内存管理是很有用的，CPU的旁路转换缓冲是保存虚拟到物理映射信息的小缓冲区,使用TLB，可以不用参考内存页表的虚拟地址映射就能完成转换. 为了保证转换速度够快
+TLB通常被设置的很多,经常有大内存的应用超过TLB的映射能力</p>
+<p>HugeTLBfs特性让应用使用比通常更大的页大小,大页可以是正常页的1000倍. 这个功能是通过文件系统接口向应用程序开放的</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sysctl</span> <span class="o">-</span><span class="n">w</span> <span class="n">vm</span><span class="o">.</span><span class="n">nr_hugepages</span><span class="o">=</span><span class="mi">512</span>
+</pre></div>
 </div>
-<div class="section" id="id5">
-<h2><span class="section-number">7.4.5. </span>优化程序代码<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>如果应用程序使用mmap()系统调用使用大页,则必须挂载hugetlb类型的文件系统</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">hugetlbfs</span> <span class="n">none</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">hugepages</span>
+</pre></div>
 </div>
+</section>
+<section id="io">
+<h2><span class="section-number">7.5.3. </span>分析IO瓶颈<a class="headerlink" href="#io" title="此标题的永久链接"></a></h2>
+</section>
+<section id="id4">
+<h2><span class="section-number">7.5.4. </span>分析系统调用<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+</section>
+<section id="id5">
+<h2><span class="section-number">7.5.5. </span>优化程序代码<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+</section>
+<section id="id6">
+<h2><span class="section-number">7.5.6. </span>监控工具<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>linux性能监控常用工具</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>工具</p></th>
+<th class="head"><p>常用功能</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>top</p></td>
+<td><p>所有进程情况</p></td>
+</tr>
+<tr class="row-odd"><td><p>vmstat</p></td>
+<td><p>系统活动硬件和系统信息</p></td>
+</tr>
+<tr class="row-even"><td><p>uptime</p></td>
+<td><p>系统平均负载</p></td>
+</tr>
+<tr class="row-odd"><td><p>ps,pstree</p></td>
+<td><p>显示进程</p></td>
+</tr>
+<tr class="row-even"><td><p>free</p></td>
+<td><p>内存使用情况</p></td>
+</tr>
+<tr class="row-odd"><td><p>iostat</p></td>
+<td><p>cpu负载和磁盘活动</p></td>
+</tr>
+<tr class="row-even"><td><p>sar</p></td>
+<td><p>收集和报告系统状态</p></td>
+</tr>
+<tr class="row-odd"><td><p>mpstat</p></td>
+<td><p>多处理器使用情况</p></td>
+</tr>
+<tr class="row-even"><td><p>numastat</p></td>
+<td><p>NUMA相关统计</p></td>
+</tr>
+<tr class="row-odd"><td><p>pmap</p></td>
+<td><p>进程内存情况</p></td>
+</tr>
+<tr class="row-even"><td><p>netstat</p></td>
+<td><p>网络统计</p></td>
+</tr>
+<tr class="row-odd"><td><p>iptraf</p></td>
+<td><p>实时网络统计</p></td>
+</tr>
+<tr class="row-even"><td><p>tcpdump,ethereal</p></td>
+<td><p>详细网络流量分析</p></td>
+</tr>
+<tr class="row-odd"><td><p>nmon</p></td>
+<td><p>收集和报告系统活动</p></td>
+</tr>
+<tr class="row-even"><td><p>strace</p></td>
+<td><p>系统调用</p></td>
+</tr>
+<tr class="row-odd"><td><p>proc文件系统</p></td>
+<td><p>各种内核统计信息</p></td>
+</tr>
+<tr class="row-even"><td><p>KDE system guard</p></td>
+<td><p>实时的系统图形报告</p></td>
+</tr>
+<tr class="row-odd"><td><p>Gnome system moni</p></td>
+<td><p>实时的系统图形报告</p></td>
+</tr>
+</tbody>
+</table>
+<section id="top">
+<h3><span class="section-number">7.5.6.1. </span>top<a class="headerlink" href="#top" title="此标题的永久链接"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">top</span></code> 命令会展示进程的实际活动,默认情况下它会列出系统上所有cpu密集型任务,并且每5s刷新一次列表,你可以对PID，生存时间,以及常驻内存使用率和时间(进程启动开始占用CPU的时间)进行排序。</p>
+<ul class="simple">
+<li><p>top输出的各列:</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>PID 进程号</p></li>
+<li><p>USER 进程所有者的名字</p></li>
+<li><p>PRI 进程优先级</p></li>
+<li><p>NI nice级别</p></li>
+<li><p>VIRT 进程使用的虚拟内存总量,单位是kb. VIRT=SWAP+RES</p></li>
+<li><p>RES 进程使用的,未被换出的物理内存大小,单位是kb, RES=CORE+DATA</p></li>
+<li><p>SHR 共享内存大小</p></li>
+<li><p>S 进程状态. D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程</p></li>
+<li><p>%CPU cpu使用率</p></li>
+<li><p>%MEM 进程使用的物理内存百分比</p></li>
+<li><p>TIME+ 进程使用CPU的时间总计,单位1/100秒</p></li>
+<li><p>COMMAND 进程名称(命令名/命令行)</p></li>
+</ol>
+<ul class="simple">
+<li><p>使用技巧</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>多核CPU监控</p></li>
+</ol>
+<p>在top基本视图中,按键盘数字1,可监控每个逻辑CPU的使用状况</p>
+<ol class="arabic simple" start="2">
+<li><p>进程字段排序</p></li>
+</ol>
+<p>默认进入top时,各进程时按照CPU的占用率来排序的,敲击键盘x(打开/关闭配序列的加亮效果),可以通过”shift+&gt;”或者”shift+&lt;”向左或者向右改变排序列</p>
+<ol class="arabic simple" start="3">
+<li><p>top 使用实例</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">top</span> <span class="o">-</span><span class="n">c</span>   <span class="o">//</span><span class="n">显示完整命令</span>
+<span class="n">top</span> <span class="o">-</span><span class="n">b</span>   <span class="o">//</span><span class="n">以批处理模式显示程序信息</span>
+<span class="n">top</span> <span class="o">-</span><span class="n">p</span> <span class="mi">105</span>  <span class="o">//</span><span class="n">指定进程显示信息</span>
+
+<span class="n">top交互命令</span>
+<span class="n">k</span>       <span class="n">终止一个进程</span>
+<span class="n">s</span>       <span class="n">改变刷新时间</span>
+<span class="n">m</span>       <span class="n">切换显示内存信息</span>
+<span class="n">c</span>       <span class="n">切换显示命令行名称和完整命令行</span>
+<span class="n">M</span>       <span class="n">根据驻留内存排序</span>
+<span class="n">P</span>       <span class="n">根据CPU使用率排序</span>
+<span class="n">T</span>       <span class="n">根据时间</span><span class="o">/</span><span class="n">累计时间排序</span>
+</pre></div>
 </div>
+</section>
+<section id="vmstat">
+<h3><span class="section-number">7.5.6.2. </span>vmstat<a class="headerlink" href="#vmstat" title="此标题的永久链接"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">vmstat</span></code> 显示关于进程，内存、页、块i/o、traps和CPU的信息. vmstat可以显示平均值,也可以是实时数据. 通过提供采样频率和采样时间就可以开启vmstat的采样模式</p>
+<p>详细信息可以通过man vmstat查看</p>
+<p>vmstat 执行后显示各列的含义如下:</p>
+<ul class="simple">
+<li><p>进程</p></li>
+</ul>
+<p>r:  等待执行时间的进程数</p>
+<p>b:  在不可中断睡眠中的进程数</p>
+<ul class="simple">
+<li><p>内存</p></li>
+</ul>
+<p>swpd: 已使用的虚拟内存量</p>
+<p>free: 空闲内存量</p>
+<p>buff: 作为缓冲的内存</p>
+<p>cache: 作为缓存的内存</p>
+<ul class="simple">
+<li><p>swap</p></li>
+</ul>
+<p>si: 从交换分区写到内存的量</p>
+<p>so: 从内存写到交换分区的大小</p>
+<ul class="simple">
+<li><p>IO</p></li>
+</ul>
+<p>bi: 发往块设备的数目(blocks/s)</p>
+<p>bo: 从块设备接收的块数目(blocks/s)</p>
+<ul class="simple">
+<li><p>system</p></li>
+</ul>
+<p>in: 每秒的中断次数，包括时钟</p>
+<p>cs: 每秒的上下文切换次数</p>
+<ul class="simple">
+<li><p>cpu</p></li>
+</ul>
+<p>us: 运行非内核代码的时间(用户时间,包括nice时间)</p>
+<p>sy: 运行内核代码的时间(系统时间)</p>
+<p>id: 空闲时间</p>
+<p>wa: 等待IO时间</p>
+</section>
+<section id="uptime">
+<h3><span class="section-number">7.5.6.3. </span>uptime<a class="headerlink" href="#uptime" title="此标题的永久链接"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">uptime</span></code> 命令可以用来查看服务器运行了多长时间，有多少用户登录在服务器上,以及服务器平均负载. 分别展示过去1分钟 5分钟 15分钟的系统瓶颈负载值</p>
+<p>平均负载的理想值是1，意味着每个进程可以直接使用CPU，没有发生CPU周期丢失. <code class="docutils literal notranslate"><span class="pre">w</span></code> 命令也可以查看当前登录系统的用户,以及他们在做什么</p>
+</section>
+<section id="pspstree">
+<h3><span class="section-number">7.5.6.4. </span>ps和pstree<a class="headerlink" href="#pspstree" title="此标题的永久链接"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">ps</span></code> 命令展示所有进程列表,ps所显示出来的进程数量取决于所使用的参数</p>
+<ul class="simple">
+<li><p>命令选项</p></li>
+</ul>
+<dl class="option-list">
+<dt><kbd><span class="option">-e</span></kbd></dt>
+<dd><p>所有进程,和-A一样</p>
+</dd>
+</dl>
+<p>-l 显示长格式</p>
+<p>-F 额外的全格式,包括参数和选项</p>
+<p>-H 显示进程等级</p>
+<p>-L 显示线程,可能带有LWP和NLWP列</p>
+<p>-m 在进程后面显示线程</p>
+</section>
+<section id="free">
+<h3><span class="section-number">7.5.6.5. </span>free<a class="headerlink" href="#free" title="此标题的永久链接"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">free</span></code> 命令显示系统所有已用和可用内存(包括swap)量,也包括被内核使用的缓冲和缓存信息</p>
+<p>使用free命令的时候记住linux内存架构和虚拟内存管理器的工作方式,空闲内存是受限使用的,使用swap也不表示出现了内存瓶颈,下图展示了free命令的基本原理</p>
+<img alt="../../_images/free.png" src="../../_images/free.png" />
+</section>
+<section id="iostat">
+<h3><span class="section-number">7.5.6.6. </span>iostat<a class="headerlink" href="#iostat" title="此标题的永久链接"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">iostat</span></code> 命令显示从系统启动依赖的平均CPU时间(和uptime类似),它会生成服务器磁盘子系统的活动报告:CPU和磁盘设备利用情况.使用iostat找出详细的I/O瓶颈,进行性能优化.
+iostat是sysstat包里的一个组件</p>
+<ul class="simple">
+<li><p>cpu 使用报告部分</p></li>
+</ul>
+<p>%user 显示CPU在用户级执行应用程序所花时间的百分比</p>
+<p>%nice 显示带有nice优先级的用户级程序占用的CPU的时间百分比</p>
+<p>%sys 显示执行系统级(内核)任务所占用CPU时间的百分比</p>
+<p>%idle 显示CPU空闲的时间百分比</p>
+<ul class="simple">
+<li><p>device 使用报告部分</p></li>
+</ul>
+<p>device 块设备的名字</p>
+<p>tps  设备上的每秒传输次数(每秒的i/o请求数),多个单I/O请求可以合成一个传输请求,因为每个传输请求的大小可以是不一样的</p>
+<p>kb_read/s kb_wrtn/s 每秒块读写显示了每秒从设备读或者写的数据.块也可以有不同的大小,常见的是1024 2048 和 4096,这取决于分区大小</p>
+<p>kb_read kb_wrtn 指示系统启动以来读和写的总块数</p>
+<p>iostat有很多选项,在性能调试中最有用的是 <code class="docutils literal notranslate"><span class="pre">-x</span></code> ,它能显示扩展的统计信息.输出信息解释如下</p>
+<p>r/s w/s     设备上每秒读/写请求次数</p>
+<p>rkb/s wkb/s 每秒从设备上上读写的kb数</p>
+<p>rrqm/s wrqm/s  每秒向设备发出的合并读写请求的数目，多个单一的读写请求可以合并为一个传输请求</p>
+<p>%utils I/O请求发出到设备的时间占用CPU的百分比(设备带宽利用率),该值接近100%时，设备能力几乎饱和.</p>
+</section>
+<section id="sar">
+<h3><span class="section-number">7.5.6.7. </span>sar<a class="headerlink" href="#sar" title="此标题的永久链接"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">sar</span></code> 命令可以收集、展示和保存系统信息.sar是sysstat包的一部分,</p>
+</section>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../../issues/index.html" class="btn btn-neutral float-right" title="8. Issues" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../program_debug/index.html" class="btn btn-neutral float-left" title="7.3. 调试手段" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../program_debug/debug_problem.html" class="btn btn-neutral float-left" title="7.4.2. debug问题汇总" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../vim/index.html" class="btn btn-neutral float-right" title="7.6. vim使用手册" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; 版权所有 2020, yinwg
-
-    </p>
+    <p>&#169; 版权所有 2019, yinwg。</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

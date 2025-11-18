@@ -1,0 +1,1601 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.8.1. kernel 启动概述 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="3.8.2. __create_page_tables" href="create_page_table.html" />
+    <link rel="prev" title="3.8. kernel 启动流程" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.8. kernel 启动流程</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.8.1. kernel 启动概述</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">3.8.1.1. kernel启动之前的动作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">3.8.1.2. kernel 启动第一阶段</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">3.8.1.3. kernel 启动第二阶段</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="create_page_table.html">3.8.2. __create_page_tables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="primary_switch.html">3.8.3. primary_switch</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.8. </span>kernel 启动流程</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.8.1. </span>kernel 启动概述</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/kernel/kernel_start/kernel_start_overview.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kernel">
+<h1><span class="section-number">3.8.1. </span>kernel 启动概述<a class="headerlink" href="#kernel" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">3.8.1.1. </span>kernel启动之前的动作<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<section id="kernelddr">
+<h3><span class="section-number">3.8.1.1.1. </span>kernel镜像加载到ddr的相应位置<a class="headerlink" href="#kernelddr" title="此标题的永久链接"></a></h3>
+<p>kernel一般会存在于存储设备上，比如FLASH/EMMC/SDCARD。因此需要先将kernel镜像加载到RAM的位置上，CPU才可以去访问到kernel，具体实现方法由
+bootloader决定，可以是自动复制，也可以是根据bootloader cmdline模式下的输入命令来复制</p>
+</section>
+<section id="id2">
+<h3><span class="section-number">3.8.1.1.2. </span>硬件要求<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>根据 <code class="docutils literal notranslate"><span class="pre">arch/arm64/kernel/head.S</span></code> 的stext(kernel的入口函数)的注释头</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Kernel</span> <span class="n">startup</span> <span class="n">entry</span> <span class="n">point</span><span class="o">.</span>
+ <span class="o">*</span> <span class="o">---------------------------</span>
+ <span class="o">*</span>
+ <span class="o">*</span> <span class="n">The</span> <span class="n">requirements</span> <span class="n">are</span><span class="p">:</span>
+ <span class="o">*</span>   <span class="n">MMU</span> <span class="o">=</span> <span class="n">off</span><span class="p">,</span> <span class="n">D</span><span class="o">-</span><span class="n">cache</span> <span class="o">=</span> <span class="n">off</span><span class="p">,</span> <span class="n">I</span><span class="o">-</span><span class="n">cache</span> <span class="o">=</span> <span class="n">on</span> <span class="ow">or</span> <span class="n">off</span><span class="p">,</span>
+ <span class="o">*</span>   <span class="n">x0</span> <span class="o">=</span> <span class="n">physical</span> <span class="n">address</span> <span class="n">to</span> <span class="n">the</span> <span class="n">FDT</span> <span class="n">blob</span><span class="o">.</span>
+ <span class="o">*</span>
+ <span class="o">*</span> <span class="n">This</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">mostly</span> <span class="n">position</span> <span class="n">independent</span> <span class="n">so</span> <span class="n">you</span> <span class="n">call</span> <span class="n">this</span> <span class="n">at</span>
+ <span class="o">*</span> <span class="n">__pa</span><span class="p">(</span><span class="n">PAGE_OFFSET</span> <span class="o">+</span> <span class="n">TEXT_OFFSET</span><span class="p">)</span><span class="o">.</span>
+ <span class="o">*</span>
+ <span class="o">*</span> <span class="n">Note</span> <span class="n">that</span> <span class="n">the</span> <span class="n">callee</span><span class="o">-</span><span class="n">saved</span> <span class="n">registers</span> <span class="n">are</span> <span class="n">used</span> <span class="k">for</span> <span class="n">storing</span> <span class="n">variables</span>
+ <span class="o">*</span> <span class="n">that</span> <span class="n">are</span> <span class="n">useful</span> <span class="n">before</span> <span class="n">the</span> <span class="n">MMU</span> <span class="ow">is</span> <span class="n">enabled</span><span class="o">.</span> <span class="n">The</span> <span class="n">allocations</span> <span class="n">are</span> <span class="n">described</span>
+ <span class="o">*</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">entry</span> <span class="n">routines</span><span class="o">.</span>
+ <span class="o">*/</span>
+    <span class="n">__HEAD</span>
+<span class="n">_head</span><span class="p">:</span>
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">DO</span> <span class="n">NOT</span> <span class="n">MODIFY</span><span class="o">.</span> <span class="n">Image</span> <span class="n">header</span> <span class="n">expected</span> <span class="n">by</span> <span class="n">Linux</span> <span class="n">boot</span><span class="o">-</span><span class="n">loaders</span><span class="o">.</span>
+     <span class="o">*/</span>
+<span class="c1">#ifdef CONFIG_EFI</span>
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">This</span> <span class="n">add</span> <span class="n">instruction</span> <span class="n">has</span> <span class="n">no</span> <span class="n">meaningful</span> <span class="n">effect</span> <span class="k">except</span> <span class="n">that</span>
+     <span class="o">*</span> <span class="n">its</span> <span class="n">opcode</span> <span class="n">forms</span> <span class="n">the</span> <span class="n">magic</span> <span class="s2">&quot;MZ&quot;</span> <span class="n">signature</span> <span class="n">required</span> <span class="n">by</span> <span class="n">UEFI</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">add</span>     <span class="n">x13</span><span class="p">,</span> <span class="n">x18</span><span class="p">,</span> <span class="c1">#0x16</span>
+    <span class="n">b</span>       <span class="n">stext</span>
+<span class="c1">#else</span>
+    <span class="n">b</span>       <span class="n">stext</span>                           <span class="o">//</span> <span class="n">branch</span> <span class="n">to</span> <span class="n">kernel</span> <span class="n">start</span><span class="p">,</span> <span class="n">magic</span>
+    <span class="o">.</span><span class="n">long</span>   <span class="mi">0</span>                               <span class="o">//</span> <span class="n">reserved</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>所以有要求如下</p>
+<ul class="simple">
+<li><p>MMU = off</p></li>
+</ul>
+<p>MMU是用来处理物理地址到虚拟内存地址的映射，因此软件上需要先配置其映射表(也就是常说的页表),MMU关闭的情况下，CPU的寻址都是物理地址，也就是不需要经过转化直接访问相应的硬件，
+一旦打开之后，CPU的寻址都是虚拟地址，都会经过MMU映射到真正的物理地址上，即使代码中写的是一个物理地址但也会被当做虚拟地址使用</p>
+<p>地址映射表是由kernel自己创建的，在创建映射表之前的地址都是物理地址，所以必须保证MMU是关闭状态</p>
+<ul class="simple">
+<li><p>D-cache = off</p></li>
+</ul>
+<p>CACHE是CPU核内存之间的告诉缓冲器，又分成数据缓冲器D-cache和指令缓冲器I-cache，D-cache一定要关闭，否则可能kernel刚启动的过程中，去取数据的时候，从Cache中取，而这个时候RAM中
+的数据还没有Cache过来，导致数据存取异常。</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">3.8.1.1.3. </span>跳转到kernel镜像入口的对应位置<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>bootloader需要通过设置PC指针到kernel的入口代码处(也就是kernel的加载位置)来实现kernel的跳转</p>
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">3.8.1.2. </span>kernel 启动第一阶段<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>linux内核启动第一阶段，也就是常说的汇编阶段，也就是stext函数的实现内容，这部分主要完成的工作：CPU ID检查，machine ID检查，创建初始化页表，设置C代码运行环境，跳转到内核第一个真正
+的C函数 <code class="docutils literal notranslate"><span class="pre">start_kernel</span></code> 执行</p>
+<section id="id5">
+<h3><span class="section-number">3.8.1.2.1. </span>kernel 入口地址的指定<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>在 <code class="docutils literal notranslate"><span class="pre">arch/arm64/kernel/vmlinux.lds.S</span></code> 中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OUTPUT_ARCH</span><span class="p">(</span><span class="n">aarch64</span><span class="p">)</span>    <span class="o">//</span><span class="n">说明最终编译的格式为aarch64</span>
+<span class="n">ENTRY</span><span class="p">(</span><span class="n">_text</span><span class="p">)</span>            <span class="o">//</span><span class="n">表示入口地址为_text</span>
+
+<span class="o">...</span>
+
+<span class="o">.</span> <span class="o">=</span> <span class="n">KIMAGE_VADDR</span> <span class="o">+</span> <span class="n">TEXT_OFFSET</span><span class="p">;</span> <span class="o">//</span><span class="n">起始链接地址</span>
+
+    <span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">text</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="n">_text</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+            <span class="n">HEAD_TEXT</span>
+    <span class="p">}</span>
+<span class="o">.</span><span class="n">text</span> <span class="p">:</span> <span class="p">{</span>           <span class="o">/*</span> <span class="n">Real</span> <span class="n">text</span> <span class="n">segment</span>        <span class="o">*/</span>
+
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>所以kernel入口地址是.head.text段的代码首地址</p>
+<p>而.head_text段，通过include/linux/init.h中的宏定义__HEAD来表示</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">For</span> <span class="n">assembly</span> <span class="n">routines</span> <span class="o">*/</span>
+<span class="c1">#define __HEAD              .section        &quot;.head.text&quot;,&quot;ax&quot;</span>
+<span class="c1">#define __INIT              .section        &quot;.init.text&quot;,&quot;ax&quot;</span>
+<span class="c1">#define __FINIT             .previous</span>
+
+<span class="c1">#define __INITDATA  .section        &quot;.init.data&quot;,&quot;aw&quot;,%progbits</span>
+<span class="c1">#define __INITRODATA        .section        &quot;.init.rodata&quot;,&quot;a&quot;,%progbits</span>
+<span class="c1">#define __FINITDATA .previous</span>
+
+<span class="c1">#define __MEMINIT        .section   &quot;.meminit.text&quot;, &quot;ax&quot;</span>
+<span class="c1">#define __MEMINITDATA    .section   &quot;.meminit.data&quot;, &quot;aw&quot;</span>
+<span class="c1">#define __MEMINITRODATA  .section   &quot;.meminit.rodata&quot;, &quot;a&quot;</span>
+</pre></div>
+</div>
+<p>内核启动的入口点，在arch/arm64/kernel/head.S文件中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">__HEAD</span>
+<span class="n">_head</span><span class="p">:</span>
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">DO</span> <span class="n">NOT</span> <span class="n">MODIFY</span><span class="o">.</span> <span class="n">Image</span> <span class="n">header</span> <span class="n">expected</span> <span class="n">by</span> <span class="n">Linux</span> <span class="n">boot</span><span class="o">-</span><span class="n">loaders</span><span class="o">.</span>
+     <span class="o">*/</span>
+<span class="c1">#ifdef CONFIG_EFI</span>
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">This</span> <span class="n">add</span> <span class="n">instruction</span> <span class="n">has</span> <span class="n">no</span> <span class="n">meaningful</span> <span class="n">effect</span> <span class="k">except</span> <span class="n">that</span>
+     <span class="o">*</span> <span class="n">its</span> <span class="n">opcode</span> <span class="n">forms</span> <span class="n">the</span> <span class="n">magic</span> <span class="s2">&quot;MZ&quot;</span> <span class="n">signature</span> <span class="n">required</span> <span class="n">by</span> <span class="n">UEFI</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">add</span>     <span class="n">x13</span><span class="p">,</span> <span class="n">x18</span><span class="p">,</span> <span class="c1">#0x16</span>
+    <span class="n">b</span>       <span class="n">stext</span>
+<span class="c1">#else</span>
+    <span class="n">b</span>       <span class="n">stext</span>                           <span class="o">//</span> <span class="n">branch</span> <span class="n">to</span> <span class="n">kernel</span> <span class="n">start</span><span class="p">,</span> <span class="n">magic</span>
+    <span class="o">.</span><span class="n">long</span>   <span class="mi">0</span>                               <span class="o">//</span> <span class="n">reserved</span>
+<span class="c1">#endif</span>
+    <span class="n">le64sym</span> <span class="n">_kernel_offset_le</span>               <span class="o">//</span> <span class="n">Image</span> <span class="n">load</span> <span class="n">offset</span> <span class="kn">from</span> <span class="nn">start</span> <span class="n">of</span> <span class="n">RAM</span><span class="p">,</span> <span class="n">little</span><span class="o">-</span><span class="n">endian</span>
+    <span class="n">le64sym</span> <span class="n">_kernel_size_le</span>                 <span class="o">//</span> <span class="n">Effective</span> <span class="n">size</span> <span class="n">of</span> <span class="n">kernel</span> <span class="n">image</span><span class="p">,</span> <span class="n">little</span><span class="o">-</span><span class="n">endian</span>
+    <span class="n">le64sym</span> <span class="n">_kernel_flags_le</span>                <span class="o">//</span> <span class="n">Informative</span> <span class="n">flags</span><span class="p">,</span> <span class="n">little</span><span class="o">-</span><span class="n">endian</span>
+    <span class="o">.</span><span class="n">quad</span>   <span class="mi">0</span>                               <span class="o">//</span> <span class="n">reserved</span>
+    <span class="o">.</span><span class="n">quad</span>   <span class="mi">0</span>                               <span class="o">//</span> <span class="n">reserved</span>
+    <span class="o">.</span><span class="n">quad</span>   <span class="mi">0</span>                               <span class="o">//</span> <span class="n">reserved</span>
+    <span class="o">.</span><span class="n">ascii</span>  <span class="n">ARM64_IMAGE_MAGIC</span>               <span class="o">//</span> <span class="n">Magic</span> <span class="n">number</span>
+<span class="c1">#ifdef CONFIG_EFI</span>
+    <span class="o">.</span><span class="n">long</span>   <span class="n">pe_header</span> <span class="o">-</span> <span class="n">_head</span>               <span class="o">//</span> <span class="n">Offset</span> <span class="n">to</span> <span class="n">the</span> <span class="n">PE</span> <span class="n">header</span><span class="o">.</span>
+
+<span class="n">pe_header</span><span class="p">:</span>
+    <span class="n">__EFI_PE_HEADER</span>
+<span class="c1">#else</span>
+    <span class="o">.</span><span class="n">long</span>   <span class="mi">0</span>                               <span class="o">//</span> <span class="n">reserved</span>
+<span class="c1">#endif</span>
+</pre></div>
+</div>
+<p>这段汇编代码中最重要的就是b stext，加载kernel镜像之后第一个运行的函数就是stext</p>
+<section id="stext">
+<h4><span class="section-number">3.8.1.2.1.1. </span>stext函数<a class="headerlink" href="#stext" title="此标题的永久链接"></a></h4>
+<p>启动过程中的汇编阶段，是从arch/arm64/kernel/head.S文件开始，执行的起点是stext函数，入口函数是通过vmlinux.lds链接而成，在head.S中ENTRY(stext)指定</p>
+<p>在汇编代码中,宏定义ENTRY和ENDPROC是成对出现的，表示定义一个函数，同时也要指定当前代码所在的段，如 __INIT</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define __INIT  .section    &quot;.init.text&quot;,&quot;ax&quot;</span>
+
+    <span class="n">__INIT</span>
+
+<span class="n">ENTRY</span><span class="p">(</span><span class="n">stext</span><span class="p">)</span>
+    <span class="o">....</span>
+<span class="n">ENPROC</span><span class="p">(</span><span class="n">stext</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>内核启动的必要条件：MMU关闭，D-cache关闭，x0是传递给FDT blob的物理地址</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>数据高速缓存一定要关闭，因为在内核启动过程中取数据时会先访问高速缓存，而可能高速缓存中缓存了以前u-boot的一些数据，这些数据对于内核来说是错误的。
+而指令高速缓存可以打开，是因为U-boot和内核代码是不重叠的，不会存在指令高速缓存有冲突。</p>
+</div>
+<p>stext函数开始执行</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">__INIT</span>
+
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">The</span> <span class="n">following</span> <span class="n">callee</span> <span class="n">saved</span> <span class="n">general</span> <span class="n">purpose</span> <span class="n">registers</span> <span class="n">are</span> <span class="n">used</span> <span class="n">on</span> <span class="n">the</span>
+ <span class="o">*</span> <span class="n">primary</span> <span class="n">lowlevel</span> <span class="n">boot</span> <span class="n">path</span><span class="p">:</span>
+ <span class="o">*</span>
+ <span class="o">*</span>  <span class="n">Register</span>   <span class="n">Scope</span>                      <span class="n">Purpose</span>
+ <span class="o">*</span>  <span class="n">x21</span>        <span class="n">stext</span><span class="p">()</span> <span class="o">..</span> <span class="n">start_kernel</span><span class="p">()</span>  <span class="n">FDT</span> <span class="n">pointer</span> <span class="n">passed</span> <span class="n">at</span> <span class="n">boot</span> <span class="ow">in</span> <span class="n">x0</span>
+ <span class="o">*</span>  <span class="n">x23</span>        <span class="n">stext</span><span class="p">()</span> <span class="o">..</span> <span class="n">start_kernel</span><span class="p">()</span>  <span class="n">physical</span> <span class="n">misalignment</span><span class="o">/</span><span class="n">KASLR</span> <span class="n">offset</span>
+ <span class="o">*</span>  <span class="n">x28</span>        <span class="n">__create_page_tables</span><span class="p">()</span>     <span class="n">callee</span> <span class="n">preserved</span> <span class="n">temp</span> <span class="n">register</span>
+ <span class="o">*</span>  <span class="n">x19</span><span class="o">/</span><span class="n">x20</span>    <span class="n">__primary_switch</span><span class="p">()</span>         <span class="n">callee</span> <span class="n">preserved</span> <span class="n">temp</span> <span class="n">registers</span>
+ <span class="o">*</span>  <span class="n">x24</span>        <span class="n">__primary_switch</span><span class="p">()</span> <span class="o">..</span> <span class="n">relocate_kernel</span><span class="p">()</span>
+ <span class="o">*</span>                                        <span class="n">current</span> <span class="n">RELR</span> <span class="n">displacement</span>
+ <span class="o">*/</span>
+<span class="n">ENTRY</span><span class="p">(</span><span class="n">stext</span><span class="p">)</span>
+<span class="n">bl</span>  <span class="n">preserve_boot_args</span>
+<span class="n">bl</span>  <span class="n">el2_setup</span>                       <span class="o">//</span> <span class="n">Drop</span> <span class="n">to</span> <span class="n">EL1</span><span class="p">,</span> <span class="n">w0</span><span class="o">=</span><span class="n">cpu_boot_mode</span>
+<span class="n">adrp</span>        <span class="n">x23</span><span class="p">,</span> <span class="n">__PHYS_OFFSET</span>
+<span class="ow">and</span> <span class="n">x23</span><span class="p">,</span> <span class="n">x23</span><span class="p">,</span> <span class="n">MIN_KIMG_ALIGN</span> <span class="o">-</span> <span class="mi">1</span>    <span class="o">//</span> <span class="n">KASLR</span> <span class="n">offset</span><span class="p">,</span> <span class="n">defaults</span> <span class="n">to</span> <span class="mi">0</span>
+<span class="n">bl</span>  <span class="n">set_cpu_boot_mode_flag</span>
+<span class="n">bl</span>  <span class="n">__create_page_tables</span>
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">The</span> <span class="n">following</span> <span class="n">calls</span> <span class="n">CPU</span> <span class="n">setup</span> <span class="n">code</span><span class="p">,</span> <span class="n">see</span> <span class="n">arch</span><span class="o">/</span><span class="n">arm64</span><span class="o">/</span><span class="n">mm</span><span class="o">/</span><span class="n">proc</span><span class="o">.</span><span class="n">S</span> <span class="k">for</span>
+ <span class="o">*</span> <span class="n">details</span><span class="o">.</span>
+ <span class="o">*</span> <span class="n">On</span> <span class="k">return</span><span class="p">,</span> <span class="n">the</span> <span class="n">CPU</span> <span class="n">will</span> <span class="n">be</span> <span class="n">ready</span> <span class="k">for</span> <span class="n">the</span> <span class="n">MMU</span> <span class="n">to</span> <span class="n">be</span> <span class="n">turned</span> <span class="n">on</span> <span class="ow">and</span>
+ <span class="o">*</span> <span class="n">the</span> <span class="n">TCR</span> <span class="n">will</span> <span class="n">have</span> <span class="n">been</span> <span class="nb">set</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">bl</span>  <span class="n">__cpu_setup</span>                     <span class="o">//</span> <span class="n">initialise</span> <span class="n">processor</span>
+<span class="n">b</span>   <span class="n">__primary_switch</span>
+<span class="n">ENDPROC</span><span class="p">(</span><span class="n">stext</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>preserve_boot_args</p></li>
+</ul>
+<p>保存从bootloader传递过来的x0~x3参数到boot_args数组</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+ * Preserve the arguments passed by the bootloader in x0 .. x3
+ */
+preserve_boot_args:
+    mov     x21, x0                         // x21=FDT  //将dtb的地址暂存在x21寄存器，释放出x0使用
+
+    adr_l   x0, boot_args                   // record the contents of   //x0保存boot_args变量的地址
+    stp     x21, x1, [x0]                   // x0 .. x3 at kernel entry     //将x0 x1的值保存在Boot_args[0] boot_args[1]
+    stp     x2, x3, [x0, #16]       //将x2 x3的值保存在boot_args[2] boot_args[3]
+
+    dmb     sy                              // needed before dc ivac with
+                        // MMU off
+
+    mov     x1, #0x20                       // 4 x 8 bytes
+    b       __inval_dcache_area             // tail call
+ENDPROC(preserve_boot_args)
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>set_cpu_boot_mode_flag</p></li>
+</ul>
+<p>此函数用来设置__boot_cpu_mode flag,需要一个前提条件，w20寄存器中保存了CPU启动时的异常等级(exception level)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Sets</span> <span class="n">the</span> <span class="n">__boot_cpu_mode</span> <span class="n">flag</span> <span class="n">depending</span> <span class="n">on</span> <span class="n">the</span> <span class="n">CPU</span> <span class="n">boot</span> <span class="n">mode</span> <span class="n">passed</span>
+ <span class="o">*</span> <span class="ow">in</span> <span class="n">w0</span><span class="o">.</span> <span class="n">See</span> <span class="n">arch</span><span class="o">/</span><span class="n">arm64</span><span class="o">/</span><span class="n">include</span><span class="o">/</span><span class="n">asm</span><span class="o">/</span><span class="n">virt</span><span class="o">.</span><span class="n">h</span> <span class="k">for</span> <span class="n">more</span> <span class="n">info</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">set_cpu_boot_mode_flag</span><span class="p">:</span>
+    <span class="n">adr_l</span>   <span class="n">x1</span><span class="p">,</span> <span class="n">__boot_cpu_mode</span>
+    <span class="n">cmp</span>     <span class="n">w0</span><span class="p">,</span> <span class="c1">#BOOT_CPU_MODE_EL2</span>
+    <span class="n">b</span><span class="o">.</span><span class="n">ne</span>    <span class="mi">1</span><span class="n">f</span>
+    <span class="n">add</span>     <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="c1">#4</span>
+<span class="mi">1</span><span class="p">:</span>  <span class="nb">str</span>     <span class="n">w0</span><span class="p">,</span> <span class="p">[</span><span class="n">x1</span><span class="p">]</span>                        <span class="o">//</span> <span class="n">This</span> <span class="n">CPU</span> <span class="n">has</span> <span class="n">booted</span> <span class="ow">in</span> <span class="n">EL1</span>
+    <span class="n">dmb</span>     <span class="n">sy</span>
+    <span class="n">dc</span>      <span class="n">ivac</span><span class="p">,</span> <span class="n">x1</span>                        <span class="o">//</span> <span class="n">Invalidate</span> <span class="n">potentially</span> <span class="n">stale</span> <span class="n">cache</span> <span class="n">line</span>
+    <span class="n">ret</span>
+<span class="n">ENDPROC</span><span class="p">(</span><span class="n">set_cpu_boot_mode_flag</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>由于系统启动之后，需要了解CPU启动时候的exception level，因此需要一个全局变量__boot_cpu_mode来保存启动时的CPUmode</p>
+<p>全局变量__boot_cpu_mode定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">We</span> <span class="n">need</span> <span class="n">to</span> <span class="n">find</span> <span class="n">out</span> <span class="n">the</span> <span class="n">CPU</span> <span class="n">boot</span> <span class="n">mode</span> <span class="n">long</span> <span class="n">after</span> <span class="n">boot</span><span class="p">,</span> <span class="n">so</span> <span class="n">we</span> <span class="n">need</span> <span class="n">to</span>
+ <span class="o">*</span> <span class="n">store</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">writable</span> <span class="n">variable</span><span class="o">.</span>
+ <span class="o">*</span>
+ <span class="o">*</span> <span class="n">This</span> <span class="ow">is</span> <span class="ow">not</span> <span class="ow">in</span> <span class="o">.</span><span class="n">bss</span><span class="p">,</span> <span class="n">because</span> <span class="n">we</span> <span class="nb">set</span> <span class="n">it</span> <span class="n">sufficiently</span> <span class="n">early</span> <span class="n">that</span> <span class="n">the</span> <span class="n">boot</span><span class="o">-</span><span class="n">time</span>
+ <span class="o">*</span> <span class="n">zeroing</span> <span class="n">of</span> <span class="o">.</span><span class="n">bss</span> <span class="n">would</span> <span class="n">clobber</span> <span class="n">it</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">ENTRY</span><span class="p">(</span><span class="n">__boot_cpu_mode</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">long</span>   <span class="n">BOOT_CPU_MODE_EL2</span>
+    <span class="o">.</span><span class="n">long</span>   <span class="n">BOOT_CPU_MODE_EL1</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>__create_page_tables</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>在ARM64架构中，汇编代码初始化阶段会创建两次地址映射。第一次是为了打开MMU操作的准备，因为在打开MMU之前当前代码运行在物理地址之上，而打开
+MMU之后代码与逆行在虚拟地址之上。为了从物理地址转换到虚拟地址的平滑过渡，ARM推荐VA和PA相等的一段映射(例如虚拟地址0xffff8000通过页表查询映射的物理地址也是0xffff8000)
+这段映射在Linux中称为identity mapping, 第二次是kernel Image映射</p>
+</div>
+<p>打开MMU之前，我们需要填充页表，也就是告诉MMU虚拟地址和物理地址的对应关系。系统启动初期使用section mapping，因此需要3个页表存储页表项。</p>
+<p>建立页初始化的过程</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>__create_page_tables:
+    mov     x28, lr                 //保存LR
+
+    /*
+     * Invalidate the init page tables to avoid potential dirty cache lines
+     * being evicted. Other page tables are allocated in rodata as part of
+     * the kernel image, and thus are clean to the PoC per the boot
+     * protocol.
+     */
+    adrp    x0, init_pg_dir     //获取初始化页表基地址
+    adrp    x1, init_pg_end     //获取初始化页表终止地址, 一般为init_pg_dir + PAGE_SIZE
+    sub     x1, x1, x0              //获取初始化页表大小
+    bl      __inval_dcache_area     //将初始化页表对应的cacheline设定为无效
+
+    /*
+     * Clear the init page tables.
+     */
+    adrp    x0, init_pg_dir
+    adrp    x1, init_pg_end
+    sub     x1, x1, x0
+1:  stp     xzr, xzr, [x0], #16     //将初始化页表地址清零
+    stp     xzr, xzr, [x0], #16
+    stp     xzr, xzr, [x0], #16
+    stp     xzr, xzr, [x0], #16
+    subs    x1, x1, #64
+    b.ne    1b
+
+    mov     x7, SWAPPER_MM_MMUFLAGS
+
+    /*
+     * Create the identity mapping.
+     */
+    adrp    x0, idmap_pg_dir            //获取idmap页表基地址(物理地址)
+    adrp    x3, __idmap_text_start          //获取内核代码起始地址
+
+#ifdef CONFIG_ARM64_VA_BITS_52
+    mrs_s   x6, SYS_ID_AA64MMFR2_EL1
+    and     x6, x6, #(0xf &lt;&lt; ID_AA64MMFR2_LVA_SHIFT)
+    mov     x5, #52
+    cbnz    x6, 1f
+#endif
+    mov     x5, #VA_BITS_MIN                //获取总线位宽
+1:
+    adr_l   x6, vabits_actual           //获取vabit_actual变量地址
+    str     x5, [x6]                        //将总线位宽写入到vabits_actual中
+    dmb     sy                              // 内存屏障指令，等待上述指令完成
+    dc      ivac, x6                                //将x6指定的虚拟地址的数据缓存清除
+
+    /*
+     * VA_BITS may be too small to allow for an ID mapping to be created
+     * that covers system RAM if that is located sufficiently high in the
+     * physical address space. So for the ID map, use an extended virtual
+     * range in that case, and configure an additional translation level
+     * if needed.
+     *
+     * Calculate the maximum allowed value for TCR_EL1.T0SZ so that the
+     * entire ID map region can be mapped. As T0SZ == (64 - #bits used),
+     * this number conveniently equals the number of leading zeroes in
+     * the physical address of __idmap_text_end.
+     */
+    adrp    x5, __idmap_text_end        //获取内核代码终止地址
+    clz     x5, x5                          //地址前导0个数，并赋值给x5
+    cmp     x5, TCR_T0SZ(VA_BITS)           //判断是否超出地址
+    b.ge    1f                      // .. then skip VA range extension
+
+    adr_l   x6, idmap_t0sz              //获取idmap_t0sz变量地址
+    str     x5, [x6]                        //
+    dmb     sy
+    dc      ivac, x6                // Invalidate potentially stale cache line
+
+#if (VA_BITS &lt; 48)
+#define EXTRA_SHIFT (PGDIR_SHIFT + PAGE_SHIFT - 3)
+#define EXTRA_PTRS  (1 &lt;&lt; (PHYS_MASK_SHIFT - EXTRA_SHIFT))
+
+    /*
+     * If VA_BITS &lt; 48, we have to configure an additional table level.
+     * First, we have to verify our assumption that the current value of
+     * VA_BITS was chosen such that all translation levels are fully
+     * utilised, and that lowering T0SZ will always result in an additional
+     * translation level to be configured.
+     */
+#if VA_BITS != EXTRA_SHIFT
+#error &quot;Mismatch between VA_BITS and page size/number of translation levels&quot;
+#endif
+
+    mov     x4, EXTRA_PTRS
+    create_table_entry x0, x3, EXTRA_SHIFT, x4, x5, x6
+#else
+    /*
+     * If VA_BITS == 48, we don&#39;t have to configure an additional
+     * translation level, but the top-level table has more entries.
+     */
+    mov     x4, #1 &lt;&lt; (PHYS_MASK_SHIFT - PGDIR_SHIFT)
+    str_l   x4, idmap_ptrs_per_pgd, x5
+#endif
+1:
+    ldr_l   x4, idmap_ptrs_per_pgd  //获取idmap_ptrs_per_pgd地址
+    mov     x5, x3                                  //x3中保存着内核代码起始地址，赋值为x5
+    adr_l   x6, __idmap_text_end    //获取内核代码终止地址
+
+    //map_memory是一个宏, x0页表位置，x1一级页表项位置, x3需要映射的开始地址，x6需要映射的结束地址
+    //x7 映射的flag, x3映射的物理地址 x4: pgd项个数
+    map_memory x0, x1, x3, x6, x7, x3, x4, x10, x11, x12, x13, x14
+
+    /*
+     * Map the kernel image (starting with PHYS_OFFSET).
+     */
+    adrp    x0, init_pg_dir
+    mov_q   x5, KIMAGE_VADDR + TEXT_OFFSET  // compile time __va(_text)
+    add     x5, x5, x23                     // add KASLR displacement
+    mov     x4, PTRS_PER_PGD
+    adrp    x6, _end                        // runtime __pa(_end)
+    adrp    x3, _text                       // runtime __pa(_text)
+    sub     x6, x6, x3                      // _end - _text
+    add     x6, x6, x5                      // runtime __va(_end)
+
+    map_memory x0, x1, x5, x6, x7, x3, x4, x10, x11, x12, x13, x14
+
+    /*
+     * Since the page tables have been populated with non-cacheable
+     * accesses (MMU disabled), invalidate the idmap and swapper page
+     * tables again to remove any speculatively loaded cache lines.
+     */
+    adrp    x0, idmap_pg_dir
+    adrp    x1, init_pg_end
+    sub     x1, x1, x0
+    dmb     sy
+    bl      __inval_dcache_area
+
+    ret     x28
+ENDPROC(__create_page_tables)
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>__cpu_setup</p></li>
+</ul>
+<p>cpu的初始化设置</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="o">*</span>        <span class="n">__cpu_setup</span>
+ <span class="o">*</span>
+ <span class="o">*</span>  <span class="n">Initialise</span> <span class="n">the</span> <span class="n">processor</span> <span class="k">for</span> <span class="n">turning</span> <span class="n">the</span> <span class="n">MMU</span> <span class="n">on</span><span class="o">.</span>  <span class="n">Return</span> <span class="ow">in</span> <span class="n">x0</span> <span class="n">the</span>
+ <span class="o">*</span>  <span class="n">value</span> <span class="n">of</span> <span class="n">the</span> <span class="n">SCTLR_EL1</span> <span class="n">register</span><span class="o">.</span>
+ <span class="o">*/</span>
+    <span class="o">.</span><span class="n">pushsection</span> <span class="s2">&quot;.idmap.text&quot;</span><span class="p">,</span> <span class="s2">&quot;awx&quot;</span>
+<span class="n">ENTRY</span><span class="p">(</span><span class="n">__cpu_setup</span><span class="p">)</span>
+    <span class="n">tlbi</span>    <span class="n">vmalle1</span>                         <span class="o">//</span> <span class="n">Invalidate</span> <span class="n">local</span> <span class="n">TLB</span>
+    <span class="n">dsb</span>     <span class="n">nsh</span>
+
+    <span class="n">mov</span>     <span class="n">x0</span><span class="p">,</span> <span class="c1">#3 &lt;&lt; 20</span>
+    <span class="n">msr</span>     <span class="n">cpacr_el1</span><span class="p">,</span> <span class="n">x0</span>                   <span class="o">//</span> <span class="n">Enable</span> <span class="n">FP</span><span class="o">/</span><span class="n">ASIMD</span>
+    <span class="n">mov</span>     <span class="n">x0</span><span class="p">,</span> <span class="c1">#1 &lt;&lt; 12                    // Reset mdscr_el1 and disable</span>
+    <span class="n">msr</span>     <span class="n">mdscr_el1</span><span class="p">,</span> <span class="n">x0</span>                   <span class="o">//</span> <span class="n">access</span> <span class="n">to</span> <span class="n">the</span> <span class="n">DCC</span> <span class="kn">from</span> <span class="nn">EL0</span>
+    <span class="n">isb</span>                                     <span class="o">//</span> <span class="n">Unmask</span> <span class="n">debug</span> <span class="n">exceptions</span> <span class="n">now</span><span class="p">,</span>
+    <span class="n">enable_dbg</span>                              <span class="o">//</span> <span class="n">since</span> <span class="n">this</span> <span class="ow">is</span> <span class="n">per</span><span class="o">-</span><span class="n">cpu</span>
+    <span class="n">reset_pmuserenr_el0</span> <span class="n">x0</span>                  <span class="o">//</span> <span class="n">Disable</span> <span class="n">PMU</span> <span class="n">access</span> <span class="kn">from</span> <span class="nn">EL0</span>
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">Memory</span> <span class="n">region</span> <span class="n">attributes</span> <span class="k">for</span> <span class="n">LPAE</span><span class="p">:</span>
+     <span class="o">*</span>
+     <span class="o">*</span>   <span class="n">n</span> <span class="o">=</span> <span class="n">AttrIndx</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">0</span><span class="p">]</span>
+     <span class="o">*</span>                      <span class="n">n</span>       <span class="n">MAIR</span>
+     <span class="o">*</span>   <span class="n">DEVICE_nGnRnE</span>      <span class="mi">000</span>     <span class="mi">00000000</span>
+     <span class="o">*</span>   <span class="n">DEVICE_nGnRE</span>       <span class="mi">001</span>     <span class="mi">00000100</span>
+     <span class="o">*</span>   <span class="n">DEVICE_GRE</span>         <span class="mi">010</span>     <span class="mi">00001100</span>
+     <span class="o">*</span>   <span class="n">NORMAL_NC</span>          <span class="mi">011</span>     <span class="mi">01000100</span>
+     <span class="o">*</span>   <span class="n">NORMAL</span>             <span class="mi">100</span>     <span class="mi">11111111</span>
+     <span class="o">*</span>   <span class="n">NORMAL_WT</span>          <span class="mi">101</span>     <span class="mi">10111011</span>
+     <span class="o">*/</span>
+    <span class="n">ldr</span>     <span class="n">x5</span><span class="p">,</span> <span class="o">=</span><span class="n">MAIR</span><span class="p">(</span><span class="mh">0x00</span><span class="p">,</span> <span class="n">MT_DEVICE_nGnRnE</span><span class="p">)</span> <span class="o">|</span> \
+             <span class="n">MAIR</span><span class="p">(</span><span class="mh">0x04</span><span class="p">,</span> <span class="n">MT_DEVICE_nGnRE</span><span class="p">)</span> <span class="o">|</span> \
+             <span class="n">MAIR</span><span class="p">(</span><span class="mh">0x0c</span><span class="p">,</span> <span class="n">MT_DEVICE_GRE</span><span class="p">)</span> <span class="o">|</span> \
+             <span class="n">MAIR</span><span class="p">(</span><span class="mh">0x44</span><span class="p">,</span> <span class="n">MT_NORMAL_NC</span><span class="p">)</span> <span class="o">|</span> \
+             <span class="n">MAIR</span><span class="p">(</span><span class="mh">0xff</span><span class="p">,</span> <span class="n">MT_NORMAL</span><span class="p">)</span> <span class="o">|</span> \
+             <span class="n">MAIR</span><span class="p">(</span><span class="mh">0xbb</span><span class="p">,</span> <span class="n">MT_NORMAL_WT</span><span class="p">)</span>
+    <span class="n">msr</span>     <span class="n">mair_el1</span><span class="p">,</span> <span class="n">x5</span>
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">Prepare</span> <span class="n">SCTLR</span>
+     <span class="o">*/</span>
+    <span class="n">mov_q</span>   <span class="n">x0</span><span class="p">,</span> <span class="n">SCTLR_EL1_SET</span>
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">Set</span><span class="o">/</span><span class="n">prepare</span> <span class="n">TCR</span> <span class="ow">and</span> <span class="n">TTBR</span><span class="o">.</span> <span class="n">We</span> <span class="n">use</span> <span class="mi">512</span><span class="n">GB</span> <span class="p">(</span><span class="mi">39</span><span class="o">-</span><span class="n">bit</span><span class="p">)</span> <span class="n">address</span> <span class="nb">range</span> <span class="k">for</span>
+     <span class="o">*</span> <span class="n">both</span> <span class="n">user</span> <span class="ow">and</span> <span class="n">kernel</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">ldr</span>     <span class="n">x10</span><span class="p">,</span> <span class="o">=</span><span class="n">TCR_TxSZ</span><span class="p">(</span><span class="n">VA_BITS</span><span class="p">)</span> <span class="o">|</span> <span class="n">TCR_CACHE_FLAGS</span> <span class="o">|</span> <span class="n">TCR_SMP_FLAGS</span> <span class="o">|</span> \
+            <span class="n">TCR_TG_FLAGS</span> <span class="o">|</span> <span class="n">TCR_KASLR_FLAGS</span> <span class="o">|</span> <span class="n">TCR_ASID16</span> <span class="o">|</span> \
+            <span class="n">TCR_TBI0</span> <span class="o">|</span> <span class="n">TCR_A1</span> <span class="o">|</span> <span class="n">TCR_KASAN_FLAGS</span>
+    <span class="n">tcr_clear_errata_bits</span> <span class="n">x10</span><span class="p">,</span> <span class="n">x9</span><span class="p">,</span> <span class="n">x5</span>
+
+<span class="c1">#ifdef CONFIG_ARM64_VA_BITS_52</span>
+    <span class="n">ldr_l</span>           <span class="n">x9</span><span class="p">,</span> <span class="n">vabits_actual</span>
+    <span class="n">sub</span>             <span class="n">x9</span><span class="p">,</span> <span class="n">xzr</span><span class="p">,</span> <span class="n">x9</span>
+    <span class="n">add</span>             <span class="n">x9</span><span class="p">,</span> <span class="n">x9</span><span class="p">,</span> <span class="c1">#64</span>
+    <span class="n">tcr_set_t1sz</span>    <span class="n">x10</span><span class="p">,</span> <span class="n">x9</span>
+<span class="c1">#else</span>
+    <span class="n">ldr_l</span>           <span class="n">x9</span><span class="p">,</span> <span class="n">idmap_t0sz</span>
+<span class="c1">#endif</span>
+    <span class="n">tcr_set_t0sz</span>    <span class="n">x10</span><span class="p">,</span> <span class="n">x9</span>
+
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">Set</span> <span class="n">the</span> <span class="n">IPS</span> <span class="n">bits</span> <span class="ow">in</span> <span class="n">TCR_EL1</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">tcr_compute_pa_size</span> <span class="n">x10</span><span class="p">,</span> <span class="c1">#TCR_IPS_SHIFT, x5, x6</span>
+<span class="c1">#ifdef CONFIG_ARM64_HW_AFDBM</span>
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">Enable</span> <span class="n">hardware</span> <span class="n">update</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Access</span> <span class="n">Flags</span> <span class="n">bit</span><span class="o">.</span>
+     <span class="o">*</span> <span class="n">Hardware</span> <span class="n">dirty</span> <span class="n">bit</span> <span class="n">management</span> <span class="ow">is</span> <span class="n">enabled</span> <span class="n">later</span><span class="p">,</span>
+     <span class="o">*</span> <span class="n">via</span> <span class="n">capabilities</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">mrs</span>     <span class="n">x9</span><span class="p">,</span> <span class="n">ID_AA64MMFR1_EL1</span>
+    <span class="ow">and</span>     <span class="n">x9</span><span class="p">,</span> <span class="n">x9</span><span class="p">,</span> <span class="c1">#0xf</span>
+    <span class="n">cbz</span>     <span class="n">x9</span><span class="p">,</span> <span class="mi">1</span><span class="n">f</span>
+    <span class="n">orr</span>     <span class="n">x10</span><span class="p">,</span> <span class="n">x10</span><span class="p">,</span> <span class="c1">#TCR_HA               // hardware Access flag update</span>
+<span class="mi">1</span><span class="p">:</span>
+<span class="c1">#endif      /* CONFIG_ARM64_HW_AFDBM */</span>
+    <span class="n">msr</span>     <span class="n">tcr_el1</span><span class="p">,</span> <span class="n">x10</span>
+    <span class="n">ret</span>                                     <span class="o">//</span> <span class="k">return</span> <span class="n">to</span> <span class="n">head</span><span class="o">.</span><span class="n">S</span>
+<span class="n">ENDPROC</span><span class="p">(</span><span class="n">__cpu_setup</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>主要包括：</p>
+<ol class="arabic simple">
+<li><p>cache和TLB的处理</p></li>
+<li><p>memory attribute lookup table的创建</p></li>
+<li><p>SCTLR_EL1 TCR_EL1的设定</p></li>
+</ol>
+<ul class="simple">
+<li><p>__primary_switch</p></li>
+</ul>
+<p>主要工作是为打开MMU做准备</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">__primary_switch</span><span class="p">:</span>
+<span class="c1">#ifdef CONFIG_RANDOMIZE_BASE</span>
+    <span class="n">mov</span>     <span class="n">x19</span><span class="p">,</span> <span class="n">x0</span>                         <span class="o">//</span> <span class="n">preserve</span> <span class="n">new</span> <span class="n">SCTLR_EL1</span> <span class="n">value</span>
+    <span class="n">mrs</span>     <span class="n">x20</span><span class="p">,</span> <span class="n">sctlr_el1</span>                  <span class="o">//</span> <span class="n">preserve</span> <span class="n">old</span> <span class="n">SCTLR_EL1</span> <span class="n">value</span>
+<span class="c1">#endif</span>
+
+    <span class="n">adrp</span>    <span class="n">x1</span><span class="p">,</span> <span class="n">init_pg_dir</span>
+    <span class="n">bl</span>      <span class="n">__enable_mmu</span>        <span class="o">//</span><span class="n">打开MMU</span>
+<span class="c1">#ifdef CONFIG_RELOCATABLE</span>
+<span class="c1">#ifdef CONFIG_RELR</span>
+    <span class="n">mov</span>     <span class="n">x24</span><span class="p">,</span> <span class="c1">#0                         // no RELR displacement yet</span>
+<span class="c1">#endif</span>
+    <span class="n">bl</span>      <span class="n">__relocate_kernel</span>
+<span class="c1">#ifdef CONFIG_RANDOMIZE_BASE</span>
+    <span class="n">ldr</span>     <span class="n">x8</span><span class="p">,</span> <span class="o">=</span><span class="n">__primary_switched</span>
+    <span class="n">adrp</span>    <span class="n">x0</span><span class="p">,</span> <span class="n">__PHYS_OFFSET</span>
+    <span class="n">blr</span>     <span class="n">x8</span>
+
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">If</span> <span class="n">we</span> <span class="k">return</span> <span class="n">here</span><span class="p">,</span> <span class="n">we</span> <span class="n">have</span> <span class="n">a</span> <span class="n">KASLR</span> <span class="n">displacement</span> <span class="ow">in</span> <span class="n">x23</span> <span class="n">which</span> <span class="n">we</span> <span class="n">need</span>
+     <span class="o">*</span> <span class="n">to</span> <span class="n">take</span> <span class="n">into</span> <span class="n">account</span> <span class="n">by</span> <span class="n">discarding</span> <span class="n">the</span> <span class="n">current</span> <span class="n">kernel</span> <span class="n">mapping</span> <span class="ow">and</span>
+     <span class="o">*</span> <span class="n">creating</span> <span class="n">a</span> <span class="n">new</span> <span class="n">one</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">pre_disable_mmu_workaround</span>
+    <span class="n">msr</span>     <span class="n">sctlr_el1</span><span class="p">,</span> <span class="n">x20</span>                  <span class="o">//</span> <span class="n">disable</span> <span class="n">the</span> <span class="n">MMU</span>
+    <span class="n">isb</span>
+    <span class="n">bl</span>      <span class="n">__create_page_tables</span>            <span class="o">//</span> <span class="n">recreate</span> <span class="n">kernel</span> <span class="n">mapping</span>
+
+    <span class="n">tlbi</span>    <span class="n">vmalle1</span>                         <span class="o">//</span> <span class="n">Remove</span> <span class="nb">any</span> <span class="n">stale</span> <span class="n">TLB</span> <span class="n">entries</span>
+    <span class="n">dsb</span>     <span class="n">nsh</span>
+
+    <span class="n">msr</span>     <span class="n">sctlr_el1</span><span class="p">,</span> <span class="n">x19</span>                  <span class="o">//</span> <span class="n">re</span><span class="o">-</span><span class="n">enable</span> <span class="n">the</span> <span class="n">MMU</span>
+    <span class="n">isb</span>
+    <span class="n">ic</span>      <span class="n">iallu</span>                           <span class="o">//</span> <span class="n">flush</span> <span class="n">instructions</span> <span class="n">fetched</span>
+    <span class="n">dsb</span>     <span class="n">nsh</span>                             <span class="o">//</span> <span class="n">via</span> <span class="n">old</span> <span class="n">mapping</span>
+    <span class="n">isb</span>
+
+    <span class="n">bl</span>      <span class="n">__relocate_kernel</span>
+<span class="c1">#endif</span>
+<span class="c1">#endif</span>
+    <span class="n">ldr</span>     <span class="n">x8</span><span class="p">,</span> <span class="o">=</span><span class="n">__primary_switched</span>
+    <span class="n">adrp</span>    <span class="n">x0</span><span class="p">,</span> <span class="n">__PHYS_OFFSET</span>
+    <span class="n">br</span>      <span class="n">x8</span>
+<span class="n">ENDPROC</span><span class="p">(</span><span class="n">__primary_switch</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>函数中通过__enable_mmu函数来开启MMU, 并调用__primary_switched函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+ * The following fragment of code is executed with the MMU enabled.
+ *
+ *   x0 = __PHYS_OFFSET
+ */
+__primary_switched:
+    adrp    x4, init_thread_union
+    add     sp, x4, #THREAD_SIZE
+    adr_l   x5, init_task
+    msr     sp_el0, x5                      // Save thread_info
+
+    adr_l   x8, vectors                     // load VBAR_EL1 with virtual
+    msr     vbar_el1, x8                    // vector table address
+    isb
+
+    stp     xzr, x30, [sp, #-16]!
+    mov     x29, sp
+
+    str_l   x21, __fdt_pointer, x5          // Save FDT pointer
+
+    ldr_l   x4, kimage_vaddr                // Save the offset between
+    sub     x4, x4, x0                      // the kernel virtual and
+    str_l   x4, kimage_voffset, x5          // physical mappings
+
+    // Clear BSS
+    adr_l   x0, __bss_start
+    mov     x1, xzr
+    adr_l   x2, __bss_stop
+    sub     x2, x2, x0
+    bl      __pi_memset
+    dsb     ishst                           // Make zero page visible to PTW
+
+#ifdef CONFIG_KASAN
+    bl      kasan_early_init
+#endif
+#ifdef CONFIG_RANDOMIZE_BASE
+    tst     x23, ~(MIN_KIMG_ALIGN - 1)      // already running randomized?
+    b.ne    0f
+    mov     x0, x21                         // pass FDT address in x0
+    bl      kaslr_early_init                // parse FDT for KASLR options
+    cbz     x0, 0f                          // KASLR disabled? just proceed
+    orr     x23, x23, x0                    // record KASLR offset
+    ldp     x29, x30, [sp], #16             // we must enable KASLR, return
+    ret                                     // to __primary_switch()
+0:
+#endif
+    add     sp, sp, #16
+    mov     x29, #0
+    mov     x30, #0
+    b       start_kernel
+ENDPROC(__primary_switched)
+</pre></div>
+</div>
+<p>此函数中进行一些C环境的准备，并在最后执行start_kernel函数，内核的启动进入到C语言环境阶段</p>
+</section>
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">3.8.1.3. </span>kernel 启动第二阶段<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p>linux内核启动的第二阶段也就是常说的C语言阶段，从 <code class="docutils literal notranslate"><span class="pre">start_kernel</span></code> 函数开始。 start_kernel函数是所有linux平台进入系统内核初始化后的入口函数，主要完成剩余的与硬件平台相关的初始化
+工作，这些初始化操作有的是公共的，有的需要配置才会执行，内核工作需要的模块的初始化一次被调用：如内存管理、调度系统、异常处理等</p>
+<section id="start-kenel">
+<h3><span class="section-number">3.8.1.3.1. </span>start_kenel<a class="headerlink" href="#start-kenel" title="此标题的永久链接"></a></h3>
+<p>start_kernel函数在init/main.c文件中，主要完成linux子系统的初始化工作，此部分初始化内容繁多，暂时略过…</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>asmlinkage __visible void __init start_kernel(void)
+{
+    char *command_line;
+    char *after_dashes;
+
+    set_task_stack_end_magic(&amp;init_task);
+    smp_setup_processor_id();
+    debug_objects_early_init();
+
+    cgroup_init_early();
+
+    local_irq_disable();
+    early_boot_irqs_disabled = true;
+
+    /*
+     * Interrupts are still disabled. Do necessary setups, then
+     * enable them.
+     */
+    boot_cpu_init();
+    page_address_init();
+    pr_notice(&quot;%s&quot;, linux_banner);
+    early_security_init();
+    setup_arch(&amp;command_line);
+    setup_command_line(command_line);
+    setup_nr_cpu_ids();
+    setup_per_cpu_areas();
+    smp_prepare_boot_cpu(); /* arch-specific boot-cpu hooks */
+    boot_cpu_hotplug_init();
+
+    build_all_zonelists(NULL);
+    page_alloc_init();
+
+    pr_notice(&quot;Kernel command line: %s\n&quot;, boot_command_line);
+    /* parameters may set static keys */
+    jump_label_init();
+    parse_early_param();
+    after_dashes = parse_args(&quot;Booting kernel&quot;,
+                  static_command_line, __start___param,
+                  __stop___param - __start___param,
+                  -1, -1, NULL, &amp;unknown_bootoption);
+    if (!IS_ERR_OR_NULL(after_dashes))
+        parse_args(&quot;Setting init args&quot;, after_dashes, NULL, 0, -1, -1,
+               NULL, set_init_arg);
+
+    /*
+     * These use large bootmem allocations and must precede
+     * kmem_cache_init()
+     */
+    setup_log_buf(0);
+    vfs_caches_init_early();
+    sort_main_extable();
+    trap_init();
+    mm_init();
+
+    ftrace_init();
+
+    /* trace_printk can be enabled here */
+    early_trace_init();
+
+    /*
+     * Set up the scheduler prior starting any interrupts (such as the
+     * timer interrupt). Full topology setup happens at smp_init()
+     * time - but meanwhile we still have a functioning scheduler.
+     */
+    sched_init();
+    /*
+     * Disable preemption - early bootup scheduling is extremely
+     * fragile until we cpu_idle() for the first time.
+     */
+    preempt_disable();
+    if (WARN(!irqs_disabled(),
+         &quot;Interrupts were enabled *very* early, fixing it\n&quot;))
+        local_irq_disable();
+    radix_tree_init();
+
+    /*
+     * Set up housekeeping before setting up workqueues to allow the unbound
+     * workqueue to take non-housekeeping into account.
+     */
+    housekeeping_init();
+
+    /*
+     * Allow workqueue creation and work item queueing/cancelling
+     * early.  Work item execution depends on kthreads and starts after
+     * workqueue_init().
+     */
+    workqueue_init_early();
+
+    rcu_init();
+
+    /* Trace events are available after this */
+    trace_init();
+
+    if (initcall_debug)
+        initcall_debug_enable();
+
+    context_tracking_init();
+    /* init some links before init_ISA_irqs() */
+    early_irq_init();
+    init_IRQ();
+    tick_init();
+    rcu_init_nohz();
+    init_timers();
+    hrtimers_init();
+    softirq_init();
+    timekeeping_init();
+
+    /*
+     * For best initial stack canary entropy, prepare it after:
+     * - setup_arch() for any UEFI RNG entropy and boot cmdline access
+     * - timekeeping_init() for ktime entropy used in rand_initialize()
+     * - rand_initialize() to get any arch-specific entropy like RDRAND
+     * - add_latent_entropy() to get any latent entropy
+     * - adding command line entropy
+     */
+    rand_initialize();
+    add_latent_entropy();
+    add_device_randomness(command_line, strlen(command_line));
+    boot_init_stack_canary();
+
+    time_init();
+    perf_event_init();
+    profile_init();
+    call_function_init();
+    WARN(!irqs_disabled(), &quot;Interrupts were enabled early\n&quot;);
+
+    early_boot_irqs_disabled = false;
+    local_irq_enable();
+
+    kmem_cache_init_late();
+
+    /*
+     * HACK ALERT! This is early. We&#39;re enabling the console before
+     * we&#39;ve done PCI setups etc, and console_init() must be aware of
+     * this. But we do want output early, in case something goes wrong.
+     */
+    console_init();
+    if (panic_later)
+        panic(&quot;Too many boot %s vars at `%s&#39;&quot;, panic_later,
+              panic_param);
+
+    lockdep_init();
+
+    /*
+     * Need to run this when irqs are enabled, because it wants
+     * to self-test [hard/soft]-irqs on/off lock inversion bugs
+     * too:
+     */
+    locking_selftest();
+
+    /*
+     * This needs to be called before any devices perform DMA
+     * operations that might use the SWIOTLB bounce buffers. It will
+     * mark the bounce buffers as decrypted so that their usage will
+     * not cause &quot;plain-text&quot; data to be decrypted when accessed.
+     */
+    mem_encrypt_init();
+
+#ifdef CONFIG_BLK_DEV_INITRD
+    if (initrd_start &amp;&amp; !initrd_below_start_ok &amp;&amp;
+        page_to_pfn(virt_to_page((void *)initrd_start)) &lt; min_low_pfn) {
+        pr_crit(&quot;initrd overwritten (0x%08lx &lt; 0x%08lx) - disabling it.\n&quot;,
+            page_to_pfn(virt_to_page((void *)initrd_start)),
+            min_low_pfn);
+        initrd_start = 0;
+    }
+#endif
+    setup_per_cpu_pageset();
+    numa_policy_init();
+    acpi_early_init();
+    if (late_time_init)
+        late_time_init();
+    sched_clock_init();
+    calibrate_delay();
+    pid_idr_init();
+    anon_vma_init();
+#ifdef CONFIG_X86
+    if (efi_enabled(EFI_RUNTIME_SERVICES))
+        efi_enter_virtual_mode();
+#endif
+    thread_stack_cache_init();
+    cred_init();
+    fork_init();
+    proc_caches_init();
+    uts_ns_init();
+    buffer_init();
+    key_init();
+    security_init();
+    dbg_late_init();
+    vfs_caches_init();
+    pagecache_init();
+    signals_init();
+    seq_file_init();
+    proc_root_init();
+    nsfs_init();
+    cpuset_init();
+    cgroup_init();
+    taskstats_init_early();
+    delayacct_init();
+
+    poking_init();
+    check_bugs();
+
+    acpi_subsystem_init();
+    arch_post_acpi_subsys_init();
+    sfi_init_late();
+
+    /* Do the rest non-__init&#39;ed, we&#39;re now alive */
+    arch_call_rest_init();
+}
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pr_notice</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">linux_barner</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/* FIXED STRINGS! Don&#39;t touch! */
+const char linux_banner[] =
+        &quot;Linux version &quot; UTS_RELEASE &quot; (&quot; LINUX_COMPILE_BY &quot;@&quot;
+        LINUX_COMPILE_HOST &quot;) (&quot; LINUX_COMPILER &quot;) &quot; UTS_VERSION &quot;\n&quot;;
+        &quot;)&quot;
+</pre></div>
+</div>
+<p>执行的效果是，在内核启动的初期，打印内核版本号和构建信息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>    <span class="mf">0.000000</span> <span class="p">]</span> <span class="n">Linux</span> <span class="n">version</span> <span class="mf">4.14.74</span> <span class="p">(</span><span class="n">jenkins</span><span class="nd">@MonoCI</span><span class="p">)</span> <span class="p">(</span><span class="n">gcc</span> <span class="n">version</span> <span class="mf">6.5.0</span> <span class="p">(</span><span class="n">Linaro</span> <span class="n">GCC</span> <span class="mf">6.5</span><span class="o">-</span><span class="mf">2018.12</span><span class="p">))</span> <span class="c1">#2 SMP PREEMPT Mon Aug 23 12:17:44 CST 2021</span>
+</pre></div>
+</div>
+</section>
+<section id="setup-arch">
+<h3><span class="section-number">3.8.1.3.2. </span>setup_arch<a class="headerlink" href="#setup-arch" title="此标题的永久链接"></a></h3>
+<p>setup_arch是体系结构相关的，该函数根据处理器、硬件平台具体型号设置系统，及解析系统命令行，系统内存管理初始化，统计并注册系统各种资源等，每个体系都有自己的setup_arch函数，
+是由顶层Makefile中的arch变量定义的，参数是违背初始化的内部变量command_line</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">__init</span> <span class="n">setup_arch</span><span class="p">(</span><span class="n">char</span> <span class="o">**</span><span class="n">cmdline_p</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">init_mm</span><span class="o">.</span><span class="n">start_code</span> <span class="o">=</span> <span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)</span> <span class="n">_text</span><span class="p">;</span>
+    <span class="n">init_mm</span><span class="o">.</span><span class="n">end_code</span>   <span class="o">=</span> <span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)</span> <span class="n">_etext</span><span class="p">;</span>
+    <span class="n">init_mm</span><span class="o">.</span><span class="n">end_data</span>   <span class="o">=</span> <span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)</span> <span class="n">_edata</span><span class="p">;</span>
+    <span class="n">init_mm</span><span class="o">.</span><span class="n">brk</span>        <span class="o">=</span> <span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)</span> <span class="n">_end</span><span class="p">;</span>
+
+    <span class="o">*</span><span class="n">cmdline_p</span> <span class="o">=</span> <span class="n">boot_command_line</span><span class="p">;</span>
+
+    <span class="n">early_fixmap_init</span><span class="p">();</span>
+    <span class="n">early_ioremap_init</span><span class="p">();</span>
+
+    <span class="n">setup_machine_fdt</span><span class="p">(</span><span class="n">__fdt_pointer</span><span class="p">);</span>
+
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">Initialise</span> <span class="n">the</span> <span class="n">static</span> <span class="n">keys</span> <span class="n">early</span> <span class="k">as</span> <span class="n">they</span> <span class="n">may</span> <span class="n">be</span> <span class="n">enabled</span> <span class="n">by</span> <span class="n">the</span>
+     <span class="o">*</span> <span class="n">cpufeature</span> <span class="n">code</span> <span class="ow">and</span> <span class="n">early</span> <span class="n">parameters</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">jump_label_init</span><span class="p">();</span>
+    <span class="n">parse_early_param</span><span class="p">();</span>
+
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">Unmask</span> <span class="n">asynchronous</span> <span class="n">aborts</span> <span class="ow">and</span> <span class="n">fiq</span> <span class="n">after</span> <span class="n">bringing</span> <span class="n">up</span> <span class="n">possible</span>
+     <span class="o">*</span> <span class="n">earlycon</span><span class="o">.</span> <span class="p">(</span><span class="n">Report</span> <span class="n">possible</span> <span class="n">System</span> <span class="n">Errors</span> <span class="n">once</span> <span class="n">we</span> <span class="n">can</span> <span class="n">report</span> <span class="n">this</span>
+     <span class="o">*</span> <span class="n">occurred</span><span class="p">)</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">local_daif_restore</span><span class="p">(</span><span class="n">DAIF_PROCCTX_NOIRQ</span><span class="p">);</span>
+
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">TTBR0</span> <span class="ow">is</span> <span class="n">only</span> <span class="n">used</span> <span class="k">for</span> <span class="n">the</span> <span class="n">identity</span> <span class="n">mapping</span> <span class="n">at</span> <span class="n">this</span> <span class="n">stage</span><span class="o">.</span> <span class="n">Make</span> <span class="n">it</span>
+     <span class="o">*</span> <span class="n">point</span> <span class="n">to</span> <span class="n">zero</span> <span class="n">page</span> <span class="n">to</span> <span class="n">avoid</span> <span class="n">speculatively</span> <span class="n">fetching</span> <span class="n">new</span> <span class="n">entries</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">cpu_uninstall_idmap</span><span class="p">();</span>
+
+    <span class="n">xen_early_init</span><span class="p">();</span>
+    <span class="n">efi_init</span><span class="p">();</span>
+    <span class="n">arm64_memblock_init</span><span class="p">();</span>
+
+    <span class="n">paging_init</span><span class="p">();</span>
+
+    <span class="n">acpi_table_upgrade</span><span class="p">();</span>
+
+    <span class="o">/*</span> <span class="n">Parse</span> <span class="n">the</span> <span class="n">ACPI</span> <span class="n">tables</span> <span class="k">for</span> <span class="n">possible</span> <span class="n">boot</span><span class="o">-</span><span class="n">time</span> <span class="n">configuration</span> <span class="o">*/</span>
+    <span class="n">acpi_boot_table_init</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">acpi_disabled</span><span class="p">)</span>
+        <span class="n">unflatten_device_tree</span><span class="p">();</span>
+
+    <span class="n">bootmem_init</span><span class="p">();</span>
+
+    <span class="n">kasan_init</span><span class="p">();</span>
+
+    <span class="n">request_standard_resources</span><span class="p">();</span>
+
+    <span class="n">early_ioremap_reset</span><span class="p">();</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">acpi_disabled</span><span class="p">)</span>
+        <span class="n">psci_dt_init</span><span class="p">();</span>
+    <span class="k">else</span>
+        <span class="n">psci_acpi_init</span><span class="p">();</span>
+
+    <span class="n">cpu_read_bootcpu_ops</span><span class="p">();</span>
+    <span class="n">smp_init_cpus</span><span class="p">();</span>
+    <span class="n">smp_build_mpidr_hash</span><span class="p">();</span>
+
+    <span class="o">/*</span> <span class="n">Init</span> <span class="n">percpu</span> <span class="n">seeds</span> <span class="k">for</span> <span class="n">random</span> <span class="n">tags</span> <span class="n">after</span> <span class="n">cpus</span> <span class="n">are</span> <span class="nb">set</span> <span class="n">up</span><span class="o">.</span> <span class="o">*/</span>
+    <span class="n">kasan_init_tags</span><span class="p">();</span>
+
+<span class="c1">#ifdef CONFIG_ARM64_SW_TTBR0_PAN</span>
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">Make</span> <span class="n">sure</span> <span class="n">init_thread_info</span><span class="o">.</span><span class="n">ttbr0</span> <span class="n">always</span> <span class="n">generates</span> <span class="n">translation</span>
+     <span class="o">*</span> <span class="n">faults</span> <span class="ow">in</span> <span class="n">case</span> <span class="n">uaccess_enable</span><span class="p">()</span> <span class="ow">is</span> <span class="n">inadvertently</span> <span class="n">called</span> <span class="n">by</span> <span class="n">the</span> <span class="n">init</span>
+     <span class="o">*</span> <span class="n">thread</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">init_task</span><span class="o">.</span><span class="n">thread_info</span><span class="o">.</span><span class="n">ttbr0</span> <span class="o">=</span> <span class="n">__pa_symbol</span><span class="p">(</span><span class="n">empty_zero_page</span><span class="p">);</span>
+<span class="c1">#endif</span>
+
+<span class="c1">#ifdef CONFIG_VT</span>
+    <span class="n">conswitchp</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dummy_con</span><span class="p">;</span>
+<span class="c1">#endif</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">boot_args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">||</span> <span class="n">boot_args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">||</span> <span class="n">boot_args</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="p">{</span>
+        <span class="n">pr_err</span><span class="p">(</span><span class="s2">&quot;WARNING: x1-x3 nonzero in violation of boot protocol:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">x1: %016llx</span><span class="se">\n\t</span><span class="s2">x2: %016llx</span><span class="se">\n\t</span><span class="s2">x3: %016llx</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;This indicates a broken bootloader or old kernel</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">boot_args</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">boot_args</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">boot_args</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>setup_machine_fdt</p></li>
+</ul>
+<p>setup_machine_fdt函数的输入参数是设备树(dtb)首地址，u-boot启动程序把设备树读取到内存中，之后在启动内核的同时，将设备树首地址传给内核，setup_machine_fdt函数的参数__fdt_pointer
+就是u-boot传给内核的设备树地址，函数中的fdt表示设备树在内存中是一块连续地址存储的</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static void __init setup_machine_fdt(phys_addr_t dt_phys)
+{
+    int size;
+    void *dt_virt = fixmap_remap_fdt(dt_phys, &amp;size, PAGE_KERNEL);  //此时已开启MMU，需要将dtb物理地址转换为虚拟地址
+    const char *name;
+
+    if (dt_virt)
+        memblock_reserve(dt_phys, size);
+
+    if (!dt_virt || !early_init_dt_scan(dt_virt)) {     //fdt扫描函数,经过此函数之后内核便可以通过调用fdt接口函数获取相关信息
+        pr_crit(&quot;\n&quot;
+            &quot;Error: invalid device tree blob at physical address %pa (virtual address 0x%p)\n&quot;
+            &quot;The dtb must be 8-byte aligned and must not exceed 2 MB in size\n&quot;
+            &quot;\nPlease check your bootloader.&quot;,
+            &amp;dt_phys, dt_virt);
+
+        while (true)
+            cpu_relax();
+    }
+
+    /* Early fixups are done, map the FDT as read-only now */
+    fixmap_remap_fdt(dt_phys, &amp;size, PAGE_KERNEL_RO);
+
+    name = of_flat_dt_get_machine_name();
+    if (!name)
+        return;
+
+    pr_info(&quot;Machine model: %s\n&quot;, name);
+    dump_stack_set_arch_desc(&quot;%s (DT)&quot;, name);
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>console_init</p></li>
+</ul>
+<p>console_init函数执行控制台的初始化工作，在console_init函数执行之前的printk打印信息，需要在console_init函数执行之后才能打印出来，在此之前printk的打印信息都被保存在一个缓存中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kernel</span><span class="o">/</span><span class="n">printk</span><span class="o">/</span><span class="n">printk</span><span class="o">.</span><span class="n">c</span>
+
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Initialize</span> <span class="n">the</span> <span class="n">console</span> <span class="n">device</span><span class="o">.</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">called</span> <span class="o">*</span><span class="n">early</span><span class="o">*</span><span class="p">,</span> <span class="n">so</span>
+ <span class="o">*</span> <span class="n">we</span> <span class="n">can</span><span class="s1">&#39;t necessarily depend on lots of kernel help here.</span>
+ <span class="o">*</span> <span class="n">Just</span> <span class="n">do</span> <span class="n">some</span> <span class="n">early</span> <span class="n">initializations</span><span class="p">,</span> <span class="ow">and</span> <span class="n">do</span> <span class="n">the</span> <span class="nb">complex</span> <span class="n">setup</span>
+ <span class="o">*</span> <span class="n">later</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">void</span> <span class="n">__init</span> <span class="n">console_init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="n">initcall_t</span> <span class="n">call</span><span class="p">;</span>
+    <span class="n">initcall_entry_t</span> <span class="o">*</span><span class="n">ce</span><span class="p">;</span>
+
+    <span class="o">/*</span> <span class="n">Setup</span> <span class="n">the</span> <span class="n">default</span> <span class="n">TTY</span> <span class="n">line</span> <span class="n">discipline</span><span class="o">.</span> <span class="o">*/</span>
+    <span class="n">n_tty_init</span><span class="p">();</span>
+
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="nb">set</span> <span class="n">up</span> <span class="n">the</span> <span class="n">console</span> <span class="n">device</span> <span class="n">so</span> <span class="n">that</span> <span class="n">later</span> <span class="n">boot</span> <span class="n">sequences</span> <span class="n">can</span>
+     <span class="o">*</span> <span class="n">inform</span> <span class="n">about</span> <span class="n">problems</span> <span class="n">etc</span><span class="o">..</span>
+     <span class="o">*/</span>
+    <span class="n">ce</span> <span class="o">=</span> <span class="n">__con_initcall_start</span><span class="p">;</span>
+    <span class="n">trace_initcall_level</span><span class="p">(</span><span class="s2">&quot;console&quot;</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">ce</span> <span class="o">&lt;</span> <span class="n">__con_initcall_end</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">call</span> <span class="o">=</span> <span class="n">initcall_from_entry</span><span class="p">(</span><span class="n">ce</span><span class="p">);</span>
+        <span class="n">trace_initcall_start</span><span class="p">(</span><span class="n">call</span><span class="p">);</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">call</span><span class="p">();</span>
+        <span class="n">trace_initcall_finish</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="n">ret</span><span class="p">);</span>
+        <span class="n">ce</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>此函数中会执行，__con_initcall_start和__con_initcall_end这两个地址之间的内容，这两个地址可以在vmlinux.lds中找到</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">__con_initcall_start</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">con_initcall</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">__con_initcall_end</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>这两个地址之间，存放的是.con_initcall.init段的内容</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">include</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">h</span>
+
+<span class="c1">#define console_initcall(fn)    \</span>
+    <span class="n">static</span> <span class="n">initcall_t</span> <span class="n">__initcall_</span><span class="c1">##fn##id __used  \</span>
+    <span class="n">__attribute__</span><span class="p">((</span><span class="n">__section_</span><span class="o">.</span><span class="n">con_initcall</span><span class="o">.</span><span class="n">init</span><span class="p">))</span> <span class="o">=</span> <span class="n">fn</span>
+</pre></div>
+</div>
+<p>通过宏定义console_initcall(fn)将函数指针fn存放到.con_initcall.init段，之后在调用console_init()函数时，就会遍历__con_initcall_start和__con_initcall_end的
+地址区域，依次运行存放在启动的函数fn</p>
+</section>
+<section id="rest-init">
+<h3><span class="section-number">3.8.1.3.3. </span>rest_init<a class="headerlink" href="#rest-init" title="此标题的永久链接"></a></h3>
+<p>在一系列的初始化之后，在rest_init函数中启动了三个进程 <code class="docutils literal notranslate"><span class="pre">idle</span></code> 、 <code class="docutils literal notranslate"><span class="pre">kernel_init</span></code> 、 <code class="docutils literal notranslate"><span class="pre">kthreadd</span></code> 来开始操作系统的正式运行</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>noinline void __ref rest_init(void)
+{
+    struct task_struct *tsk;
+    int pid;
+
+    rcu_scheduler_starting();
+    /*
+     * We need to spawn init first so that it obtains pid 1, however
+     * the init task will end up wanting to create kthreads, which, if
+     * we schedule it before we create kthreadd, will OOPS.
+     */
+    pid = kernel_thread(kernel_init, NULL, CLONE_FS);   //创建kernel_init内核线程，即init, 1号进程
+    /*
+     * Pin init on the boot CPU. Task migration is not properly working
+     * until sched_init_smp() has been run. It will set the allowed
+     * CPUs for init to the non isolated CPUs.
+     */
+    rcu_read_lock();
+    tsk = find_task_by_pid_ns(pid, &amp;init_pid_ns);
+    set_cpus_allowed_ptr(tsk, cpumask_of(smp_processor_id()));
+    rcu_read_unlock();
+
+    numa_default_policy();
+    pid = kernel_thread(kthreadd, NULL, CLONE_FS | CLONE_FILES);    //创建kthreadd内核线程，2号进程，用于管理和调度其他内核线程
+    rcu_read_lock();
+    kthreadd_task = find_task_by_pid_ns(pid, &amp;init_pid_ns);
+    rcu_read_unlock();
+
+    /*
+     * Enable might_sleep() and smp_processor_id() checks.
+     * They cannot be enabled earlier because with CONFIG_PREEMPTION=y
+     * kernel_thread() would trigger might_sleep() splats. With
+     * CONFIG_PREEMPT_VOLUNTARY=y the init task might have scheduled
+     * already, but it&#39;s stuck on the kthreadd_done completion.
+     */
+    system_state = SYSTEM_SCHEDULING;
+
+    complete(&amp;kthreadd_done);
+
+    /*
+     * The boot idle thread must execute schedule()
+     * at least once to get things moving:
+     */
+    schedule_preempt_disabled();    //调用进程调度，并禁止内核抢占
+    /* Call into cpu_idle with preempt disabled */
+    cpu_startup_entry(CPUHP_ONLINE);    //0号进程完成kernel初始化工作，进入idle循环
+}
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>idle进程是操作系统的空闲进程，CPU空闲的时候会去运行它</p></li>
+<li><p>kernel_init进程最开始只是一个函数，作为进程被启动，init进程是永远存在的,PID是1</p></li>
+<li><p>kthreadd是内核守护进程，始终运行在内核空间，负责所有内核线程的调度和管理，PID是2</p></li>
+</ol>
+<p>也就是说，系统启动后的第一个进程是IDLE，idle进程是唯一没有通过kernel_thread或fork产生的进程，idle创建了kernel_init进程作为1号进程，创建了kthreadd进程作为2号进程</p>
+</section>
+<section id="kernel-init">
+<h3><span class="section-number">3.8.1.3.4. </span>kernel_init<a class="headerlink" href="#kernel-init" title="此标题的永久链接"></a></h3>
+<p>kernel_init函数在创建kernel_init进程时，作为进程被启动,虽然kernel_init最开始只是一个函数，但是在最后，通过系统调用将读取根文件系统下的init进程，完成从内核态到用户态的转变，
+转变为用户态的1号进程，这个init进程是所有用户态进程的父进程，产生了大量的子进程，init进程是1号进程，是永远存在的</p>
+<section id="kernel-init-freeable">
+<h4><span class="section-number">3.8.1.3.4.1. </span>kernel_init_freeable<a class="headerlink" href="#kernel-init-freeable" title="此标题的永久链接"></a></h4>
+<p>此函数主要工作如下</p>
+<ol class="arabic simple">
+<li><p>等待内核线程kthreadd创建完成</p></li>
+<li><p>注册内核驱动模块 do_basic_setup</p></li>
+<li><p>启动默认控制台/dev/console</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static noinline void __init kernel_init_freeable(void)
+{
+    /*
+     * Wait until kthreadd is all set-up.
+     */
+    wait_for_completion(&amp;kthreadd_done);
+    //虽然kernel_init进程先创建，但是要在kthreadd线程创建完成才能执行
+
+    /* Now the scheduler is fully set up and can do blocking allocations */
+    gfp_allowed_mask = __GFP_BITS_MASK;
+
+    /*
+     * init can allocate pages on any node
+     */
+    set_mems_allowed(node_states[N_MEMORY]);
+
+    cad_pid = task_pid(current);
+
+    smp_prepare_cpus(setup_max_cpus);
+
+    workqueue_init();
+
+    init_mm_internals();
+
+    do_pre_smp_initcalls();
+    lockup_detector_init();
+
+    smp_init();
+    sched_init_smp();
+
+    page_alloc_init_late();
+    /* Initialize page ext after all struct pages are initialized. */
+    page_ext_init();
+
+    do_basic_setup();
+
+    /* Open the /dev/console on the rootfs, this should never fail */
+    if (ksys_open((const char __user *) &quot;/dev/console&quot;, O_RDWR, 0) &lt; 0)
+        pr_err(&quot;Warning: unable to open an initial console.\n&quot;);
+
+    (void) ksys_dup(0);
+    (void) ksys_dup(0);
+    /*
+     * check if there is an early userspace init.  If yes, let it do all
+     * the work
+     */
+
+    if (!ramdisk_execute_command)
+        ramdisk_execute_command = &quot;/init&quot;;
+
+    if (ksys_access((const char __user *)
+            ramdisk_execute_command, 0) != 0) {
+        ramdisk_execute_command = NULL;
+        prepare_namespace();
+    }
+
+    /*
+     * Ok, we have completed the initial bootup, and
+     * we&#39;re essentially up and running. Get rid of the
+     * initmem segments and start the user-mode stuff..
+     *
+     * rootfs is available now, try loading the public keys
+     * and default modules
+     */
+
+    integrity_load_keys();
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>bo_basic_setup</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Ok</span><span class="p">,</span> <span class="n">the</span> <span class="n">machine</span> <span class="ow">is</span> <span class="n">now</span> <span class="n">initialized</span><span class="o">.</span> <span class="kc">None</span> <span class="n">of</span> <span class="n">the</span> <span class="n">devices</span>
+ <span class="o">*</span> <span class="n">have</span> <span class="n">been</span> <span class="n">touched</span> <span class="n">yet</span><span class="p">,</span> <span class="n">but</span> <span class="n">the</span> <span class="n">CPU</span> <span class="n">subsystem</span> <span class="ow">is</span> <span class="n">up</span> <span class="ow">and</span>
+ <span class="o">*</span> <span class="n">running</span><span class="p">,</span> <span class="ow">and</span> <span class="n">memory</span> <span class="ow">and</span> <span class="n">process</span> <span class="n">management</span> <span class="n">works</span><span class="o">.</span>
+ <span class="o">*</span>
+ <span class="o">*</span> <span class="n">Now</span> <span class="n">we</span> <span class="n">can</span> <span class="k">finally</span> <span class="n">start</span> <span class="n">doing</span> <span class="n">some</span> <span class="n">real</span> <span class="n">work</span><span class="o">..</span>
+ <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">__init</span> <span class="n">do_basic_setup</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">cpuset_init_smp</span><span class="p">();</span>
+    <span class="n">driver_init</span><span class="p">();</span>
+    <span class="n">init_irq_proc</span><span class="p">();</span>
+    <span class="n">do_ctors</span><span class="p">();</span>
+    <span class="n">usermodehelper_enable</span><span class="p">();</span>
+    <span class="n">do_initcalls</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>driver_init函数完成了与驱动程序相关的所有子系统的创建，实现了linux设备驱动的一个整体框架，但是它只是建立了目录结构，是设备驱动程序初始化的一部分
+具体驱动模块的装载在do_initcalls函数中实现</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/**
+ * driver_init - initialize driver model.
+ *
+ * Call the driver model init functions to initialize their
+ * subsystems. Called early from init/main.c.
+ */
+void __init driver_init(void)
+{
+    /* These are the core pieces */
+    devtmpfs_init();    //注册devtmpfs文件系统，启动devtmpfsd进程
+    devices_init();     //初始化驱动模型中部分子系统，/dev/devices，/dev/cha，/dev/block
+    buses_init();       //初始化驱动模型中的bus子系统
+    classes_init();     //初始化驱动模型中的class子系统
+    firmware_init();    //初始化驱动模型中的firmware子系统
+    hypervisor_init();  //初始化驱动模型中的hypervisor子系统
+
+    /* These are also core pieces, but must come after the
+     * core core pieces.
+     */
+    of_core_init();     //初始化设备树访问过程
+    platform_bus_init();    //初始化设备驱动模型中的bus/platform子系统，此节点是所有platform设备和驱动的总线模型
+                            //所有的platform设备和驱动都会挂载到这个总线上
+    cpu_dev_init();     //初始化驱动模型中的device/system/cpu子系统，该节点包含CPU相关属性
+    memory_dev_init();  //初始化驱动模型中的device/system/memory子系统，该节点包含了内存相关属性
+    container_dev_init();   //初始化系统总线类型为容器
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>do_initcalls</p></li>
+</ul>
+<p>编译器在编译内核时，将一系列模块初始化函数的其实地址按照一定的顺序放在指定的section中，在内核启动的初始化阶段，do_initcalls函数中以函数指针的形式取出这些函数的起始地址
+依次运行，以完成相应模块的初始化工作，这是设备驱动程序初始化的第二部分，由于内核模块可能存在依赖关系，因此这些模块的初始化顺序非常重要</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">init</span><span class="o">/</span><span class="n">main</span><span class="o">.</span><span class="n">c</span>
+
+<span class="n">static</span> <span class="n">void</span> <span class="n">__init</span> <span class="n">do_initcalls</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">level</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">level</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="n">ARRAY_SIZE</span><span class="p">(</span><span class="n">initcall_levels</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">level</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">do_initcall_level</span><span class="p">(</span><span class="n">level</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>对同一个level等级下的函数，依次遍历执行</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span> <span class="n">__init</span> <span class="n">do_initcall_level</span><span class="p">(</span><span class="nb">int</span> <span class="n">level</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">initcall_entry_t</span> <span class="o">*</span><span class="n">fn</span><span class="p">;</span>
+
+    <span class="n">strcpy</span><span class="p">(</span><span class="n">initcall_command_line</span><span class="p">,</span> <span class="n">saved_command_line</span><span class="p">);</span>
+    <span class="n">parse_args</span><span class="p">(</span><span class="n">initcall_level_names</span><span class="p">[</span><span class="n">level</span><span class="p">],</span>
+           <span class="n">initcall_command_line</span><span class="p">,</span> <span class="n">__start___param</span><span class="p">,</span>
+           <span class="n">__stop___param</span> <span class="o">-</span> <span class="n">__start___param</span><span class="p">,</span>
+           <span class="n">level</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span>
+           <span class="n">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">repair_env_string</span><span class="p">);</span>
+
+    <span class="n">trace_initcall_level</span><span class="p">(</span><span class="n">initcall_level_names</span><span class="p">[</span><span class="n">level</span><span class="p">]);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">fn</span> <span class="o">=</span> <span class="n">initcall_levels</span><span class="p">[</span><span class="n">level</span><span class="p">];</span> <span class="n">fn</span> <span class="o">&lt;</span> <span class="n">initcall_levels</span><span class="p">[</span><span class="n">level</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span> <span class="n">fn</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">do_one_initcall</span><span class="p">(</span><span class="n">initcall_from_entry</span><span class="p">(</span><span class="n">fn</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>执行某一个确定的函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">__init_or_module</span> <span class="n">do_one_initcall</span><span class="p">(</span><span class="n">initcall_t</span> <span class="n">fn</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">count</span> <span class="o">=</span> <span class="n">preempt_count</span><span class="p">();</span>
+    <span class="n">char</span> <span class="n">msgbuf</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+    <span class="nb">int</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">initcall_blacklisted</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">EPERM</span><span class="p">;</span>
+
+    <span class="n">do_trace_initcall_start</span><span class="p">(</span><span class="n">fn</span><span class="p">);</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">fn</span><span class="p">();</span>
+    <span class="n">do_trace_initcall_finish</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">ret</span><span class="p">);</span>
+
+    <span class="n">msgbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">preempt_count</span><span class="p">()</span> <span class="o">!=</span> <span class="n">count</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">sprintf</span><span class="p">(</span><span class="n">msgbuf</span><span class="p">,</span> <span class="s2">&quot;preemption imbalance &quot;</span><span class="p">);</span>
+        <span class="n">preempt_count_set</span><span class="p">(</span><span class="n">count</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">irqs_disabled</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">strlcat</span><span class="p">(</span><span class="n">msgbuf</span><span class="p">,</span> <span class="s2">&quot;disabled interrupts &quot;</span><span class="p">,</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">msgbuf</span><span class="p">));</span>
+        <span class="n">local_irq_enable</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="n">WARN</span><span class="p">(</span><span class="n">msgbuf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;initcall %pS returned with </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">msgbuf</span><span class="p">);</span>
+
+    <span class="n">add_latent_entropy</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">include</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">h</span>
+
+<span class="c1">#define __define_initcall(fn, id)   \</span>
+    <span class="n">static</span> <span class="n">initcall_t</span> <span class="n">__initcall</span><span class="c1">##fn_id __used \</span>
+    <span class="n">__attribute__</span><span class="p">((</span><span class="n">__section__</span><span class="p">(</span><span class="s2">&quot;.initcall&quot;</span> <span class="c1">#id &quot;.init&quot;))) = fn;</span>
+</pre></div>
+</div>
+<p>__attribute__((__section__())) 表示把对象放在这个由括号中的名称所指代的section中</p>
+<p>__define_initcall()宏的含义是</p>
+<ol class="arabic simple">
+<li><p>声明一个名为__initcall_##fn的函数指针(其中##表示将两边的变量链接为有一个变量)</p></li>
+<li><p>将这个函数指针初始化为fn</p></li>
+<li><p>编译时，要将这个函数指针放到名为”.initcall”#id”.init”的section中</p></li>
+</ol>
+<p>__define_initcall宏并不会被直接使用，而是被定义为其他的宏定义形式使用</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">include</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">h</span>
+
+
+<span class="c1">#define pure_initcall(fn)           __define_initcall(fn, 0)</span>
+
+<span class="c1">#define core_initcall(fn)           __define_initcall(fn, 1)</span>
+<span class="c1">#define core_initcall_sync(fn)              __define_initcall(fn, 1s)</span>
+<span class="c1">#define postcore_initcall(fn)               __define_initcall(fn, 2)</span>
+<span class="c1">#define postcore_initcall_sync(fn)  __define_initcall(fn, 2s)</span>
+<span class="c1">#define arch_initcall(fn)           __define_initcall(fn, 3)</span>
+<span class="c1">#define arch_initcall_sync(fn)              __define_initcall(fn, 3s)</span>
+<span class="c1">#define subsys_initcall(fn)         __define_initcall(fn, 4)</span>
+<span class="c1">#define subsys_initcall_sync(fn)    __define_initcall(fn, 4s)</span>
+<span class="c1">#define fs_initcall(fn)                     __define_initcall(fn, 5)</span>
+<span class="c1">#define fs_initcall_sync(fn)                __define_initcall(fn, 5s)</span>
+<span class="c1">#define rootfs_initcall(fn)         __define_initcall(fn, rootfs)</span>
+<span class="c1">#define device_initcall(fn)         __define_initcall(fn, 6)</span>
+<span class="c1">#define device_initcall_sync(fn)    __define_initcall(fn, 6s)</span>
+<span class="c1">#define late_initcall(fn)           __define_initcall(fn, 7)</span>
+<span class="c1">#define late_initcall_sync(fn)              __define_initcall(fn, 7s)</span>
+</pre></div>
+</div>
+<p>在编译生成的vmlinux.lds文件中可以找到initcall相关的定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">__initcall_start</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcallearly</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">__initcall0_start</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall0</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall0s</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">__initcall1_start</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall1</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall1s</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">__initcall2_start</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall2</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall2s</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">__initcall3_start</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall3</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall3s</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">__initcall4_start</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall4</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall4s</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">__initcall5_start</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall5</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall5s</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">__initcallrootfs_start</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcallrootfs</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcallrootfss</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">__initcall6_start</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall6</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall6s</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">__initcall7_start</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall7</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">KEEP</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">initcall7s</span><span class="o">.</span><span class="n">init</span><span class="p">))</span>
+<span class="n">__initcall_end</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>这些section中总的开始位置被标识为__initcall_start，而在结尾被标识为__initcall_end</p>
+</section>
+<section id="free-initmem">
+<h4><span class="section-number">3.8.1.3.4.2. </span>free_initmem<a class="headerlink" href="#free-initmem" title="此标题的永久链接"></a></h4>
+<p>free_initmem函数用来释放所有init段中的内存</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">arch</span><span class="o">/</span><span class="n">arm64</span><span class="o">/</span><span class="n">mm</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">c</span>
+
+<span class="n">void</span> <span class="n">free_initmem</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">free_reserved_area</span><span class="p">(</span><span class="n">lm_alias</span><span class="p">(</span><span class="n">__init_begin</span><span class="p">),</span>
+               <span class="n">lm_alias</span><span class="p">(</span><span class="n">__init_end</span><span class="p">),</span>
+               <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;unused kernel&quot;</span><span class="p">);</span>
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">Unmap</span> <span class="n">the</span> <span class="n">__init</span> <span class="n">region</span> <span class="n">but</span> <span class="n">leave</span> <span class="n">the</span> <span class="n">VM</span> <span class="n">area</span> <span class="ow">in</span> <span class="n">place</span><span class="o">.</span> <span class="n">This</span>
+     <span class="o">*</span> <span class="n">prevents</span> <span class="n">the</span> <span class="n">region</span> <span class="kn">from</span> <span class="nn">being</span> <span class="n">reused</span> <span class="k">for</span> <span class="n">kernel</span> <span class="n">modules</span><span class="p">,</span> <span class="n">which</span>
+     <span class="o">*</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">supported</span> <span class="n">by</span> <span class="n">kallsyms</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">unmap_kernel_range</span><span class="p">((</span><span class="n">u64</span><span class="p">)</span><span class="n">__init_begin</span><span class="p">,</span> <span class="p">(</span><span class="n">u64</span><span class="p">)(</span><span class="n">__init_end</span> <span class="o">-</span> <span class="n">__init_begin</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="init">
+<h4><span class="section-number">3.8.1.3.4.3. </span>启动用户态init进程<a class="headerlink" href="#init" title="此标题的永久链接"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>if (!try_to_run_init_process(&quot;/sbin/init&quot;) ||
+    !try_to_run_init_process(&quot;/etc/init&quot;) ||
+    !try_to_run_init_process(&quot;/bin/init&quot;) ||
+    !try_to_run_init_process(&quot;/bin/sh&quot;))
+        return 0;
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">try_to_run_init_process</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">init_filename</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">run_init_process</span><span class="p">(</span><span class="n">init_filename</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&amp;&amp;</span> <span class="n">ret</span> <span class="o">!=</span> <span class="o">-</span><span class="n">ENOENT</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">pr_err</span><span class="p">(</span><span class="s2">&quot;Starting init: </span><span class="si">%s</span><span class="s2"> exists but couldn&#39;t execute it (error </span><span class="si">%d</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+               <span class="n">init_filename</span><span class="p">,</span> <span class="n">ret</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">run_init_process</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">init_filename</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">argv_init</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_filename</span><span class="p">;</span>
+    <span class="n">pr_info</span><span class="p">(</span><span class="s2">&quot;Run </span><span class="si">%s</span><span class="s2"> as init process</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">init_filename</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">do_execve</span><span class="p">(</span><span class="n">getname_kernel</span><span class="p">(</span><span class="n">init_filename</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="n">__user</span> <span class="o">*</span><span class="n">const</span> <span class="n">__user</span> <span class="o">*</span><span class="p">)</span><span class="n">argv_init</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="n">__user</span> <span class="o">*</span><span class="n">const</span> <span class="n">__user</span> <span class="o">*</span><span class="p">)</span><span class="n">envp_init</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>在大多数系统中，bootloader会传递参数给内核的main函数，这些参数中会包含init=/linuxrc参数，于是在kernel_init进程中，如果有execute_command = “linuxrc”，在经过
+run_init_process函数的解析之后，得到需要运行的linuxrc，通过do_execve函数进入用户态，开始文件系统的初始化init进程</p>
+<p>如果没有传递，则系统开始顺序执行/sbin/init /etc/init /bin/init /bin/sh 程序</p>
+<p>init进程进行的工作</p>
+<ol class="arabic simple">
+<li><p>为init设置信号处理过程</p></li>
+<li><p>初始化控制台</p></li>
+<li><p>解析/etc/inittab文件</p></li>
+<li><p>执行系统初始化命令，一般情况下会使用/etc/init.d/rcS</p></li>
+<li><p>执行所有导致init暂停的inittab命令(动作类型: wait)</p></li>
+<li><p>执行所有仅执行一次的inittab命令 (动作类型: once)</p></li>
+</ol>
+<p>执行完以上工作后，init进程会循环执行以下进程</p>
+<ol class="arabic simple">
+<li><p>执行所有终止时必须重新启动的inittab命令(动作类型: respawn)</p></li>
+<li><p>执行所有终止时必须重新启动但启动前必须询问用户的inittab命令(动作类型: askfirst)</p></li>
+</ol>
+<ul class="simple">
+<li><p>inittab</p></li>
+</ul>
+<p>init程序会解析/etc/inittab初始化配置文件</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># /etc/inittab: init(8) configuration.</span>
+<span class="c1"># $Id: inittab,v 1.91 2002/01/25 13:35:21 miquels Exp $</span>
+
+<span class="c1"># The default runlevel.</span>
+<span class="nb">id</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="n">initdefault</span><span class="p">:</span>
+
+<span class="c1"># Boot-time system configuration/initialization script.</span>
+<span class="c1"># This is run first except when booting in emergency (-b) mode.</span>
+<span class="n">si</span><span class="p">::</span><span class="n">sysinit</span><span class="p">:</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">rcS</span>
+
+<span class="c1"># What to do in single-user mode.</span>
+<span class="o">~</span><span class="p">:</span><span class="n">S</span><span class="p">:</span><span class="n">wait</span><span class="p">:</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">sulogin</span>
+
+<span class="c1"># /etc/init.d executes the S and K scripts upon change</span>
+<span class="c1"># of runlevel.</span>
+<span class="c1">#</span>
+<span class="c1"># Runlevel 0 is halt.</span>
+<span class="c1"># Runlevel 1 is single-user.</span>
+<span class="c1"># Runlevels 2-5 are multi-user.</span>
+<span class="c1"># Runlevel 6 is reboot.</span>
+
+<span class="n">l0</span><span class="p">:</span><span class="mi">0</span><span class="p">:</span><span class="n">wait</span><span class="p">:</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">rc</span> <span class="mi">0</span>
+<span class="n">l1</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="n">wait</span><span class="p">:</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">rc</span> <span class="mi">1</span>
+<span class="n">l2</span><span class="p">:</span><span class="mi">2</span><span class="p">:</span><span class="n">wait</span><span class="p">:</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">rc</span> <span class="mi">2</span>
+<span class="n">l3</span><span class="p">:</span><span class="mi">3</span><span class="p">:</span><span class="n">wait</span><span class="p">:</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">rc</span> <span class="mi">3</span>
+<span class="n">l4</span><span class="p">:</span><span class="mi">4</span><span class="p">:</span><span class="n">wait</span><span class="p">:</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">rc</span> <span class="mi">4</span>
+<span class="n">l5</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="n">wait</span><span class="p">:</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">rc</span> <span class="mi">5</span>
+<span class="n">l6</span><span class="p">:</span><span class="mi">6</span><span class="p">:</span><span class="n">wait</span><span class="p">:</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">rc</span> <span class="mi">6</span>
+<span class="c1"># Normally not reached, but fallthrough in case of emergency.</span>
+<span class="n">z6</span><span class="p">:</span><span class="mi">6</span><span class="p">:</span><span class="n">respawn</span><span class="p">:</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">sulogin</span>
+<span class="c1"># AMA0:12345:respawn:/bin/start_getty 38400 ttyAMA0 vt102</span>
+<span class="n">S0</span><span class="p">:</span><span class="mi">12345</span><span class="p">:</span><span class="n">respawn</span><span class="p">:</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">start_getty</span> <span class="mi">0</span> <span class="n">ttyS0</span> <span class="n">vt102</span>
+</pre></div>
+</div>
+<p>inittab的内容以行为单位，行与行之间没有关联，每行都是一个独立的配置项，每一行的配置项都是由3个冒号分隔开的4个配置值组成，冒号是分隔符</p>
+<p>inittab文件中的代码格式</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">runlevels</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">action</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">process</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>id:  /dev/id ,用作终端的terminal:stdin、stdout、stderr、printf、scanf、err
+runlevels:
+action:执行时机，包括：sysinit、respawd、askfirst、waite、once、restart、ctriatdel、shutdown
+process: 应用程序和脚本</p>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="3.8. kernel 启动流程" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="create_page_table.html" class="btn btn-neutral float-right" title="3.8.2. __create_page_tables" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

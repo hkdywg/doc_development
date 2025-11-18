@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.2.3.1. 内存架构和linux物理内存模型 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.2.3.2. linux物理内存初始化(memblock)" href="memblock.html" />
+    <link rel="prev" title="3.2.3. linux內存管理" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.2. linux 内存管理</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../summary/index.html">3.2.1. 内存管理概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mm_qa/index.html">3.2.2. 内存管理之问答</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">3.2.3. linux內存管理</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.2.3.1. 内存架构和linux物理内存模型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memblock.html">3.2.3.2. linux物理内存初始化(memblock)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="phys_addr.html">3.2.3.3. 物理内存的软件划分</a></li>
+<li class="toctree-l4"><a class="reference internal" href="frame_alloc.html">3.2.3.4. 页帧分配器的实现</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../MMU/index.html">3.2.4. MMU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cache/index.html">3.2.5. 内存管理之cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../memory_base_kn/index.html">3.2.6. 内存基础知识</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.2. </span>linux 内存管理</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.2.3. </span>linux內存管理</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.2.3.1. </span>内存架构和linux物理内存模型</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/mm/mm/mm_module.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux">
+<h1><span class="section-number">3.2.3.1. </span>内存架构和linux物理内存模型<a class="headerlink" href="#linux" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">3.2.3.1.1. </span>内存架构<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>现行的内存架构主要是以下两种:</p>
+<ul class="simple">
+<li><p>UMA: Uniform Memory Access,所有处理器对内存的访问都是一致的</p></li>
+</ul>
+<img alt="../../../_images/mm_uma.png" src="../../../_images/mm_uma.png" />
+<ul class="simple">
+<li><p>NUMA: Non Uniform Memory Access,非一致性内存访问</p></li>
+</ul>
+<img alt="../../../_images/mm_numa.png" src="../../../_images/mm_numa.png" />
+</section>
+<section id="id2">
+<h2><span class="section-number">3.2.3.1.2. </span>linux内存模型<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>内核是以页为单位进行内存管理的，使用struct page结构体来进行管理，其封装了每页内存块的状态信息，比如使用信息、统计信息以及与其他
+结构的关联映射信息等。</p>
+<p>为了快速索引到具体的物理页，内核为每个物理页定义了一个索引编号(PFN)， PFN与struct page是一一对应关系。内核提供了两个宏来完成这两者的互相转换，
+<code class="docutils literal notranslate"><span class="pre">page_to_pfn</span></code> 和 <code class="docutils literal notranslate"><span class="pre">pfn_to_page</span></code> .</p>
+<p>内核中如何组织管理这些物理内存页struct page的方式，我们称之为 <code class="docutils literal notranslate"><span class="pre">物理内存模型</span></code> ,不同的物理内存模型，应对的场景以及page_to_pfn与pfn_to_page的计算逻辑是不一样的</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">supports</span> <span class="mi">3</span> <span class="n">memory</span> <span class="n">models</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="c1">#if defined(CONFIG_FLATMEM)</span>
+
+<span class="c1">#define __pfn_to_page(pfn)  (mem_map + ((pfn) - ARCH_PFN_OFFSET))</span>
+<span class="c1">#define __page_to_pfn(page) ((unsigned long)((page) - mem_map) + \</span>
+                 <span class="n">ARCH_PFN_OFFSET</span><span class="p">)</span>
+<span class="c1">#elif defined(CONFIG_DISCONTIGMEM)</span>
+
+<span class="c1">#define __pfn_to_page(pfn)          \</span>
+<span class="p">({</span>  <span class="n">unsigned</span> <span class="n">long</span> <span class="n">__pfn</span> <span class="o">=</span> <span class="p">(</span><span class="n">pfn</span><span class="p">);</span>        \
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">__nid</span> <span class="o">=</span> <span class="n">arch_pfn_to_nid</span><span class="p">(</span><span class="n">__pfn</span><span class="p">);</span>  \
+    <span class="n">NODE_DATA</span><span class="p">(</span><span class="n">__nid</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">node_mem_map</span> <span class="o">+</span> <span class="n">arch_local_page_offset</span><span class="p">(</span><span class="n">__pfn</span><span class="p">,</span> <span class="n">__nid</span><span class="p">);</span>\
+<span class="p">})</span>
+
+<span class="c1">#define __page_to_pfn(pg)                       \</span>
+<span class="p">({</span>  <span class="n">const</span> <span class="n">struct</span> <span class="n">page</span> <span class="o">*</span><span class="n">__pg</span> <span class="o">=</span> <span class="p">(</span><span class="n">pg</span><span class="p">);</span>                 \
+    <span class="n">struct</span> <span class="n">pglist_data</span> <span class="o">*</span><span class="n">__pgdat</span> <span class="o">=</span> <span class="n">NODE_DATA</span><span class="p">(</span><span class="n">page_to_nid</span><span class="p">(</span><span class="n">__pg</span><span class="p">));</span> \
+    <span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)(</span><span class="n">__pg</span> <span class="o">-</span> <span class="n">__pgdat</span><span class="o">-&gt;</span><span class="n">node_mem_map</span><span class="p">)</span> <span class="o">+</span>         \
+     <span class="n">__pgdat</span><span class="o">-&gt;</span><span class="n">node_start_pfn</span><span class="p">;</span>                   \
+<span class="p">})</span>
+
+<span class="c1">#elif defined(CONFIG_SPARSEMEM_VMEMMAP)</span>
+
+<span class="o">/*</span> <span class="n">memmap</span> <span class="ow">is</span> <span class="n">virtually</span> <span class="n">contiguous</span><span class="o">.</span>  <span class="o">*/</span>
+<span class="c1">#define __pfn_to_page(pfn)  (vmemmap + (pfn))</span>
+<span class="c1">#define __page_to_pfn(page) (unsigned long)((page) - vmemmap)</span>
+
+<span class="c1">#elif defined(CONFIG_SPARSEMEM)</span>
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Note</span><span class="p">:</span> <span class="n">section</span><span class="s1">&#39;s mem_map is encoded to reflect its start_pfn.</span>
+ <span class="o">*</span> <span class="n">section</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">section_mem_map</span> <span class="o">==</span> <span class="n">mem_map</span><span class="s1">&#39;s address - start_pfn;</span>
+ <span class="o">*/</span>
+<span class="c1">#define __page_to_pfn(pg)                   \</span>
+<span class="p">({</span>  <span class="n">const</span> <span class="n">struct</span> <span class="n">page</span> <span class="o">*</span><span class="n">__pg</span> <span class="o">=</span> <span class="p">(</span><span class="n">pg</span><span class="p">);</span>             \
+    <span class="nb">int</span> <span class="n">__sec</span> <span class="o">=</span> <span class="n">page_to_section</span><span class="p">(</span><span class="n">__pg</span><span class="p">);</span>          \
+    <span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)(</span><span class="n">__pg</span> <span class="o">-</span> <span class="n">__section_mem_map_addr</span><span class="p">(</span><span class="n">__nr_to_section</span><span class="p">(</span><span class="n">__sec</span><span class="p">)));</span> \
+<span class="p">})</span>
+
+<span class="c1">#define __pfn_to_page(pfn)              \</span>
+<span class="p">({</span>  <span class="n">unsigned</span> <span class="n">long</span> <span class="n">__pfn</span> <span class="o">=</span> <span class="p">(</span><span class="n">pfn</span><span class="p">);</span>            \
+    <span class="n">struct</span> <span class="n">mem_section</span> <span class="o">*</span><span class="n">__sec</span> <span class="o">=</span> <span class="n">__pfn_to_section</span><span class="p">(</span><span class="n">__pfn</span><span class="p">);</span>    \
+    <span class="n">__section_mem_map_addr</span><span class="p">(</span><span class="n">__sec</span><span class="p">)</span> <span class="o">+</span> <span class="n">__pfn</span><span class="p">;</span>      \
+<span class="p">})</span>
+<span class="c1">#endif /* CONFIG_FLATMEM/DISCONTIGMEM/SPARSEMEM */</span>
+</pre></div>
+</div>
+<p>linux目前支持三种内存模型(include/asm-generic/memory_model.h): <code class="docutils literal notranslate"><span class="pre">PLATMEM</span></code> , <code class="docutils literal notranslate"><span class="pre">DISCONTIGMEM</span></code> , <code class="docutils literal notranslate"><span class="pre">SPARSEMEM</span></code> .某些体系架构支持
+多种内存模型，但在内核编译构建时只能选择使用一种内存模型</p>
+<img alt="../../../_images/mm_model.png" src="../../../_images/mm_model.png" />
+<p>下面分别讨论每种内存模型的特点：</p>
+<ul class="simple">
+<li><p>PLATMEM(平坦内存模型)</p>
+<ul>
+<li><p>内存连续且不存在空隙</p></li>
+<li><p>在大多数情况下，应用于UMA系统</p></li>
+</ul>
+</li>
+<li><p>DISCONTIGMEM(不连续内存模型)</p>
+<ul>
+<li><p>多个内存节点不连续且存在空隙(hole)</p></li>
+<li><p>适用于UMA系统和NUMA系统</p></li>
+<li><p>ARM在2010年已移除对DISCONTIGMEM内存模型的支持</p></li>
+</ul>
+</li>
+<li><p>SPARSEMEM(稀疏内存模型)</p>
+<ul>
+<li><p>多个内存区域不连续且存在空隙</p></li>
+<li><p>支持内存热插拔[hot-plug memory]，但性能略逊于DISCONTIGMEM</p></li>
+<li><p>在x86或ARM64内核采用了最近实现的SPARSEMEM_VMEMMAP变种，其性能比DISCONTIGMEM更优并且与PLATMEM相当</p></li>
+<li><p>对于ARM64内核，默认选择SPARSEMEM内存模型</p></li>
+<li><p>以section为单位管理online和hot-plug内存</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id3">
+<h2><span class="section-number">3.2.3.1.3. </span>linux内存映射<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>系统中对内存的管理是以页为单位的:</p>
+<ul class="simple">
+<li><p>page: 线性地址被分成以固定长度为单位的组，称为页，页内部连续的线性地址被映射到连续的物理地址中</p></li>
+<li><p>page frame: 内存被分成固定长度的存储区域，称为页框，也叫物理页．每一个页框会包含一个页，页框的长度和一个页的长度是一致的，在内核中使用struct page来关联物理页</p></li>
+</ul>
+<img alt="../../../_images/mm_pfn.png" src="../../../_images/mm_pfn.png" />
+<p>管理内存映射的方式取决于选用的内存模型</p>
+<img alt="../../../_images/mm_model_mapping.png" src="../../../_images/mm_model_mapping.png" />
+<section id="flat-memory-model">
+<h3><span class="section-number">3.2.3.1.3.1. </span>平坦内存模型(flat memory model)的内存映射管理<a class="headerlink" href="#flat-memory-model" title="此标题的永久链接"></a></h3>
+<p>在平坦内存模型中，毗邻连续的排列所有页帧描述符，全局指针变量mem_map指向首个页帧描述符．同时结构体变量config_page_data的node_mem_map成员
+也指向第一个页帧描述符</p>
+<img alt="../../../_images/mm_fmm.png" src="../../../_images/mm_fmm.png" />
+</section>
+<section id="discontiguous-memory-model">
+<h3><span class="section-number">3.2.3.1.3.2. </span>不连续内存模型(discontiguous memory model)的内存映射管理<a class="headerlink" href="#discontiguous-memory-model" title="此标题的永久链接"></a></h3>
+<p>非连续内存模型由多个内存节点组成，每个节点的页帧数决定了页帧描述符的数量．通过node_data数据获取指定节点的实例，然后使用节点实例
+的node_mem_map成员来管理每个节点的页帧描述符</p>
+<img alt="../../../_images/mm_dmm.png" src="../../../_images/mm_dmm.png" />
+</section>
+<section id="sparse-memory-model">
+<h3><span class="section-number">3.2.3.1.3.3. </span>稀疏内存模型(sparse memory model)的内存映射管理<a class="headerlink" href="#sparse-memory-model" title="此标题的永久链接"></a></h3>
+<p>稀疏内存模型以固定大小的单元统一管理分散的内存，易于内存管理．这个固定大小的单元被称为内存段(select). 通过这种方式划分整个物理地址空间
+以及当前存在的内存．结构体struct mem_section管理一个section，并通过section_mem_map成员指向一个页帧描述符数组(page 数组)，数组元素数量
+为PAGES_PER_SECTION．在稀疏内存模型中，section是最小的单元，其大小从几十MB到几GB不等，用于管理online/offline(热插拔)内存.　目前存在两种方法
+用于管理不同数量的section</p>
+<ul class="simple">
+<li><p>CONFIG_SPARSEMEM_STATIC: 大多数32位系统和section数量不多的情况会利用这种方法管理内存．在编译时就能确定section数量</p></li>
+<li><p>CONFIG_SPARSEMEM_EXTREME(ARM64默认启用): 大多数64位系统和section数量较多的情况下会利用这种方法管理内存．如果内存中存在较大的空隙，使用两级
+section管理数组能减少内存的浪费．在初始化时创建第一级管理数组</p></li>
+</ul>
+<p>CONFIG_SPARSEMEM_STATIC配置选项例子</p>
+<img alt="../../../_images/mm_smm_static.png" src="../../../_images/mm_smm_static.png" />
+<p>CONFIG_SPARSEMEM_EXTREME配置选项例子</p>
+<img alt="../../../_images/mm_smm_extreme.png" src="../../../_images/mm_smm_extreme.png" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="3.2.3. linux內存管理" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="memblock.html" class="btn btn-neutral float-right" title="3.2.3.2. linux物理内存初始化(memblock)" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

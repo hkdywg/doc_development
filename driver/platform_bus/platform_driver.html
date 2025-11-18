@@ -1,0 +1,517 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.1.2. platform驱动 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="../mmc/index.html" />
+    <link rel="prev" title="4.1.1. platform总线" href="platform_bus.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.1. platform总线</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="platform_bus.html">4.1.1. platform总线</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.1.2. platform驱动</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.1.2.1. 数据结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.1.2.2. platform驱动和设备的匹配</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.1.2.3. platform总线下的驱动编写流程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.1. </span>platform总线</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.1.2. </span>platform驱动</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/platform_bus/platform_driver.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="platform">
+<h1><span class="section-number">4.1.2. </span>platform驱动<a class="headerlink" href="#platform" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">4.1.2.1. </span>数据结构<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>linux内核使用bus_type结构体表示总线</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>       <span class="p">[</span><span class="n">include</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">device</span><span class="o">.</span><span class="n">h</span><span class="p">]</span>
+   <span class="n">struct</span> <span class="n">bus_type</span> <span class="p">{</span>
+    <span class="n">const</span> <span class="n">char</span>      <span class="o">*</span><span class="n">name</span><span class="p">;</span>    <span class="o">//</span><span class="n">总线名字</span>
+    <span class="n">const</span> <span class="n">char</span>      <span class="o">*</span><span class="n">dev_name</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">device</span>       <span class="o">*</span><span class="n">dev_root</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">attribute_group</span> <span class="o">**</span><span class="n">bus_groups</span><span class="p">;</span>        <span class="o">//</span><span class="n">总线属性</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">attribute_group</span> <span class="o">**</span><span class="n">dev_groups</span><span class="p">;</span>        <span class="o">//</span><span class="n">设备属性</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">attribute_group</span> <span class="o">**</span><span class="n">drv_groups</span><span class="p">;</span>        <span class="o">//</span><span class="n">驱动属性</span>
+
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">match</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="n">struct</span> <span class="n">device_driver</span> <span class="o">*</span><span class="n">drv</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">uevent</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="n">struct</span> <span class="n">kobj_uevent_env</span> <span class="o">*</span><span class="n">env</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">probe</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">remove</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">shutdown</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">online</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">offline</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">suspend</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="n">pm_message_t</span> <span class="n">state</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">resume</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">num_vf</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">dma_configure</span><span class="p">)(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">dev_pm_ops</span> <span class="o">*</span><span class="n">pm</span><span class="p">;</span>
+
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">iommu_ops</span> <span class="o">*</span><span class="n">iommu_ops</span><span class="p">;</span>
+
+    <span class="n">struct</span> <span class="n">subsys_private</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">lock_class_key</span> <span class="n">lock_key</span><span class="p">;</span>
+
+    <span class="nb">bool</span> <span class="n">need_parent_lock</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>platform总线是bus_type的一个具体实例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">drivers</span><span class="o">/</span><span class="n">base</span><span class="o">/</span><span class="n">platform</span><span class="o">.</span><span class="n">c</span><span class="p">]</span>
+<span class="n">struct</span> <span class="n">bus_type</span> <span class="n">platform_bus_type</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="o">.</span><span class="n">name</span>       <span class="o">=</span> <span class="s2">&quot;platform&quot;</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">dev_groups</span> <span class="o">=</span> <span class="n">platform_dev_groups</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">match</span>      <span class="o">=</span> <span class="n">platform_match</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">uevent</span>     <span class="o">=</span> <span class="n">platform_uevent</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">dma_configure</span>  <span class="o">=</span> <span class="n">platform_dma_configure</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">pm</span>     <span class="o">=</span> <span class="o">&amp;</span><span class="n">platform_dev_pm_ops</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="n">EXPORT_SYMBOL_GPL</span><span class="p">(</span><span class="n">platform_bus_type</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>linux设备驱动模型下的总线都有两个重要的结构体:描述设备和驱动的结构体</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">include</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">platform_device</span><span class="o">.</span><span class="n">h</span><span class="p">]</span>
+<span class="n">struct</span> <span class="n">platform_device</span> <span class="p">{</span>
+        <span class="n">const</span> <span class="n">char</span>  <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+        <span class="nb">int</span>     <span class="nb">id</span><span class="p">;</span>
+        <span class="nb">bool</span>        <span class="n">id_auto</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">device</span>   <span class="n">dev</span><span class="p">;</span>      <span class="o">//</span><span class="n">嵌入device结构体</span>
+    <span class="n">u64</span>     <span class="n">platform_dma_mask</span><span class="p">;</span>
+    <span class="n">u32</span>     <span class="n">num_resources</span><span class="p">;</span>
+        <span class="n">struct</span> <span class="n">resource</span> <span class="o">*</span><span class="n">resource</span><span class="p">;</span>
+
+        <span class="n">const</span> <span class="n">struct</span> <span class="n">platform_device_id</span> <span class="o">*</span><span class="n">id_entry</span><span class="p">;</span>
+        <span class="n">char</span> <span class="o">*</span><span class="n">driver_override</span><span class="p">;</span> <span class="o">/*</span> <span class="n">Driver</span> <span class="n">name</span> <span class="n">to</span> <span class="n">force</span> <span class="n">a</span> <span class="n">match</span> <span class="o">*/</span>
+
+        <span class="o">/*</span> <span class="n">MFD</span> <span class="n">cell</span> <span class="n">pointer</span> <span class="o">*/</span>
+        <span class="n">struct</span> <span class="n">mfd_cell</span> <span class="o">*</span><span class="n">mfd_cell</span><span class="p">;</span>
+
+        <span class="o">/*</span> <span class="n">arch</span> <span class="n">specific</span> <span class="n">additions</span> <span class="o">*/</span>
+    <span class="n">struct</span> <span class="n">pdev_archdata</span>    <span class="n">archdata</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">platform_driver</span> <span class="p">{</span>
+        <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">probe</span><span class="p">)(</span><span class="n">struct</span> <span class="n">platform_device</span> <span class="o">*</span><span class="p">);</span>
+        <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">remove</span><span class="p">)(</span><span class="n">struct</span> <span class="n">platform_device</span> <span class="o">*</span><span class="p">);</span>
+        <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">shutdown</span><span class="p">)(</span><span class="n">struct</span> <span class="n">platform_device</span> <span class="o">*</span><span class="p">);</span>
+        <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">suspend</span><span class="p">)(</span><span class="n">struct</span> <span class="n">platform_device</span> <span class="o">*</span><span class="p">,</span> <span class="n">pm_message_t</span> <span class="n">state</span><span class="p">);</span>
+        <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">resume</span><span class="p">)(</span><span class="n">struct</span> <span class="n">platform_device</span> <span class="o">*</span><span class="p">);</span>
+        <span class="n">struct</span> <span class="n">device_driver</span> <span class="n">driver</span><span class="p">;</span>          <span class="o">//</span><span class="n">嵌入device_driver结构体</span>
+        <span class="n">const</span> <span class="n">struct</span> <span class="n">platform_device_id</span> <span class="o">*</span><span class="n">id_table</span><span class="p">;</span>
+        <span class="nb">bool</span> <span class="n">prevent_deferred_probe</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">4.1.2.2. </span>platform驱动和设备的匹配<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>platform_bus_type是platform平台总线，其中platfrom_match就是匹配函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static int platform_match(struct device *dev, struct device_driver *drv)
+{
+        struct platform_device *pdev = to_platform_device(dev);
+        struct platform_driver *pdrv = to_platform_driver(drv);
+
+        /* When driver_override is set, only bind to the matching driver */
+        if (pdev-&gt;driver_override)
+                return !strcmp(pdev-&gt;driver_override, drv-&gt;name);
+
+        /* Attempt an OF style match first */
+        if (of_driver_match_device(dev, drv))
+                return 1;
+
+        /* Then try ACPI style match */
+        if (acpi_driver_match_device(dev, drv))
+                return 1;
+
+        /* Then try to match against the id table */
+        if (pdrv-&gt;id_table)
+                return platform_match_id(pdrv-&gt;id_table, pdev) != NULL;
+
+        /* fall-back to driver name match */
+        return (strcmp(pdev-&gt;name, drv-&gt;name) == 0);
+}
+</pre></div>
+</div>
+<section id="of">
+<h3><span class="section-number">4.1.2.2.1. </span>of设备树匹配<a class="headerlink" href="#of" title="此标题的永久链接"></a></h3>
+<p>OF类型的匹配，也就是设备树采用的匹配方式，Of_driver_match_device函数在文件include/linux/of_device.h中，device_driver结构体(表示设备驱动)中有个名为
+of_match_table的成员变量，此成员变量保存着驱动的compatible匹配表，设备树中每个设备节点的compatible属性会和of_match_table表中的所有成员进行比较，查看
+是否有相同的条目,如果有则表示设备和驱动匹配，匹配成功后probe函数就会执行</p>
+<p>函数原型如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/**</span>
+ <span class="o">*</span> <span class="n">of_driver_match_device</span> <span class="o">-</span> <span class="n">Tell</span> <span class="k">if</span> <span class="n">a</span> <span class="n">driver</span><span class="s1">&#39;s of_match_table matches a device.</span>
+ <span class="o">*</span> <span class="nd">@drv</span><span class="p">:</span> <span class="n">the</span> <span class="n">device_driver</span> <span class="n">structure</span> <span class="n">to</span> <span class="n">test</span>
+ <span class="o">*</span> <span class="nd">@dev</span><span class="p">:</span> <span class="n">the</span> <span class="n">device</span> <span class="n">structure</span> <span class="n">to</span> <span class="n">match</span> <span class="n">against</span>
+ <span class="o">*/</span>
+<span class="n">static</span> <span class="n">inline</span> <span class="nb">int</span> <span class="n">of_driver_match_device</span><span class="p">(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span>
+                                         <span class="n">const</span> <span class="n">struct</span> <span class="n">device_driver</span> <span class="o">*</span><span class="n">drv</span><span class="p">)</span>
+<span class="p">{</span>
+
+        <span class="k">return</span> <span class="n">of_match_device</span><span class="p">(</span><span class="n">drv</span><span class="o">-&gt;</span><span class="n">of_match_table</span><span class="p">,</span> <span class="n">dev</span><span class="p">)</span> <span class="o">!=</span> <span class="n">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>device_driver结构体如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">device_driver</span> <span class="p">{</span>
+
+        <span class="n">const</span> <span class="n">char</span>              <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+        <span class="n">struct</span> <span class="n">bus_type</span>         <span class="o">*</span><span class="n">bus</span><span class="p">;</span>
+
+        <span class="n">struct</span> <span class="n">module</span>           <span class="o">*</span><span class="n">owner</span><span class="p">;</span>
+        <span class="n">const</span> <span class="n">char</span>              <span class="o">*</span><span class="n">mod_name</span><span class="p">;</span>      <span class="o">/*</span> <span class="n">used</span> <span class="k">for</span> <span class="n">built</span><span class="o">-</span><span class="ow">in</span> <span class="n">modules</span> <span class="o">*/</span>
+
+        <span class="nb">bool</span> <span class="n">suppress_bind_attrs</span><span class="p">;</span>       <span class="o">/*</span> <span class="n">disables</span> <span class="n">bind</span><span class="o">/</span><span class="n">unbind</span> <span class="n">via</span> <span class="n">sysfs</span> <span class="o">*/</span>
+
+        <span class="n">const</span> <span class="n">struct</span> <span class="n">of_device_id</span>       <span class="o">*</span><span class="n">of_match_table</span><span class="p">;</span>
+        <span class="n">const</span> <span class="n">struct</span> <span class="n">acpi_device_id</span>     <span class="o">*</span><span class="n">acpi_match_table</span><span class="p">;</span>
+
+        <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">probe</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+        <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">remove</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+        <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">shutdown</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+        <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">suspend</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="n">pm_message_t</span> <span class="n">state</span><span class="p">);</span>
+        <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">resume</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+        <span class="n">const</span> <span class="n">struct</span> <span class="n">attribute_group</span> <span class="o">**</span><span class="n">groups</span><span class="p">;</span>
+
+        <span class="n">const</span> <span class="n">struct</span> <span class="n">dev_pm_ops</span> <span class="o">*</span><span class="n">pm</span><span class="p">;</span>
+
+        <span class="n">struct</span> <span class="n">driver_private</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>of_match_table就是采用设备树的时候驱动使用的匹配表,类型为of_device_id</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">struct</span> <span class="n">of_device_id</span> <span class="p">{</span>
+
+         <span class="n">char</span> <span class="n">name</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+         <span class="n">char</span> <span class="nb">type</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+         <span class="n">char</span> <span class="n">compatible</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+         <span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">data</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>示例如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">of_device_id</span> <span class="n">omap_rtc_of_match</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span>
+                <span class="o">.</span><span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;ti,am3352-rtc&quot;</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">data</span>       <span class="o">=</span> <span class="o">&amp;</span><span class="n">omap_rtc_am3352_type</span><span class="p">,</span>
+        <span class="p">},</span> <span class="p">{</span>
+                <span class="o">.</span><span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;ti,da830-rtc&quot;</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">data</span>       <span class="o">=</span> <span class="o">&amp;</span><span class="n">omap_rtc_da830_type</span><span class="p">,</span>
+        <span class="p">},</span> <span class="p">{</span>
+                <span class="o">/*</span> <span class="n">sentinel</span> <span class="o">*/</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+<span class="n">MODULE_DEVICE_TABLE</span><span class="p">(</span><span class="n">of</span><span class="p">,</span> <span class="n">omap_rtc_of_match</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">struct</span> <span class="n">platform_driver</span> <span class="n">omap_rtc_driver</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="o">.</span><span class="n">probe</span>      <span class="o">=</span> <span class="n">omap_rtc_probe</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">remove</span>     <span class="o">=</span> <span class="n">omap_rtc_remove</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">shutdown</span>   <span class="o">=</span> <span class="n">omap_rtc_shutdown</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">driver</span>     <span class="o">=</span> <span class="p">{</span>
+                <span class="o">.</span><span class="n">name</span>   <span class="o">=</span> <span class="s2">&quot;omap_rtc&quot;</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">pm</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">omap_rtc_pm_ops</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">of_match_table</span> <span class="o">=</span> <span class="n">omap_rtc_of_match</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="o">.</span><span class="n">id_table</span>   <span class="o">=</span> <span class="n">omap_rtc_id_table</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="acpi">
+<h3><span class="section-number">4.1.2.2.2. </span>acpi匹配<a class="headerlink" href="#acpi" title="此标题的永久链接"></a></h3>
+<p>如果of_driver_match_device没有匹配到则使用acpi进行匹配。首先从device中找到对应的acpi_device，找到acpi_device设备后就可以进行匹配了。acpi设备使用两种方式匹配</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[drivers/acpi/bus.c]
+bool acpi_driver_match_device(struct device *dev,
+                                      const struct device_driver *drv)
+{
+        if (!drv-&gt;acpi_match_table)
+                return acpi_of_match_device(ACPI_COMPANION(dev),
+                                                drv-&gt;of_match_table,
+                                                NULL);
+
+        return __acpi_match_device(acpi_companion_match(dev),
+                                       drv-&gt;acpi_match_table, drv-&gt;of_match_table,
+                                       NULL, NULL);
+}
+EXPORT_SYMBOL_GPL(acpi_driver_match_device);
+</pre></div>
+</div>
+</section>
+<section id="id-table">
+<h3><span class="section-number">4.1.2.2.3. </span>id_table匹配<a class="headerlink" href="#id-table" title="此标题的永久链接"></a></h3>
+<p>id_table匹配，每个platform_driver结构体有一个id_table成员变量，顾名思义，保存了很多id信息。这些id信息存放着这个platform驱动所支持的驱动类型</p>
+<p>示例如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">platform_device_id</span> <span class="n">omap_rtc_id_table</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span>
+                <span class="o">.</span><span class="n">name</span>   <span class="o">=</span> <span class="s2">&quot;omap_rtc&quot;</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">driver_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">kernel_ulong_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">omap_rtc_default_type</span><span class="p">,</span>
+        <span class="p">},</span> <span class="p">{</span>
+                <span class="o">.</span><span class="n">name</span>   <span class="o">=</span> <span class="s2">&quot;am3352-rtc&quot;</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">driver_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">kernel_ulong_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">omap_rtc_am3352_type</span><span class="p">,</span>
+        <span class="p">},</span> <span class="p">{</span>
+                <span class="o">.</span><span class="n">name</span>   <span class="o">=</span> <span class="s2">&quot;da830-rtc&quot;</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">driver_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">kernel_ulong_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">omap_rtc_da830_type</span><span class="p">,</span>
+        <span class="p">},</span> <span class="p">{</span>
+                <span class="o">/*</span> <span class="n">sentinel</span> <span class="o">*/</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="name">
+<h3><span class="section-number">4.1.2.2.4. </span>name匹配<a class="headerlink" href="#name" title="此标题的永久链接"></a></h3>
+<p>如果前三种方式都不存在的话，就直接比较驱动和设备的那么字段，看看是否相同</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">struct</span> <span class="n">platform_driver</span> <span class="n">omap_rtc_driver</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="o">.</span><span class="n">probe</span>      <span class="o">=</span> <span class="n">omap_rtc_probe</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">remove</span>     <span class="o">=</span> <span class="n">omap_rtc_remove</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">shutdown</span>   <span class="o">=</span> <span class="n">omap_rtc_shutdown</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">driver</span>     <span class="o">=</span> <span class="p">{</span>
+                <span class="o">.</span><span class="n">name</span>   <span class="o">=</span> <span class="s2">&quot;omap_rtc&quot;</span><span class="p">,</span> <span class="o">//</span><span class="n">此字段为device和driver匹配的最后一种方式</span>
+                <span class="o">.</span><span class="n">pm</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">omap_rtc_pm_ops</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">of_match_table</span> <span class="o">=</span> <span class="n">omap_rtc_of_match</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="o">.</span><span class="n">id_table</span>   <span class="o">=</span> <span class="n">omap_rtc_id_table</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id3">
+<h2><span class="section-number">4.1.2.3. </span>platform总线下的驱动编写流程<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<ol class="arabic simple">
+<li><p>首先定义一个platform_driver结构体变量</p></li>
+<li><p>然后实现结构体中各个成员变量，重点是实现匹配方式以及probe函数</p></li>
+<li><p>当我们定义并初始化好platform_driver结构体变量以后，需要在驱动入口函数里面调用platform_driver_register函数向内核注册一个platform驱动</p></li>
+<li><p>驱动卸载函数中通过platform_driver_unregister函数卸载</p></li>
+</ol>
+<p>框架流程如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">xxx_dev</span><span class="p">{</span>
+
+        <span class="n">struct</span> <span class="n">cdev</span> <span class="n">cdev</span><span class="p">;</span>
+        <span class="o">/*</span> <span class="n">设备结构体其他具体内容</span> <span class="o">*/</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">xxx_dev</span> <span class="n">xxxdev</span><span class="p">;</span> <span class="o">/*</span> <span class="n">定义个设备结构体变量</span> <span class="o">*/</span>
+
+<span class="n">static</span> <span class="nb">int</span> <span class="n">xxx_open</span><span class="p">(</span><span class="n">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">inode</span><span class="p">,</span> <span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">filp</span><span class="p">)</span>
+<span class="p">{</span>
+
+        <span class="o">/*</span> <span class="n">函数具体内容</span> <span class="o">*/</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">static</span> <span class="n">ssize_t</span> <span class="n">xxx_write</span><span class="p">(</span><span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">filp</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="n">__user</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span>
+<span class="n">size_t</span> <span class="n">cnt</span><span class="p">,</span> <span class="n">loff_t</span> <span class="o">*</span><span class="n">offt</span><span class="p">)</span>
+<span class="p">{</span>
+
+        <span class="o">/*</span> <span class="n">函数具体内容</span> <span class="o">*/</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">/*</span>
+<span class="o">*</span> <span class="n">字符设备驱动操作集</span>
+<span class="o">*/</span>
+<span class="n">static</span> <span class="n">struct</span> <span class="n">file_operations</span> <span class="n">xxx_fops</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">,</span>
+         <span class="o">.</span><span class="n">open</span> <span class="o">=</span> <span class="n">xxx_open</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">write</span> <span class="o">=</span> <span class="n">xxx_write</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="o">/*</span>
+<span class="o">*</span> <span class="n">platform</span> <span class="n">驱动的</span> <span class="n">probe</span> <span class="n">函数</span>
+<span class="o">*</span> <span class="n">驱动与设备匹配成功以后此函数就会执行</span>
+<span class="o">*/</span>
+<span class="n">static</span> <span class="nb">int</span> <span class="n">xxx_probe</span><span class="p">(</span><span class="n">struct</span> <span class="n">platform_device</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span>
+<span class="p">{</span>
+
+        <span class="o">......</span>
+        <span class="n">cdev_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">xxxdev</span><span class="o">.</span><span class="n">cdev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">xxx_fops</span><span class="p">);</span> <span class="o">/*</span> <span class="n">注册字符设备驱动</span> <span class="o">*/</span>
+        <span class="o">/*</span> <span class="n">函数具体内容</span> <span class="o">*/</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">static</span> <span class="nb">int</span> <span class="n">xxx_remove</span><span class="p">(</span><span class="n">struct</span> <span class="n">platform_device</span> <span class="o">*</span><span class="n">dev</span><span class="p">)</span>
+<span class="p">{</span>
+
+        <span class="o">......</span>
+        <span class="n">cdev_del</span><span class="p">(</span><span class="o">&amp;</span><span class="n">xxxdev</span><span class="o">.</span><span class="n">cdev</span><span class="p">);</span><span class="o">/*</span> <span class="n">删除</span> <span class="n">cdev</span> <span class="o">*/</span>
+        <span class="o">/*</span> <span class="n">函数具体内容</span> <span class="o">*/</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">/*</span> <span class="n">匹配列表</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">of_device_id</span> <span class="n">xxx_of_match</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="p">{</span>
+         <span class="o">.</span><span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;xxx-gpio&quot;</span> <span class="p">},</span>
+        <span class="p">{</span>
+         <span class="o">/*</span> <span class="n">Sentinel</span> <span class="o">*/</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="o">/*</span>
+<span class="o">*</span> <span class="n">platform</span> <span class="n">平台驱动结构体</span>
+<span class="o">*/</span>
+<span class="n">static</span> <span class="n">struct</span> <span class="n">platform_driver</span> <span class="n">xxx_driver</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;xxx&quot;</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">of_match_table</span> <span class="o">=</span> <span class="n">xxx_of_match</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="o">.</span><span class="n">probe</span> <span class="o">=</span> <span class="n">xxx_probe</span><span class="p">,</span>
+        <span class="o">.</span><span class="n">remove</span> <span class="o">=</span> <span class="n">xxx_remove</span><span class="p">,</span>
+<span class="p">};</span>
+
+ <span class="o">/*</span> <span class="n">驱动模块加载</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="nb">int</span> <span class="n">__init</span> <span class="n">xxxdriver_init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+
+        <span class="k">return</span> <span class="n">platform_driver_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">xxx_driver</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="o">/*</span> <span class="n">驱动模块卸载</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">__exit</span> <span class="n">xxxdriver_exit</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+
+         <span class="n">platform_driver_unregister</span><span class="p">(</span><span class="o">&amp;</span><span class="n">xxx_driver</span><span class="p">);</span>
+<span class="p">}</span>
+
+ <span class="n">module_init</span><span class="p">(</span><span class="n">xxxdriver_init</span><span class="p">);</span>
+ <span class="n">module_exit</span><span class="p">(</span><span class="n">xxxdriver_exit</span><span class="p">);</span>
+ <span class="n">MODULE_LICENSE</span><span class="p">(</span><span class="s2">&quot;GPL&quot;</span><span class="p">);</span>
+ <span class="n">MODULE_AUTHOR</span><span class="p">(</span><span class="s2">&quot;yinwg&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="platform_bus.html" class="btn btn-neutral float-left" title="4.1.1. platform总线" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../mmc/index.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>9.3.2. AVB之gPTP &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="9.3.3. AVB之AVTP" href="AVB_AVTP.html" />
+    <link rel="prev" title="9.3.1. 车载以太网AVB概述" href="AVB_introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">9. net</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../overview/index.html">9.1. linux 网络概览</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tcp_ip/index.html">9.2. TCP/IP详解</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">9.3. AVB笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="AVB_introduction.html">9.3.1. 车载以太网AVB概述</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">9.3.2. AVB之gPTP</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gptp">9.3.2.1. gPTP同步原理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">9.3.2.2. 影响校时精度的因素</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">9.3.2.3. gPTP校时过程</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="AVB_AVTP.html">9.3.3. AVB之AVTP</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tc8/index.html">9.4. TC-8测试</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">9. </span>net</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">9.3. </span>AVB笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">9.3.2. </span>AVB之gPTP</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/net/AVB/AVB_gPTP.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="avbgptp">
+<h1><span class="section-number">9.3.2. </span>AVB之gPTP<a class="headerlink" href="#avbgptp" title="此标题的永久链接"></a></h1>
+<section id="gptp">
+<h2><span class="section-number">9.3.2.1. </span>gPTP同步原理<a class="headerlink" href="#gptp" title="此标题的永久链接"></a></h2>
+<p>gPTP校时机制</p>
+<img alt="../../_images/gPTP_topo.image" src="../../_images/gPTP_topo.image" />
+<section id="id1">
+<h3><span class="section-number">9.3.2.1.1. </span>体系结构<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<p>AVB域内的每个节点都是一个时钟，由以下两个角色组成．</p>
+<ul class="simple">
+<li><p>一个是主时钟，它是标准时间的来源</p></li>
+<li><p>其他的都是从时钟，他们必须把自己的时间和主时钟调整一致</p></li>
+</ul>
+<p><strong>绝对时间同步</strong></p>
+<p>下图包含一个主时钟和一个从时钟，二者时间不同步．现在要把从时钟的时间校准到主时钟的时间，其中t1, t2为主时钟的对应时间，t2, t3为从时钟的
+对应时间．</p>
+<img alt="../../_images/time_sync.image" src="../../_images/time_sync.image" />
+<p>主要流程如下</p>
+<ol class="arabic simple">
+<li><p>主时钟在t1时刻发送sync命令，从时钟在t2时刻收到同步命令．这时候从时钟并不知道主时钟在什么时候发出这个sync命令的，但是知道自己在t2时刻收到该命令</p></li>
+<li><p>主时钟发送一个Follow_up命令，该命令中携带t1的值．从时钟收到后，知道上面的sync指令是在t1时刻发出的．此时从时钟拥有t1 t2两个值</p></li>
+<li><p>从时钟在t3时刻发出一个delay_req命令，主时钟在t4时刻收到该命令．此时从时钟知道t1, t2, t3三个值</p></li>
+<li><p>主时钟接着发送一个delay_resp响应从时钟的delay_req，该命令中携带t4的值．从时钟收到后，知道主时钟是在t4时刻收到delay_req命令的．此时从时钟知道t1, t2, t3, t4四个值</p></li>
+<li><p>我们假设路径传输延时是对称的，从时钟可以根据下面的公式计算路径传输延时(path_delay)，以及自己与主时钟的偏差(clock_offset)</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">path_delay</span> <span class="o">+</span> <span class="n">clock_offset</span>
+<span class="n">t4</span> <span class="o">-</span> <span class="n">t3</span> <span class="o">=</span> <span class="n">path_delay</span> <span class="o">-</span> <span class="n">clock_offset</span>
+</pre></div>
+</div>
+<p>由此可以算出</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">path_delay</span> <span class="o">=</span> <span class="p">(</span><span class="n">t4</span> <span class="o">-</span> <span class="n">t3</span> <span class="o">+</span> <span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">clock_offset</span> <span class="o">=</span><span class="p">(</span><span class="n">t3</span> <span class="o">-</span> <span class="n">t4</span> <span class="o">+</span> <span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>现在从时钟知道了自己与主时钟的时差clock_offset, 就可以调整自己的时间了．另外从时钟还知道自己与主时钟的路径传输延时path_delay, 该值
+对switch意义重大，因为在gPTP的P2P校时方式中，switch需要转发主时钟的校时信号，在转发的时候需要将该值放在补偿信息中</p></li>
+</ol>
+</section>
+</section>
+<section id="id2">
+<h2><span class="section-number">9.3.2.2. </span>影响校时精度的因素<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<section id="id3">
+<h3><span class="section-number">9.3.2.2.1. </span>传输时延不对称<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>前面提到的校时流程中，我们假设传输时延是对称的．实际情况中，路径有可能是不对称的，这会导致校时误差</p>
+<p>gPTP对策:</p>
+<ul class="simple">
+<li><p>要求网络内的节点都是时间敏感的</p></li>
+<li><p>传输延时分段测量(P2P)减少平均误差</p></li>
+<li><p>中间转发节点可以计算报文的驻留时间，保证校时信号传输时间的准确性</p></li>
+<li><p>如果已知链路不对称，可以将该值写在配置文件中，对于endpoint在校时的时候会把该偏差考虑进去．对于bridge设备，在转发的时候，会在PTP报文的矫正域把对应的差值补偿过来</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3><span class="section-number">9.3.2.2.2. </span>驻留时间<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>对于bridge设备，从接收报文到转发报文所消耗的时间，称为驻留时间．该值会具有一定的随机性，从而影响校时精度</p>
+<p>gPTP对策: Bridge设备必须具有测量驻留时间的能力，在转发报文的时候，需要将驻留时间累加在PTP报文的矫正域中</p>
+</section>
+<section id="id5">
+<h3><span class="section-number">9.3.2.2.3. </span>时间戳采样点<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>为了达到高精度的时间同步，必须消除软件带来的不确定因素，这就要求必须把时间采样点放在最靠近传输介质的地方．</p>
+<p>gPTP对策:　发送方与接收方都在MAC层记录报文发送及接收的时间戳．</p>
+</section>
+<section id="id6">
+<h3><span class="section-number">9.3.2.2.4. </span>时间频率<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h3>
+<p>晶振频率越高，误差越小，校时越精确</p>
+</section>
+<section id="id7">
+<h3><span class="section-number">9.3.2.2.5. </span>传输路径延迟测量方式<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>IEEE 1588支持两种路径时延测量方式: <code class="docutils literal notranslate"><span class="pre">End-to-End(E2E)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Peer-to-Peer(P2P)</span></code> ,二者不能在同一个网络中共存．</p>
+<p>在E2E机制中，强调的是两个支持PTP的端点(一个master port, 一个slave port)之间的延时，这两个端点可能是直接相连的，也可能中间穿插了普通的交换机，时间敏感的
+透明时钟(TC),在通信的双方看来，信息都是在master port和slave port之间传输，所以最终slave测量到的传输时延是从master到slave的端到端时延</p>
+<p>在P2P机制中，要求网络内所有节点必须支持P2P，所以它强调的是相邻节点间的通信，最终测量的是相邻节点间的传输延时</p>
+<p>二者主要的区别如下图所示：</p>
+<ul class="simple">
+<li><p>P2P测量的是相邻节点间的延时，路径测量报文不会跨节点传输，有利于网络扩展．E2E测量的是master port到slave port之间的延时，中间节点需要转发延时测量报文，
+网络规模较大时，报文可能泛滥，master节点压力较大</p></li>
+<li><p>master节点变更时，E2E需要重新测量到新master节点的路径传输时延，P2P只需关心相邻节点．</p></li>
+<li><p>E2E方式允许网络中有普通的switch(透传PTP报文即可，由于驻留时间随机，会影响测量精度)，而P2P要求网络中的switch必须支持P2P</p></li>
+<li><p>E2E机制中，校时报文和路径测量报文是耦合在一起的，P2P机制中有独立的报文负责路径测量，把校时和路径测量解耦了</p></li>
+</ul>
+<img alt="../../_images/E2E_P2P.image" src="../../_images/E2E_P2P.image" />
+<p>gPTP要求使用P2P方式，并且要求网络中所有设备都支持PTP协议，路径传输延时测量只在相邻节点间进行．它使用Pdelay_Req, Pdelay_Resp, Pdelay_Resp_Follow_Up消息来测量路径传输延时</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>P2P中没有使用Sync报文，而是专门为路径测量新建了几个报文，降低了复杂度．</p>
+</div>
+<img alt="../../_images/P2P_Sync.image" src="../../_images/P2P_Sync.image" />
+</section>
+<section id="id8">
+<h3><span class="section-number">9.3.2.2.6. </span>时钟类型<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<p>PTP时钟可以分为两类：One-Step Clock和Two-Step Clock</p>
+<img alt="../../_images/clock_type.image" src="../../_images/clock_type.image" />
+<p>如果t1能在sync报文中就传递给slave节点，就省了一条报文，这是One-step clock的做法．这种时钟对硬件要求比two-step clock要高，成本也比较高．</p>
+</section>
+</section>
+<section id="id9">
+<h2><span class="section-number">9.3.2.3. </span>gPTP校时过程<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
+<p>为了表述方便，这里做两点假设：</p>
+<ol class="arabic simple">
+<li><p>假设下面三个设备都是one-step的clock，即sync报文发出后，不需要额外的follow-up报文告知sync报文是在哪个时刻发送的(实际上802.1AS要求时钟必须是two-step的)</p></li>
+<li><p>假设各设备已通过前面介绍的测量机制测量出路径传输延迟path_delay1, path_delay2</p></li>
+</ol>
+<img alt="../../_images/time_sync_process.image" src="../../_images/time_sync_process.image" />
+<p>校时流程如下:</p>
+<ol class="arabic simple">
+<li><p>Grandmaster时钟在t1时刻发送时间同步报文sync到bridge, 报文sync的origin timestamp中填充时间信息t1,  校正域correction填充ns的的小数部分(sync报文的时间戳部分只能
+表示秒和纳秒，不足1纳秒的只能放在校正域)</p></li>
+<li><p>bridge收到sync报文后，不仅要矫正自己的时钟，还要把sync报文转发出去</p></li>
+<li><p>bridge根据sync报文调整自己的时钟，bridge在t2时刻收到sync报文，并从中解析出grandmaster是在t1时刻发送该报文的，以及grandmaster填充的校正值correction.在t2时刻
+grandmaster的时钟显示的值应该是</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t1</span> <span class="o">+</span> <span class="n">correction</span> <span class="o">+</span> <span class="n">path_delay1</span>
+</pre></div>
+</div>
+<p>由此可以计算出bridge的时钟偏差，并调整自己的时钟</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">clock_offset</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">+</span> <span class="n">correction</span> <span class="o">+</span> <span class="n">path_delay1</span> <span class="o">-</span> <span class="n">t2</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>bridge转发sync报文，bridge将自己与上级节点的路径延时(path_delay1)和sync报文在自己这里的驻留时间(rEsidence_time)累加到sync报文的校正域，并转发出去．此时
+correction值如下</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">correction</span> <span class="o">=</span> <span class="n">old_value_of_correction</span> <span class="o">+</span> <span class="n">path_delay1</span> <span class="o">+</span> <span class="n">residence_time</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>End-Point在t4时刻收到sync报文，并从中解析出grandmaster是在t1时刻发送该报文的，以及bridge矫正后的correction．在t4时刻，grandmaster的时钟显示的值应该是</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t1</span> <span class="o">+</span> <span class="n">correction</span> <span class="o">+</span> <span class="n">path_delay2</span>
+</pre></div>
+</div>
+<p>由此可以计算出end-point和grandmaster的时钟偏差，并调整自己的时钟</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">clock_offset</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">+</span> <span class="n">correction</span> <span class="o">+</span> <span class="n">path_delay2</span> <span class="o">-</span> <span class="n">t4</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>从上面的校时流程可以看出，整个校时过程像水面的波纹一样从grandmaster开始向外一层层的扩散，每个节点只关注自己与上级节点的传输延时，bridge负责将中间路径的传输
+延时和缓存时间逐段累加到矫正域</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="AVB_introduction.html" class="btn btn-neutral float-left" title="9.3.1. 车载以太网AVB概述" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="AVB_AVTP.html" class="btn btn-neutral float-right" title="9.3.3. AVB之AVTP" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

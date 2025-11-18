@@ -27,6 +27,40 @@ cpu寄存器信息等。在捕获内核中可以通过dgdb等工具查看并调�
     由于kdump利用kexec启动捕获内核绕过了boot，没有硬件复位，使得生产内核 的内
     存得以保留。这是内核崩溃转存的本质。
 
+**什么情况下会触发coredump**
+
+- SIGSEGV: 非法内存访问，比如访问空指针或者越界数组
+
+- SIGBUS: 总线错误，通常是硬件相关的内存访问问题，比如对齐错误
+
+- SIGABRT: 程序主动调用abort函数中止，比如assert失败
+
+- SIGFPE: 浮点运算异常，比如除零
+
+- SIGALL: 非法指令，可能代码被篡改或者编译器生成的问题
+
+- SIGQUIT: 用户通过键盘触发的退出信号
+
+- SIGSYS: 非法系统调用，可能调用了内核不支持的API
+
+- SIGTRAP: 断点或跟踪陷阱，通常是调试相关
+
+
+
+启动参数配置
+^^^^^^^^^^^^^^
+
+内核启动参数中需要做以下配置，用于crashkernel内存预留
+
+::
+
+    crashkernel=128M    //大小可自定义
+
+如果crashkernel内存预留成功，可以通过/proc/iomem中看到对应项目
+
+.. image::
+    res/crash_kernel_reserve_mem.png
+
 
 kdump kexec安装
 ^^^^^^^^^^^^^^^
@@ -54,6 +88,7 @@ kernel 配置
     CONFIG_DEBUG_INFO=y
     CONFIG_CRASH_DUMP=y
     CONFIG_PROC_VMCORE=y
+    CONFIG_PROC_KCORE=y
 
 
 kexec 应用方法
@@ -83,9 +118,27 @@ kdump-kexec机制正常运行的情况下，kdump会抓取系统崩溃时的函�
 利用kexec完成捕获内核的启动。在捕获内核中可以查看故障现场情况，分析确认问题。
 
 ::
+
     crash vmlinux vmcore
     在kgdb中输入BT，可找到系统崩溃处的详细信息
 
+
+.. note::
+    crash不容易交叉编译，可以将捕获内核生成的coredump文件　``/proc/vmcore`` 拷贝到主机端．然后在主机端进行分析．
+
+如果遇到 ``crash: cannot determine VA_BITS_ACTUAL`` 问题，可以手动定义位宽
+
+::
+    
+    ./crash vmlinux vmcore --machdep vabits_actual=48
+
+
+.. note::
+    如果使用qemu启动虚拟机的话．可以通过在启动参数中增加以下选项
+
+    -virtfs local,path=${SHARE_DIR},mount_tag=hostshare,security_model=none,id=hostshare
+
+    同时在系统启动后挂载 mount -t 9p -o trans=virtio hostshare /mnt
 
 
 kernel debug之printk

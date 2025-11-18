@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.4.4. linux 中断框架 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.4.5. 创建软硬中断号映射" href="irq_soft_hard.html" />
+    <link rel="prev" title="4.4.3. ARM64中断初始化" href="irq_init_arm64.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.4. linux 中断</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="abnormal_process.html">4.4.1. linux异常处理流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_init_call.html">4.4.2. linux中断初始化和基本调用流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_init_arm64.html">4.4.3. ARM64中断初始化</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.4.4. linux 中断框架</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.4.4.1. 数据结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.4.4.2. 中断控制器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4.4.4.3. 虚拟中断号和硬中断号</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="irq_soft_hard.html">4.4.5. 创建软硬中断号映射</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_process.html">4.4.6. linux中断处理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_soft.html">4.4.7. 软中断</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tasklet.html">4.4.8. tasklet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.4. </span>linux 中断</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.4.4. </span>linux 中断框架</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/irq/irq_frame.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux">
+<h1><span class="section-number">4.4.4. </span>linux 中断框架<a class="headerlink" href="#linux" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">4.4.4.1. </span>数据结构<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>中断管理主要数据结构</p>
+<img alt="../../_images/irq_data_struct.png" src="../../_images/irq_data_struct.png" />
+<section id="irq-desc">
+<h3><span class="section-number">4.4.4.1.1. </span>irq_desc中断描述符<a class="headerlink" href="#irq-desc" title="此标题的永久链接"></a></h3>
+<p>每个中断都有一个中断描述符</p>
+<p>irq_desc在include/linux/irqdesc.h中定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/**</span>
+ <span class="o">*</span> <span class="n">struct</span> <span class="n">irq_desc</span> <span class="o">-</span> <span class="n">interrupt</span> <span class="n">descriptor</span>
+ <span class="o">*</span> <span class="nd">@irq_common_data</span><span class="p">:</span>        <span class="n">per</span> <span class="n">irq</span> <span class="ow">and</span> <span class="n">chip</span> <span class="n">data</span> <span class="n">passed</span> <span class="n">down</span> <span class="n">to</span> <span class="n">chip</span> <span class="n">functions</span>
+ <span class="o">*</span> <span class="nd">@kstat_irqs</span><span class="p">:</span>             <span class="n">irq</span> <span class="n">stats</span> <span class="n">per</span> <span class="n">cpu</span>
+ <span class="o">*</span> <span class="nd">@handle_irq</span><span class="p">:</span>             <span class="n">highlevel</span> <span class="n">irq</span><span class="o">-</span><span class="n">events</span> <span class="n">handler</span>
+ <span class="o">*</span> <span class="nd">@preflow_handler</span><span class="p">:</span>        <span class="n">handler</span> <span class="n">called</span> <span class="n">before</span> <span class="n">the</span> <span class="n">flow</span> <span class="n">handler</span> <span class="p">(</span><span class="n">currently</span> <span class="n">used</span> <span class="n">by</span> <span class="n">sparc</span><span class="p">)</span>
+ <span class="o">*</span> <span class="nd">@action</span><span class="p">:</span>         <span class="n">the</span> <span class="n">irq</span> <span class="n">action</span> <span class="n">chain</span>
+ <span class="o">*</span> <span class="nd">@status</span><span class="p">:</span>         <span class="n">status</span> <span class="n">information</span>
+ <span class="o">*</span> <span class="nd">@core_internal_state__do_not_mess_with_it</span><span class="p">:</span> <span class="n">core</span> <span class="n">internal</span> <span class="n">status</span> <span class="n">information</span>
+ <span class="o">*</span> <span class="nd">@depth</span><span class="p">:</span>          <span class="n">disable</span><span class="o">-</span><span class="n">depth</span><span class="p">,</span> <span class="k">for</span> <span class="n">nested</span> <span class="n">irq_disable</span><span class="p">()</span> <span class="n">calls</span>
+ <span class="o">*</span> <span class="nd">@wake_depth</span><span class="p">:</span>             <span class="n">enable</span> <span class="n">depth</span><span class="p">,</span> <span class="k">for</span> <span class="n">multiple</span> <span class="n">irq_set_irq_wake</span><span class="p">()</span> <span class="n">callers</span>
+ <span class="o">*</span> <span class="nd">@tot_count</span><span class="p">:</span>              <span class="n">stats</span> <span class="n">field</span> <span class="k">for</span> <span class="n">non</span><span class="o">-</span><span class="n">percpu</span> <span class="n">irqs</span>
+ <span class="o">*</span> <span class="nd">@irq_count</span><span class="p">:</span>              <span class="n">stats</span> <span class="n">field</span> <span class="n">to</span> <span class="n">detect</span> <span class="n">stalled</span> <span class="n">irqs</span>
+ <span class="o">*</span> <span class="nd">@last_unhandled</span><span class="p">:</span> <span class="n">aging</span> <span class="n">timer</span> <span class="k">for</span> <span class="n">unhandled</span> <span class="n">count</span>
+ <span class="o">*</span> <span class="nd">@irqs_unhandled</span><span class="p">:</span> <span class="n">stats</span> <span class="n">field</span> <span class="k">for</span> <span class="n">spurious</span> <span class="n">unhandled</span> <span class="n">interrupts</span>
+ <span class="o">*</span> <span class="nd">@threads_handled</span><span class="p">:</span>        <span class="n">stats</span> <span class="n">field</span> <span class="k">for</span> <span class="n">deferred</span> <span class="n">spurious</span> <span class="n">detection</span> <span class="n">of</span> <span class="n">threaded</span> <span class="n">handlers</span>
+ <span class="o">*</span> <span class="nd">@threads_handled_last</span><span class="p">:</span> <span class="n">comparator</span> <span class="n">field</span> <span class="k">for</span> <span class="n">deferred</span> <span class="n">spurious</span> <span class="n">detection</span> <span class="n">of</span> <span class="n">theraded</span> <span class="n">handlers</span>
+ <span class="o">*</span> <span class="nd">@lock</span><span class="p">:</span>           <span class="n">locking</span> <span class="k">for</span> <span class="n">SMP</span>
+ <span class="o">*</span> <span class="nd">@affinity_hint</span><span class="p">:</span>  <span class="n">hint</span> <span class="n">to</span> <span class="n">user</span> <span class="n">space</span> <span class="k">for</span> <span class="n">preferred</span> <span class="n">irq</span> <span class="n">affinity</span>
+ <span class="o">*</span> <span class="nd">@affinity_notify</span><span class="p">:</span>        <span class="n">context</span> <span class="k">for</span> <span class="n">notification</span> <span class="n">of</span> <span class="n">affinity</span> <span class="n">changes</span>
+ <span class="o">*</span> <span class="nd">@pending_mask</span><span class="p">:</span>   <span class="n">pending</span> <span class="n">rebalanced</span> <span class="n">interrupts</span>
+ <span class="o">*</span> <span class="nd">@threads_oneshot</span><span class="p">:</span>        <span class="n">bitfield</span> <span class="n">to</span> <span class="n">handle</span> <span class="n">shared</span> <span class="n">oneshot</span> <span class="n">threads</span>
+ <span class="o">*</span> <span class="nd">@threads_active</span><span class="p">:</span> <span class="n">number</span> <span class="n">of</span> <span class="n">irqaction</span> <span class="n">threads</span> <span class="n">currently</span> <span class="n">running</span>
+ <span class="o">*</span> <span class="nd">@wait_for_threads</span><span class="p">:</span>       <span class="n">wait</span> <span class="n">queue</span> <span class="k">for</span> <span class="n">sync_irq</span> <span class="n">to</span> <span class="n">wait</span> <span class="k">for</span> <span class="n">threaded</span> <span class="n">handlers</span>
+ <span class="o">*</span> <span class="nd">@nr_actions</span><span class="p">:</span>             <span class="n">number</span> <span class="n">of</span> <span class="n">installed</span> <span class="n">actions</span> <span class="n">on</span> <span class="n">this</span> <span class="n">descriptor</span>
+ <span class="o">*</span> <span class="nd">@no_suspend_depth</span><span class="p">:</span>       <span class="n">number</span> <span class="n">of</span> <span class="n">irqactions</span> <span class="n">on</span> <span class="n">a</span> <span class="n">irq</span> <span class="n">descriptor</span> <span class="k">with</span>
+ <span class="o">*</span>                  <span class="n">IRQF_NO_SUSPEND</span> <span class="nb">set</span>
+ <span class="o">*</span> <span class="nd">@force_resume_depth</span><span class="p">:</span>     <span class="n">number</span> <span class="n">of</span> <span class="n">irqactions</span> <span class="n">on</span> <span class="n">a</span> <span class="n">irq</span> <span class="n">descriptor</span> <span class="k">with</span>
+ <span class="o">*</span>                  <span class="n">IRQF_FORCE_RESUME</span> <span class="nb">set</span>
+ <span class="o">*</span> <span class="nd">@rcu</span><span class="p">:</span>            <span class="n">rcu</span> <span class="n">head</span> <span class="k">for</span> <span class="n">delayed</span> <span class="n">free</span>
+ <span class="o">*</span> <span class="nd">@kobj</span><span class="p">:</span>           <span class="n">kobject</span> <span class="n">used</span> <span class="n">to</span> <span class="n">represent</span> <span class="n">this</span> <span class="n">struct</span> <span class="ow">in</span> <span class="n">sysfs</span>
+ <span class="o">*</span> <span class="nd">@request_mutex</span><span class="p">:</span>  <span class="n">mutex</span> <span class="n">to</span> <span class="n">protect</span> <span class="n">request</span><span class="o">/</span><span class="n">free</span> <span class="n">before</span> <span class="n">locking</span> <span class="n">desc</span><span class="o">-&gt;</span><span class="n">lock</span>
+ <span class="o">*</span> <span class="nd">@dir</span><span class="p">:</span>            <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">irq</span><span class="o">/</span> <span class="n">procfs</span> <span class="n">entry</span>
+ <span class="o">*</span> <span class="nd">@debugfs_file</span><span class="p">:</span>   <span class="n">dentry</span> <span class="k">for</span> <span class="n">the</span> <span class="n">debugfs</span> <span class="n">file</span>
+ <span class="o">*</span> <span class="nd">@name</span><span class="p">:</span>           <span class="n">flow</span> <span class="n">handler</span> <span class="n">name</span> <span class="k">for</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">interrupts</span> <span class="n">output</span>
+ <span class="o">*/</span>
+<span class="n">struct</span> <span class="n">irq_desc</span> <span class="p">{</span>
+    <span class="n">struct</span> <span class="n">irq_common_data</span>  <span class="n">irq_common_data</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">irq_data</span>         <span class="n">irq_data</span><span class="p">;</span>   <span class="o">//</span><span class="n">每个irq和芯片数据传递给芯片功能</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">__percpu</span>   <span class="o">*</span><span class="n">kstat_irqs</span><span class="p">;</span>
+    <span class="n">irq_flow_handler_t</span>      <span class="n">handle_irq</span><span class="p">;</span> <span class="o">//</span><span class="n">高级irq</span><span class="o">-</span><span class="n">events处理程序</span>
+<span class="c1">#ifdef CONFIG_IRQ_PREFLOW_FASTEOI</span>
+    <span class="n">irq_preflow_handler_t</span>   <span class="n">preflow_handler</span><span class="p">;</span>
+<span class="c1">#endif</span>
+    <span class="n">struct</span> <span class="n">irqaction</span>        <span class="o">*</span><span class="n">action</span><span class="p">;</span>        <span class="o">/*</span> <span class="n">IRQ</span> <span class="n">action</span> <span class="nb">list</span> <span class="o">*/</span>
+    <span class="n">unsigned</span> <span class="nb">int</span>            <span class="n">status_use_accessors</span><span class="p">;</span>   <span class="o">//</span><span class="n">状态信息</span>
+    <span class="n">unsigned</span> <span class="nb">int</span>            <span class="n">core_internal_state__do_not_mess_with_it</span><span class="p">;</span>   <span class="o">//</span><span class="n">核心内部状态信息</span>
+    <span class="n">unsigned</span> <span class="nb">int</span>            <span class="n">depth</span><span class="p">;</span>          <span class="o">/*</span> <span class="n">nested</span> <span class="n">irq</span> <span class="n">disables</span> <span class="o">*/</span>
+    <span class="n">unsigned</span> <span class="nb">int</span>            <span class="n">wake_depth</span><span class="p">;</span>     <span class="o">/*</span> <span class="n">nested</span> <span class="n">wake</span> <span class="n">enables</span> <span class="o">*/</span>
+    <span class="n">unsigned</span> <span class="nb">int</span>            <span class="n">tot_count</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span>            <span class="n">irq_count</span><span class="p">;</span>      <span class="o">/*</span> <span class="n">For</span> <span class="n">detecting</span> <span class="n">broken</span> <span class="n">IRQs</span> <span class="o">*/</span>
+    <span class="n">unsigned</span> <span class="n">long</span>           <span class="n">last_unhandled</span><span class="p">;</span> <span class="o">/*</span> <span class="n">Aging</span> <span class="n">timer</span> <span class="k">for</span> <span class="n">unhandled</span> <span class="n">count</span> <span class="o">*/</span>
+    <span class="n">unsigned</span> <span class="nb">int</span>            <span class="n">irqs_unhandled</span><span class="p">;</span>
+    <span class="n">atomic_t</span>                <span class="n">threads_handled</span><span class="p">;</span>
+    <span class="nb">int</span>                     <span class="n">threads_handled_last</span><span class="p">;</span>   <span class="o">//</span>
+    <span class="n">raw_spinlock_t</span>          <span class="n">lock</span><span class="p">;</span>       <span class="o">//</span><span class="n">锁定SMP</span>
+    <span class="n">struct</span> <span class="n">cpumask</span>          <span class="o">*</span><span class="n">percpu_enabled</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">cpumask</span>    <span class="o">*</span><span class="n">percpu_affinity</span><span class="p">;</span>
+<span class="c1">#ifdef CONFIG_SMP</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">cpumask</span>    <span class="o">*</span><span class="n">affinity_hint</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">irq_affinity_notify</span> <span class="o">*</span><span class="n">affinity_notify</span><span class="p">;</span>
+<span class="c1">#ifdef CONFIG_GENERIC_PENDING_IRQ</span>
+    <span class="n">cpumask_var_t</span>           <span class="n">pending_mask</span><span class="p">;</span>
+<span class="c1">#endif</span>
+<span class="c1">#endif</span>
+    <span class="n">unsigned</span> <span class="n">long</span>           <span class="n">threads_oneshot</span><span class="p">;</span>
+    <span class="n">atomic_t</span>                <span class="n">threads_active</span><span class="p">;</span>
+    <span class="n">wait_queue_head_t</span>       <span class="n">wait_for_threads</span><span class="p">;</span>
+<span class="c1">#ifdef CONFIG_PM_SLEEP</span>
+    <span class="n">unsigned</span> <span class="nb">int</span>            <span class="n">nr_actions</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span>            <span class="n">no_suspend_depth</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span>            <span class="n">cond_suspend_depth</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span>            <span class="n">force_resume_depth</span><span class="p">;</span>
+<span class="c1">#endif</span>
+<span class="c1">#ifdef CONFIG_PROC_FS</span>
+    <span class="n">struct</span> <span class="n">proc_dir_entry</span>   <span class="o">*</span><span class="nb">dir</span><span class="p">;</span>   <span class="o">//</span><span class="n">proc</span> <span class="n">irq</span> <span class="n">procfs条目</span>
+<span class="c1">#endif</span>
+<span class="c1">#ifdef CONFIG_GENERIC_IRQ_DEBUGFS</span>
+    <span class="n">struct</span> <span class="n">dentry</span>           <span class="o">*</span><span class="n">debugfs_file</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">char</span>              <span class="o">*</span><span class="n">dev_name</span><span class="p">;</span>
+<span class="c1">#endif</span>
+<span class="c1">#ifdef CONFIG_SPARSE_IRQ</span>
+    <span class="n">struct</span> <span class="n">rcu_head</span>         <span class="n">rcu</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">kobject</span>          <span class="n">kobj</span><span class="p">;</span>
+<span class="c1">#endif</span>
+    <span class="n">struct</span> <span class="n">mutex</span>            <span class="n">request_mutex</span><span class="p">;</span>
+    <span class="nb">int</span>                     <span class="n">parent_irq</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">module</span>           <span class="o">*</span><span class="n">owner</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">char</span>              <span class="o">*</span><span class="n">name</span><span class="p">;</span>      <span class="o">//</span><span class="n">proc</span> <span class="n">interrupt输出的中断处理名称</span>
+<span class="p">}</span> <span class="n">____cacheline_internodealigned_in_smp</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="irq-data">
+<h3><span class="section-number">4.4.4.1.2. </span>irq_data<a class="headerlink" href="#irq-data" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/**
+ * struct irq_data - per irq chip data passed down to chip functions
+ * @mask:           precomputed bitmask for accessing the chip registers
+ * @irq:            interrupt number
+ * @hwirq:          hardware interrupt number, local to the interrupt domain
+ * @common:         point to data shared by all irqchips
+ * @chip:           low level interrupt hardware access
+ * @domain:         Interrupt translation domain; responsible for mapping
+ *                  between hwirq number and linux irq number.
+ * @parent_data:    pointer to parent struct irq_data to support hierarchy
+ *                  irq_domain
+ * @chip_data:              platform-specific per-chip private data for the chip
+ *                  methods, to allow shared chip implementations
+ */
+struct irq_data {
+    u32                     mask;   //预先计算的位掩码，用于访问芯片寄存器
+    unsigned int            irq;    //中断号
+    unsigned long           hwirq;  //硬件中断号，中断域本地
+    struct irq_common_data  *common;    //
+    struct irq_chip         *chip;  //低级中断硬件访问
+    struct irq_domain       *domain;    //中断域
+#ifdef      CONFIG_IRQ_DOMAIN_HIERARCHY
+    struct irq_data         *parent_data;
+#endif
+    void                    *chip_data;
+};
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Interrupt</span> <span class="n">flow</span> <span class="n">handler</span> <span class="n">typedefs</span> <span class="n">are</span> <span class="n">defined</span> <span class="n">here</span> <span class="n">to</span> <span class="n">avoid</span> <span class="n">circular</span>
+ <span class="o">*</span> <span class="n">include</span> <span class="n">dependencies</span><span class="o">.</span>
+ <span class="o">*/</span>
+
+<span class="n">struct</span> <span class="n">irq_desc</span><span class="p">;</span>
+<span class="n">struct</span> <span class="n">irq_data</span><span class="p">;</span>
+<span class="n">typedef</span>     <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">irq_flow_handler_t</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_desc</span> <span class="o">*</span><span class="n">desc</span><span class="p">);</span>  <span class="o">//</span><span class="n">handle_irq中断处理函数</span>
+<span class="n">typedef</span>     <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">irq_preflow_handler_t</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//函数指针，通常是我们要实现的
+typedef irqreturn_t (*irq_handler_t)(int, void *);
+
+/**
+ * struct irqaction - per interrupt action descriptor
+ * @handler:        interrupt handler function
+ * @name:   name of the device
+ * @dev_id: cookie to identify the device
+ * @percpu_dev_id:  cookie to identify the device
+ * @next:   pointer to the next irqaction for shared interrupts
+ * @irq:    interrupt number
+ * @flags:  flags (see IRQF_* above)
+ * @thread_fn:      interrupt handler function for threaded interrupts
+ * @thread: thread pointer for threaded interrupts
+ * @secondary:      pointer to secondary irqaction (force threading)
+ * @thread_flags:   flags related to @thread
+ * @thread_mask:    bitmask for keeping track of @thread activity
+ * @dir:    pointer to the proc/irq/NN/name entry
+ */
+struct irqaction {
+    irq_handler_t           handler;    //中断处理函数
+    void                    *dev_id;        //用于识别设备的cookie
+    void __percpu           *percpu_dev_id; //用于识别设备的cookie
+    struct irqaction        *next;  //指向共享中断的下一个irqaction指针
+    irq_handler_t           thread_fn;  //用于线程中断的中断处理函数
+    struct task_struct      *thread;    //线程中断的线程指针
+    struct irqaction        *secondary;
+    unsigned int            irq;        //中断号码
+    unsigned int            flags;      //
+    unsigned long           thread_flags;   //与thread相关的标志
+    unsigned long           thread_mask;    //用于跟踪thread活动的位掩码
+    const char              *name;              //设备名称
+    struct proc_dir_entry   *dir;       //指向proc irq NN name条目的指针
+} ____cacheline_internodealigned_in_smp;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>中断标志位</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define IRQF_TRIGGER_NONE   0x00000000</span>
+<span class="c1">#define IRQF_TRIGGER_RISING 0x00000001  //上升沿中断</span>
+<span class="c1">#define IRQF_TRIGGER_FALLING        0x00000002</span>
+<span class="c1">#define IRQF_TRIGGER_HIGH   0x00000004      //高电平中断</span>
+<span class="c1">#define IRQF_TRIGGER_LOW    0x00000008</span>
+<span class="c1">#define IRQF_TRIGGER_MASK   (IRQF_TRIGGER_HIGH | IRQF_TRIGGER_LOW | \</span>
+                 <span class="n">IRQF_TRIGGER_RISING</span> <span class="o">|</span> <span class="n">IRQF_TRIGGER_FALLING</span><span class="p">)</span>
+<span class="c1">#define IRQF_TRIGGER_PROBE  0x00000010</span>
+
+
+<span class="c1">#define IRQF_SHARED         0x00000080  //允许多个设备之间共享irq</span>
+<span class="c1">#define IRQF_PROBE_SHARED   0x00000100  //当呼叫着期望发生共享不匹配时由呼叫者设置</span>
+<span class="c1">#define __IRQF_TIMER                0x00000200  //定时器中断标志</span>
+<span class="c1">#define IRQF_PERCPU         0x00000400      //中断是每个CPU</span>
+<span class="c1">#define IRQF_NOBALANCING    0x00000800  //用于从irq平衡中排除此中断的标志</span>
+<span class="c1">#define IRQF_IRQPOLL                0x00001000  //用于轮询</span>
+<span class="c1">#define IRQF_ONESHOT                0x00002000</span>
+<span class="c1">#define IRQF_NO_SUSPEND             0x00004000</span>
+<span class="c1">#define IRQF_FORCE_RESUME   0x00008000</span>
+<span class="c1">#define IRQF_NO_THREAD              0x00010000</span>
+<span class="c1">#define IRQF_EARLY_RESUME   0x00020000</span>
+<span class="c1">#define IRQF_COND_SUSPEND   0x00040000</span>
+
+<span class="c1">#define IRQF_TIMER          (__IRQF_TIMER | IRQF_NO_SUSPEND | IRQF_NO_THREAD)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>irq_chip</p></li>
+</ul>
+<p>irq_chip用于描述中断控制器底层操作相关的函数操作集合</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">irq_chip</span> <span class="p">{</span>       <span class="o">//</span><span class="n">硬件中断描述符</span>
+    <span class="n">struct</span> <span class="n">device</span>   <span class="o">*</span><span class="n">parent_device</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">char</span>      <span class="o">*</span><span class="n">name</span><span class="p">;</span>      <span class="o">//</span><span class="n">proc</span><span class="o">/</span><span class="n">interrupt的名称</span>
+    <span class="n">unsigned</span> <span class="nb">int</span>    <span class="p">(</span><span class="o">*</span><span class="n">irq_startup</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>  <span class="o">//</span><span class="n">启动中断</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_shutdown</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>     <span class="o">//</span><span class="n">关闭中断</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_enable</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_disable</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_ack</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>  <span class="o">//</span><span class="n">开始新的中断</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_mask</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span> <span class="o">//</span><span class="n">屏蔽中断源</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_mask_ack</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_unmask</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_eoi</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>  <span class="o">//</span><span class="n">中断结束</span>
+
+    <span class="nb">int</span>             <span class="p">(</span><span class="o">*</span><span class="n">irq_set_affinity</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">cpumask</span> <span class="o">*</span><span class="n">dest</span><span class="p">,</span> <span class="nb">bool</span> <span class="n">force</span><span class="p">);</span>     <span class="o">//</span><span class="n">在SMP机器上设置亲和力</span>
+    <span class="nb">int</span>             <span class="p">(</span><span class="o">*</span><span class="n">irq_retrigger</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>    <span class="o">//</span><span class="n">向CPU重启发送IRQ</span>
+    <span class="nb">int</span>             <span class="p">(</span><span class="o">*</span><span class="n">irq_set_type</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">flow_type</span><span class="p">);</span> <span class="o">//</span><span class="n">设置IEQ的流类型</span><span class="p">(</span><span class="n">IRQ_TYPE_LEVEL</span><span class="p">)</span>
+    <span class="nb">int</span>             <span class="p">(</span><span class="o">*</span><span class="n">irq_set_wake</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">on</span><span class="p">);</span>    <span class="o">//</span><span class="n">启用</span><span class="o">/</span><span class="n">禁用IRQ的电源管理</span>
+
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_bus_lock</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span> <span class="o">//</span><span class="n">用于锁定对慢速总线</span><span class="p">(</span><span class="n">I2c</span><span class="p">)</span><span class="n">芯片的访问功能</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_bus_sync_unlock</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>  <span class="o">//</span><span class="n">用于同步和解锁慢速总线芯片的功能</span>
+
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_cpu_online</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>   <span class="o">//</span><span class="n">为辅助CPU设置中断源</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_cpu_offline</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_suspend</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_resume</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>   <span class="o">//</span><span class="n">恢复时从核心代码调用的函数</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_pm_shutdown</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_calc_mask</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_print_chip</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">struct</span> <span class="n">seq_file</span> <span class="o">*</span><span class="n">p</span><span class="p">);</span>
+    <span class="nb">int</span>             <span class="p">(</span><span class="o">*</span><span class="n">irq_request_resources</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_release_resources</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_compose_msi_msg</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">struct</span> <span class="n">msi_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">);</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_write_msi_msg</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">struct</span> <span class="n">msi_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">);</span>
+
+    <span class="nb">int</span>             <span class="p">(</span><span class="o">*</span><span class="n">irq_get_irqchip_state</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">enum</span> <span class="n">irqchip_irq_state</span> <span class="n">which</span><span class="p">,</span> <span class="nb">bool</span> <span class="o">*</span><span class="n">state</span><span class="p">);</span>
+    <span class="nb">int</span>             <span class="p">(</span><span class="o">*</span><span class="n">irq_set_irqchip_state</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">enum</span> <span class="n">irqchip_irq_state</span> <span class="n">which</span><span class="p">,</span> <span class="nb">bool</span> <span class="n">state</span><span class="p">);</span>
+
+    <span class="nb">int</span>             <span class="p">(</span><span class="o">*</span><span class="n">irq_set_vcpu_affinity</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">vcpu_info</span><span class="p">);</span>
+
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">ipi_send_single</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">cpu</span><span class="p">);</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">ipi_send_mask</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">cpumask</span> <span class="o">*</span><span class="n">dest</span><span class="p">);</span>
+
+    <span class="nb">int</span>             <span class="p">(</span><span class="o">*</span><span class="n">irq_nmi_setup</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+    <span class="n">void</span>            <span class="p">(</span><span class="o">*</span><span class="n">irq_nmi_teardown</span><span class="p">)(</span><span class="n">struct</span> <span class="n">irq_data</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+
+    <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">flags</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>通常我们所说的中断可以分为两种，一种是内部中断(定时器，串口，i2c等)，另一种是外部中断(GPIO+触发类型),内部中断是由固定的独立的中断号的。而外部中断，因为数量较多，
+每个单独占用一个的话特别浪费中断资源，所以有些外部中断是有单独的中断号的，而另外一些则是多个端口共享一个中断号</p>
+<img alt="../../_images/ext_share_irq.png" src="../../_images/ext_share_irq.png" />
+</section>
+</section>
+<section id="id2">
+<h2><span class="section-number">4.4.4.2. </span>中断控制器<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>linux内核中断管理分层架构:</p>
+<ol class="arabic simple">
+<li><p>硬件层: CPU和中断控制器的连接</p></li>
+<li><p>处理器架构管理层: 如CPU中断异常处理</p></li>
+<li><p>中断控制器管理层: 如IRQ号的映射</p></li>
+<li><p>linux内核通用中断处理器层: 如中断注册与中断处理</p></li>
+</ol>
+<section id="id3">
+<h3><span class="section-number">4.4.4.2.1. </span>中断控制器<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<img alt="../../_images/gic_controller.png" src="../../_images/gic_controller.png" />
+<p>GIC中断控制器由两部分组成，distributor和cpu interface</p>
+<ul class="simple">
+<li><p>distributor 集中管理所有中断源</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>配置中断的优先级</p></li>
+<li><p>设置每个中断可路由的CPU列表</p></li>
+<li><p>向每个CPU interface配送最高优先级的中断</p></li>
+<li><p>中断屏蔽、中断抢占</p></li>
+<li><p>配置中断时边缘触发还是水平触发</p></li>
+</ol>
+<ul class="simple">
+<li><p>cpu interface是GIC连接到CPU的接口，每个cpu interface提供了一个编程接口，主要功能包括</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>使能中断请求信号到CPU</p></li>
+<li><p>acknowledging 中断，表示CPU接收到中断请求</p></li>
+<li><p>指示中断的处理完成</p></li>
+<li><p>设置处理器中断优先级，高于此优先级方可发送给处理器</p></li>
+<li><p>设置处理器的抢占策略</p></li>
+<li><p>确定处理器的最高优先级待处理中断</p></li>
+</ol>
+<p><strong>支持的中断类型</strong></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>中断类型</p></td>
+<td><p>硬件中断号范围</p></td>
+<td><p>含义</p></td>
+<td><p>应用场景</p></td>
+</tr>
+<tr class="row-even"><td><p>SGI私有软件触发中断</p></td>
+<td><p>0~15</p></td>
+<td><p>用于核间通信</p></td>
+<td><p>通常用于多核通信</p></td>
+</tr>
+<tr class="row-odd"><td><p>PPI私有外设中断</p></td>
+<td><p>16~31</p></td>
+<td><p>处理器私有中断</p></td>
+<td><p>如CPU本地时钟Local timer</p></td>
+</tr>
+<tr class="row-even"><td><p>SPI公用外设中断</p></td>
+<td><p>32~1019</p></td>
+<td><p>用用外设中断</p></td>
+<td><p>用用外设中断，如SPI,I2C，IO等</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>中断状态</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>inactive(不活跃)状态：中断处于无效状态；</p></li>
+<li><p>pending(等待)状态：中断处于有效状态，但是等待CPU响应该中断；</p></li>
+<li><p>active(活跃)状态：CPU已经响应中断；</p></li>
+<li><p>active and pending(活跃并等待)状态：CPU正在响应中断，但是该中断源又发送中断过来</p></li>
+</ol>
+<p>转换图如下</p>
+<img alt="../../_images/irq_sta.png" src="../../_images/irq_sta.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>GIC总是会选择优先级最高的pending的中断发送给CPU，通过cat /proc/interrupts可以查看当前平台的中断源</p>
+</div>
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">4.4.4.3. </span>虚拟中断号和硬中断号<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>虚拟中断号</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">include</span><span class="o">/</span><span class="n">asm</span><span class="o">-</span><span class="n">generic</span><span class="o">/</span><span class="n">irq</span><span class="o">.</span><span class="n">h</span><span class="o">&gt;</span>
+<span class="o">/*</span>
+<span class="o">*</span> <span class="n">NR_IRQS</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">upper</span> <span class="n">bound</span> <span class="n">of</span> <span class="n">how</span> <span class="n">many</span> <span class="n">interrupts</span> <span class="n">can</span> <span class="n">be</span> <span class="n">handled</span>
+<span class="o">*</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">platform</span><span class="o">.</span> <span class="n">It</span> <span class="ow">is</span> <span class="n">used</span> <span class="n">to</span> <span class="n">size</span> <span class="n">the</span> <span class="n">static</span> <span class="n">irq_map</span> <span class="n">array</span><span class="p">,</span>
+<span class="o">*</span> <span class="n">so</span> <span class="n">don</span><span class="s1">&#39;t make it too big.</span>
+<span class="o">*/</span>
+<span class="c1">#ifndef NR_IRQS</span>
+<span class="c1">#define NR_IRQS 64</span>
+<span class="c1">#endif</span>
+
+<span class="o">&lt;</span><span class="n">kernel</span><span class="o">/</span><span class="n">irq</span><span class="o">/</span><span class="n">internals</span><span class="o">.</span><span class="n">h</span><span class="o">&gt;</span>
+<span class="c1">#ifdef CONFIG_SPARSE_IRQ</span>
+<span class="c1"># define IRQ_BITMAP_BITS        (NR_IRQS + 8196)</span>
+<span class="c1">#else</span>
+<span class="c1"># define IRQ_BITMAP_BITS        NR_IRQS</span>
+<span class="c1">#endif</span>
+
+<span class="o">&lt;</span><span class="n">kernel</span><span class="o">/</span><span class="n">irq</span><span class="o">/</span><span class="n">irqdesc</span><span class="o">.</span><span class="n">c</span><span class="o">&gt;</span>
+<span class="n">static</span> <span class="n">DECLARE_BITMAP</span><span class="p">(</span><span class="n">allocated_irqs</span><span class="p">,</span> <span class="n">IRQ_BITMAP_BITS</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>linux定义了位图来管理这些虚拟中断号，allocated_irqs变量分配了IRQ_BITMAP_BOTS个bit位，每个bit位代表一个中断</p>
+<ul class="simple">
+<li><p>硬件中断号</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>0~31中断号给了SGI和PPI</p></li>
+<li><p>其他外设中断号会从32开始</p></li>
+<li><p>dts中会用interrupts = &lt;硬中断号n&gt;来指定硬件中断号，真正的硬中断号为32+n</p></li>
+</ol>
+<img alt="../../_images/irq_number.png" src="../../_images/irq_number.png" />
+<p>cat /proc/interrupts看到的是实际的硬件中断号，即转换完成的</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>dts中interrupts域主要包含三个属性: 1.中断类型:GIC_SPI(共享外设型，用0表示) GIC_PPI(私有外设中断，用1表示) 2.中断ID 3.触发类型:IRQ_TYPE_EDGE_RISING等</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="irq_init_arm64.html" class="btn btn-neutral float-left" title="4.4.3. ARM64中断初始化" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="irq_soft_hard.html" class="btn btn-neutral float-right" title="4.4.5. 创建软硬中断号映射" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

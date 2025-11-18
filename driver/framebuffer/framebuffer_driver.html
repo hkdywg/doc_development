@@ -1,0 +1,647 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.13.2. framebuffer驱动 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.14. DRM框架分析" href="../drm/index.html" />
+    <link rel="prev" title="4.13.1. framebuffer子系统框架" href="framebuffer_frame.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.13. framebuffer子系统</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="framebuffer_frame.html">4.13.1. framebuffer子系统框架</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.13.2. framebuffer驱动</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#driver">4.13.2.1. driver相关操作接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fb-info">4.13.2.2. fb_info参数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#probe">4.13.2.3. probe函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#s3c-fb-probe-vin">4.13.2.4. s3c_fb_probe_vin</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.13. </span>framebuffer子系统</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.13.2. </span>framebuffer驱动</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/framebuffer/framebuffer_driver.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="framebuffer">
+<h1><span class="section-number">4.13.2. </span>framebuffer驱动<a class="headerlink" href="#framebuffer" title="此标题的永久链接"></a></h1>
+<p>framebuffer驱动是基于platform平台总线创建的，主要分为两部分,一部分是操作接口和配置接口，称为driver。一部分是和显示器相关的一些时序，分辨率等一些参数，
+称为device</p>
+<p>下面以s3c的framebuffer进行分析</p>
+<section id="driver">
+<h2><span class="section-number">4.13.2.1. </span>driver相关操作接口<a class="headerlink" href="#driver" title="此标题的永久链接"></a></h2>
+<section id="id1">
+<h3><span class="section-number">4.13.2.1.1. </span>数据结构<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static struct platform_driver s3c_fb_driver = {
+        .probe          = s3c_fb_probe, //探针函数，主要用来映射资源，申请资源中断，初始化硬件，注册设备等
+        .remove         = s3c_fb_remove,        //释放probe申请得资源
+        .id_table       = s3c_fb_driver_ids,    //匹配规则中的一种
+        .driver         = {
+                .name   = &quot;s3c-fb&quot;,     //按名称匹配
+                .pm     = &amp;s3cfb_pm_ops,        //电源管理相关
+        },
+};
+module_platform_driver(s3c_fb_driver);
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>id_table</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">platform_device_id</span> <span class="n">s3c_fb_driver_ids</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">{</span>
+                <span class="o">.</span><span class="n">name</span>           <span class="o">=</span> <span class="s2">&quot;s3c-fb&quot;</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">driver_data</span>    <span class="o">=</span> <span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)</span><span class="o">&amp;</span><span class="n">s3c_fb_data_64xx</span><span class="p">,</span>
+        <span class="p">},</span> <span class="p">{</span>
+                <span class="o">.</span><span class="n">name</span>           <span class="o">=</span> <span class="s2">&quot;s3c2443-fb&quot;</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">driver_data</span>    <span class="o">=</span> <span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)</span><span class="o">&amp;</span><span class="n">s3c_fb_data_s3c2443</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{},</span>
+<span class="p">};</span>
+<span class="n">MODULE_DEVICE_TABLE</span><span class="p">(</span><span class="n">platform</span><span class="p">,</span> <span class="n">s3c_fb_driver_ids</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>driver_data</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">S3C2443</span><span class="o">/</span><span class="n">S3C2416</span> <span class="n">style</span> <span class="n">hardware</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">struct</span> <span class="n">s3c_fb_driverdata</span> <span class="n">s3c_fb_data_s3c2443</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="o">.</span><span class="n">variant</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="o">.</span><span class="n">nr_windows</span>     <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>    <span class="o">//</span><span class="n">窗口数量</span>
+                <span class="o">.</span><span class="n">is_2443</span>        <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+
+                <span class="o">.</span><span class="n">vidtcon</span>        <span class="o">=</span> <span class="mh">0x08</span><span class="p">,</span> <span class="o">//</span><span class="n">vidton0寄存器相对LCD首寄存器的偏移</span>
+                <span class="o">.</span><span class="n">wincon</span>         <span class="o">=</span> <span class="mh">0x14</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">winmap</span>         <span class="o">=</span> <span class="mh">0xd0</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">keycon</span>         <span class="o">=</span> <span class="mh">0xb0</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">osd</span>            <span class="o">=</span> <span class="mh">0x28</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">osd_stride</span>     <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">buf_start</span>      <span class="o">=</span> <span class="mh">0x64</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">buf_size</span>       <span class="o">=</span> <span class="mh">0x94</span><span class="p">,</span> <span class="o">//</span><span class="n">帧缓存大小寄存器</span>
+                <span class="o">.</span><span class="n">buf_end</span>        <span class="o">=</span> <span class="mh">0x7c</span><span class="p">,</span>
+
+                <span class="o">.</span><span class="n">palette</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x400</span><span class="p">,</span>
+                        <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x800</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="o">.</span><span class="n">has_clksel</span>     <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="o">.</span><span class="n">win</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">struct</span> <span class="n">s3c_fb_win_variant</span><span class="p">)</span> <span class="p">{</span>
+                <span class="o">.</span><span class="n">palette_sz</span>     <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">valid_bpp</span>      <span class="o">=</span> <span class="n">VALID_BPP1248</span> <span class="o">|</span> <span class="n">VALID_BPP</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span> <span class="o">|</span> <span class="n">VALID_BPP</span><span class="p">(</span><span class="mi">24</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="o">.</span><span class="n">win</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">struct</span> <span class="n">s3c_fb_win_variant</span><span class="p">)</span> <span class="p">{</span>
+                <span class="o">.</span><span class="n">has_osd_c</span>      <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">has_osd_alpha</span>  <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">palette_sz</span>     <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
+                <span class="o">.</span><span class="n">valid_bpp</span>      <span class="o">=</span> <span class="p">(</span><span class="n">VALID_BPP1248</span> <span class="o">|</span> <span class="n">VALID_BPP</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span> <span class="o">|</span>
+                                   <span class="n">VALID_BPP</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span> <span class="o">|</span> <span class="n">VALID_BPP</span><span class="p">(</span><span class="mi">19</span><span class="p">)</span> <span class="o">|</span>
+                                   <span class="n">VALID_BPP</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span> <span class="o">|</span> <span class="n">VALID_BPP</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span> <span class="o">|</span>
+                                   <span class="n">VALID_BPP</span><span class="p">(</span><span class="mi">28</span><span class="p">)),</span>
+        <span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<img alt="../../_images/vincon.png" src="../../_images/vincon.png" />
+</section>
+</section>
+<section id="fb-info">
+<h2><span class="section-number">4.13.2.2. </span>fb_info参数<a class="headerlink" href="#fb-info" title="此标题的永久链接"></a></h2>
+<p>首先看几个时序相关的参数</p>
+</section>
+<section id="probe">
+<h2><span class="section-number">4.13.2.3. </span>probe函数<a class="headerlink" href="#probe" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static int s3c_fb_probe(struct platform_device *pdev)
+{
+    const struct platform_device_id *platid;
+    struct s3c_fb_driverdata *fbdrv;
+    struct device *dev = &amp;pdev-&gt;dev;
+    struct s3c_fb_platdata *pd;
+    struct s3c_fb *sfb;
+    struct resource *res;
+    int win;
+    int ret = 0;
+    u32 reg;
+
+    platid = platform_get_device_id(pdev); //在id_table中根据.name得到driver_data
+    fbdrv = (struct s3c_fb_driverdata *)platid-&gt;driver_data;
+
+    if (fbdrv-&gt;variant.nr_windows &gt; S3C_FB_MAX_WIN) {   //检测窗口数量是否超限
+        dev_err(dev, &quot;too many windows, cannot attach\n&quot;);
+        return -EINVAL;
+    }
+
+    pd = dev_get_platdata(&amp;pdev-&gt;dev);//得到设备数据
+    if (!pd) {
+        dev_err(dev, &quot;no platform data specified\n&quot;);
+        return -EINVAL;
+    }
+
+    sfb = devm_kzalloc(dev, sizeof(*sfb), GFP_KERNEL);
+    if (!sfb)
+        return -ENOMEM;
+
+    dev_dbg(dev, &quot;allocate new framebuffer %p\n&quot;, sfb);
+
+    sfb-&gt;dev = dev; //把设备绑定到三星的fb中
+    sfb-&gt;pdata = pd;    //把dev传过来的数据绑定到fb中
+    sfb-&gt;variant = fbdrv-&gt;variant;  //可变参数绑定到fb中
+
+    spin_lock_init(&amp;sfb-&gt;slock);
+
+    sfb-&gt;bus_clk = devm_clk_get(dev, &quot;lcd&quot;);    //获取时钟
+    if (IS_ERR(sfb-&gt;bus_clk)) {
+        dev_err(dev, &quot;failed to get bus clock\n&quot;);
+        return PTR_ERR(sfb-&gt;bus_clk);
+    }
+
+    clk_prepare_enable(sfb-&gt;bus_clk);
+
+    if (!sfb-&gt;variant.has_clksel) {
+        sfb-&gt;lcd_clk = devm_clk_get(dev, &quot;sclk_fimd&quot;);
+        if (IS_ERR(sfb-&gt;lcd_clk)) {
+            dev_err(dev, &quot;failed to get lcd clock\n&quot;);
+            ret = PTR_ERR(sfb-&gt;lcd_clk);
+            goto err_bus_clk;
+        }
+
+        clk_prepare_enable(sfb-&gt;lcd_clk);
+    }
+
+    pm_runtime_enable(sfb-&gt;dev);    //电源管理开启
+
+    res = platform_get_resource(pdev, IORESOURCE_MEM, 0);   //获取寄存器资源
+    sfb-&gt;regs = devm_ioremap_resource(dev, res);    //映射寄存器资源
+    if (IS_ERR(sfb-&gt;regs)) {
+        ret = PTR_ERR(sfb-&gt;regs);
+        goto err_lcd_clk;
+    }
+
+    res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);   //获取中断资源
+    if (!res) {
+        dev_err(dev, &quot;failed to acquire irq resource\n&quot;);
+        ret = -ENOENT;
+        goto err_lcd_clk;
+    }
+    sfb-&gt;irq_no = res-&gt;start;   //设置中断号到fb中
+    ret = devm_request_irq(dev, sfb-&gt;irq_no, s3c_fb_irq,
+              0, &quot;s3c_fb&quot;, sfb);    //绑定中断处理函数
+    if (ret) {
+        dev_err(dev, &quot;irq request failed\n&quot;);
+        goto err_lcd_clk;
+    }
+
+    dev_dbg(dev, &quot;got resources (regs %p), probing windows\n&quot;, sfb-&gt;regs);
+
+    platform_set_drvdata(pdev, sfb);    //将fb绑定到driver_data上
+    pm_runtime_get_sync(sfb-&gt;dev);
+
+    /* setup gpio and output polarity controls */
+
+    pd-&gt;setup_gpio(); //调用dev的gpio初始化函数
+
+    writel(pd-&gt;vidcon1, sfb-&gt;regs + VIDCON1);
+
+    /* set video clock running at under-run */
+    if (sfb-&gt;variant.has_fixvclk) {
+        reg = readl(sfb-&gt;regs + VIDCON1);
+        reg &amp;= ~VIDCON1_VCLK_MASK;
+        reg |= VIDCON1_VCLK_RUN;
+        writel(reg, sfb-&gt;regs + VIDCON1);
+    }
+
+    /* zero all windows before we do anything */
+
+    for (win = 0; win &lt; fbdrv-&gt;variant.nr_windows; win++)
+        s3c_fb_clear_win(sfb, win); //清空窗口寄存器
+
+    /* initialise colour key controls */
+    for (win = 0; win &lt; (fbdrv-&gt;variant.nr_windows - 1); win++) {
+        void __iomem *regs = sfb-&gt;regs + sfb-&gt;variant.keycon;
+
+        regs += (win * 8);
+        writel(0xffffff, regs + WKEYCON0);
+        writel(0xffffff, regs + WKEYCON1);
+    }
+
+    s3c_fb_set_rgb_timing(sfb); //设置时序和模式到相关的寄存器里
+
+    /* we have the register setup, start allocating framebuffers */
+
+    for (win = 0; win &lt; fbdrv-&gt;variant.nr_windows; win++) {
+        if (!pd-&gt;win[win])
+            continue;
+
+        ret = s3c_fb_probe_win(sfb, win, fbdrv-&gt;win[win],
+                       &amp;sfb-&gt;windows[win]);
+        if (ret &lt; 0) {
+            dev_err(dev, &quot;failed to create window %d\n&quot;, win);
+            for (; win &gt;= 0; win--)
+                s3c_fb_release_win(sfb, sfb-&gt;windows[win]);
+            goto err_pm_runtime;
+        }
+    }
+
+    platform_set_drvdata(pdev, sfb);    //设置fb到drv中的私有数据
+    pm_runtime_put_sync(sfb-&gt;dev);  //电源管理同步
+
+    return 0;
+
+err_pm_runtime:
+    pm_runtime_put_sync(sfb-&gt;dev);
+
+err_lcd_clk:
+    pm_runtime_disable(sfb-&gt;dev);
+
+    if (!sfb-&gt;variant.has_clksel)
+        clk_disable_unprepare(sfb-&gt;lcd_clk);
+
+err_bus_clk:
+    clk_disable_unprepare(sfb-&gt;bus_clk);
+
+    return ret;
+}
+</pre></div>
+</div>
+<section id="s3c-fb-set-rgb-timing">
+<h3><span class="section-number">4.13.2.3.1. </span>s3c_fb_set_rgb_timing时序和显示模式设置<a class="headerlink" href="#s3c-fb-set-rgb-timing" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static void s3c_fb_set_rgb_timing(struct s3c_fb *sfb)
+{
+    struct fb_videomode *vmode = sfb-&gt;pdata-&gt;vtiming;
+    void __iomem *regs = sfb-&gt;regs; //得到lcd寄存器基址
+    int clkdiv;
+    u32 data;
+
+    if (!vmode-&gt;pixclock)
+        s3c_fb_missing_pixclock(vmode); //计算像素时钟
+
+    clkdiv = s3c_fb_calc_pixclk(sfb, vmode-&gt;pixclock);
+
+    data = sfb-&gt;pdata-&gt;vidcon0;
+    data &amp;= ~(VIDCON0_CLKVAL_F_MASK | VIDCON0_CLKDIR);
+
+    if (clkdiv &gt; 1)
+        data |= VIDCON0_CLKVAL_F(clkdiv-1) | VIDCON0_CLKDIR;
+    else
+        data &amp;= ~VIDCON0_CLKDIR;    /* 1:1 clock */
+
+    if (sfb-&gt;variant.is_2443)
+        data |= (1 &lt;&lt; 5);
+    writel(data, regs + VIDCON0);   //设置时钟VCLK
+
+    data = VIDTCON0_VBPD(vmode-&gt;upper_margin - 1) |
+           VIDTCON0_VFPD(vmode-&gt;lower_margin - 1) |
+           VIDTCON0_VSPW(vmode-&gt;vsync_len - 1);
+    writel(data, regs + sfb-&gt;variant.vidtcon);  //设置V方向时间参数
+
+    data = VIDTCON1_HBPD(vmode-&gt;left_margin - 1) |
+           VIDTCON1_HFPD(vmode-&gt;right_margin - 1) |
+           VIDTCON1_HSPW(vmode-&gt;hsync_len - 1);
+    writel(data, regs + sfb-&gt;variant.vidtcon + 4);  //设置H方向时间参数
+
+    data = VIDTCON2_LINEVAL(vmode-&gt;yres - 1) |
+           VIDTCON2_HOZVAL(vmode-&gt;xres - 1) |
+           VIDTCON2_LINEVAL_E(vmode-&gt;yres - 1) |
+           VIDTCON2_HOZVAL_E(vmode-&gt;xres - 1);
+    writel(data, regs + sfb-&gt;variant.vidtcon + 8);  //设置分辨率
+}
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3><span class="section-number">4.13.2.3.2. </span>中断处理函数<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static irqreturn_t s3c_fb_irq(int irq, void *dev_id)
+{
+    struct s3c_fb *sfb = dev_id;
+    void __iomem  *regs = sfb-&gt;regs;
+    u32 irq_sts_reg;
+
+    spin_lock(&amp;sfb-&gt;slock);
+
+    irq_sts_reg = readl(regs + VIDINTCON1);
+
+    if (irq_sts_reg &amp; VIDINTCON1_INT_FRAME) {   //判断是否有VSYNC帧中断，如果有则说明一屏数据刷完了，可以唤醒等待刷第二屏
+
+        /* VSYNC interrupt, accept it */
+        writel(VIDINTCON1_INT_FRAME, regs + VIDINTCON1);    //清中断
+
+        sfb-&gt;vsync_info.count++;    //中断计数
+        wake_up_interruptible(&amp;sfb-&gt;vsync_info.wait);   //唤醒这个设备等待列表上的进程
+    }
+
+    /* We only support waiting for VSYNC for now, so it&#39;s safe
+     * to always disable irqs here.
+     */
+    s3c_fb_disable_irq(sfb); //关掉fb中断
+
+    spin_unlock(&amp;sfb-&gt;slock);
+    return IRQ_HANDLED;
+}
+</pre></div>
+</div>
+<p>上面的函数中关掉了中断，这里是因为如果写的太快在A帧图像还没显示完，B帧已经又开始写显存的时候会有
+花屏出现。所以最好就是A进程在写的时候，其他进程等待，等A写完其他在写，这样就需要上面的等待队列</p>
+<p>所以正确的执行顺序如下</p>
+<ol class="arabic simple">
+<li><p>写显存</p></li>
+<li><p>调用ioctl,开中断，并睡眠到等待队列</p></li>
+<li><p>显示完会触发中断，唤醒等待队列上的进程，关中断</p></li>
+<li><p>根据ioctl返回值确定是否显示完成</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">s3c_fb_ioctl</span><span class="p">(</span><span class="n">struct</span> <span class="n">fb_info</span> <span class="o">*</span><span class="n">info</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">cmd</span><span class="p">,</span>
+            <span class="n">unsigned</span> <span class="n">long</span> <span class="n">arg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">s3c_fb_win</span> <span class="o">*</span><span class="n">win</span> <span class="o">=</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">par</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">s3c_fb</span> <span class="o">*</span><span class="n">sfb</span> <span class="o">=</span> <span class="n">win</span><span class="o">-&gt;</span><span class="n">parent</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="n">u32</span> <span class="n">crtc</span><span class="p">;</span>
+
+    <span class="n">switch</span> <span class="p">(</span><span class="n">cmd</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">FBIO_WAITFORVSYNC</span><span class="p">:</span> <span class="o">//</span><span class="n">应用层传过来的是等待VSYNC信号</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">get_user</span><span class="p">(</span><span class="n">crtc</span><span class="p">,</span> <span class="p">(</span><span class="n">u32</span> <span class="n">__user</span> <span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">s3c_fb_wait_for_vsync</span><span class="p">(</span><span class="n">sfb</span><span class="p">,</span> <span class="n">crtc</span><span class="p">);</span> <span class="o">//</span><span class="n">调用这个等待vsync中断</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="n">default</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="o">-</span><span class="n">ENOTTY</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">s3c_fb_wait_for_vsync</span><span class="p">(</span><span class="n">struct</span> <span class="n">s3c_fb</span> <span class="o">*</span><span class="n">sfb</span><span class="p">,</span> <span class="n">u32</span> <span class="n">crtc</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">count</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">crtc</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">ENODEV</span><span class="p">;</span>
+
+    <span class="n">pm_runtime_get_sync</span><span class="p">(</span><span class="n">sfb</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span>
+
+    <span class="n">count</span> <span class="o">=</span> <span class="n">sfb</span><span class="o">-&gt;</span><span class="n">vsync_info</span><span class="o">.</span><span class="n">count</span><span class="p">;</span>
+    <span class="n">s3c_fb_enable_irq</span><span class="p">(</span><span class="n">sfb</span><span class="p">);</span> <span class="o">//</span><span class="n">开启中断</span>
+    <span class="o">//</span><span class="n">这边会把ioctl等待vsync信号的进程加入到等待队列</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">wait_event_interruptible_timeout</span><span class="p">(</span><span class="n">sfb</span><span class="o">-&gt;</span><span class="n">vsync_info</span><span class="o">.</span><span class="n">wait</span><span class="p">,</span>
+                       <span class="n">count</span> <span class="o">!=</span> <span class="n">sfb</span><span class="o">-&gt;</span><span class="n">vsync_info</span><span class="o">.</span><span class="n">count</span><span class="p">,</span>
+                       <span class="n">msecs_to_jiffies</span><span class="p">(</span><span class="n">VSYNC_TIMEOUT_MSEC</span><span class="p">));</span>
+
+    <span class="n">pm_runtime_put_sync</span><span class="p">(</span><span class="n">sfb</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">ETIMEDOUT</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="s3c-fb-probe-vin">
+<h2><span class="section-number">4.13.2.4. </span>s3c_fb_probe_vin<a class="headerlink" href="#s3c-fb-probe-vin" title="此标题的永久链接"></a></h2>
+<p>上面的所有操作都属于三星平台的硬件初始化以及利用平台总线进行的数据填充和绑定。下面的操作就是真正的framebuffer的注册，这里面就没有硬件操作
+只是把我们初始化的lcd控制器注册到内核的framebuffer类里面去</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static int s3c_fb_probe_win(struct s3c_fb *sfb, unsigned int win_no,
+                struct s3c_fb_win_variant *variant,
+                struct s3c_fb_win **res)
+{
+    struct fb_var_screeninfo *var;
+    struct fb_videomode initmode;
+    struct s3c_fb_pd_win *windata;
+    struct s3c_fb_win *win;
+    struct fb_info *fbinfo;
+    int palette_size;
+    int ret;
+
+    dev_dbg(sfb-&gt;dev, &quot;probing window %d, variant %p\n&quot;, win_no, variant);
+
+    init_waitqueue_head(&amp;sfb-&gt;vsync_info.wait); //初始化等待队列，中断中使用
+
+    palette_size = variant-&gt;palette_sz * 4;
+    //申请一个fb窗口设备
+    fbinfo = framebuffer_alloc(sizeof(struct s3c_fb_win) +
+                   palette_size * sizeof(u32), sfb-&gt;dev);
+    if (!fbinfo)
+        return -ENOMEM;
+
+    windata = sfb-&gt;pdata-&gt;win[win_no];  //获取窗口数据
+    initmode = *sfb-&gt;pdata-&gt;vtiming;    //获取时序模式数据
+
+    WARN_ON(windata-&gt;max_bpp == 0);
+    WARN_ON(windata-&gt;xres == 0);
+    WARN_ON(windata-&gt;yres == 0);
+
+    //将数据填充到fbinfo中，
+    win = fbinfo-&gt;par;
+    *res = win;
+    var = &amp;fbinfo-&gt;var;
+    win-&gt;variant = *variant;
+    win-&gt;fbinfo = fbinfo;
+    win-&gt;parent = sfb;
+    win-&gt;windata = windata;
+    win-&gt;index = win_no;
+    win-&gt;palette_buffer = (u32 *)(win + 1);
+    //计算需要的显存大小，并申请显存空间
+    ret = s3c_fb_alloc_memory(sfb, win);
+    if (ret) {
+        dev_err(sfb-&gt;dev, &quot;failed to allocate display memory\n&quot;);
+        return ret;
+    }
+
+    /* setup the r/b/g positions for the window&#39;s palette */
+    if (win-&gt;variant.palette_16bpp) {   //根据窗口调色板设置参数
+        /* Set RGB 5:6:5 as default */
+        win-&gt;palette.r.offset = 11;
+        win-&gt;palette.r.length = 5;
+        win-&gt;palette.g.offset = 5;
+        win-&gt;palette.g.length = 6;
+        win-&gt;palette.b.offset = 0;
+        win-&gt;palette.b.length = 5;
+
+    } else {
+        /* Set 8bpp or 8bpp and 1bit alpha */
+        win-&gt;palette.r.offset = 16;
+        win-&gt;palette.r.length = 8;
+        win-&gt;palette.g.offset = 8;
+        win-&gt;palette.g.length = 8;
+        win-&gt;palette.b.offset = 0;
+        win-&gt;palette.b.length = 8;
+    }
+
+    /* setup the initial video mode from the window */
+    initmode.xres = windata-&gt;xres;  //设置窗口分辨率
+    initmode.yres = windata-&gt;yres;
+    fb_videomode_to_var(&amp;fbinfo-&gt;var, &amp;initmode);
+
+    //设置固定参数
+    fbinfo-&gt;fix.type        = FB_TYPE_PACKED_PIXELS;
+    fbinfo-&gt;fix.accel       = FB_ACCEL_NONE;
+    fbinfo-&gt;var.activate    = FB_ACTIVATE_NOW;
+    fbinfo-&gt;var.vmode       = FB_VMODE_NONINTERLACED;
+    fbinfo-&gt;var.bits_per_pixel = windata-&gt;default_bpp;
+    fbinfo-&gt;fbops           = &amp;s3c_fb_ops;
+    fbinfo-&gt;flags           = FBINFO_FLAG_DEFAULT;
+    fbinfo-&gt;pseudo_palette  = &amp;win-&gt;pseudo_palette;
+
+    /* prepare to actually start the framebuffer */
+    //
+    ret = s3c_fb_check_var(&amp;fbinfo-&gt;var, fbinfo);
+    if (ret &lt; 0) {
+        dev_err(sfb-&gt;dev, &quot;check_var failed on initial video params\n&quot;);
+        return ret;
+    }
+
+    /* create initial colour map */
+
+    ret = fb_alloc_cmap(&amp;fbinfo-&gt;cmap, win-&gt;variant.palette_sz, 1);
+    if (ret == 0)
+        fb_set_cmap(&amp;fbinfo-&gt;cmap, fbinfo);
+    else
+        dev_err(sfb-&gt;dev, &quot;failed to allocate fb cmap\n&quot;);
+
+    s3c_fb_set_par(fbinfo);
+
+    dev_dbg(sfb-&gt;dev, &quot;about to register framebuffer\n&quot;);
+
+    /* run the check_var and set_par on our configuration. */
+
+    ret = register_framebuffer(fbinfo); //注册到fb类中
+    if (ret &lt; 0) {
+        dev_err(sfb-&gt;dev, &quot;failed to register framebuffer\n&quot;);
+        return ret;
+    }
+
+    dev_info(sfb-&gt;dev, &quot;window %d: fb %s\n&quot;, win_no, fbinfo-&gt;fix.id);
+
+    return 0;
+}
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="framebuffer_frame.html" class="btn btn-neutral float-left" title="4.13.1. framebuffer子系统框架" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../drm/index.html" class="btn btn-neutral float-right" title="4.14. DRM框架分析" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

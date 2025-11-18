@@ -1,0 +1,509 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.9.2.1. 数组操作 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="7.9.2.2. 链表操作" href="list.html" />
+    <link rel="prev" title="7.9.2. 剑指offer" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">7.9. 数据结构与算法</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../datastruct/index.html">7.9.1. 数据结构与算法</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">7.9.2. 剑指offer</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">7.9.2.1. 数组操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="list.html">7.9.2.2. 链表操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stack_queue.html">7.9.2.3. 栈和队列操作</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm/index.html">7.9.3. 算法</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7.9. </span>数据结构与算法</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.9.2. </span>剑指offer</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.9.2.1. </span>数组操作</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/misc/datastruct_algo/sword_offer/array.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">7.9.2.1. </span>数组操作<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2><span class="section-number">7.9.2.1.1. </span>数组中重复的数字<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<section id="id3">
+<h3><span class="section-number">7.9.2.1.1.1. </span>题目描述<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>找出数组中重复的数字。</p>
+<p>在一个长度为 n 的数组 nums 里的所有数字都在 0～n-1 的范围内。数组中某些数字是重复的，但不知道有几个数字重复了，也不知道每个数字重复了几次。</p>
+<p>请找出数组中任意一个重复的数字。</p>
+<p>示例1:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>输入：
+[2, 3, 1, 0, 2, 5, 3]
+输出：2 或 3
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3><span class="section-number">7.9.2.1.1.2. </span>题目解析<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>首先可能想到的是暴力算法，两个for循环，一一对比。缺点很明显:用时过多。或者再进一步可以先排序然后一次for循环，但依然用时较长。</p>
+<p>注意题目描述：一个长度为 n 的数组 nums 里的所有数字都在 0～n-1 的 范围内，这个 范围 恰好与数组的下标可以一一对应。</p>
+<p>我们考虑如果每个数字都只出现一次，那么此时是最完美的，每一个下标i对应元素numbers[i]，也就是说我们对于数组中的每个元素numbers[i]都把它放在自己该放的位置numbers[numbers[i]]上，
+如果我们发现有两个元素想往同一个位置上放的时候，说明此元素必然重复</p>
+<p>即如下过程</p>
+<ol class="arabic simple">
+<li><p>如果numbers[i] == i，那么我们认为numbers[i]这个元素在自己的位置上</p></li>
+<li><p>否则的话，numbers[i]这个元素就应该在numbers[numbers[i]]这个位置上，于是交换numbers[i]和numbers[numbers[i]]</p></li>
+<li><p>重复操作1 2,直到numbers[i]==i</p></li>
+</ol>
+</section>
+<section id="id5">
+<h3><span class="section-number">7.9.2.1.1.3. </span>代码<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="nb">int</span> <span class="n">FindRepeatNumber</span><span class="p">(</span><span class="nb">int</span> <span class="o">*</span><span class="n">nums</span><span class="p">,</span> <span class="nb">int</span> <span class="n">numSize</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">temp</span><span class="p">,</span> <span class="n">i</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numSize</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">i</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">nums</span><span class="p">[</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+                <span class="k">return</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">temp</span><span class="p">];</span>
+            <span class="n">nums</span><span class="p">[</span><span class="n">temp</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">(</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">a</span><span class="p">[]</span> <span class="o">=</span><span class="p">{</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">FindRepeatNumber</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">a</span><span class="p">)));</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">7.9.2.1.2. </span>二维数组中的查找<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<section id="id7">
+<h3><span class="section-number">7.9.2.1.2.1. </span>题目描述<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
+<p>示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+  <span class="p">[</span><span class="mi">1</span><span class="p">,</span>   <span class="mi">4</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">15</span><span class="p">],</span>
+  <span class="p">[</span><span class="mi">2</span><span class="p">,</span>   <span class="mi">5</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">19</span><span class="p">],</span>
+  <span class="p">[</span><span class="mi">3</span><span class="p">,</span>   <span class="mi">6</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">22</span><span class="p">],</span>
+  <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">24</span><span class="p">],</span>
+  <span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>给定 target = 5，返回 true。</p>
+<p>给定 target = 20，返回 false。</p>
+</section>
+<section id="id8">
+<h3><span class="section-number">7.9.2.1.2.2. </span>题目解析<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<p>仔细观察矩阵，可以发现：左下角元素为所在列最大元素，所在行最小元素</p>
+<p>如果 左下角元素 大于了目标值，则目标值一定在该行的上方， 左下角元素 所在行可以消去。</p>
+<p>如果 左下角元素 小于了目标值，则目标值一定在该列的右方， 左下角元素 所在列可以消去</p>
+<p>具体操作为从矩阵左下角元素开始遍历，并与目标对比。</p>
+<ol class="arabic simple">
+<li><p>当matrix[i][j] &gt; target时，行索引向上移动一格(i–)</p></li>
+<li><p>当matrix[i][j] &lt; target时，列索引向右移动一格(j++)</p></li>
+<li><p>当matrix[i][j] == target 时： 返回 true，越界则返回false</p></li>
+</ol>
+</section>
+<section id="id9">
+<h3><span class="section-number">7.9.2.1.2.3. </span>代码<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="c1">#define MATRIX_ROW  (5)</span>
+<span class="c1">#define MATRIX_LINE (5)</span>
+
+<span class="n">unsigned</span> <span class="n">char</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span><span class="mi">1</span><span class="p">,</span>   <span class="mi">4</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">15</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">2</span><span class="p">,</span>   <span class="mi">5</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">19</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">3</span><span class="p">,</span>   <span class="mi">6</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">22</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">10</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">24</span><span class="p">},</span>
+    <span class="p">{</span><span class="mi">18</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">30</span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nb">int</span> <span class="n">FindTargetNumber</span><span class="p">(</span><span class="n">unsigned</span> <span class="n">char</span> <span class="o">*</span><span class="n">nums</span><span class="p">,</span> <span class="nb">int</span> <span class="n">target</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">MATRIX_ROW</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="n">char</span> <span class="n">tmp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">nums</span> <span class="o">+</span> <span class="p">(</span><span class="n">MATRIX_ROW</span> <span class="o">*</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">j</span><span class="p">);</span>   <span class="o">//</span><span class="n">等价于matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">tmp</span> <span class="o">&gt;</span> <span class="n">target</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">i</span><span class="o">--</span><span class="p">;</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">tmp</span> <span class="o">&lt;</span> <span class="n">target</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">MATRIX_LINE</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">nums</span> <span class="o">+</span> <span class="p">(</span><span class="n">MATRIX_ROW</span> <span class="o">*</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">j</span><span class="p">);</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">tmp</span> <span class="o">==</span> <span class="n">target</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">tmp</span> <span class="o">&gt;</span> <span class="n">target</span><span class="p">)</span>
+                    <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">i</span><span class="o">--</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">(</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">FindTargetNumber</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;target found</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;target not found</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id10">
+<h2><span class="section-number">7.9.2.1.3. </span>调整数组顺序使奇数位于偶数前面<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h2>
+<section id="id11">
+<h3><span class="section-number">7.9.2.1.3.1. </span>题目描述<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h3>
+<p>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有奇数位于数组的前半部分，所有偶数位于数组的后半部分。</p>
+<p>示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>输入：nums = [1,2,3,4]
+输出：[1,3,2,4]
+注：[3,1,2,4] 也是正确的答案之一。
+</pre></div>
+</div>
+</section>
+<section id="id12">
+<h3><span class="section-number">7.9.2.1.3.2. </span>解题思路<a class="headerlink" href="#id12" title="此标题的永久链接"></a></h3>
+<ol class="arabic simple">
+<li><p>设置两个指针left和right，分别指向数组的头和尾</p></li>
+<li><p>left向左移动，right向右移动</p></li>
+<li><p>left为偶数，right为奇数时，调换位置，然后重复上面步骤。当left不小于right时循环结束</p></li>
+</ol>
+</section>
+<section id="id13">
+<h3><span class="section-number">7.9.2.1.3.3. </span>代码<a class="headerlink" href="#id13" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">unsigned</span> <span class="n">char</span> <span class="n">nums</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">};</span>
+    <span class="n">unsigned</span> <span class="n">char</span> <span class="o">*</span><span class="n">left</span><span class="p">,</span> <span class="o">*</span><span class="n">right</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="n">char</span> <span class="n">tmp</span><span class="p">;</span>
+
+    <span class="n">left</span> <span class="o">=</span> <span class="n">nums</span><span class="p">;</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">nums</span> <span class="o">+</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">while</span><span class="p">(</span><span class="o">*</span><span class="n">left</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">left</span><span class="o">++</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="o">*</span><span class="n">right</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">right</span><span class="o">--</span><span class="p">;</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="o">*</span><span class="n">left</span><span class="p">;</span>
+        <span class="o">*</span><span class="n">left</span> <span class="o">=</span> <span class="o">*</span><span class="n">right</span><span class="p">;</span>
+        <span class="o">*</span><span class="n">right</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">nums</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> ,&quot;</span><span class="p">,</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id14">
+<h2><span class="section-number">7.9.2.1.4. </span>旋转数组的最小数字<a class="headerlink" href="#id14" title="此标题的永久链接"></a></h2>
+<section id="id15">
+<h3><span class="section-number">7.9.2.1.4.1. </span>题目描述<a class="headerlink" href="#id15" title="此标题的永久链接"></a></h3>
+<p>把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。输入一个递增排序的数组的一个旋转，输出旋转数组的最小元素。例如，数组[3,4,5,1,2] 为 [1,2,3,4,5] 的一个旋转，该数组的最小值为 1。</p>
+<p>示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>输入：[2,2,2,0,1]
+输出：0
+</pre></div>
+</div>
+<p>示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>输入：[3,4,5,1,2]
+输出：1
+</pre></div>
+</div>
+</section>
+<section id="id16">
+<h3><span class="section-number">7.9.2.1.4.2. </span>题目解析<a class="headerlink" href="#id16" title="此标题的永久链接"></a></h3>
+<p>首先，我们明确知道这个数组是被旋转了，也就意味着，这个数组实际上可以被划分为两个部分。</p>
+<ol class="arabic simple">
+<li><p>左边是一个递增的数组</p></li>
+<li><p>右边是一个递增的数组</p></li>
+<li><p>左右两部分相交的位置出现了一个异常点，小的数字在大的数字后面</p></li>
+</ol>
+</section>
+<section id="id17">
+<h3><span class="section-number">7.9.2.1.4.3. </span>代码<a class="headerlink" href="#id17" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">unsigned</span> <span class="n">char</span> <span class="n">nums</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">};</span>
+    <span class="n">unsigned</span> <span class="n">char</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="n">char</span> <span class="n">mid</span><span class="p">;</span>
+
+    <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">right</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">mid</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">mid</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">((</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span> <span class="o">==</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">left</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+        <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id18">
+<h2><span class="section-number">7.9.2.1.5. </span>连续子数组的最大和<a class="headerlink" href="#id18" title="此标题的永久链接"></a></h2>
+<section id="id19">
+<h3><span class="section-number">7.9.2.1.5.1. </span>题目描述<a class="headerlink" href="#id19" title="此标题的永久链接"></a></h3>
+<p>输入一个整型数组，数组中的一个或连续多个整数组成一个子数组。求所有子数组的和的最大值。</p>
+<p>要求时间复杂度为O(n)。</p>
+<p>示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>输入: nums = [-2,1,-3,4,-1,2,1,-5,4]
+输出: 6
+解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+</pre></div>
+</div>
+</section>
+<section id="id20">
+<h3><span class="section-number">7.9.2.1.5.2. </span>题目解析<a class="headerlink" href="#id20" title="此标题的永久链接"></a></h3>
+</section>
+<section id="id21">
+<h3><span class="section-number">7.9.2.1.5.3. </span>代码<a class="headerlink" href="#id21" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="c1">#define ARRAY_SIZE 12</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">nums</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">};</span>
+    <span class="nb">int</span> <span class="o">*</span><span class="n">dst</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">start_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">end_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">max_num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">num_len</span> <span class="o">=</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span><span class="o">/</span><span class="n">sizeof</span><span class="p">(</span><span class="nb">int</span><span class="p">);</span>
+
+    <span class="n">dst</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">sizeof</span><span class="p">(</span><span class="n">nums</span><span class="p">));</span>
+
+    <span class="n">dst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;num_len = </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">num_len</span><span class="p">);</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_len</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">dst</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dst</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">dst</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;dst[</span><span class="si">%d</span><span class="s2">] = </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">dst</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+            <span class="n">i</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+            <span class="n">dst</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="n">start_pos</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+            <span class="n">end_pos</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">dst</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_num</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">end_pos</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+            <span class="n">max_num</span> <span class="o">=</span> <span class="n">dst</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;src = </span><span class="si">%d</span><span class="s2">, dst[</span><span class="si">%d</span><span class="s2">] = </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">,</span> <span class="n">dst</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;start_pos = </span><span class="si">%d</span><span class="s2">, end_pos = </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">start_pos</span><span class="p">,</span> <span class="n">end_pos</span><span class="p">);</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">dst</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id22">
+<h2><span class="section-number">7.9.2.1.6. </span>把数组排成最小的数<a class="headerlink" href="#id22" title="此标题的永久链接"></a></h2>
+<section id="id23">
+<h3><span class="section-number">7.9.2.1.6.1. </span>题目描述<a class="headerlink" href="#id23" title="此标题的永久链接"></a></h3>
+<p>输入一个非负整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。</p>
+<p>示例 1:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">输入</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">输出</span><span class="p">:</span> <span class="s2">&quot;102&quot;</span>
+</pre></div>
+</div>
+<p>示例2</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">输入</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span>
+<span class="n">输出</span><span class="p">:</span> <span class="s2">&quot;3033459&quot;</span>
+</pre></div>
+</div>
+<p>说明</p>
+<p>说明:</p>
+<p>输出结果可能非常大，所以你需要返回一个字符串而不是整数</p>
+<p>拼接起来的数字可能会有前导 0，最后结果不需要去掉前导 0</p>
+</section>
+<section id="id24">
+<h3><span class="section-number">7.9.2.1.6.2. </span>题目解析<a class="headerlink" href="#id24" title="此标题的永久链接"></a></h3>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="7.9.2. 剑指offer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="list.html" class="btn btn-neutral float-right" title="7.9.2.2. 链表操作" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

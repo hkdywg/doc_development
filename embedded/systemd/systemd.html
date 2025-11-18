@@ -1,0 +1,937 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.4.1. systemd服务管理 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.5. ota" href="../ota/index.html" />
+    <link rel="prev" title="8.4. systemd 笔记" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.4. systemd 笔记</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.4.1. systemd服务管理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">8.4.1.1. systemd简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#systemdunit">8.4.1.2. systemd的Unit文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#systemd-service-unit">8.4.1.3. systemd service unit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">8.4.1.4. systemd的资源管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">8.4.1.5. systemd工具集</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">8.8. 视频相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.4. </span>systemd 笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.4.1. </span>systemd服务管理</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/systemd/systemd.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="systemd">
+<h1><span class="section-number">8.4.1. </span>systemd服务管理<a class="headerlink" href="#systemd" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">8.4.1.1. </span>systemd简介<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>systemd使一系列工具的集合，其作用也远远不仅是启动操作系统，它还接管了后台服务、结束、状态查询，以及日志归档、设备管理、电源管理、定时任务等许多职责，
+并支持通过特定事件(如插入特定USB设备)和特定端口数据触发的on-demand任务</p>
+<p>systemd的后台服务还有一个特殊的身份，它是系统中PID为1的进程</p>
+<p>systemd有以下优势</p>
+<ul class="simple">
+<li><p>更少的进程</p></li>
+</ul>
+<p>systemd提供了服务按需启动的能力，使得特定的服务只有在特定请求时才启动</p>
+<ul class="simple">
+<li><p>允许更多的进程并行启动</p></li>
+</ul>
+<p>在sysV-init时代，将每个服务项目编号依次执行启动脚本。systemd通过socket缓存、dbus缓存、和建立临时挂载点等方法解决了启动进程之间的依赖，做到了所有系统服务并发启动。</p>
+<ul class="simple">
+<li><p>使用CGroup跟踪和管理进程的生命周期</p></li>
+</ul>
+<p>在systemd之间的主流应用管理服务都是使用进程树来跟踪应用的继承关系的，而进程的父子关系很容易通过两次fork的方法脱离。systemd则通过CGroup跟踪进程关系解决了这个问题</p>
+<ul class="simple">
+<li><p>统一日志管理</p></li>
+</ul>
+<p>systemd包括了一个专用的系统日志管理服务: <code class="docutils literal notranslate"><span class="pre">journald</span></code> 。journald采用二机制格式保存所有日志信息，journald提供了一个journalctl命令来查看日志信息</p>
+<p>systemd架构</p>
+<img alt="../../_images/systemd_struct.png" src="../../_images/systemd_struct.png" />
+</section>
+<section id="systemdunit">
+<h2><span class="section-number">8.4.1.2. </span>systemd的Unit文件<a class="headerlink" href="#systemdunit" title="此标题的永久链接"></a></h2>
+<p>systemd可以管理所有系统资源，不同资源称为Unit</p>
+<p>在systemd的生态圈中，unit文件统一了过去各种不同系统资源配置格式，例如服务的启停、定时服务、设备自动挂载、网络配置、虚拟内存配置等，systemd通过不同的文件后缀来区分这些配置文件</p>
+<section id="systemd12unit">
+<h3><span class="section-number">8.4.1.2.1. </span>systemd支持的12中unit文件类型<a class="headerlink" href="#systemd12unit" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>unit文件类型</p></td>
+<td><p>描述</p></td>
+</tr>
+<tr class="row-even"><td><p>.automount</p></td>
+<td><p>用于控制自动挂载文件系统，相当于sysV-init的autofs服务</p></td>
+</tr>
+<tr class="row-odd"><td><p>.device</p></td>
+<td><p>对于/dev目录下的设备，主要用于定义设备之间的依赖关系</p></td>
+</tr>
+<tr class="row-even"><td><p>.mount</p></td>
+<td><p>定义系统结构层次中的一个挂载点，可以替代过去的/etc/fstab配置文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>.path</p></td>
+<td><p>用于监控指定目录或文件的变化，并触发其他unit运行</p></td>
+</tr>
+<tr class="row-even"><td><p>.scope</p></td>
+<td><p>这种unit文件不是用户创建的，而是systemd运行时产生的，描述一些系统服务的分组信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>.service</p></td>
+<td><p>封装守护进程的启动、停止、重启和重载操作，时最常见的一种unit文件</p></td>
+</tr>
+<tr class="row-even"><td><p>.slice</p></td>
+<td><p>用于表示一个CGroup的树，通常用户不会自己创建这样的unit文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>.snapshot</p></td>
+<td><p>用于表示一个由systemctl snapshot命令创建的systemd units运行状态快照</p></td>
+</tr>
+<tr class="row-even"><td><p>.socket</p></td>
+<td><p>监控来自系统或网络的数据消息，用于实现基于数据自动触发服务启动</p></td>
+</tr>
+<tr class="row-odd"><td><p>.swap</p></td>
+<td><p>定义一个用户做虚拟内存的交换分区</p></td>
+</tr>
+<tr class="row-even"><td><p>.target</p></td>
+<td><p>用于对unit文件进行逻辑分组，引导其他unit的执行，它替代了sysV-init运行级别的作用</p></td>
+</tr>
+<tr class="row-odd"><td><p>.timer</p></td>
+<td><p>用于配置在特定事件出发的任务，替代了Crontab的功能</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h3><span class="section-number">8.4.1.2.2. </span>systemd目录<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>unit文件按照systemd约定，应该被放置在指定的三个系统目录之一中。这三个目录是有优先级的，越靠上的优先级越高，有同名文件的优先级最高的会被使用</p>
+<ol class="arabic simple">
+<li><p>/etc/systemd/system : 系统或用户自定义的配置文件</p></li>
+<li><p>/run/systemd/system : 软件运行时生成的配置文件</p></li>
+<li><p>/usr/lib/systemd/system : 系统或第三方软件安装时添加的配置文件..  在Ubuntu中该目录被移到了/lib/systemd/system中</p></li>
+</ol>
+<p>systemd默认从目录/etc/systemd/system读取配置文件，但里面存放的大多数时符号连接，指向目录/lib/systemd/system</p>
+<p>unit时systemd管理的最基本单元，可以认为每个系统资源就是一个unit。在unit文件中需要包含相应服务的描述、属性以及需要运行的命令</p>
+<p>target时systemd中用于指定系统资源启动组的方式</p>
+</section>
+</section>
+<section id="systemd-service-unit">
+<h2><span class="section-number">8.4.1.3. </span>systemd service unit<a class="headerlink" href="#systemd-service-unit" title="此标题的永久链接"></a></h2>
+<section id="unit">
+<h3><span class="section-number">8.4.1.3.1. </span>unit文件结构<a class="headerlink" href="#unit" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
+<span class="n">Description</span><span class="o">=</span><span class="n">Hello</span> <span class="n">World</span>
+<span class="n">After</span><span class="o">=</span><span class="n">docker</span><span class="o">.</span><span class="n">service</span>
+<span class="n">Requires</span><span class="o">=</span><span class="n">docker</span><span class="o">.</span><span class="n">service</span>
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="n">TimeoutStartSec</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">ExecStartPre</span><span class="o">=-/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">docker</span> <span class="n">kill</span> <span class="n">busybox1</span>
+<span class="n">ExecStartPre</span><span class="o">=-/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">docker</span> <span class="n">rm</span> <span class="n">busybox1</span>
+<span class="n">ExecStartPre</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">docker</span> <span class="n">pull</span> <span class="n">busybox</span>
+<span class="n">ExecStart</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="n">busybox1</span> <span class="n">busybox</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span> <span class="n">sh</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;while true; do echo Hello World; sleep 1; done&quot;</span>
+<span class="n">ExecStop</span><span class="o">=</span><span class="s2">&quot;/usr/bin/docker stop busybox1&quot;</span>
+<span class="n">ExecStopPost</span><span class="o">=</span><span class="s2">&quot;/usr/bin/docker rm busybox1&quot;</span>
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span>
+<span class="n">WantedBy</span><span class="o">=</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+<p>systemd服务的unit文件可以分为三个配置区段</p>
+<ol class="arabic simple">
+<li><p>Unit和Install段: 所有unit文件通用，用于配置服务的描述、依赖和系统启动的方式</p></li>
+<li><p>Service段: 服务(serivce)类型的unit文件(后缀为.service)特有的，用于定义服务的具体管理和操作方法</p></li>
+</ol>
+<ul class="simple">
+<li><p>Uint段</p></li>
+</ul>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>段内容</p></td>
+<td><p>描述</p></td>
+</tr>
+<tr class="row-even"><td><p>Description</p></td>
+<td><p>描述这个Unit文件的信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>Documentation</p></td>
+<td><p>指定服务的文档，可以时一个或多个url路径</p></td>
+</tr>
+<tr class="row-even"><td><p>Requires</p></td>
+<td><p>依赖的其他unit列表，列在其中的unit会在这个服务启动的同时被启动。如果其中任一服务启动失败，这个服务也会被中止</p></td>
+</tr>
+<tr class="row-odd"><td><p>Wants</p></td>
+<td><p>与Requires相似，但只是在被配置的这个unit启动时，触发列出的每个unit模块，而不去关注这些模块是否成功</p></td>
+</tr>
+<tr class="row-even"><td><p>After</p></td>
+<td><p>与Requires类似，但是在后面列出的所有模块全部启动完成以后才会启动当前的服务</p></td>
+</tr>
+<tr class="row-odd"><td><p>Befor</p></td>
+<td><p>与After相反，在启动指定的任务一个模块之间，都会首先确认当前服务已经运行</p></td>
+</tr>
+<tr class="row-even"><td><p>Binds To</p></td>
+<td><p>与Reuires类似，但这些列表中的任意一个出现意外结束或者重启时这个服务也会跟着终止或者重启</p></td>
+</tr>
+<tr class="row-odd"><td><p>Part Of</p></td>
+<td><p>一个Bind to作用的子集仅在列出的任务模块失败或重启时，终止或重启当前服务，而不会随列出模板的启动而启动</p></td>
+</tr>
+<tr class="row-even"><td><p>OnFailure</p></td>
+<td><p>当这个unit启动失败时，就会自动启动列出的每个模块</p></td>
+</tr>
+<tr class="row-odd"><td><p>Conflicts</p></td>
+<td><p>与这个这个模块有冲突的模块，如果列出的模块已经有已经在运行的，这个服务就不能启动</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Install段</p></li>
+</ul>
+<p>这部分配置的目标模块通常是特定运行目标的.target文件，用来使得服务在系统启动时自动运行。这个区段可以包含三种启动约束</p>
+<ol class="arabic simple">
+<li><p>WantedBy: 列出的是依赖当前服务的模块，它的值是一个或多个target，当前的Unit激活时(enable)符号链接会放到/etc/systemd/system目录下以&lt;target名&gt;+.wants后缀构成的子目录中</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># find /etc/systemd/system/* -type d</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">default</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">wants</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">getty</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">wants</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">graphical</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">wants</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">wants</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">network</span><span class="o">-</span><span class="n">online</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">wants</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">paths</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">wants</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">shutdown</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">wants</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">sockets</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">wants</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">sysinit</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">wants</span>
+<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span><span class="n">timers</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">wants</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>RequiredBy: 列出的是依赖当前服务的模块，它的值是一个或多个target，当前的Unit激活时(enable)符号链接会放到/etc/systemd/system目录下以&lt;target名&gt;+.required后缀构成的子目录中</p></li>
+<li><p>Also: 当前unit enable/disabled时，同时enable/disable其他unit</p></li>
+</ol>
+<p>sysV-init运行级别与systemd target对应的unit文件</p>
+<img alt="../../_images/sysV-init.png" src="../../_images/sysV-init.png" />
+<p>通过systemctl list-units –type=target命令可以获取当前正在使用的运行目标</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># systemctl list-units --type=target</span>
+<span class="n">UNIT</span>                   <span class="n">LOAD</span>   <span class="n">ACTIVE</span> <span class="n">SUB</span>    <span class="n">DESCRIPTION</span>
+<span class="n">basic</span><span class="o">.</span><span class="n">target</span>           <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Basic</span> <span class="n">System</span>
+<span class="n">cryptsetup</span><span class="o">.</span><span class="n">target</span>      <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Encrypted</span> <span class="n">Volumes</span>
+<span class="n">getty</span><span class="o">.</span><span class="n">target</span>           <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Login</span> <span class="n">Prompts</span>
+<span class="n">graphical</span><span class="o">.</span><span class="n">target</span>       <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Graphical</span> <span class="n">Interface</span>
+<span class="n">local</span><span class="o">-</span><span class="n">fs</span><span class="o">-</span><span class="n">pre</span><span class="o">.</span><span class="n">target</span>    <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Local</span> <span class="n">File</span> <span class="n">Systems</span> <span class="p">(</span><span class="n">Pre</span><span class="p">)</span>
+<span class="n">local</span><span class="o">-</span><span class="n">fs</span><span class="o">.</span><span class="n">target</span>        <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Local</span> <span class="n">File</span> <span class="n">Systems</span>
+<span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="o">.</span><span class="n">target</span>      <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Multi</span><span class="o">-</span><span class="n">User</span> <span class="n">System</span>
+<span class="n">network</span><span class="o">-</span><span class="n">online</span><span class="o">.</span><span class="n">target</span>  <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Network</span> <span class="ow">is</span> <span class="n">Online</span>
+<span class="n">network</span><span class="o">.</span><span class="n">target</span>         <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Network</span>
+<span class="n">nss</span><span class="o">-</span><span class="n">user</span><span class="o">-</span><span class="n">lookup</span><span class="o">.</span><span class="n">target</span> <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">User</span> <span class="ow">and</span> <span class="n">Group</span> <span class="n">Name</span> <span class="n">Lookups</span>
+<span class="n">paths</span><span class="o">.</span><span class="n">target</span>           <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Paths</span>
+<span class="n">remote</span><span class="o">-</span><span class="n">fs</span><span class="o">-</span><span class="n">pre</span><span class="o">.</span><span class="n">target</span>   <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Remote</span> <span class="n">File</span> <span class="n">Systems</span> <span class="p">(</span><span class="n">Pre</span><span class="p">)</span>
+<span class="n">remote</span><span class="o">-</span><span class="n">fs</span><span class="o">.</span><span class="n">target</span>       <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Remote</span> <span class="n">File</span> <span class="n">Systems</span>
+<span class="n">slices</span><span class="o">.</span><span class="n">target</span>          <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Slices</span>
+<span class="n">sockets</span><span class="o">.</span><span class="n">target</span>         <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Sockets</span>
+<span class="n">sound</span><span class="o">.</span><span class="n">target</span>           <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Sound</span> <span class="n">Card</span>
+<span class="n">swap</span><span class="o">.</span><span class="n">target</span>            <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Swap</span>
+<span class="n">sysinit</span><span class="o">.</span><span class="n">target</span>         <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">System</span> <span class="n">Initialization</span>
+<span class="n">time</span><span class="o">-</span><span class="n">sync</span><span class="o">.</span><span class="n">target</span>       <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">System</span> <span class="n">Time</span> <span class="n">Synchronized</span>
+<span class="n">timers</span><span class="o">.</span><span class="n">target</span>          <span class="n">loaded</span> <span class="n">active</span> <span class="n">active</span> <span class="n">Timers</span>
+<span class="n">LOAD</span>   <span class="o">=</span> <span class="n">Reflects</span> <span class="n">whether</span> <span class="n">the</span> <span class="n">unit</span> <span class="n">definition</span> <span class="n">was</span> <span class="n">properly</span> <span class="n">loaded</span><span class="o">.</span>
+<span class="n">ACTIVE</span> <span class="o">=</span> <span class="n">The</span> <span class="n">high</span><span class="o">-</span><span class="n">level</span> <span class="n">unit</span> <span class="n">activation</span> <span class="n">state</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span> <span class="n">generalization</span> <span class="n">of</span> <span class="n">SUB</span><span class="o">.</span>
+<span class="n">SUB</span>    <span class="o">=</span> <span class="n">The</span> <span class="n">low</span><span class="o">-</span><span class="n">level</span> <span class="n">unit</span> <span class="n">activation</span> <span class="n">state</span><span class="p">,</span> <span class="n">values</span> <span class="n">depend</span> <span class="n">on</span> <span class="n">unit</span> <span class="nb">type</span><span class="o">.</span>
+<span class="mi">20</span> <span class="n">loaded</span> <span class="n">units</span> <span class="n">listed</span><span class="o">.</span> <span class="n">Pass</span> <span class="o">--</span><span class="nb">all</span> <span class="n">to</span> <span class="n">see</span> <span class="n">loaded</span> <span class="n">but</span> <span class="n">inactive</span> <span class="n">units</span><span class="p">,</span> <span class="n">too</span><span class="o">.</span>
+<span class="n">To</span> <span class="n">show</span> <span class="nb">all</span> <span class="n">installed</span> <span class="n">unit</span> <span class="n">files</span> <span class="n">use</span> <span class="s1">&#39;systemctl list-unit-files&#39;</span><span class="o">.</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Service段</p></li>
+</ul>
+<p>只有service类型的unit才会有这个段，它的主要字段分为服务声明周期和服务上下文配置两个方面</p>
+<p><strong>服务生命周期控制相关</strong></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>字段</p></td>
+<td><p>描述</p></td>
+</tr>
+<tr class="row-even"><td><p>Type_[#]_</p></td>
+<td><p>定义启动时的进程行为</p></td>
+</tr>
+<tr class="row-odd"><td><p>RemainAferExit</p></td>
+<td><p>值为true或false，当设置为true时systemd只负责启动，而不监控这个服务</p></td>
+</tr>
+<tr class="row-even"><td><p>ExecStart</p></td>
+<td><p>启动当前服务的命令</p></td>
+</tr>
+<tr class="row-odd"><td><p>ExecStartPre</p></td>
+<td><p>启动当前服务之前执行的命令</p></td>
+</tr>
+<tr class="row-even"><td><p>ExecStartPost</p></td>
+<td><p>启动当前服务之后执行的命令</p></td>
+</tr>
+<tr class="row-odd"><td><p>ExecReload</p></td>
+<td><p>重启当前服务时执行的命令</p></td>
+</tr>
+<tr class="row-even"><td><p>ExecStop</p></td>
+<td><p>停止当前服务时执行的命令</p></td>
+</tr>
+<tr class="row-odd"><td><p>ExecStopPost</p></td>
+<td><p>停止当前服务之后执行的命令</p></td>
+</tr>
+<tr class="row-even"><td><p>RestartSec</p></td>
+<td><p>自动重启当前服务间隔的秒数</p></td>
+</tr>
+<tr class="row-odd"><td><p>Restart</p></td>
+<td><p>定义哪种情况下自动重启,可以是always、on-success、on-failure、on-abnormal、on-abort、on-watchdog</p></td>
+</tr>
+<tr class="row-even"><td><p>TimeoutStartSec</p></td>
+<td><p>启动服务时等待的秒数</p></td>
+</tr>
+<tr class="row-odd"><td><p>TimeoutStopSec</p></td>
+<td><p>停止服务时等待秒数，如果超过这个时间还没有停止，systemd会使用SIGKILL信号强行杀死服务的进程</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>服务上下文配置相关</strong></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>字段</p></td>
+<td><p>描述</p></td>
+</tr>
+<tr class="row-even"><td><p>Environment</p></td>
+<td><p>为服务指定环境变量</p></td>
+</tr>
+<tr class="row-odd"><td><p>EnvironmentFile</p></td>
+<td><p>指定加载一个包含服务所需的环境变量的列表文件，文件的每一行都是一个环境变量的定义</p></td>
+</tr>
+<tr class="row-even"><td><p>Nice</p></td>
+<td><p>服务的进程优先级，值越小优先级越高，默认为0，其中-20为最高优先级，19为最低优先级</p></td>
+</tr>
+<tr class="row-odd"><td><p>WorkingDirectory</p></td>
+<td><p>指定服务的工作目录</p></td>
+</tr>
+<tr class="row-even"><td><p>RootDirectory</p></td>
+<td><p>指定服务进程的根目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>User</p></td>
+<td><p>指定运行服务的用户</p></td>
+</tr>
+<tr class="row-even"><td><p>Group</p></td>
+<td><p>指定运行服务的用户组</p></td>
+</tr>
+<tr class="row-odd"><td><p>MountFlags</p></td>
+<td><p>服务的Mount Namespace配置</p></td>
+</tr>
+<tr class="row-even"><td><p>LimitCPU</p></td>
+<td><p>限定特定服务的系统资源量，类似的还有LimitSTACK(堆栈) LimitNOFILE(文件fd数量) LimitNPROC(子进程数量)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id3">
+<h3><span class="section-number">8.4.1.3.2. </span>Unit文件占位符<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p><strong>Unit文件占位符</strong></p>
+<p>在unit文件中有时会需要一些与运行环境有关的信息，例如节点ID、运行服务的用户等，这些信息可以使用占位符来表示，然后再实际运行时被动态地替换实际的值</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>占位符</p></td>
+<td><p>描述</p></td>
+</tr>
+<tr class="row-even"><td><p>%n</p></td>
+<td><p>完整的Unit文件名字，包括.service后缀名</p></td>
+</tr>
+<tr class="row-odd"><td><p>%p</p></td>
+<td><p>unit模板文件名中&#64;符号之前的部分</p></td>
+</tr>
+<tr class="row-even"><td><p>%i</p></td>
+<td><p>文件名中&#64;符号之后的部分</p></td>
+</tr>
+<tr class="row-odd"><td><p>%t</p></td>
+<td><p>存放系统运行文件的目录，通常是”run”</p></td>
+</tr>
+<tr class="row-even"><td><p>%u</p></td>
+<td><p>运行服务的用户，如果没有指定默认为root</p></td>
+</tr>
+<tr class="row-odd"><td><p>%U</p></td>
+<td><p>运行服务的用户ID</p></td>
+</tr>
+<tr class="row-even"><td><p>%h</p></td>
+<td><p>运行服务的用户Home目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>%s</p></td>
+<td><p>运行服务的用户默认shell类型</p></td>
+</tr>
+<tr class="row-even"><td><p>%m</p></td>
+<td><p>实际运行节点的Machine ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>%b</p></td>
+<td><p>Boot ID，这是一个随机数，每次重启都会不一样</p></td>
+</tr>
+<tr class="row-even"><td><p>%H</p></td>
+<td><p>实际运行节点的主机名</p></td>
+</tr>
+<tr class="row-odd"><td><p>%v</p></td>
+<td><p>内核版本，uname -r的输出内容</p></td>
+</tr>
+<tr class="row-even"><td><p>%%</p></td>
+<td><p>在unit文件中表示一个普通的百分号</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">8.4.1.4. </span>systemd的资源管理<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<section id="systemctl">
+<h3><span class="section-number">8.4.1.4.1. </span>systemctl 命令<a class="headerlink" href="#systemctl" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># systemctl --help</span>
+<span class="n">systemctl</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="o">...</span><span class="p">]</span> <span class="p">{</span><span class="n">COMMAND</span><span class="p">}</span> <span class="o">...</span>
+<span class="n">Query</span> <span class="ow">or</span> <span class="n">send</span> <span class="n">control</span> <span class="n">commands</span> <span class="n">to</span> <span class="n">the</span> <span class="n">systemd</span> <span class="n">manager</span><span class="o">.</span>
+  <span class="o">-</span><span class="n">h</span> <span class="o">--</span><span class="n">help</span>           <span class="n">Show</span> <span class="n">this</span> <span class="n">help</span>
+         <span class="o">--</span><span class="n">version</span>        <span class="n">Show</span> <span class="n">package</span> <span class="n">version</span>
+         <span class="o">--</span><span class="n">system</span>         <span class="n">Connect</span> <span class="n">to</span> <span class="n">system</span> <span class="n">manager</span>
+  <span class="o">-</span><span class="n">H</span> <span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="p">[</span><span class="n">USER</span><span class="o">@</span><span class="p">]</span><span class="n">HOST</span>
+                                          <span class="n">Operate</span> <span class="n">on</span> <span class="n">remote</span> <span class="n">host</span>
+  <span class="o">-</span><span class="n">M</span> <span class="o">--</span><span class="n">machine</span><span class="o">=</span><span class="n">CONTAINER</span>
+                                          <span class="n">Operate</span> <span class="n">on</span> <span class="n">local</span> <span class="n">container</span>
+  <span class="o">-</span><span class="n">t</span> <span class="o">--</span><span class="nb">type</span><span class="o">=</span><span class="n">TYPE</span>      <span class="n">List</span> <span class="n">units</span> <span class="n">of</span> <span class="n">a</span> <span class="n">particular</span> <span class="nb">type</span>
+         <span class="o">--</span><span class="n">state</span><span class="o">=</span><span class="n">STATE</span>    <span class="n">List</span> <span class="n">units</span> <span class="k">with</span> <span class="n">particular</span> <span class="n">LOAD</span> <span class="ow">or</span> <span class="n">SUB</span> <span class="ow">or</span> <span class="n">ACTIVE</span> <span class="n">state</span>
+  <span class="o">-</span><span class="n">p</span> <span class="o">--</span><span class="nb">property</span><span class="o">=</span><span class="n">NAME</span>  <span class="n">Show</span> <span class="n">only</span> <span class="n">properties</span> <span class="n">by</span> <span class="n">this</span> <span class="n">name</span>
+  <span class="o">-</span><span class="n">a</span> <span class="o">--</span><span class="nb">all</span>            <span class="n">Show</span> <span class="nb">all</span> <span class="n">loaded</span> <span class="n">units</span><span class="o">/</span><span class="n">properties</span><span class="p">,</span> <span class="n">including</span> <span class="n">dead</span><span class="o">/</span><span class="n">empty</span>
+                                          <span class="n">ones</span><span class="o">.</span> <span class="n">To</span> <span class="nb">list</span> <span class="nb">all</span> <span class="n">units</span> <span class="n">installed</span> <span class="n">on</span> <span class="n">the</span> <span class="n">system</span><span class="p">,</span> <span class="n">use</span>
+                                          <span class="n">the</span> <span class="s1">&#39;list-unit-files&#39;</span> <span class="n">command</span> <span class="n">instead</span><span class="o">.</span>
+  <span class="o">-</span><span class="n">l</span> <span class="o">--</span><span class="n">full</span>           <span class="n">Don</span><span class="s1">&#39;t ellipsize unit names on output</span>
+  <span class="o">-</span><span class="n">r</span> <span class="o">--</span><span class="n">recursive</span>      <span class="n">Show</span> <span class="n">unit</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">host</span> <span class="ow">and</span> <span class="n">local</span> <span class="n">containers</span>
+         <span class="o">--</span><span class="n">reverse</span>        <span class="n">Show</span> <span class="n">reverse</span> <span class="n">dependencies</span> <span class="k">with</span> <span class="s1">&#39;list-dependencies&#39;</span>
+         <span class="o">--</span><span class="n">job</span><span class="o">-</span><span class="n">mode</span><span class="o">=</span><span class="n">MODE</span>  <span class="n">Specify</span> <span class="n">how</span> <span class="n">to</span> <span class="n">deal</span> <span class="k">with</span> <span class="n">already</span> <span class="n">queued</span> <span class="n">jobs</span><span class="p">,</span> <span class="n">when</span>
+                                          <span class="n">queueing</span> <span class="n">a</span> <span class="n">new</span> <span class="n">job</span>
+         <span class="o">--</span><span class="n">show</span><span class="o">-</span><span class="n">types</span>     <span class="n">When</span> <span class="n">showing</span> <span class="n">sockets</span><span class="p">,</span> <span class="n">explicitly</span> <span class="n">show</span> <span class="n">their</span> <span class="nb">type</span>
+  <span class="o">-</span><span class="n">i</span> <span class="o">--</span><span class="n">ignore</span><span class="o">-</span><span class="n">inhibitors</span>
+                                          <span class="n">When</span> <span class="n">shutting</span> <span class="n">down</span> <span class="ow">or</span> <span class="n">sleeping</span><span class="p">,</span> <span class="n">ignore</span> <span class="n">inhibitors</span>
+         <span class="o">--</span><span class="n">kill</span><span class="o">-</span><span class="n">who</span><span class="o">=</span><span class="n">WHO</span>   <span class="n">Who</span> <span class="n">to</span> <span class="n">send</span> <span class="n">signal</span> <span class="n">to</span>
+  <span class="o">-</span><span class="n">s</span> <span class="o">--</span><span class="n">signal</span><span class="o">=</span><span class="n">SIGNAL</span>  <span class="n">Which</span> <span class="n">signal</span> <span class="n">to</span> <span class="n">send</span>
+         <span class="o">--</span><span class="n">now</span>            <span class="n">Start</span> <span class="ow">or</span> <span class="n">stop</span> <span class="n">unit</span> <span class="ow">in</span> <span class="n">addition</span> <span class="n">to</span> <span class="n">enabling</span> <span class="ow">or</span> <span class="n">disabling</span> <span class="n">it</span>
+  <span class="o">-</span><span class="n">q</span> <span class="o">--</span><span class="n">quiet</span>          <span class="n">Suppress</span> <span class="n">output</span>
+         <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">block</span>       <span class="n">Do</span> <span class="ow">not</span> <span class="n">wait</span> <span class="n">until</span> <span class="n">operation</span> <span class="n">finished</span>
+         <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">wall</span>        <span class="n">Don</span><span class="s1">&#39;t send wall message before halt/power-off/reboot</span>
+         <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">reload</span>      <span class="n">Don</span><span class="s1">&#39;t reload daemon after en-/dis-abling unit files</span>
+         <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">legend</span>      <span class="n">Do</span> <span class="ow">not</span> <span class="nb">print</span> <span class="n">a</span> <span class="n">legend</span> <span class="p">(</span><span class="n">column</span> <span class="n">headers</span> <span class="ow">and</span> <span class="n">hints</span><span class="p">)</span>
+         <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">pager</span>       <span class="n">Do</span> <span class="ow">not</span> <span class="n">pipe</span> <span class="n">output</span> <span class="n">into</span> <span class="n">a</span> <span class="n">pager</span>
+         <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">ask</span><span class="o">-</span><span class="n">password</span>
+                                          <span class="n">Do</span> <span class="ow">not</span> <span class="n">ask</span> <span class="k">for</span> <span class="n">system</span> <span class="n">passwords</span>
+         <span class="o">--</span><span class="k">global</span>         <span class="n">Enable</span><span class="o">/</span><span class="n">disable</span> <span class="n">unit</span> <span class="n">files</span> <span class="n">globally</span>
+         <span class="o">--</span><span class="n">runtime</span>        <span class="n">Enable</span> <span class="n">unit</span> <span class="n">files</span> <span class="n">only</span> <span class="n">temporarily</span> <span class="n">until</span> <span class="nb">next</span> <span class="n">reboot</span>
+  <span class="o">-</span><span class="n">f</span> <span class="o">--</span><span class="n">force</span>          <span class="n">When</span> <span class="n">enabling</span> <span class="n">unit</span> <span class="n">files</span><span class="p">,</span> <span class="n">override</span> <span class="n">existing</span> <span class="n">symlinks</span>
+                                          <span class="n">When</span> <span class="n">shutting</span> <span class="n">down</span><span class="p">,</span> <span class="n">execute</span> <span class="n">action</span> <span class="n">immediately</span>
+         <span class="o">--</span><span class="n">preset</span><span class="o">-</span><span class="n">mode</span><span class="o">=</span>   <span class="n">Apply</span> <span class="n">only</span> <span class="n">enable</span><span class="p">,</span> <span class="n">only</span> <span class="n">disable</span><span class="p">,</span> <span class="ow">or</span> <span class="nb">all</span> <span class="n">presets</span>
+         <span class="o">--</span><span class="n">root</span><span class="o">=</span><span class="n">PATH</span>      <span class="n">Enable</span> <span class="n">unit</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">specified</span> <span class="n">root</span> <span class="n">directory</span>
+  <span class="o">-</span><span class="n">n</span> <span class="o">--</span><span class="n">lines</span><span class="o">=</span><span class="n">INTEGER</span>  <span class="n">Number</span> <span class="n">of</span> <span class="n">journal</span> <span class="n">entries</span> <span class="n">to</span> <span class="n">show</span>
+  <span class="o">-</span><span class="n">o</span> <span class="o">--</span><span class="n">output</span><span class="o">=</span><span class="n">STRING</span>  <span class="n">Change</span> <span class="n">journal</span> <span class="n">output</span> <span class="n">mode</span> <span class="p">(</span><span class="n">short</span><span class="p">,</span> <span class="n">short</span><span class="o">-</span><span class="n">iso</span><span class="p">,</span>
+                                                          <span class="n">short</span><span class="o">-</span><span class="n">precise</span><span class="p">,</span> <span class="n">short</span><span class="o">-</span><span class="n">monotonic</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span>
+                                                          <span class="n">export</span><span class="p">,</span> <span class="n">json</span><span class="p">,</span> <span class="n">json</span><span class="o">-</span><span class="n">pretty</span><span class="p">,</span> <span class="n">json</span><span class="o">-</span><span class="n">sse</span><span class="p">,</span> <span class="n">cat</span><span class="p">)</span>
+         <span class="o">--</span><span class="n">plain</span>          <span class="n">Print</span> <span class="n">unit</span> <span class="n">dependencies</span> <span class="k">as</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">instead</span> <span class="n">of</span> <span class="n">a</span> <span class="n">tree</span>
+<span class="n">Unit</span> <span class="n">Commands</span><span class="p">:</span>
+  <span class="nb">list</span><span class="o">-</span><span class="n">units</span> <span class="p">[</span><span class="n">PATTERN</span><span class="o">...</span><span class="p">]</span>         <span class="n">List</span> <span class="n">loaded</span> <span class="n">units</span>
+  <span class="nb">list</span><span class="o">-</span><span class="n">sockets</span> <span class="p">[</span><span class="n">PATTERN</span><span class="o">...</span><span class="p">]</span>       <span class="n">List</span> <span class="n">loaded</span> <span class="n">sockets</span> <span class="n">ordered</span> <span class="n">by</span> <span class="n">address</span>
+  <span class="nb">list</span><span class="o">-</span><span class="n">timers</span> <span class="p">[</span><span class="n">PATTERN</span><span class="o">...</span><span class="p">]</span>        <span class="n">List</span> <span class="n">loaded</span> <span class="n">timers</span> <span class="n">ordered</span> <span class="n">by</span> <span class="nb">next</span> <span class="n">elapse</span>
+  <span class="n">start</span> <span class="n">NAME</span><span class="o">...</span>                   <span class="n">Start</span> <span class="p">(</span><span class="n">activate</span><span class="p">)</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span>
+  <span class="n">stop</span> <span class="n">NAME</span><span class="o">...</span>                    <span class="n">Stop</span> <span class="p">(</span><span class="n">deactivate</span><span class="p">)</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span>
+  <span class="n">reload</span> <span class="n">NAME</span><span class="o">...</span>                  <span class="n">Reload</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span>
+  <span class="n">restart</span> <span class="n">NAME</span><span class="o">...</span>                 <span class="n">Start</span> <span class="ow">or</span> <span class="n">restart</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span>
+  <span class="k">try</span><span class="o">-</span><span class="n">restart</span> <span class="n">NAME</span><span class="o">...</span>             <span class="n">Restart</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span> <span class="k">if</span> <span class="n">active</span>
+  <span class="n">reload</span><span class="o">-</span><span class="ow">or</span><span class="o">-</span><span class="n">restart</span> <span class="n">NAME</span><span class="o">...</span>       <span class="n">Reload</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span> <span class="k">if</span> <span class="n">possible</span><span class="p">,</span>
+                                                                  <span class="n">otherwise</span> <span class="n">start</span> <span class="ow">or</span> <span class="n">restart</span>
+  <span class="n">reload</span><span class="o">-</span><span class="ow">or</span><span class="o">-</span><span class="k">try</span><span class="o">-</span><span class="n">restart</span> <span class="n">NAME</span><span class="o">...</span>   <span class="n">Reload</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span> <span class="k">if</span> <span class="n">possible</span><span class="p">,</span>
+                                                                  <span class="n">otherwise</span> <span class="n">restart</span> <span class="k">if</span> <span class="n">active</span>
+  <span class="n">isolate</span> <span class="n">NAME</span>                    <span class="n">Start</span> <span class="n">one</span> <span class="n">unit</span> <span class="ow">and</span> <span class="n">stop</span> <span class="nb">all</span> <span class="n">others</span>
+  <span class="n">kill</span> <span class="n">NAME</span><span class="o">...</span>                    <span class="n">Send</span> <span class="n">signal</span> <span class="n">to</span> <span class="n">processes</span> <span class="n">of</span> <span class="n">a</span> <span class="n">unit</span>
+  <span class="ow">is</span><span class="o">-</span><span class="n">active</span> <span class="n">PATTERN</span><span class="o">...</span>            <span class="n">Check</span> <span class="n">whether</span> <span class="n">units</span> <span class="n">are</span> <span class="n">active</span>
+  <span class="ow">is</span><span class="o">-</span><span class="n">failed</span> <span class="n">PATTERN</span><span class="o">...</span>            <span class="n">Check</span> <span class="n">whether</span> <span class="n">units</span> <span class="n">are</span> <span class="n">failed</span>
+  <span class="n">status</span> <span class="p">[</span><span class="n">PATTERN</span><span class="o">...|</span><span class="n">PID</span><span class="o">...</span><span class="p">]</span>      <span class="n">Show</span> <span class="n">runtime</span> <span class="n">status</span> <span class="n">of</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span>
+  <span class="n">show</span> <span class="p">[</span><span class="n">PATTERN</span><span class="o">...|</span><span class="n">JOB</span><span class="o">...</span><span class="p">]</span>        <span class="n">Show</span> <span class="n">properties</span> <span class="n">of</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span>
+                                                                  <span class="n">units</span><span class="o">/</span><span class="n">jobs</span> <span class="ow">or</span> <span class="n">the</span> <span class="n">manager</span>
+  <span class="n">cat</span> <span class="n">PATTERN</span><span class="o">...</span>                  <span class="n">Show</span> <span class="n">files</span> <span class="ow">and</span> <span class="n">drop</span><span class="o">-</span><span class="n">ins</span> <span class="n">of</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span>
+  <span class="nb">set</span><span class="o">-</span><span class="nb">property</span> <span class="n">NAME</span> <span class="n">ASSIGNMENT</span><span class="o">...</span> <span class="n">Sets</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">properties</span> <span class="n">of</span> <span class="n">a</span> <span class="n">unit</span>
+  <span class="n">help</span> <span class="n">PATTERN</span><span class="o">...|</span><span class="n">PID</span><span class="o">...</span>          <span class="n">Show</span> <span class="n">manual</span> <span class="k">for</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span>
+  <span class="n">reset</span><span class="o">-</span><span class="n">failed</span> <span class="p">[</span><span class="n">PATTERN</span><span class="o">...</span><span class="p">]</span>       <span class="n">Reset</span> <span class="n">failed</span> <span class="n">state</span> <span class="k">for</span> <span class="nb">all</span><span class="p">,</span> <span class="n">one</span><span class="p">,</span> <span class="ow">or</span> <span class="n">more</span>
+                                                                  <span class="n">units</span>
+  <span class="nb">list</span><span class="o">-</span><span class="n">dependencies</span> <span class="p">[</span><span class="n">NAME</span><span class="p">]</span>        <span class="n">Recursively</span> <span class="n">show</span> <span class="n">units</span> <span class="n">which</span> <span class="n">are</span> <span class="n">required</span>
+                                                                  <span class="ow">or</span> <span class="n">wanted</span> <span class="n">by</span> <span class="n">this</span> <span class="n">unit</span> <span class="ow">or</span> <span class="n">by</span> <span class="n">which</span> <span class="n">this</span>
+                                                                  <span class="n">unit</span> <span class="ow">is</span> <span class="n">required</span> <span class="ow">or</span> <span class="n">wanted</span>
+<span class="n">Unit</span> <span class="n">File</span> <span class="n">Commands</span><span class="p">:</span>
+  <span class="nb">list</span><span class="o">-</span><span class="n">unit</span><span class="o">-</span><span class="n">files</span> <span class="p">[</span><span class="n">PATTERN</span><span class="o">...</span><span class="p">]</span>    <span class="n">List</span> <span class="n">installed</span> <span class="n">unit</span> <span class="n">files</span>
+  <span class="n">enable</span> <span class="n">NAME</span><span class="o">...</span>                  <span class="n">Enable</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">unit</span> <span class="n">files</span>
+  <span class="n">disable</span> <span class="n">NAME</span><span class="o">...</span>                 <span class="n">Disable</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">unit</span> <span class="n">files</span>
+  <span class="n">reenable</span> <span class="n">NAME</span><span class="o">...</span>                <span class="n">Reenable</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">unit</span> <span class="n">files</span>
+  <span class="n">preset</span> <span class="n">NAME</span><span class="o">...</span>                  <span class="n">Enable</span><span class="o">/</span><span class="n">disable</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">unit</span> <span class="n">files</span>
+                                                                  <span class="n">based</span> <span class="n">on</span> <span class="n">preset</span> <span class="n">configuration</span>
+  <span class="n">preset</span><span class="o">-</span><span class="nb">all</span>                      <span class="n">Enable</span><span class="o">/</span><span class="n">disable</span> <span class="nb">all</span> <span class="n">unit</span> <span class="n">files</span> <span class="n">based</span> <span class="n">on</span>
+                                                                  <span class="n">preset</span> <span class="n">configuration</span>
+  <span class="ow">is</span><span class="o">-</span><span class="n">enabled</span> <span class="n">NAME</span><span class="o">...</span>              <span class="n">Check</span> <span class="n">whether</span> <span class="n">unit</span> <span class="n">files</span> <span class="n">are</span> <span class="n">enabled</span>
+  <span class="n">mask</span> <span class="n">NAME</span><span class="o">...</span>                    <span class="n">Mask</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span>
+  <span class="n">unmask</span> <span class="n">NAME</span><span class="o">...</span>                  <span class="n">Unmask</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span>
+  <span class="n">link</span> <span class="n">PATH</span><span class="o">...</span>                    <span class="n">Link</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span> <span class="n">files</span> <span class="n">into</span>
+                                                                  <span class="n">the</span> <span class="n">search</span> <span class="n">path</span>
+  <span class="n">add</span><span class="o">-</span><span class="n">wants</span> <span class="n">TARGET</span> <span class="n">NAME</span><span class="o">...</span>        <span class="n">Add</span> <span class="s1">&#39;Wants&#39;</span> <span class="n">dependency</span> <span class="k">for</span> <span class="n">the</span> <span class="n">target</span>
+                                                                  <span class="n">on</span> <span class="n">specified</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span>
+  <span class="n">add</span><span class="o">-</span><span class="n">requires</span> <span class="n">TARGET</span> <span class="n">NAME</span><span class="o">...</span>     <span class="n">Add</span> <span class="s1">&#39;Requires&#39;</span> <span class="n">dependency</span> <span class="k">for</span> <span class="n">the</span> <span class="n">target</span>
+                                                                  <span class="n">on</span> <span class="n">specified</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">units</span>
+  <span class="n">edit</span> <span class="n">NAME</span><span class="o">...</span>                    <span class="n">Edit</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">unit</span> <span class="n">files</span>
+  <span class="n">get</span><span class="o">-</span><span class="n">default</span>                     <span class="n">Get</span> <span class="n">the</span> <span class="n">name</span> <span class="n">of</span> <span class="n">the</span> <span class="n">default</span> <span class="n">target</span>
+  <span class="nb">set</span><span class="o">-</span><span class="n">default</span> <span class="n">NAME</span>                <span class="n">Set</span> <span class="n">the</span> <span class="n">default</span> <span class="n">target</span>
+<span class="n">Machine</span> <span class="n">Commands</span><span class="p">:</span>
+  <span class="nb">list</span><span class="o">-</span><span class="n">machines</span> <span class="p">[</span><span class="n">PATTERN</span><span class="o">...</span><span class="p">]</span>      <span class="n">List</span> <span class="n">local</span> <span class="n">containers</span> <span class="ow">and</span> <span class="n">host</span>
+<span class="n">Job</span> <span class="n">Commands</span><span class="p">:</span>
+  <span class="nb">list</span><span class="o">-</span><span class="n">jobs</span> <span class="p">[</span><span class="n">PATTERN</span><span class="o">...</span><span class="p">]</span>          <span class="n">List</span> <span class="n">jobs</span>
+  <span class="n">cancel</span> <span class="p">[</span><span class="n">JOB</span><span class="o">...</span><span class="p">]</span>                 <span class="n">Cancel</span> <span class="nb">all</span><span class="p">,</span> <span class="n">one</span><span class="p">,</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">jobs</span>
+<span class="n">Snapshot</span> <span class="n">Commands</span><span class="p">:</span>
+  <span class="n">snapshot</span> <span class="p">[</span><span class="n">NAME</span><span class="p">]</span>                 <span class="n">Create</span> <span class="n">a</span> <span class="n">snapshot</span>
+  <span class="n">delete</span> <span class="n">NAME</span><span class="o">...</span>                  <span class="n">Remove</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">snapshots</span>
+<span class="n">Environment</span> <span class="n">Commands</span><span class="p">:</span>
+  <span class="n">show</span><span class="o">-</span><span class="n">environment</span>                <span class="n">Dump</span> <span class="n">environment</span>
+  <span class="nb">set</span><span class="o">-</span><span class="n">environment</span> <span class="n">NAME</span><span class="o">=</span><span class="n">VALUE</span><span class="o">...</span>   <span class="n">Set</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">environment</span> <span class="n">variables</span>
+  <span class="n">unset</span><span class="o">-</span><span class="n">environment</span> <span class="n">NAME</span><span class="o">...</span>       <span class="n">Unset</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">environment</span> <span class="n">variables</span>
+  <span class="n">import</span><span class="o">-</span><span class="n">environment</span> <span class="p">[</span><span class="n">NAME</span><span class="o">...</span><span class="p">]</span>    <span class="n">Import</span> <span class="nb">all</span> <span class="ow">or</span> <span class="n">some</span> <span class="n">environment</span> <span class="n">variables</span>
+<span class="n">Manager</span> <span class="n">Lifecycle</span> <span class="n">Commands</span><span class="p">:</span>
+  <span class="n">daemon</span><span class="o">-</span><span class="n">reload</span>                   <span class="n">Reload</span> <span class="n">systemd</span> <span class="n">manager</span> <span class="n">configuration</span>
+  <span class="n">daemon</span><span class="o">-</span><span class="n">reexec</span>                   <span class="n">Reexecute</span> <span class="n">systemd</span> <span class="n">manager</span>
+<span class="n">System</span> <span class="n">Commands</span><span class="p">:</span>
+  <span class="ow">is</span><span class="o">-</span><span class="n">system</span><span class="o">-</span><span class="n">running</span>               <span class="n">Check</span> <span class="n">whether</span> <span class="n">system</span> <span class="ow">is</span> <span class="n">fully</span> <span class="n">running</span>
+  <span class="n">default</span>                         <span class="n">Enter</span> <span class="n">system</span> <span class="n">default</span> <span class="n">mode</span>
+  <span class="n">rescue</span>                          <span class="n">Enter</span> <span class="n">system</span> <span class="n">rescue</span> <span class="n">mode</span>
+  <span class="n">emergency</span>                       <span class="n">Enter</span> <span class="n">system</span> <span class="n">emergency</span> <span class="n">mode</span>
+  <span class="n">halt</span>                            <span class="n">Shut</span> <span class="n">down</span> <span class="ow">and</span> <span class="n">halt</span> <span class="n">the</span> <span class="n">system</span>
+  <span class="n">poweroff</span>                        <span class="n">Shut</span> <span class="n">down</span> <span class="ow">and</span> <span class="n">power</span><span class="o">-</span><span class="n">off</span> <span class="n">the</span> <span class="n">system</span>
+  <span class="n">reboot</span> <span class="p">[</span><span class="n">ARG</span><span class="p">]</span>                    <span class="n">Shut</span> <span class="n">down</span> <span class="ow">and</span> <span class="n">reboot</span> <span class="n">the</span> <span class="n">system</span>
+  <span class="n">kexec</span>                           <span class="n">Shut</span> <span class="n">down</span> <span class="ow">and</span> <span class="n">reboot</span> <span class="n">the</span> <span class="n">system</span> <span class="k">with</span> <span class="n">kexec</span>
+  <span class="n">exit</span>                            <span class="n">Request</span> <span class="n">user</span> <span class="n">instance</span> <span class="n">exit</span>
+  <span class="n">switch</span><span class="o">-</span><span class="n">root</span> <span class="n">ROOT</span> <span class="p">[</span><span class="n">INIT</span><span class="p">]</span>         <span class="n">Change</span> <span class="n">to</span> <span class="n">a</span> <span class="n">different</span> <span class="n">root</span> <span class="n">file</span> <span class="n">system</span>
+  <span class="n">suspend</span>                         <span class="n">Suspend</span> <span class="n">the</span> <span class="n">system</span>
+  <span class="n">hibernate</span>                       <span class="n">Hibernate</span> <span class="n">the</span> <span class="n">system</span>
+  <span class="n">hybrid</span><span class="o">-</span><span class="n">sleep</span>                    <span class="n">Hibernate</span> <span class="ow">and</span> <span class="n">suspend</span> <span class="n">the</span> <span class="n">system</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3><span class="section-number">8.4.1.4.2. </span>Unit管理<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>查看当前系统的所有Unit</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># 列出正在运行的 Unit
+$ systemctl list-units
+
+# 列出所有Unit，包括没有找到配置文件的或者启动失败的
+$ systemctl list-units --all
+
+# 列出所有没有运行的 Unit
+$ systemctl list-units --all --state=inactive
+
+# 列出所有加载失败的 Unit
+$ systemctl list-units --failed
+
+# 列出所有正在运行的、类型为 service 的 Unit
+$ systemctl list-units --type=service
+
+# 查看 Unit 配置文件的内容
+$ systemctl cat docker.service
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>查看Unit状态</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>enable : 已建立启动链接</p></li>
+<li><p>disabled : 没建立启动链接</p></li>
+<li><p>static : 该配置文件没有[install]部分(无法执行)，只能作为其他配置文件的依赖</p></li>
+<li><p>masked : 该配置文件被禁止建立启动链接</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># 显示系统状态
+$ systemctl status
+
+# 显示单个 Unit 的状态
+$ ystemctl status bluetooth.service
+
+# 显示远程主机的某个 Unit 的状态
+$ systemctl -H root@rhel7.example.com status httpd.service
+</pre></div>
+</div>
+<p><strong>Unit管理</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># 立即启动一个服务
+$ sudo systemctl start apache.service
+
+# 立即停止一个服务
+$ sudo systemctl stop apache.service
+
+# 重启一个服务
+$ sudo systemctl restart apache.service
+
+# 杀死一个服务的所有子进程
+$ sudo systemctl kill apache.service
+
+# 重新加载一个服务的配置文件
+$ sudo systemctl reload apache.service
+
+# 重载所有修改过的配置文件
+$ sudo systemctl daemon-reload
+
+# 显示某个 Unit 的所有底层参数
+$ systemctl show httpd.service
+
+# 显示某个 Unit 的指定属性的值
+$ systemctl show -p CPUShares httpd.service
+
+# 设置某个 Unit 的指定属性
+$ sudo systemctl set-property httpd.service CPUShares=500
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>查看Unit的依赖关系</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># 列出一个 Unit 的所有依赖，默认不会列出 target 类型
+$ systemctl list-dependencies nginx.service
+
+# 列出一个 Unit 的所有依赖，包括 target 类型
+$ systemctl list-dependencies --all nginx.service
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3><span class="section-number">8.4.1.4.3. </span>服务的生命周期<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h3>
+<ol class="arabic simple">
+<li><p>systemctl enable: 在/etc/systemd/system中建立符号链接</p></li>
+<li><p>systemctl start : 依次启动定义在unit文件中的ExecStartPre ExecStart ExecStartPost命令</p></li>
+<li><p>systemctl stop：依次停止定义在 Unit 文件中的 ExecStopPre、ExecStop 和 ExecStopPost 命令</p></li>
+<li><p>systemctl restart：重启服务</p></li>
+<li><p>systemctl kill：立即杀死服务</p></li>
+<li><p>systemctl daemon-reload：Systemd 会将 Unit 文件的内容写到缓存中，因此当 Unit 文件被更新时，需要告诉 Systemd 重新读取所有的 Unit 文件</p></li>
+<li><p>systemctl reset-failed：移除标记为丢失的 Unit 文件。在删除 Unit 文件后，由于缓存的关系，即使通过 daemon-reload 更新了缓存，在 list-units 中依然会显示标记为 not-found 的 Unit。</p></li>
+</ol>
+</section>
+<section id="target">
+<h3><span class="section-number">8.4.1.4.4. </span>Target管理<a class="headerlink" href="#target" title="此标题的永久链接"></a></h3>
+<p>Target就是一个Unit组，包含许多相关的Unit，启动某个Target的时候，systemd就会启动里面所有的Unit</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># 查看当前系统的所有 Target
+$ systemctl list-unit-files --type=target
+
+# 查看一个 Target 包含的所有 Unit
+$ systemctl list-dependencies multi-user.target
+
+# 查看启动时的默认 Target
+$ systemctl get-default
+
+# 设置启动时的默认 Target
+$ sudo systemctl set-default multi-user.target
+
+# 切换 Target 时，默认不关闭前一个 Target 启动的进程，systemctl isolate 命令改变这种行为，关闭前一个 Target 里面所有不属于后一个 Target 的进程
+$ sudo systemctl isolate multi-user.target
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3><span class="section-number">8.4.1.4.5. </span>日志管理<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>systemd通过其标准日志服务Journald提供的配套程序journald将其管理的所有的后台进程打印到std::out的输出重定向到了日志文件。默认日志最大限制为所在文件系统容量的10%，
+可以修改/etc/systemd/journald.conf中的SystemMaxUse来指定该最大限制</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># 查看所有日志（默认情况下 ，只保存本次启动的日志）
+$ sudo journalctl
+
+# 查看内核日志（不显示应用日志）：--dmesg 或 -k
+$ sudo journalctl -k
+
+# 查看系统本次启动的日志（其中包括了内核日志和各类系统服务的控制台输出）：--system 或 -b
+$ sudo journalctl -b
+$ sudo journalctl -b -0
+
+# 查看上一次启动的日志（需更改设置）
+$ sudo journalctl -b -1
+
+# 查看指定服务的日志：--unit 或 -u
+$ sudo journalctl -u docker.servcie
+
+# 查看指定服务的日志
+$ sudo journalctl /usr/lib/systemd/systemd
+
+# 实时滚动显示最新日志
+$ sudo journalctl -f
+
+# 查看指定时间的日志
+$ sudo journalctl --since=&quot;2012-10-30 18:17:16&quot;
+$ sudo journalctl --since &quot;20 min ago&quot;
+$ sudo journalctl --since yesterday
+$ sudo journalctl --since &quot;2015-01-10&quot; --until &quot;2015-01-11 03:00&quot;
+$ sudo journalctl --since 09:00 --until &quot;1 hour ago&quot;
+
+# 显示尾部的最新 10 行日志：--lines 或 -n
+$ sudo journalctl -n
+
+# 显示尾部指定行数的日志
+$ sudo journalctl -n 20
+
+# 将最新的日志显示在前面
+$ sudo journalctl -r -u docker.service
+
+# 改变输出的格式：--output 或 -o
+$ sudo journalctl -r -u docker.service -o json-pretty
+
+# 查看指定进程的日志
+$ sudo journalctl _PID=1
+
+# 查看某个路径的脚本的日志
+$ sudo journalctl /usr/bin/bash
+
+# 查看指定用户的日志
+$ sudo journalctl _UID=33 --since today
+
+# 查看某个 Unit 的日志
+$ sudo journalctl -u nginx.service
+$ sudo journalctl -u nginx.service --since today
+
+# 实时滚动显示某个 Unit 的最新日志
+$ sudo journalctl -u nginx.service -f
+
+# 合并显示多个 Unit 的日志
+$ journalctl -u nginx.service -u php-fpm.service --since today
+
+# 查看指定优先级（及其以上级别）的日志，共有 8 级
+# 0: emerg
+# 1: alert
+# 2: crit
+# 3: err
+# 4: warning
+# 5: notice
+# 6: info
+# 7: debug
+$ sudo journalctl -p err -b
+
+# 日志默认分页输出，--no-pager 改为正常的标准输出
+$ sudo journalctl --no-pager
+
+# 以 JSON 格式（单行）输出
+$ sudo journalctl -b -u nginx.service -o json
+
+# 以 JSON 格式（多行）输出，可读性更好
+$ sudo journalctl -b -u nginx.serviceqq
+ -o json-pretty
+
+# 显示日志占据的硬盘空间
+$ sudo journalctl --disk-usage
+
+# 指定日志文件占据的最大空间
+$ sudo journalctl --vacuum-size=1G
+
+# 指定日志文件保存多久
+$ sudo journalctl --vacuum-time=1years
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id8">
+<h2><span class="section-number">8.4.1.5. </span>systemd工具集<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>systemctl：用于检查和控制各种系统服务和资源的状态
+bootctl：用于查看和管理系统启动分区
+hostnamectl：用于查看和修改系统的主机名和主机信息
+journalctl：用于查看系统日志和各类应用服务日志
+localectl：用于查看和管理系统的地区信息
+loginctl：用于管理系统已登录用户和 Session 的信息
+machinectl：用于操作 Systemd 容器
+timedatectl：用于查看和管理系统的时间和时区信息
+systemd-analyze 显示此次系统启动时运行每个服务所消耗的时间，可以用于分析系统启动过程中的性能瓶颈
+systemd-ask-password：辅助性工具，用星号屏蔽用户的任意输入，然后返回实际输入的内容
+systemd-cat：用于将其他命令的输出重定向到系统日志
+systemd-cgls：递归地显示指定 CGroup 的继承链
+systemd-cgtop：显示系统当前最耗资源的 CGroup 单元
+systemd-escape：辅助性工具，用于去除指定字符串中不能作为 Unit 文件名的字符
+systemd-hwdb：Systemd 的内部工具，用于更新硬件数据库
+systemd-delta：对比当前系统配置与默认系统配置的差异
+systemd-detect-virt：显示主机的虚拟化类型
+systemd-inhibit：用于强制延迟或禁止系统的关闭、睡眠和待机事件
+systemd-machine-id-setup：Systemd 的内部工具，用于给 Systemd 容器生成 ID
+systemd-notify：Systemd 的内部工具，用于通知服务的状态变化
+systemd-nspawn：用于创建 Systemd 容器
+systemd-path：Systemd 的内部工具，用于显示系统上下文中的各种路径配置
+systemd-run：用于将任意指定的命令包装成一个临时的后台服务运行
+systemd-stdio- bridge：Systemd 的内部 工具，用于将程序的标准输入输出重定向到系统总线
+systemd-tmpfiles：Systemd 的内部工具，用于创建和管理临时文件目录
+systemd-tty-ask-password-agent：用于响应后台服务进程发出的输入密码请求
+</pre></div>
+</div>
+<p><strong>systemctl</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># 重启系统
+$ sudo systemctl reboot
+
+# 关闭系统，切断电源
+$ sudo systemctl poweroff
+
+# CPU停止工作
+$ sudo systemctl halt
+
+# 暂停系统
+$ sudo systemctl suspend
+
+# 让系统进入冬眠状态
+$ sudo systemctl hibernate
+
+# 让系统进入交互式休眠状态
+$ sudo systemctl hybrid-sleep
+
+# 启动进入救援状态（单用户状态）
+$ sudo systemctl rescue
+</pre></div>
+</div>
+<p><strong>systemd-analyze</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># 查看启动耗时
+$ systemd-analyze
+
+# 查看每个服务的启动耗时
+$ systemd-analyze blame
+
+# 显示瀑布状的启动过程流
+$ systemd-analyze critical-chain
+
+# 显示指定服务的启动流
+$ systemd-analyze critical-chain atd.servicE
+</pre></div>
+</div>
+<p><strong>hostnamectl</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># 显示当前主机的信息
+$ hostnamectl
+
+# 设置主机名。
+$ sudo hostnamectl set-hostname rhel7
+</pre></div>
+</div>
+<p><strong>timedatectl</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># 查看当前时区设置
+$ timedatectl
+
+# 显示所有可用的时区
+$ timedatectl list-timezones
+
+# 设置当前时区
+$ sudo timedatectl set-timezone America/New_York
+$ sudo timedatectl set-time YYYY-MM-DD
+$ sudo timedatectl set-time HH:MM:SS
+</pre></div>
+</div>
+<p><strong>loginctl</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># 列出当前 session
+$ loginctl list-sessions
+
+# 列出当前登录用户
+$ loginctl list-users
+
+# 列出显示指定用户的信息
+$ loginctl show-user ruanyf
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="8.4. systemd 笔记" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../ota/index.html" class="btn btn-neutral float-right" title="8.5. ota" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

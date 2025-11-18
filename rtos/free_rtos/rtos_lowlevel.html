@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>10.1.6. RTOS底层原理 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="11. android" href="../../android/index.html" />
+    <link rel="prev" title="10.1.5. free_rtos基础知识体系梳理" href="base_struct.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">10. rtos note</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">10.1. free_rtos学习笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="FreeRTOS_summary.html">10.1.1. FreeRTOS概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FreeRTOS_mm.html">10.1.2. FreeRTOS内存管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FreeRTOS_task.html">10.1.3. FreeRTOS任务管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FreeRTOS_queue.html">10.1.4. FreeRTOS 队列</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base_struct.html">10.1.5. free_rtos基础知识体系梳理</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">10.1.6. RTOS底层原理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">10.1.6.1. 处理器模式和软件执行权限</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">10.1.6.2. 栈</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">10.1.6.3. 核心寄存器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">10.1.6.4. 异常模式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">10.1.6.5. 异常进入和返回</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">10. </span>rtos note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">10.1. </span>free_rtos学习笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">10.1.6. </span>RTOS底层原理</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/rtos/free_rtos/rtos_lowlevel.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rtos">
+<h1><span class="section-number">10.1.6. </span>RTOS底层原理<a class="headerlink" href="#rtos" title="此标题的永久链接"></a></h1>
+<p>OS的底层运行原理依赖于芯片架构，以下内容仅适用于Cortex-M系列的MCU</p>
+<section id="id1">
+<h2><span class="section-number">10.1.6.1. </span>处理器模式和软件执行权限<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>Cortex-M系列的处理器有两种模式</p>
+<ul class="simple">
+<li><p>Thread mode(线程模式): 用于执行应用软件，处理器在复位结束时进入线程模式</p></li>
+<li><p>Handle mode:用于处理异常(例如中断)，处理器在完成所有异常处理后返回线程模式，RTOS的调度都在该模式下进行</p></li>
+</ul>
+<img alt="../../_images/rtos_mode.png" src="../../_images/rtos_mode.png" />
+<p>软件执行权限级别为:</p>
+<ul class="simple">
+<li><p>无特权: 对MSR和MRS指令的访问受限，无法使用CPS指令．无法访问系统定时器，NVIC或系统控制块．</p></li>
+<li><p>有特权: 可以使用所有指令并访问所有资源</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2><span class="section-number">10.1.6.2. </span>栈<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>Cortex-M实现了两个栈: main stack和process stack，每个栈的指针保存在独立的寄存器中</p>
+<img alt="../../_images/stack_M.png" src="../../_images/stack_M.png" />
+</section>
+<section id="id3">
+<h2><span class="section-number">10.1.6.3. </span>核心寄存器<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<img alt="../../_images/core_reg.png" src="../../_images/core_reg.png" />
+<ul class="simple">
+<li><p>LR(R14): link register,它存储子程序，函数调用和异常的返回信息</p></li>
+<li><p>CONTROL: 当处理器处于线程模式时，CONTROL寄存器控制使用的栈和软件执行的特权级别</p></li>
+</ul>
+</section>
+<section id="id4">
+<h2><span class="section-number">10.1.6.4. </span>异常模式<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>异常类型有: Reset, NMI, HardFault, IRQ.</p>
+<img alt="../../_images/exception_mode.png" src="../../_images/exception_mode.png" />
+<p>有三个异常处理是RTOS动作的基础: <code class="docutils literal notranslate"><span class="pre">SVCall</span></code> , <code class="docutils literal notranslate"><span class="pre">PendSV</span></code> , <code class="docutils literal notranslate"><span class="pre">SysTick</span></code></p>
+<ul class="simple">
+<li><p>SVCall: supervisor call(SVC)是由SVC指令触发的异常，应用程序可以使用SVC指令访问操作系统内核函数和设备驱动函数．类似于linux的SysCall</p></li>
+<li><p>PendSV: 一种中断驱动的系统级服务请求，当没有其他异常处于活动状态时使用PendSV进行上下文切换，所以RTOS的任务切换(上下文切换)都是在PendSV异常处理函数里执行的.
+RTOS必须考虑任务抢占的实时性和中断响应的实时性，因此PendSV的理念是，他的优先级大于任务，小于其他异常．当触发PendSV(任务调度)时，它可以打断任何任务的执行，
+进行任务优先级调度．</p></li>
+</ul>
+<p>触发PendSV的方法: 将ICSR寄存器的bit28的PENDSVSET设定为1</p>
+<img alt="../../_images/ICSR.png" src="../../_images/ICSR.png" />
+<p>RTOS的系统调用API,如task delay,获取信号量，发送消息，接收消息的函数里都会触发PendSV.</p>
+<ul class="simple">
+<li><p>SysTick: SysTick异常是系统计时器达到0时生成的异常，操作系统中使用此异常作为滴答定时器，一般周期为1ms, rtos在systick异常处理中判断是否需要任务切换，如果有则触发PendSV</p></li>
+</ul>
+</section>
+<section id="id5">
+<h2><span class="section-number">10.1.6.5. </span>异常进入和返回<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<p>处理任务上下文切换时，要求速度和效率，因此RTOS处理上下文切换(PendSV处理函数)的代码大部分都是汇编写的．</p>
+<p>当进入异常时，处理器会自动进行入栈操作，栈中会包含异常返回的地址，该值在异常返回时恢复PC.入栈的同时，处理器从向量表中读取异常处理地址．入栈完成后处理器开始
+执行异常处理程序．</p>
+<img alt="../../_images/push_stack.png" src="../../_images/push_stack.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>R4-R11不会自动入栈，如果有需要就自己写代码控制</p>
+</div>
+<p><strong>总结</strong></p>
+<img alt="../../_images/task.png" src="../../_images/task.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="base_struct.html" class="btn btn-neutral float-left" title="10.1.5. free_rtos基础知识体系梳理" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../android/index.html" class="btn btn-neutral float-right" title="11. android" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

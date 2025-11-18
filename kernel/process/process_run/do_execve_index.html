@@ -1,0 +1,581 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.3.3.1. linux进程启动过程分析 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.3.3.2. linux elf文件格式详解" href="elf_index.html" />
+    <link rel="prev" title="3.3.3. 进程运行" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.3. 进程管理与调度</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../process_overview/index.html">3.3.1. 进程描述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_create/index.html">3.3.2. 进程创建</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">3.3.3. 进程运行</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.3.3.1. linux进程启动过程分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="elf_index.html">3.3.3.2. linux elf文件格式详解</a></li>
+<li class="toctree-l4"><a class="reference internal" href="load_elf_index.html">3.3.3.3. elf文件加载过程</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../process_schedule/index.html">3.3.4. 进程调度</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_cfs/index.html">3.3.5. 调度普通进程-完全公平调度器CFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thread_info/index.html">3.3.6. thread_info与内核栈stack的关系</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.3. </span>进程管理与调度</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.3.3. </span>进程运行</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.3.3.1. </span>linux进程启动过程分析</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/process/process_run/do_execve_index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux">
+<h1><span class="section-number">3.3.3.1. </span>linux进程启动过程分析<a class="headerlink" href="#linux" title="此标题的永久链接"></a></h1>
+<p>fork clone等复制出来的是父进程的一个副本，那么我们想加载新的程序,可以通过execve来加载和启动新的程序</p>
+<ul class="simple">
+<li><p>exec()函数族</p></li>
+</ul>
+<p>exec函数一共6个,其中execve为内核级别系统调用，其他(execl, execle, execlp, execv, execvp)都是调用execve的库函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">execl</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">...</span><span class="p">);</span>
+<span class="nb">int</span> <span class="n">execlp</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">...</span><span class="p">);</span>
+<span class="nb">int</span> <span class="n">execle</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">char</span> <span class="o">*</span><span class="n">const</span> <span class="n">envp</span><span class="p">[]);</span>
+<span class="nb">int</span> <span class="n">execv</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[]);</span>
+<span class="nb">int</span> <span class="n">execvp</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">file</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+</pre></div>
+</div>
+<p>linux下标准的可执行文件格式是 <code class="docutils literal notranslate"><span class="pre">elf</span></code> ,elf(executable and linking format)是一种对象文件的格式，用于定义不同类型的对象文件(object files)中都放了
+什么东西以及都以什么样的格式去存放这些东西.</p>
+<p>但是linux也支持其他不同的可执行程序格式,各种可执行程序的执行方式不尽相同，因此linux内核每种被注册的可执行程序格式都用 <code class="docutils literal notranslate"><span class="pre">linux_bin_fmt</span></code> 来存储，
+其中记录了可执行程序的加载和执行函数，同时需要一种方法来保存可执行程序的信息,比如果可执行文件的路径，运行的参数和环境变量等信息,即 <code class="docutils literal notranslate"><span class="pre">linux_bin_prm</span></code> 结构</p>
+<ul class="simple">
+<li><p>struct linux_bin_prm结描述一个可执行程序</p></li>
+</ul>
+<p>linux_bin_prm在include/linux/binfmts.h中定义,用来保存要执行的文件相关信息,包括可执行程序的路径，参数和环境变量等信息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">This</span> <span class="n">structure</span> <span class="ow">is</span> <span class="n">used</span> <span class="n">to</span> <span class="n">hold</span> <span class="n">the</span> <span class="n">arguments</span> <span class="n">that</span> <span class="n">are</span> <span class="n">used</span> <span class="n">when</span> <span class="n">loading</span> <span class="n">binaries</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">struct</span> <span class="n">linux_binprm</span> <span class="p">{</span>
+<span class="c1">#ifdef CONFIG_MMU</span>
+    <span class="n">struct</span> <span class="n">vm_area_struct</span> <span class="o">*</span><span class="n">vma</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">vma_pages</span><span class="p">;</span>
+<span class="c1">#else</span>
+<span class="c1"># define MAX_ARG_PAGES      32</span>
+    <span class="n">struct</span> <span class="n">page</span> <span class="o">*</span><span class="n">page</span><span class="p">[</span><span class="n">MAX_ARG_PAGES</span><span class="p">];</span>
+<span class="c1">#endif</span>
+    <span class="n">struct</span> <span class="n">mm_struct</span> <span class="o">*</span><span class="n">mm</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">p</span><span class="p">;</span> <span class="o">/*</span> <span class="n">current</span> <span class="n">top</span> <span class="n">of</span> <span class="n">mem</span> <span class="o">*/</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">argmin</span><span class="p">;</span> <span class="o">/*</span> <span class="n">rlimit</span> <span class="n">marker</span> <span class="k">for</span> <span class="n">copy_strings</span><span class="p">()</span> <span class="o">*/</span>
+    <span class="n">unsigned</span> <span class="nb">int</span>
+        <span class="o">/*</span>
+         <span class="o">*</span> <span class="kc">True</span> <span class="n">after</span> <span class="n">the</span> <span class="n">bprm_set_creds</span> <span class="n">hook</span> <span class="n">has</span> <span class="n">been</span> <span class="n">called</span> <span class="n">once</span>
+         <span class="o">*</span> <span class="p">(</span><span class="n">multiple</span> <span class="n">calls</span> <span class="n">can</span> <span class="n">be</span> <span class="n">made</span> <span class="n">via</span> <span class="n">prepare_binprm</span><span class="p">()</span> <span class="k">for</span>
+         <span class="o">*</span> <span class="n">binfmt_script</span><span class="o">/</span><span class="n">misc</span><span class="p">)</span><span class="o">.</span>
+         <span class="o">*/</span>
+        <span class="n">called_set_creds</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+        <span class="o">/*</span>
+         <span class="o">*</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">to</span> <span class="n">the</span> <span class="n">commoncaps</span> <span class="n">bprm_set_creds</span>
+         <span class="o">*</span> <span class="n">hook</span> <span class="p">(</span><span class="n">due</span> <span class="n">to</span> <span class="n">multiple</span> <span class="n">prepare_binprm</span><span class="p">()</span> <span class="n">calls</span> <span class="kn">from</span> <span class="nn">the</span>
+         <span class="o">*</span> <span class="n">binfmt_script</span><span class="o">/</span><span class="n">misc</span> <span class="n">handlers</span><span class="p">)</span> <span class="n">resulted</span> <span class="ow">in</span> <span class="n">elevated</span>
+         <span class="o">*</span> <span class="n">privileges</span><span class="o">.</span>
+         <span class="o">*/</span>
+        <span class="n">cap_elevated</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+        <span class="o">/*</span>
+         <span class="o">*</span> <span class="n">Set</span> <span class="n">by</span> <span class="n">bprm_set_creds</span> <span class="n">hook</span> <span class="n">to</span> <span class="n">indicate</span> <span class="n">a</span> <span class="n">privilege</span><span class="o">-</span><span class="n">gaining</span>
+         <span class="o">*</span> <span class="n">exec</span> <span class="n">has</span> <span class="n">happened</span><span class="o">.</span> <span class="n">Used</span> <span class="n">to</span> <span class="n">sanitize</span> <span class="n">execution</span> <span class="n">environment</span>
+         <span class="o">*</span> <span class="ow">and</span> <span class="n">to</span> <span class="nb">set</span> <span class="n">AT_SECURE</span> <span class="n">auxv</span> <span class="k">for</span> <span class="n">glibc</span><span class="o">.</span>
+         <span class="o">*/</span>
+        <span class="n">secureexec</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="c1">#ifdef __alpha__</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">taso</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>
+<span class="c1">#endif</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">recursion_depth</span><span class="p">;</span> <span class="o">/*</span> <span class="n">only</span> <span class="k">for</span> <span class="n">search_binary_handler</span><span class="p">()</span> <span class="o">*/</span>
+    <span class="n">struct</span> <span class="n">file</span> <span class="o">*</span> <span class="n">file</span><span class="p">;</span> <span class="o">//</span><span class="n">要执行的文件</span>
+    <span class="n">struct</span> <span class="n">cred</span> <span class="o">*</span><span class="n">cred</span><span class="p">;</span>      <span class="o">/*</span> <span class="n">new</span> <span class="n">credentials</span> <span class="o">*/</span>
+    <span class="nb">int</span> <span class="n">unsafe</span><span class="p">;</span>             <span class="o">/*</span> <span class="n">how</span> <span class="n">unsafe</span> <span class="n">this</span> <span class="n">exec</span> <span class="ow">is</span> <span class="p">(</span><span class="n">mask</span> <span class="n">of</span> <span class="n">LSM_UNSAFE_</span><span class="o">*</span><span class="p">)</span> <span class="o">*/</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">per_clear</span><span class="p">;</span> <span class="o">/*</span> <span class="n">bits</span> <span class="n">to</span> <span class="n">clear</span> <span class="ow">in</span> <span class="n">current</span><span class="o">-&gt;</span><span class="n">personality</span> <span class="o">*/</span>
+    <span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">envc</span><span class="p">;</span> <span class="o">//</span><span class="n">命令行参数和环境变量数目</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span> <span class="n">filename</span><span class="p">;</span>  <span class="o">/*</span> <span class="n">Name</span> <span class="n">of</span> <span class="n">binary</span> <span class="k">as</span> <span class="n">seen</span> <span class="n">by</span> <span class="n">procps</span> <span class="o">*/</span>
+    <span class="o">//</span><span class="n">要执行的文件名称</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span> <span class="n">interp</span><span class="p">;</span>    <span class="o">/*</span> <span class="n">Name</span> <span class="n">of</span> <span class="n">the</span> <span class="n">binary</span> <span class="n">really</span> <span class="n">executed</span><span class="o">.</span> <span class="n">Most</span>
+                   <span class="n">of</span> <span class="n">the</span> <span class="n">time</span> <span class="n">same</span> <span class="k">as</span> <span class="n">filename</span><span class="p">,</span> <span class="n">but</span> <span class="n">could</span> <span class="n">be</span>
+                   <span class="n">different</span> <span class="k">for</span> <span class="n">binfmt_</span><span class="p">{</span><span class="n">misc</span><span class="p">,</span><span class="n">script</span><span class="p">}</span> <span class="o">*/</span>
+    <span class="n">unsigned</span> <span class="n">interp_flags</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="n">interp_data</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">loader</span><span class="p">,</span> <span class="n">exec</span><span class="p">;</span>
+
+    <span class="n">struct</span> <span class="n">rlimit</span> <span class="n">rlim_stack</span><span class="p">;</span> <span class="o">/*</span> <span class="n">Saved</span> <span class="n">RLIMIT_STACK</span> <span class="n">used</span> <span class="n">during</span> <span class="n">exec</span><span class="o">.</span> <span class="o">*/</span>
+
+    <span class="n">char</span> <span class="n">buf</span><span class="p">[</span><span class="n">BINPRM_BUF_SIZE</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">__randomize_layout</span><span class="p">;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>struct linux_binfmt可执行程序的结构</p></li>
+</ul>
+<p>linux_binfmt定义在include/linux/binfmts.h</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">This</span> <span class="n">structure</span> <span class="n">defines</span> <span class="n">the</span> <span class="n">functions</span> <span class="n">that</span> <span class="n">are</span> <span class="n">used</span> <span class="n">to</span> <span class="n">load</span> <span class="n">the</span> <span class="n">binary</span> <span class="n">formats</span> <span class="n">that</span>
+ <span class="o">*</span> <span class="n">linux</span> <span class="n">accepts</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">struct</span> <span class="n">linux_binfmt</span> <span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="n">lh</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">module</span> <span class="o">*</span><span class="n">module</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">load_binary</span><span class="p">)(</span><span class="n">struct</span> <span class="n">linux_binprm</span> <span class="o">*</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">load_shlib</span><span class="p">)(</span><span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">core_dump</span><span class="p">)(</span><span class="n">struct</span> <span class="n">coredump_params</span> <span class="o">*</span><span class="n">cprm</span><span class="p">);</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">min_coredump</span><span class="p">;</span>     <span class="o">/*</span> <span class="n">minimal</span> <span class="n">dump</span> <span class="n">size</span> <span class="o">*/</span>
+<span class="p">}</span> <span class="n">__randomize_layout</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>其提供了3种方法来加载和执行可执行程序</p>
+<ol class="arabic simple">
+<li><p>load_binary – 通过读取存放在可执行文件中的信息为当前进程建立一个新的执行环境</p></li>
+<li><p>load_shlib – 用于动态的把一个共享库捆绑到一个运行的进程,这是由uselib()系统调用激活的</p></li>
+<li><p>core_dump – 在名为core的文件中,存放当前进程的执行上下文，这个文件通常是在进程收到一个缺省操作为”dump”的信号时创建,其格式取决于可执行程序的类型</p></li>
+</ol>
+<section id="execve">
+<h2><span class="section-number">3.3.3.1.1. </span>execve加载可执行程序的过程<a class="headerlink" href="#execve" title="此标题的永久链接"></a></h2>
+<p>内核中实际执行execv()或execve()系统调用的程序是do_execve(),这个函数会打开目标映像文件，并从目标文件的头部读入若干(当前linux内核时128)字节(实际上就是填充elf文件头),
+然后调用另外一个函数search_binary_handler(),在此函数里面，它会搜索我们上面提到的linux支持的可执行文件类型队列,让各种可执行程序的处理程序前来认领.如果匹配则调用load_binary
+函数指针来处理目标映像文件.elf文件对应的是load_elf_binary函数</p>
+<p>sys_execve()—&gt;do_execve()—&gt;do_execveat_common()—&gt;search_binary_handler()—&gt;load_elf_binary()</p>
+<p>execve入口函数sys_execve</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>描述</p></th>
+<th class="head"><p>定义</p></th>
+<th class="head"><p>文件位置</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>系统调用号(体系结构相关)</p></td>
+<td><p>类似如下形式
+#define __NR_execve_117</p>
+<blockquote>
+<div><p>__SYSCALL(117,sys_execve,3)</p>
+</div></blockquote>
+</td>
+<td><p>arch/(体系结构)/include/uapi/asm/unistd.h</p></td>
+</tr>
+<tr class="row-odd"><td><p>入口函数声明</p></td>
+<td><dl class="simple">
+<dt>asmlinkage long sys_execve(const char __user *filename</dt><dd><p>,const char __user *const __user *argv,
+const char __user *const __user *envp</p>
+</dd>
+</dl>
+</td>
+<td><p>include/linux/syscalls.h</p></td>
+</tr>
+<tr class="row-even"><td><p>系统调用实现</p></td>
+<td><dl>
+<dt>SYSCALL_DEFINE3(execve,</dt><dd><blockquote>
+<div><p>const char __user, file_name,</p>
+</div></blockquote>
+<p>const cahr __user *const __usr argv</p>
+</dd>
+</dl>
+</td>
+<td><p>fs/exec.c</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SYSCALL_DEFINE3</span><span class="p">(</span><span class="n">execve</span><span class="p">,</span>
+        <span class="n">const</span> <span class="n">char</span> <span class="n">__user</span> <span class="o">*</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span>
+        <span class="n">const</span> <span class="n">char</span> <span class="n">__user</span> <span class="o">*</span><span class="n">const</span> <span class="n">__user</span> <span class="o">*</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span>
+        <span class="n">const</span> <span class="n">char</span> <span class="n">__user</span> <span class="o">*</span><span class="n">const</span> <span class="n">__user</span> <span class="o">*</span><span class="p">,</span> <span class="n">envp</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">do_execve</span><span class="p">(</span><span class="n">getname</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="n">argv</span><span class="p">,</span> <span class="n">envp</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="o">//</span><span class="n">filenam</span><span class="o">------</span><span class="n">可执行程序名称</span>
+<span class="o">//</span><span class="n">argv程序的参数</span>
+<span class="o">//</span><span class="n">envp环境变量</span>
+</pre></div>
+</div>
+<p>do_execve函数定义在fs/exec.c中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int do_execve(struct filename *filename,
+    const char __user *const __user *__argv,
+    const char __user *const __user *__envp)
+{
+    struct user_arg_ptr argv = { .ptr.native = __argv };
+    struct user_arg_ptr envp = { .ptr.native = __envp };
+    return do_execveat_common(AT_FDCWD, filename, argv, envp, 0);
+}
+
+int do_execve_file(struct file *file, void *__argv, void *__envp)
+{
+    struct user_arg_ptr argv = { .ptr.native = __argv };
+    struct user_arg_ptr envp = { .ptr.native = __envp };
+
+    return __do_execve_file(AT_FDCWD, NULL, argv, envp, 0, file);
+}
+
+/*
+ * sys_execve() executes a new program.
+ */
+static int __do_execve_file(int fd, struct filename *filename,
+                struct user_arg_ptr argv,
+                struct user_arg_ptr envp,
+                int flags, struct file *file)
+{
+    char *pathbuf = NULL;
+    struct linux_binprm *bprm; //很重要的数据结构,
+    struct files_struct *displaced;
+    int retval;
+
+    if (IS_ERR(filename))
+        return PTR_ERR(filename);
+
+    /*
+     * We move the actual failure in case of RLIMIT_NPROC excess from
+     * set*uid() to execve() because too many poorly written programs
+     * don&#39;t check setuid() return code.  Here we additionally recheck
+     * whether NPROC limit is still exceeded.
+     */
+    if ((current-&gt;flags &amp; PF_NPROC_EXCEEDED) &amp;&amp;
+        atomic_read(&amp;current_user()-&gt;processes) &gt; rlimit(RLIMIT_NPROC)) {
+        retval = -EAGAIN;
+        goto out_ret;
+    }
+
+    /* We&#39;re below the limit (still or again), so we don&#39;t want to make
+     * further execve() calls fail. */
+    current-&gt;flags &amp;= ~PF_NPROC_EXCEEDED;
+
+    //调用ushare_files为进程复制一份文件表
+    retval = unshare_files(&amp;displaced);
+    if (retval)
+        goto out_ret;
+
+    //调用kzalloc在堆上分配一份struct linux_binprm结构体
+    retval = -ENOMEM;
+    bprm = kzalloc(sizeof(*bprm), GFP_KERNEL);
+    if (!bprm)
+        goto out_files;
+
+    retval = prepare_bprm_creds(bprm);
+    if (retval)
+        goto out_free;
+
+    check_unsafe_exec(bprm);
+    current-&gt;in_execve = 1;
+
+    //查找并打开二进制文件
+    if (!file)
+        file = do_open_execat(fd, filename, flags);
+    retval = PTR_ERR(file);
+    if (IS_ERR(file))
+        goto out_unmark;
+
+    //调用sched_exec()找到最小负载的cpu,用来执行该二进制文件
+    sched_exec();
+
+    //根据获取的信息，填充struct  linux_binprm结构体中的file filename interp成员
+    bprm-&gt;file = file;
+    if (!filename) {
+        bprm-&gt;filename = &quot;none&quot;;
+    } else if (fd == AT_FDCWD || filename-&gt;name[0] == &#39;/&#39;) {
+        bprm-&gt;filename = filename-&gt;name;
+    } else {
+        if (filename-&gt;name[0] == &#39;\0&#39;)
+            pathbuf = kasprintf(GFP_KERNEL, &quot;/dev/fd/%d&quot;, fd);
+        else
+            pathbuf = kasprintf(GFP_KERNEL, &quot;/dev/fd/%d/%s&quot;,
+                        fd, filename-&gt;name);
+        if (!pathbuf) {
+            retval = -ENOMEM;
+            goto out_unmark;
+        }
+        /*
+         * Record that a name derived from an O_CLOEXEC fd will be
+         * inaccessible after exec. Relies on having exclusive access to
+         * current-&gt;files (due to unshare_files above).
+         */
+        if (close_on_exec(fd, rcu_dereference_raw(current-&gt;files-&gt;fdt)))
+            bprm-&gt;interp_flags |= BINPRM_FLAGS_PATH_INACCESSIBLE;
+        bprm-&gt;filename = pathbuf;
+    }
+    bprm-&gt;interp = bprm-&gt;filename;
+
+  //创建进程的地址空间，并调用init_new_context检查当前进程是否使用自定义的局部描述符表
+    retval = bprm_mm_init(bprm);
+    if (retval)
+        goto out_unmark;
+
+
+    retval = prepare_arg_pages(bprm, argv, envp);
+    if (retval &lt; 0)
+        goto out;
+    //检查二进制文件的可执行权限,最后kernel_read()读取二进制文件头128字节
+    //这些字节用于识别二进制文件的格式及其他信息,后续会使用到
+    retval = prepare_binprm(bprm);
+    if (retval &lt; 0)
+        goto out;
+    //从内核空间获取二进制文件的路径名称
+    retval = copy_strings_kernel(1, &amp;bprm-&gt;filename, bprm);
+    if (retval &lt; 0)
+        goto out;
+
+    bprm-&gt;exec = bprm-&gt;p;
+    //从用户空间拷贝环境变量
+    retval = copy_strings(bprm-&gt;envc, envp, bprm);
+    if (retval &lt; 0)
+        goto out;
+    //从用户空间拷贝命令行参数
+    retval = copy_strings(bprm-&gt;argc, argv, bprm);
+    if (retval &lt; 0)
+        goto out;
+
+    would_dump(bprm, bprm-&gt;file);
+
+    /*
+        至此,二进制文件已经被打开,struct linux_binprm结构体中也记录了重要信息
+        下面需要识别该二进制文件的格式并最终运行该文件
+    */
+
+    retval = exec_binprm(bprm);
+    if (retval &lt; 0)
+        goto out;
+
+    /* execve succeeded */
+    current-&gt;fs-&gt;in_exec = 0;
+    current-&gt;in_execve = 0;
+    rseq_execve(current);
+    acct_update_integrals(current);
+    task_numa_free(current, false);
+    free_bprm(bprm);
+    kfree(pathbuf);
+    if (filename)
+        putname(filename);
+    if (displaced)
+        put_files_struct(displaced);
+    return retval;
+
+out:
+    if (bprm-&gt;mm) {
+        acct_arg_size(bprm, 0);
+        mmput(bprm-&gt;mm);
+    }
+
+out_unmark:
+    current-&gt;fs-&gt;in_exec = 0;
+    current-&gt;in_execve = 0;
+
+out_free:
+    free_bprm(bprm);
+    kfree(pathbuf);
+
+out_files:
+    if (displaced)
+        reset_files_struct(displaced);
+out_ret:
+    if (filename)
+        putname(filename);
+    return retval;
+}
+
+
+static int exec_binprm(struct linux_binprm *bprm)
+{
+    pid_t old_pid, old_vpid;
+    int ret;
+
+    /* Need to fetch pid before load_binary changes it */
+    old_pid = current-&gt;pid;
+    rcu_read_lock();
+    old_vpid = task_pid_nr_ns(current, task_active_pid_ns(current-&gt;parent));
+    rcu_read_unlock();
+
+    ret = search_binary_handler(bprm);
+    if (ret &gt;= 0) {
+        audit_bprm(bprm);
+        trace_sched_process_exec(current, old_pid, bprm);
+        ptrace_event(PTRACE_EVENT_EXEC, old_vpid);
+        proc_exec_connector(current);
+    }
+
+    return ret;
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>search_binary_handler 识别二进制程序</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+ * cycle the list of binary formats handler, until one recognizes the image
+ */
+int search_binary_handler(struct linux_binprm *bprm)
+{
+    bool need_retry = IS_ENABLED(CONFIG_MODULES);
+    struct linux_binfmt *fmt;
+    int retval;
+
+    /* This allows 4 levels of binfmt rewrites before failing hard. */
+    if (bprm-&gt;recursion_depth &gt; 5)
+        return -ELOOP;
+
+    retval = security_bprm_check(bprm);
+    if (retval)
+        return retval;
+
+    retval = -ENOENT;
+ retry:
+    read_lock(&amp;binfmt_lock);
+    //遍历formats链表
+    list_for_each_entry(fmt, &amp;formats, lh) {
+        if (!try_module_get(fmt-&gt;module))
+            continue;
+        read_unlock(&amp;binfmt_lock);
+
+        bprm-&gt;recursion_depth++;
+        retval = fmt-&gt;load_binary(bprm);
+        bprm-&gt;recursion_depth--;
+
+        read_lock(&amp;binfmt_lock);
+        put_binfmt(fmt);
+        if (retval &lt; 0 &amp;&amp; !bprm-&gt;mm) {
+            /* we got to flush_old_exec() and failed after it */
+            read_unlock(&amp;binfmt_lock);
+            force_sigsegv(SIGSEGV);
+            return retval;
+        }
+        if (retval != -ENOEXEC || !bprm-&gt;file) {
+            read_unlock(&amp;binfmt_lock);
+            return retval;
+        }
+    }
+    read_unlock(&amp;binfmt_lock);
+
+    if (need_retry) {
+        if (printable(bprm-&gt;buf[0]) &amp;&amp; printable(bprm-&gt;buf[1]) &amp;&amp;
+            printable(bprm-&gt;buf[2]) &amp;&amp; printable(bprm-&gt;buf[3]))
+            return retval;
+        if (request_module(&quot;binfmt-%04x&quot;, *(ushort *)(bprm-&gt;buf + 2)) &lt; 0)
+            return retval;
+        need_retry = false;
+        goto retry;
+    }
+
+    return retval;
+}
+EXPORT_SYMBOL(search_binary_handler);
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="3.3.3. 进程运行" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="elf_index.html" class="btn btn-neutral float-right" title="3.3.3.2. linux elf文件格式详解" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,539 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.12.3. 输入事件驱动层 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.13. framebuffer子系统" href="../framebuffer/index.html" />
+    <link rel="prev" title="4.12.2. 输入核心层" href="input_core.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.12. 输入子系统</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="input_frame.html">4.12.1. 输入子系统框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_core.html">4.12.2. 输入核心层</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.12.3. 输入事件驱动层</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.12.3.1. 框架以及数据结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.12.3.2. 接口实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.12. </span>输入子系统</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.12.3. </span>输入事件驱动层</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/input/input_event.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">4.12.3. </span>输入事件驱动层<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<p>系统将输入事件层分为三种，evdev(通用各种类型输入类设备)、mousedev、joydev</p>
+<section id="id2">
+<h2><span class="section-number">4.12.3.1. </span>框架以及数据结构<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static struct input_handler evdev_handler = {
+    .event      = evdev_event,    //打包数据，并上报事件
+    .events     = evdev_events,
+    .connect    = evdev_connect,  //和dev匹配后做响应连接
+    .disconnect = evdev_disconnect,   //exit时会使用
+    .legacy_minors  = true,
+    .minor      = EVDEV_MINOR_BASE,   //次设备号开始
+    .name       = &quot;evdev&quot;,
+    .id_table   = evdev_ids,  //匹配规则,edev是所有都可以匹配
+};
+
+static int __init evdev_init(void)
+{
+    return input_register_handler(&amp;evdev_handler);
+}
+
+static void __exit evdev_exit(void)
+{
+    input_unregister_handler(&amp;evdev_handler);
+}
+
+module_init(evdev_init);
+module_exit(evdev_exit);
+</pre></div>
+</div>
+<p>evdev有个重要的数据结构</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct evdev {
+    int open;     //打开引用计数
+    struct input_handle handle;   //关联的input_handle
+    wait_queue_head_t wait;   //等待队列
+    struct evdev_client __rcu *grab;
+    struct list_head client_list; //evdev_client链表，说明一个evdev设备可以处理多个evdev_client,可以有多个进程访问
+    spinlock_t client_lock; /* protects client_list */
+    struct mutex mutex;
+    struct device dev;
+    struct cdev cdev;
+     bool exist;
+};
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2><span class="section-number">4.12.3.2. </span>接口实现<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<section id="evdev-connect">
+<h3><span class="section-number">4.12.3.2.1. </span>evdev_connect<a class="headerlink" href="#evdev-connect" title="此标题的永久链接"></a></h3>
+<p>在注册handler和dev时，如果匹配上了就会调用此函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static int evdev_connect(struct input_handler *handler, struct input_dev *dev,
+         const struct input_device_id *id)
+{
+    struct evdev *evdev;
+    int minor;
+    int dev_no;
+    int error;
+
+    //获取一个未使用的次设备号
+    minor = input_get_new_minor(EVDEV_MINOR_BASE, EVDEV_MINORS, true);
+    if (minor &lt; 0) {
+        error = minor;
+        pr_err(&quot;failed to reserve new minor: %d\n&quot;, error);
+        return error;
+    }
+
+    evdev = kzalloc(sizeof(struct evdev), GFP_KERNEL);
+    if (!evdev) {
+        error = -ENOMEM;
+        goto err_free_minor;
+    }
+
+    //初始化新申请的evdev
+    INIT_LIST_HEAD(&amp;evdev-&gt;client_list);
+    spin_lock_init(&amp;evdev-&gt;client_lock);
+    mutex_init(&amp;evdev-&gt;mutex);
+    init_waitqueue_head(&amp;evdev-&gt;wait);    //初始化一个等待队列
+    evdev-&gt;exist = true;
+
+    dev_no = minor;
+    /* Normalize device number if it falls into legacy range */
+    if (dev_no &lt; EVDEV_MINOR_BASE + EVDEV_MINORS)
+        dev_no -= EVDEV_MINOR_BASE;
+    dev_set_name(&amp;evdev-&gt;dev, &quot;event%d&quot;, dev_no);
+
+    evdev-&gt;handle.dev = input_get_device(dev);    //input_dev绑定到evdev的handle中
+    evdev-&gt;handle.name = dev_name(&amp;evdev-&gt;dev);
+    evdev-&gt;handle.handler = handler;      //绑定handle
+    evdev-&gt;handle.private = evdev;
+
+    evdev-&gt;dev.devt = MKDEV(INPUT_MAJOR, minor);
+    evdev-&gt;dev.class = &amp;input_class;  //evdev里面的设备属于input_class
+    evdev-&gt;dev.parent = &amp;dev-&gt;dev;
+    evdev-&gt;dev.release = evdev_free;
+    device_initialize(&amp;evdev-&gt;dev);   //初始化evdev里面的dev通用数据
+
+    error = input_register_handle(&amp;evdev-&gt;handle);    //注册handle
+    if (error)
+        goto err_free_evdev;
+
+    cdev_init(&amp;evdev-&gt;cdev, &amp;evdev_fops);     //创建设备
+    error = cdev_device_add(&amp;evdev-&gt;cdev, &amp;evdev-&gt;dev);
+    if (error)
+        goto err_cleanup_evdev;
+
+    return 0;
+
+ err_cleanup_evdev:
+    evdev_cleanup(evdev);
+    input_unregister_handle(&amp;evdev-&gt;handle);
+ err_free_evdev:
+    put_device(&amp;evdev-&gt;dev);
+ err_free_minor:
+    input_free_minor(minor);
+    return error;
+}
+</pre></div>
+</div>
+</section>
+<section id="evdev-event">
+<h3><span class="section-number">4.12.3.2.2. </span>evdev_event<a class="headerlink" href="#evdev-event" title="此标题的永久链接"></a></h3>
+<p>evdev_event函数将一个设备驱动层发送过来的事件打包</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Pass</span> <span class="n">incoming</span> <span class="n">events</span> <span class="n">to</span> <span class="nb">all</span> <span class="n">connected</span> <span class="n">clients</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">evdev_events</span><span class="p">(</span><span class="n">struct</span> <span class="n">input_handle</span> <span class="o">*</span><span class="n">handle</span><span class="p">,</span>
+             <span class="n">const</span> <span class="n">struct</span> <span class="n">input_value</span> <span class="o">*</span><span class="n">vals</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">count</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">evdev</span> <span class="o">*</span><span class="n">evdev</span> <span class="o">=</span> <span class="n">handle</span><span class="o">-&gt;</span><span class="n">private</span><span class="p">;</span>    <span class="o">//</span><span class="n">evdev本身绑定在handle里面的private</span>
+    <span class="n">struct</span> <span class="n">evdev_client</span> <span class="o">*</span><span class="n">client</span><span class="p">;</span>
+    <span class="n">ktime_t</span> <span class="o">*</span><span class="n">ev_time</span> <span class="o">=</span> <span class="n">input_get_timestamp</span><span class="p">(</span><span class="n">handle</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span>
+
+    <span class="n">rcu_read_lock</span><span class="p">();</span>
+
+    <span class="n">client</span> <span class="o">=</span> <span class="n">rcu_dereference</span><span class="p">(</span><span class="n">evdev</span><span class="o">-&gt;</span><span class="n">grab</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">evdev_pass_values</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">ev_time</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">list_for_each_entry_rcu</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">evdev</span><span class="o">-&gt;</span><span class="n">client_list</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+            <span class="n">evdev_pass_values</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">ev_time</span><span class="p">);</span>
+
+    <span class="n">rcu_read_unlock</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Pass</span> <span class="n">incoming</span> <span class="n">event</span> <span class="n">to</span> <span class="nb">all</span> <span class="n">connected</span> <span class="n">clients</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">evdev_event</span><span class="p">(</span><span class="n">struct</span> <span class="n">input_handle</span> <span class="o">*</span><span class="n">handle</span><span class="p">,</span>
+            <span class="n">unsigned</span> <span class="nb">int</span> <span class="nb">type</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">code</span><span class="p">,</span> <span class="nb">int</span> <span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">input_value</span> <span class="n">vals</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">{</span> <span class="nb">type</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">value</span> <span class="p">}</span> <span class="p">};</span>
+
+    <span class="n">evdev_events</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>发送数据给client函数</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span> <span class="n">evdev_pass_values</span><span class="p">(</span><span class="n">struct</span> <span class="n">evdev_client</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span>
+        <span class="n">const</span> <span class="n">struct</span> <span class="n">input_value</span> <span class="o">*</span><span class="n">vals</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">count</span><span class="p">,</span>
+        <span class="n">ktime_t</span> <span class="o">*</span><span class="n">ev_time</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">evdev</span> <span class="o">*</span><span class="n">evdev</span> <span class="o">=</span> <span class="n">client</span><span class="o">-&gt;</span><span class="n">evdev</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">input_value</span> <span class="o">*</span><span class="n">v</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">input_event</span> <span class="n">event</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">timespec64</span> <span class="n">ts</span><span class="p">;</span>
+    <span class="nb">bool</span> <span class="n">wakeup</span> <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">revoked</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">ktime_to_timespec64</span><span class="p">(</span><span class="n">ev_time</span><span class="p">[</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">clk_type</span><span class="p">]);</span>
+    <span class="n">event</span><span class="o">.</span><span class="n">input_event_sec</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">tv_sec</span><span class="p">;</span>
+    <span class="n">event</span><span class="o">.</span><span class="n">input_event_usec</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">tv_nsec</span> <span class="o">/</span> <span class="n">NSEC_PER_USEC</span><span class="p">;</span>
+
+    <span class="o">/*</span> <span class="n">Interrupts</span> <span class="n">are</span> <span class="n">disabled</span><span class="p">,</span> <span class="n">just</span> <span class="n">acquire</span> <span class="n">the</span> <span class="n">lock</span><span class="o">.</span> <span class="o">*/</span>
+    <span class="n">spin_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">buffer_lock</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">v</span> <span class="o">=</span> <span class="n">vals</span><span class="p">;</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">vals</span> <span class="o">+</span> <span class="n">count</span><span class="p">;</span> <span class="n">v</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">__evdev_is_filtered</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">v</span><span class="o">-&gt;</span><span class="nb">type</span><span class="p">,</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">code</span><span class="p">))</span>
+            <span class="k">continue</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">v</span><span class="o">-&gt;</span><span class="nb">type</span> <span class="o">==</span> <span class="n">EV_SYN</span> <span class="o">&amp;&amp;</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">code</span> <span class="o">==</span> <span class="n">SYN_REPORT</span><span class="p">)</span> <span class="p">{</span>
+            <span class="o">/*</span> <span class="n">drop</span> <span class="n">empty</span> <span class="n">SYN_REPORT</span> <span class="o">*/</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">packet_head</span> <span class="o">==</span> <span class="n">client</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">)</span>
+                <span class="k">continue</span><span class="p">;</span>
+
+            <span class="n">wakeup</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="o">//</span><span class="n">将数据打包成标准格式</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">v</span><span class="o">-&gt;</span><span class="nb">type</span><span class="p">;</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">code</span><span class="p">;</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">v</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+        <span class="n">__pass_event</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">spin_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">buffer_lock</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">wakeup</span><span class="p">)</span>
+        <span class="n">wake_up_interruptible</span><span class="p">(</span><span class="o">&amp;</span><span class="n">evdev</span><span class="o">-&gt;</span><span class="n">wait</span><span class="p">);</span>  <span class="o">//</span><span class="n">唤醒等待队列上的进程</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static void __pass_event(struct evdev_client *client,
+         const struct input_event *event)
+{
+    client-&gt;buffer[client-&gt;head++] = *event;  //把数据包写入client缓冲队列中,方便app读取
+    client-&gt;head &amp;= client-&gt;bufsize - 1;
+
+    if (unlikely(client-&gt;head == client-&gt;tail)) {
+        /*
+         * This effectively &quot;drops&quot; all unconsumed events, leaving
+         * EV_SYN/SYN_DROPPED plus the newest event in the queue.
+         */
+        client-&gt;tail = (client-&gt;head - 2) &amp; (client-&gt;bufsize - 1);
+
+        client-&gt;buffer[client-&gt;tail] = (struct input_event) {
+            .input_event_sec = event-&gt;input_event_sec,
+            .input_event_usec = event-&gt;input_event_usec,
+            .type = EV_SYN,
+            .code = SYN_DROPPED,
+            .value = 0,
+        };
+
+        client-&gt;packet_head = client-&gt;tail;
+    }
+
+    if (event-&gt;type == EV_SYN &amp;&amp; event-&gt;code == SYN_REPORT) {
+        client-&gt;packet_head = client-&gt;head;
+        kill_fasync(&amp;client-&gt;fasync, SIGIO, POLL_IN); //发送一个异步通知，通知打开该client的应用程序，执行信号处理函数
+    }
+}
+</pre></div>
+</div>
+</section>
+<section id="file-operations">
+<h3><span class="section-number">4.12.3.2.3. </span>file_operations<a class="headerlink" href="#file-operations" title="此标题的永久链接"></a></h3>
+<p>应用层通过系统调用会调用file_operations中定义的函数接口</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">file_operations</span> <span class="n">evdev_fops</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">owner</span>      <span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">read</span>       <span class="o">=</span> <span class="n">evdev_read</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">write</span>      <span class="o">=</span> <span class="n">evdev_write</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">poll</span>       <span class="o">=</span> <span class="n">evdev_poll</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">open</span>       <span class="o">=</span> <span class="n">evdev_open</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">release</span>    <span class="o">=</span> <span class="n">evdev_release</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">unlocked_ioctl</span> <span class="o">=</span> <span class="n">evdev_ioctl</span><span class="p">,</span>
+<span class="c1">#ifdef CONFIG_COMPAT</span>
+    <span class="o">.</span><span class="n">compat_ioctl</span>   <span class="o">=</span> <span class="n">evdev_ioctl_compat</span><span class="p">,</span>
+<span class="c1">#endif</span>
+    <span class="o">.</span><span class="n">fasync</span>     <span class="o">=</span> <span class="n">evdev_fasync</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">flush</span>      <span class="o">=</span> <span class="n">evdev_flush</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">llseek</span>     <span class="o">=</span> <span class="n">no_llseek</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>下面主要分析open和read函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static int evdev_open(struct inode *inode, struct file *file)
+{
+    struct evdev *evdev = container_of(inode-&gt;i_cdev, struct evdev, cdev);    //通过inode可以获取对应的evdev
+    unsigned int bufsize = evdev_compute_buffer_size(evdev-&gt;handle.dev);
+    struct evdev_client *client;
+    int error;
+
+    //分配client来处理event，同一个文件打开n次就需要分配n个client
+    client = kvzalloc(struct_size(client, buffer, bufsize), GFP_KERNEL);
+    if (!client)
+        return -ENOMEM;
+
+    client-&gt;bufsize = bufsize;    //设置bufsize
+    spin_lock_init(&amp;client-&gt;buffer_lock);
+    client-&gt;evdev = evdev;    //client和具体的evdev绑定
+    evdev_attach_client(evdev, client);   //将client添加到evdev的client_list链表中
+
+    error = evdev_open_device(evdev);
+    if (error)
+        goto err_free_client;
+
+    file-&gt;private_data = client;  //将文件的私有数据指向该client
+    stream_open(inode, file);
+
+    return 0;
+
+ err_free_client:
+    evdev_detach_client(evdev, client);
+    kvfree(client);
+    return error;
+}
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static int evdev_open_device(struct evdev *evdev)
+{
+    int retval;
+
+    retval = mutex_lock_interruptible(&amp;evdev-&gt;mutex);
+    if (retval)
+        return retval;
+
+    if (!evdev-&gt;exist)
+        retval = -ENODEV;
+    else if (!evdev-&gt;open++) {    //打开计数加一
+        retval = input_open_device(&amp;evdev-&gt;handle);   //这个打开设备的函数是在核心层定义的,最终会调用设备驱动层的open函数
+        if (retval)
+            evdev-&gt;open--;
+    }
+
+    mutex_unlock(&amp;evdev-&gt;mutex);
+    return retval;
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>read函数</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static ssize_t evdev_read(struct file *file, char __user *buffer,
+          size_t count, loff_t *ppos)
+{
+    struct evdev_client *client = file-&gt;private_data;
+    struct evdev *evdev = client-&gt;evdev;  //得到应用程序读取数据的设备
+    struct input_event event;
+    size_t read = 0;
+    int error;
+
+    if (count != 0 &amp;&amp; count &lt; input_event_size()) //读取的数据长度至少要满足一个input_event的大小
+        return -EINVAL;
+
+    for (;;) {
+        if (!evdev-&gt;exist || client-&gt;revoked)
+            return -ENODEV;
+
+          //当client缓冲区无数据，文件非阻塞打开，则直接返回错误
+        if (client-&gt;packet_head == client-&gt;tail &amp;&amp;
+            (file-&gt;f_flags &amp; O_NONBLOCK))
+            return -EAGAIN;
+
+        /*
+         * count == 0 is special - no IO is done but we check
+         * for error conditions (see above).
+         */
+        if (count == 0)
+            break;
+
+        while (read + input_event_size() &lt;= count &amp;&amp;
+               evdev_fetch_next_event(client, &amp;event)) {
+
+            if (input_event_to_user(buffer + read, &amp;event))   //将数据拷贝到用户空间
+                return -EFAULT;
+
+            read += input_event_size();
+        }
+
+        if (read)
+            break;
+
+        //当client没有数据时，将应用程序添加到evdev-&gt;wait等待队列
+        if (!(file-&gt;f_flags &amp; O_NONBLOCK)) {
+            error = wait_event_interruptible(evdev-&gt;wait,
+                    client-&gt;packet_head != client-&gt;tail ||
+                    !evdev-&gt;exist || client-&gt;revoked);
+            if (error)
+                return error;
+        }
+    }
+
+    return read;
+}
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">evdev_fetch_next_event</span><span class="p">(</span><span class="n">struct</span> <span class="n">evdev_client</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span>
+              <span class="n">struct</span> <span class="n">input_event</span> <span class="o">*</span><span class="n">event</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">have_event</span><span class="p">;</span>
+
+    <span class="n">spin_lock_irq</span><span class="p">(</span><span class="o">&amp;</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">buffer_lock</span><span class="p">);</span>
+
+    <span class="n">have_event</span> <span class="o">=</span> <span class="n">client</span><span class="o">-&gt;</span><span class="n">packet_head</span> <span class="o">!=</span> <span class="n">client</span><span class="o">-&gt;</span><span class="n">tail</span><span class="p">;</span> <span class="o">//</span><span class="n">头不等于尾说明有数据</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">have_event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="o">*</span><span class="n">event</span> <span class="o">=</span> <span class="n">client</span><span class="o">-&gt;</span><span class="n">buffer</span><span class="p">[</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">tail</span><span class="o">++</span><span class="p">];</span>  <span class="o">//</span><span class="n">一次读完一个包</span>
+        <span class="n">client</span><span class="o">-&gt;</span><span class="n">tail</span> <span class="o">&amp;=</span> <span class="n">client</span><span class="o">-&gt;</span><span class="n">bufsize</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">spin_unlock_irq</span><span class="p">(</span><span class="o">&amp;</span><span class="n">client</span><span class="o">-&gt;</span><span class="n">buffer_lock</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">have_event</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="input_core.html" class="btn btn-neutral float-left" title="4.12.2. 输入核心层" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../framebuffer/index.html" class="btn btn-neutral float-right" title="4.13. framebuffer子系统" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1035 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.7.1. linux系统调用 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="3.8. kernel 启动流程" href="../kernel_start/index.html" />
+    <link rel="prev" title="3.7. linux系统调用" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.7. linux系统调用</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.7.1. linux系统调用</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">3.7.1.1. 系统调用原理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">3.7.1.2. 系统调用用户空间的实现</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#arm">3.7.1.3. arm架构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#arm64">3.7.1.4. arm64架构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">3.7.1.5. 系统调用内核实现</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">3.7.1.6. linux系统调用的列表</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.7. </span>linux系统调用</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.7.1. </span>linux系统调用</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/kernel/system_call/system_call_introduction.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux">
+<h1><span class="section-number">3.7.1. </span>linux系统调用<a class="headerlink" href="#linux" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">3.7.1.1. </span>系统调用原理<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<img alt="../../_images/system_call.png" src="../../_images/system_call.png" />
+<p>系统调用是linux内核为用户态程序提供的主要功能接口，通过系统调用，用户态进程能够临时切换到内核态,使用内核态才能访问的硬件和资源完成特定功能。
+系统调用由linux内核和内核模块实现,内核在处理系统时还会检查系统调用请求和参数是否正确,以保证对特权资源和硬件访问的正确性。通过这种方式,linux
+在提供内核和硬件资源访问接口的同时，保证了内核和硬件资源的正确性和安全性</p>
+<p>不同架构的系统调用实现细节存在差异,但总体上可以归结为以下三个内容:</p>
+<ul class="simple">
+<li><p>在用户空间触发系统调，通用的库函数libc或glibc面向用户层，通过本身的逻辑处理找到对应的系统调用接口，并通过软中断的方式进入内核系统调用，不同架构下
+系统调用软中断的方式不同,x86通过0x80软中断进入内核系统调用处理，arm通过swi指令</p></li>
+<li><p>不同架构下系统调用中断处理不同,但功能是一致的，那就是通过传递下来的系统调用号，找到系统调用入口信息，并将系统调用传递的参数传递给内核里系统调用实现</p></li>
+<li><p>内核部分系统调用的实现</p></li>
+</ul>
+<p>系统调用可以分为六大类</p>
+<ol class="arabic simple">
+<li><p>进程控制(process control)</p></li>
+<li><p>文件管理(file manipulation)</p></li>
+<li><p>设备管理(device manipulation)</p></li>
+<li><p>信息维护(information maintenance)</p></li>
+<li><p>通信(conmunication)</p></li>
+<li><p>保护(protection)</p></li>
+</ol>
+</section>
+<section id="id2">
+<h2><span class="section-number">3.7.1.2. </span>系统调用用户空间的实现<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>用户空间触发系统调用的方法很多，包括直接调用汇编命令进行触发，也可以通过”syscall”函数进行触发等，这里重点介绍”syscall”函数.用户空间可以通过
+调用 <code class="docutils literal notranslate"><span class="pre">syscall()</span></code> 函数来触发指定的系统调用，其函数定义如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;sys/syscall.h&gt;</span>
+<span class="nb">int</span> <span class="n">syscall</span><span class="p">(</span><span class="nb">int</span> <span class="n">number</span><span class="p">,</span> <span class="o">...</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>syscall()执行一个系统调用，根据number参数和所有的汇编语言接口来调用哪个系统调用。示例如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">nice</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="o">/*</span>
+    <span class="o">*</span>   <span class="n">__NR_nice是sys_nice的系统调用号</span><span class="p">,</span><span class="n">nice是传递给系统调用的一个参数</span>
+    <span class="o">*</span>   <span class="n">该函数会直接调用内核的sys_nice</span><span class="p">()</span><span class="n">函数实现修改当前进程的nice值</span>
+    <span class="o">*/</span>
+    <span class="n">syscall</span><span class="p">(</span><span class="n">__NR_nice</span><span class="p">,</span> <span class="n">nice</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>syscall()函数可以间接的调用系统调用，移除了库函数对调用过程的影响。下面是syscall()在不同架构中的实现</p>
+</section>
+<section id="arm">
+<h2><span class="section-number">3.7.1.3. </span>arm架构<a class="headerlink" href="#arm" title="此标题的永久链接"></a></h2>
+<p>arm架构将系统调用入口信息放置在 <code class="docutils literal notranslate"><span class="pre">arch/arm/tools/syscall.tbl</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
+<span class="c1"># Linux system call numbers and entry vectors</span>
+<span class="c1">#</span>
+<span class="c1"># The format is:</span>
+<span class="c1"># &lt;num&gt;     &lt;abi&gt;   &lt;name&gt;                  [&lt;entry point&gt;                  [&lt;oabi compat entry point&gt;]]</span>
+<span class="c1">#</span>
+<span class="c1"># Where abi is:</span>
+<span class="c1">#  common - for system calls shared between oabi and eabi (may have compat)</span>
+<span class="c1">#  oabi   - for oabi-only system calls (may have compat)</span>
+<span class="c1">#  eabi   - for eabi-only system calls</span>
+<span class="c1">#</span>
+<span class="c1"># For each syscall number, &quot;common&quot; is mutually exclusive with oabi and eabi</span>
+<span class="c1">#</span>
+<span class="mi">0</span>   <span class="n">common</span>  <span class="n">restart_syscall</span>         <span class="n">sys_restart_syscall</span>
+<span class="mi">1</span>   <span class="n">common</span>  <span class="n">exit</span>                    <span class="n">sys_exit</span>
+<span class="mi">2</span>   <span class="n">common</span>  <span class="n">fork</span>                    <span class="n">sys_fork</span>
+<span class="mi">3</span>   <span class="n">common</span>  <span class="n">read</span>                    <span class="n">sys_read</span>
+<span class="mi">4</span>   <span class="n">common</span>  <span class="n">write</span>                   <span class="n">sys_write</span>
+<span class="mi">5</span>   <span class="n">common</span>  <span class="nb">open</span>                    <span class="n">sys_open</span>
+<span class="mi">6</span>   <span class="n">common</span>  <span class="n">close</span>                   <span class="n">sys_close</span>
+<span class="c1"># 7 was sys_waitpid</span>
+<span class="mi">8</span>   <span class="n">common</span>  <span class="n">creat</span>                   <span class="n">sys_creat</span>
+<span class="mi">9</span>   <span class="n">common</span>  <span class="n">link</span>                    <span class="n">sys_link</span>
+<span class="mi">10</span>  <span class="n">common</span>  <span class="n">unlink</span>                  <span class="n">sys_unlink</span>
+<span class="mi">11</span>  <span class="n">common</span>  <span class="n">execve</span>                  <span class="n">sys_execve</span>
+<span class="mi">12</span>  <span class="n">common</span>  <span class="n">chdir</span>                   <span class="n">sys_chdir</span>
+<span class="mi">13</span>  <span class="n">oabi</span>    <span class="n">time</span>                    <span class="n">sys_time32</span>
+<span class="mi">14</span>  <span class="n">common</span>  <span class="n">mknod</span>                   <span class="n">sys_mknod</span>
+<span class="mi">15</span>  <span class="n">common</span>  <span class="n">chmod</span>                   <span class="n">sys_chmod</span>
+<span class="mi">16</span>  <span class="n">common</span>  <span class="n">lchown</span>                  <span class="n">sys_lchown16</span>
+<span class="c1"># 17 was sys_break</span>
+<span class="c1"># 18 was sys_stat</span>
+<span class="mi">19</span>  <span class="n">common</span>  <span class="n">lseek</span>                   <span class="n">sys_lseek</span>
+<span class="mi">20</span>  <span class="n">common</span>  <span class="n">getpid</span>                  <span class="n">sys_getpid</span>
+<span class="mi">21</span>  <span class="n">common</span>  <span class="n">mount</span>                   <span class="n">sys_mount</span>
+<span class="mi">22</span>  <span class="n">oabi</span>    <span class="n">umount</span>                  <span class="n">sys_oldumount</span>
+<span class="mi">23</span>  <span class="n">common</span>  <span class="n">setuid</span>                  <span class="n">sys_setuid16</span>
+<span class="mi">24</span>  <span class="n">common</span>  <span class="n">getuid</span>                  <span class="n">sys_getuid16</span>
+<span class="mi">25</span>  <span class="n">oabi</span>    <span class="n">stime</span>                   <span class="n">sys_stime32</span>
+<span class="mi">26</span>  <span class="n">common</span>  <span class="n">ptrace</span>                  <span class="n">sys_ptrace</span>
+<span class="mi">27</span>  <span class="n">oabi</span>    <span class="n">alarm</span>                   <span class="n">sys_alarm</span>
+<span class="c1"># 28 was sys_fstat</span>
+<span class="mi">29</span>  <span class="n">common</span>  <span class="n">pause</span>                   <span class="n">sys_pause</span>
+<span class="mi">30</span>  <span class="n">oabi</span>    <span class="n">utime</span>                   <span class="n">sys_utime32</span>
+<span class="c1"># 31 was sys_stty</span>
+<span class="c1"># 32 was sys_gtty</span>
+<span class="mi">33</span>  <span class="n">common</span>  <span class="n">access</span>                  <span class="n">sys_access</span>
+<span class="mi">34</span>  <span class="n">common</span>  <span class="n">nice</span>                    <span class="n">sys_nice</span>
+<span class="c1"># 35 was sys_ftime</span>
+<span class="mi">36</span>  <span class="n">common</span>  <span class="n">sync</span>                    <span class="n">sys_sync</span>
+<span class="mi">37</span>  <span class="n">common</span>  <span class="n">kill</span>                    <span class="n">sys_kill</span>
+<span class="mi">38</span>  <span class="n">common</span>  <span class="n">rename</span>                  <span class="n">sys_rename</span>
+<span class="mi">39</span>  <span class="n">common</span>  <span class="n">mkdir</span>                   <span class="n">sys_mkdir</span>
+<span class="mi">40</span>  <span class="n">common</span>  <span class="n">rmdir</span>                   <span class="n">sys_rmdir</span>
+<span class="mi">41</span>  <span class="n">common</span>  <span class="n">dup</span>                     <span class="n">sys_dup</span>
+<span class="mi">42</span>  <span class="n">common</span>  <span class="n">pipe</span>                    <span class="n">sys_pipe</span>
+<span class="mi">43</span>  <span class="n">common</span>  <span class="n">times</span>                   <span class="n">sys_times</span>
+<span class="c1"># 44 was sys_prof</span>
+<span class="mi">45</span>  <span class="n">common</span>  <span class="n">brk</span>                     <span class="n">sys_brk</span>
+<span class="mi">46</span>  <span class="n">common</span>  <span class="n">setgid</span>                  <span class="n">sys_setgid16</span>
+<span class="mi">47</span>  <span class="n">common</span>  <span class="n">getgid</span>                  <span class="n">sys_getgid16</span>
+<span class="c1"># 48 was sys_signal</span>
+<span class="mi">49</span>  <span class="n">common</span>  <span class="n">geteuid</span>                 <span class="n">sys_geteuid16</span>
+<span class="mi">50</span>  <span class="n">common</span>  <span class="n">getegid</span>                 <span class="n">sys_getegid16</span>
+<span class="mi">51</span>  <span class="n">common</span>  <span class="n">acct</span>                    <span class="n">sys_acct</span>
+<span class="mi">52</span>  <span class="n">common</span>  <span class="n">umount2</span>                 <span class="n">sys_umount</span>
+</pre></div>
+</div>
+<p>只需要在表中填入系统调用号，abi类型信息，系统调用名字,系统调用函数名字后就可以确定一个唯一的系统调用入口</p>
+</section>
+<section id="arm64">
+<h2><span class="section-number">3.7.1.4. </span>arm64架构<a class="headerlink" href="#arm64" title="此标题的永久链接"></a></h2>
+<p>arm64架构将系统调用入口信息放在 <code class="docutils literal notranslate"><span class="pre">include/uapi/asm-generic/unistd.h</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define __NR_io_setup 0</span>
+<span class="n">__SC_COMP</span><span class="p">(</span><span class="n">__NR_io_setup</span><span class="p">,</span> <span class="n">sys_io_setup</span><span class="p">,</span> <span class="n">compat_sys_io_setup</span><span class="p">)</span>
+<span class="c1">#define __NR_io_destroy 1</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_io_destroy</span><span class="p">,</span> <span class="n">sys_io_destroy</span><span class="p">)</span>
+<span class="c1">#define __NR_io_submit 2</span>
+<span class="n">__SC_COMP</span><span class="p">(</span><span class="n">__NR_io_submit</span><span class="p">,</span> <span class="n">sys_io_submit</span><span class="p">,</span> <span class="n">compat_sys_io_submit</span><span class="p">)</span>
+<span class="c1">#define __NR_io_cancel 3</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_io_cancel</span><span class="p">,</span> <span class="n">sys_io_cancel</span><span class="p">)</span>
+<span class="c1">#if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32</span>
+<span class="c1">#define __NR_io_getevents 4</span>
+<span class="n">__SC_3264</span><span class="p">(</span><span class="n">__NR_io_getevents</span><span class="p">,</span> <span class="n">sys_io_getevents_time32</span><span class="p">,</span> <span class="n">sys_io_getevents</span><span class="p">)</span>
+<span class="c1">#endif</span>
+
+<span class="o">/*</span> <span class="n">fs</span><span class="o">/</span><span class="n">xattr</span><span class="o">.</span><span class="n">c</span> <span class="o">*/</span>
+<span class="c1">#define __NR_setxattr 5</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_setxattr</span><span class="p">,</span> <span class="n">sys_setxattr</span><span class="p">)</span>
+<span class="c1">#define __NR_lsetxattr 6</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_lsetxattr</span><span class="p">,</span> <span class="n">sys_lsetxattr</span><span class="p">)</span>
+<span class="c1">#define __NR_fsetxattr 7</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_fsetxattr</span><span class="p">,</span> <span class="n">sys_fsetxattr</span><span class="p">)</span>
+<span class="c1">#define __NR_getxattr 8</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_getxattr</span><span class="p">,</span> <span class="n">sys_getxattr</span><span class="p">)</span>
+<span class="c1">#define __NR_lgetxattr 9</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_lgetxattr</span><span class="p">,</span> <span class="n">sys_lgetxattr</span><span class="p">)</span>
+<span class="c1">#define __NR_fgetxattr 10</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_fgetxattr</span><span class="p">,</span> <span class="n">sys_fgetxattr</span><span class="p">)</span>
+<span class="c1">#define __NR_listxattr 11</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_listxattr</span><span class="p">,</span> <span class="n">sys_listxattr</span><span class="p">)</span>
+<span class="c1">#define __NR_llistxattr 12</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_llistxattr</span><span class="p">,</span> <span class="n">sys_llistxattr</span><span class="p">)</span>
+<span class="c1">#define __NR_flistxattr 13</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_flistxattr</span><span class="p">,</span> <span class="n">sys_flistxattr</span><span class="p">)</span>
+<span class="c1">#define __NR_removexattr 14</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_removexattr</span><span class="p">,</span> <span class="n">sys_removexattr</span><span class="p">)</span>
+<span class="c1">#define __NR_lremovexattr 15</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_lremovexattr</span><span class="p">,</span> <span class="n">sys_lremovexattr</span><span class="p">)</span>
+<span class="c1">#define __NR_fremovexattr 16</span>
+<span class="n">__SYSCALL</span><span class="p">(</span><span class="n">__NR_fremovexattr</span><span class="p">,</span> <span class="n">sys_fremovexattr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>只需要在该表中定义一个系统调用号，再通过调__SYSCALL()函数确定系统调用函数信息就可以确定一个唯一的系统调用入口</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">3.7.1.5. </span>系统调用内核实现<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>系统调用内核实现就是系统调用再内核的实现过程，在接收到来自用户空间的系统调用参数之后,内核核心实现就根据自己的逻辑进行处理,处理完毕之后，内核可以将结果返回给用户空间，
+也可以拷贝相应的数据用户空间，内核部分的核心实现通过以下宏进行定(位于include/linux/syscalls.h)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#ifndef SYSCALL_DEFINE0</span>
+<span class="c1">#define SYSCALL_DEFINE0(sname)                                      \</span>
+    <span class="n">SYSCALL_METADATA</span><span class="p">(</span><span class="n">_</span><span class="c1">##sname, 0);                          \</span>
+    <span class="n">asmlinkage</span> <span class="n">long</span> <span class="n">sys_</span><span class="c1">##sname(void);                      \</span>
+    <span class="n">ALLOW_ERROR_INJECTION</span><span class="p">(</span><span class="n">sys_</span><span class="c1">##sname, ERRNO);              \</span>
+    <span class="n">asmlinkage</span> <span class="n">long</span> <span class="n">sys_</span><span class="c1">##sname(void)</span>
+<span class="c1">#endif /* SYSCALL_DEFINE0 */</span>
+
+<span class="c1">#define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)</span>
+<span class="c1">#define SYSCALL_DEFINE2(name, ...) SYSCALL_DEFINEx(2, _##name, __VA_ARGS__)</span>
+<span class="c1">#define SYSCALL_DEFINE3(name, ...) SYSCALL_DEFINEx(3, _##name, __VA_ARGS__)</span>
+<span class="c1">#define SYSCALL_DEFINE4(name, ...) SYSCALL_DEFINEx(4, _##name, __VA_ARGS__)</span>
+<span class="c1">#define SYSCALL_DEFINE5(name, ...) SYSCALL_DEFINEx(5, _##name, __VA_ARGS__)</span>
+<span class="c1">#define SYSCALL_DEFINE6(name, ...) SYSCALL_DEFINEx(6, _##name, __VA_ARGS__)</span>
+
+
+<span class="c1">#define SYSCALL_DEFINEx(x, sname, ...)                              \</span>
+    <span class="n">SYSCALL_METADATA</span><span class="p">(</span><span class="n">sname</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">__VA_ARGS__</span><span class="p">)</span>                 \
+    <span class="n">__SYSCALL_DEFINEx</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sname</span><span class="p">,</span> <span class="n">__VA_ARGS__</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>通过上面的宏，内核会创建一个名为sys_syscall_name()的函数,并定义了参数的类型,例如sys_nice()的定义如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>SYSCALL_DEFINE1(nice, int, increment)
+{
+    long nice, retval;
+
+    /*
+     * Setpriority might change our priority at the same moment.
+     * We don&#39;t have to worry. Conceptually one call occurs first
+     * and we have a single winner.
+     */
+    increment = clamp(increment, -NICE_WIDTH, NICE_WIDTH);
+    nice = task_nice(current) + increment;
+
+    nice = clamp_val(nice, MIN_NICE, MAX_NICE);
+    if (increment &lt; 0 &amp;&amp; !can_nice(current, nice))
+        return -EPERM;
+
+    retval = security_task_setnice(current, nice);
+    if (retval)
+        return retval;
+
+    set_user_nice(current, nice);
+    return 0;
+}
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2><span class="section-number">3.7.1.6. </span>linux系统调用的列表<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>进程控制</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>fork</p></td>
+<td><p>创建一个新进程</p></td>
+</tr>
+<tr class="row-odd"><td><p>clone</p></td>
+<td><p>按指定条件创建子进程</p></td>
+</tr>
+<tr class="row-even"><td><p>execve</p></td>
+<td><p>运行可执行文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>exit</p></td>
+<td><p>中止进程</p></td>
+</tr>
+<tr class="row-even"><td><p>_exit</p></td>
+<td><p>立即中止当前进程</p></td>
+</tr>
+<tr class="row-odd"><td><p>getdtablesize</p></td>
+<td><p>进程所能打开的最大文件数</p></td>
+</tr>
+<tr class="row-even"><td><p>getpgid</p></td>
+<td><p>获取在指定进程组标识号</p></td>
+</tr>
+<tr class="row-odd"><td><p>setpgid</p></td>
+<td><p>设置指定进程组标识号</p></td>
+</tr>
+<tr class="row-even"><td><p>getpgrp</p></td>
+<td><p>获取当前进程组标识号</p></td>
+</tr>
+<tr class="row-odd"><td><p>setgprp</p></td>
+<td><p>设置当前进程组标识号</p></td>
+</tr>
+<tr class="row-even"><td><p>getpid</p></td>
+<td><p>获取进程标识号</p></td>
+</tr>
+<tr class="row-odd"><td><p>getppid</p></td>
+<td><p>获取父进程标识号</p></td>
+</tr>
+<tr class="row-even"><td><p>getpriority</p></td>
+<td><p>获取调度优先级</p></td>
+</tr>
+<tr class="row-odd"><td><p>setpriority</p></td>
+<td><p>设置调度优先级</p></td>
+</tr>
+<tr class="row-even"><td><p>modify_ldt</p></td>
+<td><p>读写进程的本地描述表</p></td>
+</tr>
+<tr class="row-odd"><td><p>nanosleep</p></td>
+<td><p>使进程睡眠指定的时间</p></td>
+</tr>
+<tr class="row-even"><td><p>nice</p></td>
+<td><p>改变分时进程的优先级</p></td>
+</tr>
+<tr class="row-odd"><td><p>pause</p></td>
+<td><p>挂起进程，等待信号</p></td>
+</tr>
+<tr class="row-even"><td><p>personality</p></td>
+<td><p>设置进程运行域</p></td>
+</tr>
+<tr class="row-odd"><td><p>prctl</p></td>
+<td><p>对进程进行特定操作</p></td>
+</tr>
+<tr class="row-even"><td><p>ptrace</p></td>
+<td><p>进程跟踪</p></td>
+</tr>
+<tr class="row-odd"><td><p>sched_getparam</p></td>
+<td><p>获取进程的调度参数</p></td>
+</tr>
+<tr class="row-even"><td><p>sched_getscheduler</p></td>
+<td><p>获取指定进程的调度策略</p></td>
+</tr>
+<tr class="row-odd"><td><p>sched_setscheduler</p></td>
+<td><p>设置指定进程的调度策略和参数</p></td>
+</tr>
+<tr class="row-even"><td><p>sched_yield</p></td>
+<td><p>进程主动让出处理器，并将放在调度队列队尾</p></td>
+</tr>
+<tr class="row-odd"><td><p>vfork</p></td>
+<td><p>创建一个子进程,以供执行新程序，常与execve同时使用</p></td>
+</tr>
+<tr class="row-even"><td><p>wait</p></td>
+<td><p>等待子进程终止</p></td>
+</tr>
+<tr class="row-odd"><td><p>waitpid</p></td>
+<td><p>等待指定子进程终止</p></td>
+</tr>
+<tr class="row-even"><td><p>capget</p></td>
+<td><p>获取进程权限</p></td>
+</tr>
+<tr class="row-odd"><td><p>capset</p></td>
+<td><p>设置进程权限</p></td>
+</tr>
+<tr class="row-even"><td><p>getsid</p></td>
+<td><p>获取会话标识号</p></td>
+</tr>
+<tr class="row-odd"><td><p>setsid</p></td>
+<td><p>设置会话标识号</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>文件系统控制</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>fcntl</p></td>
+<td><p>文件控制</p></td>
+</tr>
+<tr class="row-odd"><td><p>open</p></td>
+<td><p>打开文件</p></td>
+</tr>
+<tr class="row-even"><td><p>creat</p></td>
+<td><p>创建新文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>close</p></td>
+<td><p>关闭文件描述符</p></td>
+</tr>
+<tr class="row-even"><td><p>read</p></td>
+<td><p>读文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>write</p></td>
+<td><p>写文件</p></td>
+</tr>
+<tr class="row-even"><td><p>readv</p></td>
+<td><p>从文件读取数据到缓冲数组中</p></td>
+</tr>
+<tr class="row-odd"><td><p>writev</p></td>
+<td><p>将缓冲数组里的数据写入文件</p></td>
+</tr>
+<tr class="row-even"><td><p>pread</p></td>
+<td><p>对文件进行随机读</p></td>
+</tr>
+<tr class="row-odd"><td><p>pwrite</p></td>
+<td><p>对文件进程随机写</p></td>
+</tr>
+<tr class="row-even"><td><p>lseek</p></td>
+<td><p>移动文件指针</p></td>
+</tr>
+<tr class="row-odd"><td><p>_llseek</p></td>
+<td><p>在64位地址空间里移动文件指针</p></td>
+</tr>
+<tr class="row-even"><td><p>dup</p></td>
+<td><p>复制已打开的文件描述字</p></td>
+</tr>
+<tr class="row-odd"><td><p>dup2</p></td>
+<td><p>按指定条件复制文件描述字</p></td>
+</tr>
+<tr class="row-even"><td><p>flock</p></td>
+<td><p>文件加/解锁</p></td>
+</tr>
+<tr class="row-odd"><td><p>poll</p></td>
+<td><p>I/O多路转换</p></td>
+</tr>
+<tr class="row-even"><td><p>truncat</p></td>
+<td><p>e截断文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>vumask</p></td>
+<td><p>设置文件权限掩码</p></td>
+</tr>
+<tr class="row-even"><td><p>fsync</p></td>
+<td><p>把文件在内存中的部分写回磁盘</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>文件系统操作</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>acess</p></td>
+<td><p>确定文件的可存取性</p></td>
+</tr>
+<tr class="row-odd"><td><p>chdir</p></td>
+<td><p>改变当前工作目录</p></td>
+</tr>
+<tr class="row-even"><td><p>chmod</p></td>
+<td><p>改变文件权限</p></td>
+</tr>
+<tr class="row-odd"><td><p>chown</p></td>
+<td><p>改变文件的属主或用户组</p></td>
+</tr>
+<tr class="row-even"><td><p>chroot</p></td>
+<td><p>改变根目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>stat</p></td>
+<td><p>改变文件状态信息</p></td>
+</tr>
+<tr class="row-even"><td><p>statfs</p></td>
+<td><p>获取文件系统信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>readdir</p></td>
+<td><p>读取目录项</p></td>
+</tr>
+<tr class="row-even"><td><p>getdents</p></td>
+<td><p>读取目录项</p></td>
+</tr>
+<tr class="row-odd"><td><p>mkdir</p></td>
+<td><p>创建目录</p></td>
+</tr>
+<tr class="row-even"><td><p>mknod</p></td>
+<td><p>创建索引节点</p></td>
+</tr>
+<tr class="row-odd"><td><p>rmdir</p></td>
+<td><p>删除目录</p></td>
+</tr>
+<tr class="row-even"><td><p>rename</p></td>
+<td><p>文件改名</p></td>
+</tr>
+<tr class="row-odd"><td><p>link</p></td>
+<td><p>创建软链接</p></td>
+</tr>
+<tr class="row-even"><td><p>symlink</p></td>
+<td><p>创建符号链接</p></td>
+</tr>
+<tr class="row-odd"><td><p>unlink</p></td>
+<td><p>删除链接</p></td>
+</tr>
+<tr class="row-even"><td><p>readlink</p></td>
+<td><p>读取符号链接的值</p></td>
+</tr>
+<tr class="row-odd"><td><p>mount</p></td>
+<td><p>挂载文件系统</p></td>
+</tr>
+<tr class="row-even"><td><p>unmount</p></td>
+<td><p>卸载文件系统</p></td>
+</tr>
+<tr class="row-odd"><td><p>ustat</p></td>
+<td><p>读取文件系统信息</p></td>
+</tr>
+<tr class="row-even"><td><p>utime</p></td>
+<td><p>改变文件的访问修改时间</p></td>
+</tr>
+<tr class="row-odd"><td><p>quotactl</p></td>
+<td><p>控制磁盘配额</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>系统控制</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ioctl</p></td>
+<td><p>I/O总控制函数</p></td>
+</tr>
+<tr class="row-odd"><td><p>_sysctl</p></td>
+<td><p>读写系统参数</p></td>
+</tr>
+<tr class="row-even"><td><p>acct</p></td>
+<td><p>启动或禁止进程</p></td>
+</tr>
+<tr class="row-odd"><td><p>getrlimit</p></td>
+<td><p>获取系统资源上限</p></td>
+</tr>
+<tr class="row-even"><td><p>setrlimit</p></td>
+<td><p>设置系统资源上限</p></td>
+</tr>
+<tr class="row-odd"><td><p>getrusage</p></td>
+<td><p>获取系统资源是应用情况</p></td>
+</tr>
+<tr class="row-even"><td><p>uselib</p></td>
+<td><p>选择要使用的函数库</p></td>
+</tr>
+<tr class="row-odd"><td><p>ioperm</p></td>
+<td><p>设置端口的权限</p></td>
+</tr>
+<tr class="row-even"><td><p>iopl</p></td>
+<td><p>改变进程I/O权限级别</p></td>
+</tr>
+<tr class="row-odd"><td><p>outb</p></td>
+<td><p>低级端口操作</p></td>
+</tr>
+<tr class="row-even"><td><p>reboot</p></td>
+<td><p>重新启动</p></td>
+</tr>
+<tr class="row-odd"><td><p>swapon</p></td>
+<td><p>打开交换文件和设置</p></td>
+</tr>
+<tr class="row-even"><td><p>swapoff</p></td>
+<td><p>关闭交换文件和设备</p></td>
+</tr>
+<tr class="row-odd"><td><p>bdflush</p></td>
+<td><p>控制bdflush守护进程</p></td>
+</tr>
+<tr class="row-even"><td><p>sysfs</p></td>
+<td><p>获取核心支持的文件系统类型</p></td>
+</tr>
+<tr class="row-odd"><td><p>sysinfo</p></td>
+<td><p>获取系统信息</p></td>
+</tr>
+<tr class="row-even"><td><p>adjtimex</p></td>
+<td><p>调整系统时钟</p></td>
+</tr>
+<tr class="row-odd"><td><p>alarm</p></td>
+<td><p>设置进程的闹钟</p></td>
+</tr>
+<tr class="row-even"><td><p>getitimer</p></td>
+<td><p>获取计数器值</p></td>
+</tr>
+<tr class="row-odd"><td><p>setitimer</p></td>
+<td><p>设置计数器值</p></td>
+</tr>
+<tr class="row-even"><td><p>gettimeofday</p></td>
+<td><p>获取时间和时区</p></td>
+</tr>
+<tr class="row-odd"><td><p>settimeofday</p></td>
+<td><p>设置时间和时区</p></td>
+</tr>
+<tr class="row-even"><td><p>stime</p></td>
+<td><p>设置系统日期和时间</p></td>
+</tr>
+<tr class="row-odd"><td><p>time</p></td>
+<td><p>获取系统时间</p></td>
+</tr>
+<tr class="row-even"><td><p>times</p></td>
+<td><p>获取进程运行时间</p></td>
+</tr>
+<tr class="row-odd"><td><p>uname</p></td>
+<td><p>获取当前UNIX系统的名称、版本和主机等信息</p></td>
+</tr>
+<tr class="row-even"><td><p>vhangup</p></td>
+<td><p>挂起当前终端</p></td>
+</tr>
+<tr class="row-odd"><td><p>nfsservctl</p></td>
+<td><p>对NFS守护进程进行控制</p></td>
+</tr>
+<tr class="row-even"><td><p>create_module</p></td>
+<td><p>创建可装载的模块项</p></td>
+</tr>
+<tr class="row-odd"><td><p>delete_module</p></td>
+<td><p>删除可装载的模块项</p></td>
+</tr>
+<tr class="row-even"><td><p>init_module</p></td>
+<td><p>初始化模块</p></td>
+</tr>
+<tr class="row-odd"><td><p>query_module</p></td>
+<td><p>查询模块信息</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>内存管理</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>brk</p></td>
+<td><p>改变数据段空间的分配</p></td>
+</tr>
+<tr class="row-odd"><td><p>mlock</p></td>
+<td><p>内存页面加锁</p></td>
+</tr>
+<tr class="row-even"><td><p>munlock</p></td>
+<td><p>内存页面解锁</p></td>
+</tr>
+<tr class="row-odd"><td><p>mlockall</p></td>
+<td><p>调用进程所有内存页面加锁</p></td>
+</tr>
+<tr class="row-even"><td><p>munlockall</p></td>
+<td><p>调用进程所有内存页面解锁</p></td>
+</tr>
+<tr class="row-odd"><td><p>mmap</p></td>
+<td><p>映射虚拟内存页</p></td>
+</tr>
+<tr class="row-even"><td><p>munmap</p></td>
+<td><p>去除内存页映射</p></td>
+</tr>
+<tr class="row-odd"><td><p>mremap</p></td>
+<td><p>重映射虚拟内存地址</p></td>
+</tr>
+<tr class="row-even"><td><p>msync</p></td>
+<td><p>将映射内存中的数据写回磁盘</p></td>
+</tr>
+<tr class="row-odd"><td><p>mprotect</p></td>
+<td><p>设置内存映射保护</p></td>
+</tr>
+<tr class="row-even"><td><p>getpagesize</p></td>
+<td><p>获取页面大小</p></td>
+</tr>
+<tr class="row-odd"><td><p>sync</p></td>
+<td><p>将内存缓冲区数据写回磁盘</p></td>
+</tr>
+<tr class="row-even"><td><p>cacheflush</p></td>
+<td><p>将指定缓冲区中内存磁盘</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>网络管理</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>getdomainname</p></td>
+<td><p>取域名</p></td>
+</tr>
+<tr class="row-odd"><td><p>setdomainname</p></td>
+<td><p>设置域名</p></td>
+</tr>
+<tr class="row-even"><td><p>gethostid</p></td>
+<td><p>获取主机识别号</p></td>
+</tr>
+<tr class="row-odd"><td><p>sethostid</p></td>
+<td><p>设置主机识别号</p></td>
+</tr>
+<tr class="row-even"><td><p>gethostname</p></td>
+<td><p>获取主机名称</p></td>
+</tr>
+<tr class="row-odd"><td><p>sethostname</p></td>
+<td><p>设置主机名称</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>socket控制</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>socketcall</p></td>
+<td><p>socket系统调用</p></td>
+</tr>
+<tr class="row-odd"><td><p>socket</p></td>
+<td><p>建立socket</p></td>
+</tr>
+<tr class="row-even"><td><p>bind</p></td>
+<td><p>绑定socket到端口</p></td>
+</tr>
+<tr class="row-odd"><td><p>connect</p></td>
+<td><p>远程连接主机</p></td>
+</tr>
+<tr class="row-even"><td><p>accept</p></td>
+<td><p>响应socket连接请求</p></td>
+</tr>
+<tr class="row-odd"><td><p>send</p></td>
+<td><p>通过socket发送信息</p></td>
+</tr>
+<tr class="row-even"><td><p>sendto</p></td>
+<td><p>发送UDP信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>recv</p></td>
+<td><p>通过socket接收信息</p></td>
+</tr>
+<tr class="row-even"><td><p>recvfrom</p></td>
+<td><p>接收UDP信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>recvmsg</p></td>
+<td><p>通过socket接收信息</p></td>
+</tr>
+<tr class="row-even"><td><p>listen</p></td>
+<td><p>监听socket端口</p></td>
+</tr>
+<tr class="row-odd"><td><p>select</p></td>
+<td><p>对多路同步I/O进行轮询</p></td>
+</tr>
+<tr class="row-even"><td><p>shutdown</p></td>
+<td><p>关闭socket上的连接</p></td>
+</tr>
+<tr class="row-odd"><td><p>getsockname</p></td>
+<td><p>取得本地socket名字</p></td>
+</tr>
+<tr class="row-even"><td><p>getpeername</p></td>
+<td><p>获取通信对方的socket名字</p></td>
+</tr>
+<tr class="row-odd"><td><p>getsockopt</p></td>
+<td><p>获取端口设置</p></td>
+</tr>
+<tr class="row-even"><td><p>setsockopt</p></td>
+<td><p>设置端口参数</p></td>
+</tr>
+<tr class="row-odd"><td><p>sendfile</p></td>
+<td><p>在文件或端口间传输数据</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>用户管理</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>getuid</p></td>
+<td><p>获取用户标识号</p></td>
+</tr>
+<tr class="row-odd"><td><p>setuid</p></td>
+<td><p>设置用户标识号</p></td>
+</tr>
+<tr class="row-even"><td><p>getgid</p></td>
+<td><p>获取组标识号</p></td>
+</tr>
+<tr class="row-odd"><td><p>setgid</p></td>
+<td><p>设置组标识号</p></td>
+</tr>
+<tr class="row-even"><td><p>getegid</p></td>
+<td><p>获取有效组标识号</p></td>
+</tr>
+<tr class="row-odd"><td><p>setegid</p></td>
+<td><p>设置有效组标识号</p></td>
+</tr>
+<tr class="row-even"><td><p>seteuid</p></td>
+<td><p>设置有效用户标识号</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>进程间通信</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ipc</p></td>
+<td><p>进程间通信总控制调用</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>信号</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sigaction</p></td>
+<td><p>设置对指定信号的处理方法</p></td>
+</tr>
+<tr class="row-odd"><td><p>sigprocmask</p></td>
+<td><p>更具参数对信号集中的信号执行阻塞/解除阻塞等操作</p></td>
+</tr>
+<tr class="row-even"><td><p>sigpending</p></td>
+<td><p>对指定的被阻塞信号设置队列</p></td>
+</tr>
+<tr class="row-odd"><td><p>sigsuspend</p></td>
+<td><p>挂起进程等待特定信号</p></td>
+</tr>
+<tr class="row-even"><td><p>kill</p></td>
+<td><p>向进程或进程组发信号</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>消息</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>msgctl</p></td>
+<td><p>消息控制操作</p></td>
+</tr>
+<tr class="row-odd"><td><p>msgget</p></td>
+<td><p>获取消息队列</p></td>
+</tr>
+<tr class="row-even"><td><p>msgsnd</p></td>
+<td><p>发消息</p></td>
+</tr>
+<tr class="row-odd"><td><p>msgrecv</p></td>
+<td><p>接收消息</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>管道</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>pipe</p></td>
+<td><p>创建管道</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>信号量</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>semctl</p></td>
+<td><p>信号量控制</p></td>
+</tr>
+<tr class="row-odd"><td><p>semget</p></td>
+<td><p>获取一组信号量</p></td>
+</tr>
+<tr class="row-even"><td><p>semop</p></td>
+<td><p>信号量操作</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>共享内存</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>shmctl</p></td>
+<td><p>控制共享内存</p></td>
+</tr>
+<tr class="row-odd"><td><p>shmget</p></td>
+<td><p>获取共享内存</p></td>
+</tr>
+<tr class="row-even"><td><p>shmat</p></td>
+<td><p>连接共享内存</p></td>
+</tr>
+<tr class="row-odd"><td><p>shmdt</p></td>
+<td><p>拆卸共享内存</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="3.7. linux系统调用" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../kernel_start/index.html" class="btn btn-neutral float-right" title="3.8. kernel 启动流程" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

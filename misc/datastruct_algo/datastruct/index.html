@@ -1,0 +1,175 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.9.1. 数据结构与算法 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="7.9.1.1. 数据结构之树" href="tree.html" />
+    <link rel="prev" title="7.9. 数据结构与算法" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">7.9. 数据结构与算法</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.9.1. 数据结构与算法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tree.html">7.9.1.1. 数据结构之树</a></li>
+<li class="toctree-l4"><a class="reference internal" href="red_black.html">7.9.1.2. 红黑树</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../sword_offer/index.html">7.9.2. 剑指offer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm/index.html">7.9.3. 算法</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7.9. </span>数据结构与算法</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.9.1. </span>数据结构与算法</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/misc/datastruct_algo/datastruct/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">7.9.1. </span>数据结构与算法<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tree.html">7.9.1.1. 数据结构之树</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tree.html#id2">7.9.1.1.1. 树的概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tree.html#id3">7.9.1.1.2. 二叉树</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tree.html#id4">7.9.1.1.3. 二叉树的存储</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tree.html#id5">7.9.1.1.3.1. 树的创建</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tree.html#id6">7.9.1.1.4. 二叉树的遍历</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tree.html#id7">7.9.1.1.4.1. 先序遍历</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tree.html#id8">7.9.1.1.4.2. 中序遍历</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tree.html#id9">7.9.1.1.4.3. 后序遍历</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="red_black.html">7.9.1.2. 红黑树</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="red_black.html#id2">7.9.1.2.1. 二叉查找树</a></li>
+<li class="toctree-l2"><a class="reference internal" href="red_black.html#avl">7.9.1.2.2. AVL数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="red_black.html#id3">7.9.1.2.3. 红黑树</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="red_black.html#id4">7.9.1.2.3.1. 红黑树查找</a></li>
+<li class="toctree-l3"><a class="reference internal" href="red_black.html#id5">7.9.1.2.3.2. 红黑树插入</a></li>
+<li class="toctree-l3"><a class="reference internal" href="red_black.html#id6">7.9.1.2.3.3. 红黑树删除</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../index.html" class="btn btn-neutral float-left" title="7.9. 数据结构与算法" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="tree.html" class="btn btn-neutral float-right" title="7.9.1.1. 数据结构之树" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

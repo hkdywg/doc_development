@@ -1,0 +1,606 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.1.6. 文件系统系统调用 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="5.2. ext4文件系统" href="../ext4/index.html" />
+    <link rel="prev" title="5.1.5. vfs与real_fs关联" href="vfs_realfs.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. file system note</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.1. linux 虚拟文件系统</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="vfs_architecture.html">5.1.1. 虚拟文件系统概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vfs_datastruct.html">5.1.2. vfs数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs_store.html">5.1.3. 文件的存储</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs_mount.html">5.1.4. 文件系统mount</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vfs_realfs.html">5.1.5. vfs与real_fs关联</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.1.6. 文件系统系统调用</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#open">5.1.6.1. open()系统调用关系</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sys-read">5.1.6.2. sys_read</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ext4/index.html">5.2. ext4文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sysfs/index.html">5.3. linux文件系统之sysfs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>file system note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.1. </span>linux 虚拟文件系统</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5.1.6. </span>文件系统系统调用</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/fs/vfs/fs_io_read.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">5.1.6. </span>文件系统系统调用<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<p>当用户应用程序调用文件I/O read()操作时，系统调用sys_read()被激发，sys_read()找到所在文件所在的具体文件系统，把控制权传给该文件系统，
+最后由具体文件系统与物理介质交互，从介质读出数据</p>
+<section id="open">
+<h2><span class="section-number">5.1.6.1. </span>open()系统调用关系<a class="headerlink" href="#open" title="此标题的永久链接"></a></h2>
+<p>open()系统调用打开或创建一个文件，成功返回该文件的文件描述符，下面是open()实现代码中主要的函数调用关系图</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sys_open</span><span class="p">()</span>
+<span class="o">|-----------</span><span class="n">do_sys_open</span><span class="p">()</span>
+<span class="o">|</span>           <span class="o">|--------</span><span class="n">get_unused_fd_flags</span><span class="p">()</span>
+<span class="o">|</span>           <span class="o">|--------</span><span class="n">do_filp_open</span><span class="p">()</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|------</span><span class="n">set_nameidata</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|------</span><span class="n">path_openat</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|</span>       <span class="o">|-------</span><span class="n">alloc_empty_file</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|</span>       <span class="o">|-------</span><span class="n">do_o_path</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|</span>       <span class="o">|-------</span><span class="n">path_init</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|</span>       <span class="o">|-------</span><span class="n">link_path_walk</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|</span>       <span class="o">|-------</span><span class="n">do_last</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|</span>               <span class="o">|-------</span><span class="n">may_open</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|</span>               <span class="o">|-------</span><span class="n">vfs_open</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|</span>                       <span class="o">|------</span><span class="n">do_dentry_open</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|</span>                               <span class="n">f</span><span class="o">-&gt;</span><span class="n">f_op</span> <span class="o">=</span> <span class="n">fops_get</span><span class="p">(</span><span class="n">inode</span><span class="o">-&gt;</span><span class="n">i_fop</span><span class="p">)</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|</span>                               <span class="nb">open</span> <span class="o">=</span> <span class="n">f</span><span class="o">-&gt;</span><span class="n">f_open</span><span class="o">-&gt;</span><span class="nb">open</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|</span>                               <span class="nb">open</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|------</span><span class="n">restore_nameidata</span>
+<span class="o">|</span>           <span class="o">|--------</span><span class="n">fsnotify_open</span><span class="p">()</span>
+<span class="o">|</span>           <span class="o">|--------</span><span class="n">fd_install</span><span class="p">()</span>
+<span class="o">|</span>
+</pre></div>
+</div>
+<section id="sys-open">
+<h3><span class="section-number">5.1.6.1.1. </span>sys_open<a class="headerlink" href="#sys-open" title="此标题的永久链接"></a></h3>
+<p>sys_open系统调用位于 <code class="docutils literal notranslate"><span class="pre">fs/open.c</span></code> 文件中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SYSCALL_DEFINE3</span><span class="p">(</span><span class="nb">open</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="n">__user</span> <span class="o">*</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">umode_t</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">force_o_largefile</span><span class="p">())</span>
+        <span class="n">flags</span> <span class="o">|=</span> <span class="n">O_LARGEFILE</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">do_sys_open</span><span class="p">(</span><span class="n">AT_FDCWD</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">mode</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="do-sys-open">
+<h3><span class="section-number">5.1.6.1.2. </span>do_sys_open<a class="headerlink" href="#do-sys-open" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
+{
+    struct open_flags op;
+    int fd = build_open_flags(flags, mode, &amp;op);
+    struct filename *tmp;
+
+    if (fd)
+        return fd;
+
+    tmp = getname(filename);    //把用户空间传过来的pathname复制到内核空间,后面会需要用到这个pathname解析找到inode
+    if (IS_ERR(tmp))
+        return PTR_ERR(tmp);
+
+    fd = get_unused_fd_flags(flags);    //得到一个可用的文件描述符,通过该函数可知文件描述符实质上是进程打开文件列表中对应某个文件对象的索引值
+    if (fd &gt;= 0) {
+        struct file *f = do_filp_open(dfd, tmp, &amp;op);   //打开文件，返回一个file对象，代表由该进程打开的一个文件。进程通过这样的一个数据结构对物理文件进行读写操作
+        if (IS_ERR(f)) {
+            put_unused_fd(fd);      //释放文件描述符
+            fd = PTR_ERR(f);
+        } else {
+            fsnotify_open(f);       //通知文件被打开
+            fd_install(fd, f);      //建立文件描述符与file对象的联系，以后进程对文件的读写都是通过文件描述符进行
+        }
+    }
+    putname(tmp);   //将复制到内核空间的pathname销毁
+    return fd;
+}
+</pre></div>
+</div>
+</section>
+<section id="do-filp-open">
+<h3><span class="section-number">5.1.6.1.3. </span>do_filp_open<a class="headerlink" href="#do-filp-open" title="此标题的永久链接"></a></h3>
+<p>do_filp_open()用于打开文件，返回一个file对象</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">do_filp_open</span><span class="p">(</span><span class="nb">int</span> <span class="n">dfd</span><span class="p">,</span> <span class="n">struct</span> <span class="n">filename</span> <span class="o">*</span><span class="n">pathname</span><span class="p">,</span>
+        <span class="n">const</span> <span class="n">struct</span> <span class="n">open_flags</span> <span class="o">*</span><span class="n">op</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">nameidata</span> <span class="n">nd</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">flags</span> <span class="o">=</span> <span class="n">op</span><span class="o">-&gt;</span><span class="n">lookup_flags</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">filp</span><span class="p">;</span>
+
+    <span class="n">set_nameidata</span><span class="p">(</span><span class="o">&amp;</span><span class="n">nd</span><span class="p">,</span> <span class="n">dfd</span><span class="p">,</span> <span class="n">pathname</span><span class="p">);</span>
+    <span class="n">filp</span> <span class="o">=</span> <span class="n">path_openat</span><span class="p">(</span><span class="o">&amp;</span><span class="n">nd</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">flags</span> <span class="o">|</span> <span class="n">LOOKUP_RCU</span><span class="p">);</span>    <span class="o">//</span><span class="n">此函数用于找到文件名对应的dentry和inode</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">filp</span> <span class="o">==</span> <span class="n">ERR_PTR</span><span class="p">(</span><span class="o">-</span><span class="n">ECHILD</span><span class="p">)))</span>
+        <span class="n">filp</span> <span class="o">=</span> <span class="n">path_openat</span><span class="p">(</span><span class="o">&amp;</span><span class="n">nd</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">filp</span> <span class="o">==</span> <span class="n">ERR_PTR</span><span class="p">(</span><span class="o">-</span><span class="n">ESTALE</span><span class="p">)))</span>
+        <span class="n">filp</span> <span class="o">=</span> <span class="n">path_openat</span><span class="p">(</span><span class="o">&amp;</span><span class="n">nd</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">flags</span> <span class="o">|</span> <span class="n">LOOKUP_REVAL</span><span class="p">);</span>
+    <span class="n">restore_nameidata</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">filp</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>path_openat函数找到文件路径对应的dentry和inode</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static struct file *path_openat(struct nameidata *nd,
+            const struct open_flags *op, unsigned flags)
+{
+    struct file *file;
+    int error;
+
+    file = alloc_empty_file(op-&gt;open_flag, current_cred()); //得到一个空的file结构体(默认分配了一些，如果打开的文件超过默认数量则需要动态申请)
+    if (IS_ERR(file))
+        return file;
+
+    if (unlikely(file-&gt;f_flags &amp; __O_TMPFILE)) {
+        error = do_tmpfile(nd, flags, op, file);
+    } else if (unlikely(file-&gt;f_flags &amp; O_PATH)) {
+        error = do_o_path(nd, flags, file);
+    } else {
+        const char *s = path_init(nd, flags);   //根据路径名查找目标节点的第一步，确定path lookup的位置
+        while (!(error = link_path_walk(s, nd)) &amp;&amp;
+            (error = do_last(nd, file, op)) &gt; 0) {
+            nd-&gt;flags &amp;= ~(LOOKUP_OPEN|LOOKUP_CREATE|LOOKUP_EXCL);
+            s = trailing_symlink(nd);
+        }
+        terminate_walk(nd);
+    }
+    if (likely(!error)) {
+        if (likely(file-&gt;f_mode &amp; FMODE_OPENED))
+            return file;
+        WARN_ON(1);
+        error = -EINVAL;
+    }
+    fput(file);
+    if (error == -EOPENSTALE) {
+        if (flags &amp; LOOKUP_RCU)
+            error = -ECHILD;
+        else
+            error = -ESTALE;
+    }
+    return ERR_PTR(error);
+}
+</pre></div>
+</div>
+</section>
+<section id="do-last">
+<h3><span class="section-number">5.1.6.1.4. </span>do_last<a class="headerlink" href="#do-last" title="此标题的永久链接"></a></h3>
+<p>do_last是open系统调用的最后一步</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+ * Handle the last step of open()
+ */
+static int do_last(struct nameidata *nd,
+           struct file *file, const struct open_flags *op)
+{
+    struct dentry *dir = nd-&gt;path.dentry;
+    kuid_t dir_uid = nd-&gt;inode-&gt;i_uid;
+    umode_t dir_mode = nd-&gt;inode-&gt;i_mode;
+    int open_flag = op-&gt;open_flag;
+    bool will_truncate = (open_flag &amp; O_TRUNC) != 0;
+    bool got_write = false;
+    int acc_mode = op-&gt;acc_mode;
+    unsigned seq;
+    struct inode *inode;
+    struct path path;
+    int error;
+
+    nd-&gt;flags &amp;= ~LOOKUP_PARENT;
+    nd-&gt;flags |= op-&gt;intent;
+
+    if (nd-&gt;last_type != LAST_NORM) {
+        error = handle_dots(nd, nd-&gt;last_type);
+        if (unlikely(error))
+            return error;
+        goto finish_open;
+    }
+
+    if (!(open_flag &amp; O_CREAT)) {
+        if (nd-&gt;last.name[nd-&gt;last.len])
+            nd-&gt;flags |= LOOKUP_FOLLOW | LOOKUP_DIRECTORY;
+        /* we _can_ be in RCU mode here */
+        error = lookup_fast(nd, &amp;path, &amp;inode, &amp;seq);
+        if (likely(error &gt; 0))
+            goto finish_lookup;
+
+        if (error &lt; 0)
+            return error;
+
+        BUG_ON(nd-&gt;inode != dir-&gt;d_inode);
+        BUG_ON(nd-&gt;flags &amp; LOOKUP_RCU);
+    } else {
+        /* create side of things */
+        /*
+         * This will *only* deal with leaving RCU mode - LOOKUP_JUMPED
+         * has been cleared when we got to the last component we are
+         * about to look up
+         */
+        error = complete_walk(nd);
+        if (error)
+            return error;
+
+        audit_inode(nd-&gt;name, dir, AUDIT_INODE_PARENT);
+        /* trailing slashes? */
+        if (unlikely(nd-&gt;last.name[nd-&gt;last.len]))
+            return -EISDIR;
+    }
+
+    if (open_flag &amp; (O_CREAT | O_TRUNC | O_WRONLY | O_RDWR)) {
+        error = mnt_want_write(nd-&gt;path.mnt);
+        if (!error)
+            got_write = true;
+        /*
+         * do _not_ fail yet - we might not need that or fail with
+         * a different error; let lookup_open() decide; we&#39;ll be
+         * dropping this one anyway.
+         */
+    }
+    if (open_flag &amp; O_CREAT)
+        inode_lock(dir-&gt;d_inode);
+    else
+        inode_lock_shared(dir-&gt;d_inode);
+    error = lookup_open(nd, &amp;path, file, op, got_write);
+    if (open_flag &amp; O_CREAT)
+        inode_unlock(dir-&gt;d_inode);
+    else
+        inode_unlock_shared(dir-&gt;d_inode);
+
+    if (error)
+        goto out;
+
+    if (file-&gt;f_mode &amp; FMODE_OPENED) {
+        if ((file-&gt;f_mode &amp; FMODE_CREATED) ||
+            !S_ISREG(file_inode(file)-&gt;i_mode))
+            will_truncate = false;
+
+        audit_inode(nd-&gt;name, file-&gt;f_path.dentry, 0);
+        goto opened;
+    }
+
+    if (file-&gt;f_mode &amp; FMODE_CREATED) {
+        /* Don&#39;t check for write permission, don&#39;t truncate */
+        open_flag &amp;= ~O_TRUNC;
+        will_truncate = false;
+        acc_mode = 0;
+        path_to_nameidata(&amp;path, nd);
+        goto finish_open_created;
+    }
+
+    /*
+     * If atomic_open() acquired write access it is dropped now due to
+     * possible mount and symlink following (this might be optimized away if
+     * necessary...)
+     */
+    if (got_write) {
+        mnt_drop_write(nd-&gt;path.mnt);
+        got_write = false;
+    }
+
+    error = follow_managed(&amp;path, nd);
+    if (unlikely(error &lt; 0))
+        return error;
+
+    if (unlikely(d_is_negative(path.dentry))) {
+        path_to_nameidata(&amp;path, nd);
+        return -ENOENT;
+    }
+
+    /*
+     * create/update audit record if it already exists.
+     */
+    audit_inode(nd-&gt;name, path.dentry, 0);
+
+    if (unlikely((open_flag &amp; (O_EXCL | O_CREAT)) == (O_EXCL | O_CREAT))) {
+        path_to_nameidata(&amp;path, nd);
+        return -EEXIST;
+    }
+
+    seq = 0;        /* out of RCU mode, so the value doesn&#39;t matter */
+    inode = d_backing_inode(path.dentry);
+finish_lookup:
+    error = step_into(nd, &amp;path, 0, inode, seq);
+    if (unlikely(error))
+        return error;
+finish_open:
+    /* Why this, you ask?  _Now_ we might have grown LOOKUP_JUMPED... */
+    error = complete_walk(nd);
+    if (error)
+        return error;
+    audit_inode(nd-&gt;name, nd-&gt;path.dentry, 0);
+    if (open_flag &amp; O_CREAT) {
+        error = -EISDIR;
+        if (d_is_dir(nd-&gt;path.dentry))
+            goto out;
+        error = may_create_in_sticky(dir_mode, dir_uid,
+                         d_backing_inode(nd-&gt;path.dentry));
+        if (unlikely(error))
+            goto out;
+    }
+    error = -ENOTDIR;
+    if ((nd-&gt;flags &amp; LOOKUP_DIRECTORY) &amp;&amp; !d_can_lookup(nd-&gt;path.dentry))
+        goto out;
+    if (!d_is_reg(nd-&gt;path.dentry))
+        will_truncate = false;
+
+    if (will_truncate) {
+        error = mnt_want_write(nd-&gt;path.mnt);
+        if (error)
+            goto out;
+        got_write = true;
+    }
+finish_open_created:
+    error = may_open(&amp;nd-&gt;path, acc_mode, open_flag);
+    if (error)
+        goto out;
+    BUG_ON(file-&gt;f_mode &amp; FMODE_OPENED); /* once it&#39;s opened, it&#39;s opened */
+    error = vfs_open(&amp;nd-&gt;path, file);
+    if (error)
+        goto out;
+opened:
+    error = ima_file_check(file, op-&gt;acc_mode);
+    if (!error &amp;&amp; will_truncate)
+        error = handle_truncate(file);
+out:
+    if (unlikely(error &gt; 0)) {
+        WARN_ON(1);
+        error = -EINVAL;
+    }
+    if (got_write)
+        mnt_drop_write(nd-&gt;path.mnt);
+    return error;
+}
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">vfs_open</span><span class="p">(</span><span class="n">const</span> <span class="n">struct</span> <span class="n">path</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">file</span><span class="o">-&gt;</span><span class="n">f_path</span> <span class="o">=</span> <span class="o">*</span><span class="n">path</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">do_dentry_open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">d_backing_inode</span><span class="p">(</span><span class="n">path</span><span class="o">-&gt;</span><span class="n">dentry</span><span class="p">),</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>do_entry_open函数的主要目标就是填充file结构体，返回给最开始调用的do_filp_open函数,它里面填充好了相关参数，包括inode, f_mapping, mode, file_operations操作等</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static int do_dentry_open(struct file *f,
+              struct inode *inode,
+              int (*open)(struct inode *, struct file *))
+{
+    static const struct file_operations empty_fops = {};
+    int error;
+
+    path_get(&amp;f-&gt;f_path);
+    f-&gt;f_inode = inode;
+    f-&gt;f_mapping = inode-&gt;i_mapping;
+
+    /* Ensure that we skip any errors that predate opening of the file */
+    f-&gt;f_wb_err = filemap_sample_wb_err(f-&gt;f_mapping);
+
+    if (unlikely(f-&gt;f_flags &amp; O_PATH)) {
+        f-&gt;f_mode = FMODE_PATH | FMODE_OPENED;
+        f-&gt;f_op = &amp;empty_fops;
+        return 0;
+    }
+
+    /* Any file opened for execve()/uselib() has to be a regular file. */
+    if (unlikely(f-&gt;f_flags &amp; FMODE_EXEC &amp;&amp; !S_ISREG(inode-&gt;i_mode))) {
+        error = -EACCES;
+        goto cleanup_file;
+    }
+
+    if (f-&gt;f_mode &amp; FMODE_WRITE &amp;&amp; !special_file(inode-&gt;i_mode)) {
+        error = get_write_access(inode);
+        if (unlikely(error))
+            goto cleanup_file;
+        error = __mnt_want_write(f-&gt;f_path.mnt);
+        if (unlikely(error)) {
+            put_write_access(inode);
+            goto cleanup_file;
+        }
+        f-&gt;f_mode |= FMODE_WRITER;
+    }
+
+    /* POSIX.1-2008/SUSv4 Section XSI 2.9.7 */
+    if (S_ISREG(inode-&gt;i_mode) || S_ISDIR(inode-&gt;i_mode))
+        f-&gt;f_mode |= FMODE_ATOMIC_POS;
+
+    f-&gt;f_op = fops_get(inode-&gt;i_fop);   //file_operations从inode中得到操作方法
+    if (WARN_ON(!f-&gt;f_op)) {
+        error = -ENODEV;
+        goto cleanup_all;
+    }
+
+    error = security_file_open(f);
+    if (error)
+        goto cleanup_all;
+
+    error = break_lease(locks_inode(f), f-&gt;f_flags);
+    if (error)
+        goto cleanup_all;
+
+    /* normally all 3 are set; -&gt;open() can clear them if needed */
+    f-&gt;f_mode |= FMODE_LSEEK | FMODE_PREAD | FMODE_PWRITE;
+    if (!open)
+        open = f-&gt;f_op-&gt;open;
+    if (open) {
+        error = open(inode, f);
+        if (error)
+            goto cleanup_all;
+    }
+    f-&gt;f_mode |= FMODE_OPENED;
+    if ((f-&gt;f_mode &amp; (FMODE_READ | FMODE_WRITE)) == FMODE_READ)
+        i_readcount_inc(inode);
+    if ((f-&gt;f_mode &amp; FMODE_READ) &amp;&amp;
+         likely(f-&gt;f_op-&gt;read || f-&gt;f_op-&gt;read_iter))
+        f-&gt;f_mode |= FMODE_CAN_READ;
+    if ((f-&gt;f_mode &amp; FMODE_WRITE) &amp;&amp;
+         likely(f-&gt;f_op-&gt;write || f-&gt;f_op-&gt;write_iter))
+        f-&gt;f_mode |= FMODE_CAN_WRITE;
+
+    f-&gt;f_write_hint = WRITE_LIFE_NOT_SET;
+    f-&gt;f_flags &amp;= ~(O_CREAT | O_EXCL | O_NOCTTY | O_TRUNC);
+
+    file_ra_state_init(&amp;f-&gt;f_ra, f-&gt;f_mapping-&gt;host-&gt;i_mapping);
+
+    /* NB: we&#39;re sure to have correct a_ops only after f_op-&gt;open */
+    if (f-&gt;f_flags &amp; O_DIRECT) {
+        if (!f-&gt;f_mapping-&gt;a_ops || !f-&gt;f_mapping-&gt;a_ops-&gt;direct_IO)
+            return -EINVAL;
+    }
+
+    /*
+     * XXX: Huge page cache doesn&#39;t support writing yet. Drop all page
+     * cache for this file before processing writes.
+     */
+    if ((f-&gt;f_mode &amp; FMODE_WRITE) &amp;&amp; filemap_nr_thps(inode-&gt;i_mapping))
+        truncate_pagecache(inode, 0);
+
+    return 0;
+
+cleanup_all:
+    if (WARN_ON_ONCE(error &gt; 0))
+        error = -EINVAL;
+    fops_put(f-&gt;f_op);
+    if (f-&gt;f_mode &amp; FMODE_WRITER) {
+        put_write_access(inode);
+        __mnt_drop_write(f-&gt;f_path.mnt);
+    }
+cleanup_file:
+    path_put(&amp;f-&gt;f_path);
+    f-&gt;f_path.mnt = NULL;
+    f-&gt;f_path.dentry = NULL;
+    f-&gt;f_inode = NULL;
+    return error;
+}
+</pre></div>
+</div>
+</section>
+</section>
+<section id="sys-read">
+<h2><span class="section-number">5.1.6.2. </span>sys_read<a class="headerlink" href="#sys-read" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sys_read</span><span class="p">()</span>
+<span class="o">|-----------</span><span class="n">ksys_read</span><span class="p">()</span>
+<span class="o">|</span>           <span class="o">|--------</span><span class="n">fdget_pos</span><span class="p">()</span>
+<span class="o">|</span>           <span class="o">|--------</span><span class="n">file_ppos</span><span class="p">()</span>
+<span class="o">|</span>           <span class="o">|--------</span><span class="n">vfs_read</span><span class="p">()</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|------</span><span class="n">rw_verify_area</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|------</span><span class="n">__vfs_read</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|</span>       <span class="o">-------</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">f_op</span><span class="o">-&gt;</span><span class="n">read</span>
+<span class="o">|</span>           <span class="o">|</span>        <span class="o">|------</span><span class="n">restore_nameidata</span>
+<span class="o">|</span>           <span class="o">|--------</span><span class="n">fdput_pos</span><span class="p">()</span>
+<span class="o">|</span>
+</pre></div>
+</div>
+<p>read与write函数相对简单，从fd找到对应file结构体，直接file_operations函数集中的read/write方法</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>file结构体中file_operations函数集中的方法与文件对应的inode函数集方式是一致的。open操作中会执行 <code class="docutils literal notranslate"><span class="pre">f-&gt;f_op</span> <span class="pre">=</span> <span class="pre">fops_get(inode-&gt;i_fop)</span></code> .</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="vfs_realfs.html" class="btn btn-neutral float-left" title="5.1.5. vfs与real_fs关联" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../ext4/index.html" class="btn btn-neutral float-right" title="5.2. ext4文件系统" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,566 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8. embeded &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="8.1. 嵌入式文件系统" href="fs/index.html" />
+    <link rel="prev" title="7.11.1. 网络调试工具" href="../misc/linux_commond/net_tools.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">8. embeded</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="video/index.html">8.8. 视频相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8. </span>embeded</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/embedded/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="embeded">
+<h1><span class="section-number">8. </span>embeded<a class="headerlink" href="#embeded" title="此标题的永久链接"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="fs/index.html">8.1. 嵌入式文件系统</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fs/embedded_fs.html">8.1.1. 嵌入式文件系统概览</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="fs/embedded_fs.html#flash">8.1.1.1. flash文件系统</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs/embedded_fs.html#id2">8.1.1.2. 虚拟文件系统</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fs/embedded_fs.html#procfs">8.1.1.2.1. procfs文件系统</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fs/embedded_fs.html#tmpfs">8.1.1.2.2. tmpfs文件系统</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fs/embedded_fs.html#sysfs">8.1.1.2.3. sysfs文件系统</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fs/embedded_fs.html#id3">8.1.1.3. 网络文件系统</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="fs/embedded_fs.html#nfs">8.1.1.3.1. NFS</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="debug/index.html">8.2. 嵌入式linux 调试总结</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="debug/starttime_optimization.html">8.2.1. 嵌入式linux启动时间优化</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="debug/starttime_optimization.html#id1">8.2.1.1. 启动时间的测量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="debug/starttime_optimization.html#id2">8.2.1.2. 启动时间优化技巧</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="debug/starttime_optimization.html#bootloader">8.2.1.2.1. bootloader加速</a></li>
+<li class="toctree-l4"><a class="reference internal" href="debug/starttime_optimization.html#id3">8.2.1.2.2. 内核加速</a></li>
+<li class="toctree-l4"><a class="reference internal" href="debug/starttime_optimization.html#id4">8.2.1.2.3. 文件系统方面的问题</a></li>
+<li class="toctree-l4"><a class="reference internal" href="debug/starttime_optimization.html#id5">8.2.1.2.4. 用户空间和应用程序加速</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gpt/index.html">8.3. gpt分区表</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gpt/gpt_partition.html">8.3.1. gpt分区表笔记</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpt/gpt_partition.html#guid">8.3.1.1. GUID以及分区表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpt/gpt_partition.html#gptlba">8.3.1.2. GPT分区表LBA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gpt/gpt_partition.html#lba0">8.3.1.2.1. LBA0</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gpt/gpt_partition.html#lba1">8.3.1.2.2. LBA1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gpt/gpt_partition.html#lba-2-33">8.3.1.2.3. LBA 2-33</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gpt/gpt_partition.html#pythongpt">8.3.1.3. python生成GPT分区表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpt/gpt_partition.html#id5">8.3.1.4. gpt分区表实例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpt/gpt_partition.html#id6">8.3.1.5. gpt分区表查看</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gpt/mbr_partition.html">8.3.2. MBR分区表笔记</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gpt/mbr_partition.html#id1">8.3.2.1. 硬盘结构及参数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gpt/mbr_partition.html#id2">8.3.2.2. MBR分区</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="systemd/index.html">8.4. systemd 笔记</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="systemd/systemd.html">8.4.1. systemd服务管理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="systemd/systemd.html#id1">8.4.1.1. systemd简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="systemd/systemd.html#systemdunit">8.4.1.2. systemd的Unit文件</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="systemd/systemd.html#systemd12unit">8.4.1.2.1. systemd支持的12中unit文件类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="systemd/systemd.html#id2">8.4.1.2.2. systemd目录</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="systemd/systemd.html#systemd-service-unit">8.4.1.3. systemd service unit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="systemd/systemd.html#unit">8.4.1.3.1. unit文件结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="systemd/systemd.html#id3">8.4.1.3.2. Unit文件占位符</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="systemd/systemd.html#id4">8.4.1.4. systemd的资源管理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="systemd/systemd.html#systemctl">8.4.1.4.1. systemctl 命令</a></li>
+<li class="toctree-l4"><a class="reference internal" href="systemd/systemd.html#id5">8.4.1.4.2. Unit管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="systemd/systemd.html#id6">8.4.1.4.3. 服务的生命周期</a></li>
+<li class="toctree-l4"><a class="reference internal" href="systemd/systemd.html#target">8.4.1.4.4. Target管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="systemd/systemd.html#id7">8.4.1.4.5. 日志管理</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="systemd/systemd.html#id8">8.4.1.5. systemd工具集</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ota/index.html">8.5. ota</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ota/ota.html">8.5.1. 系统软件OTA实现原理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ota/ota.html#id1">8.5.1.1. ota系统组成</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota/ota.html#id2">8.5.1.2. 系统分区</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ota/ota.html#id3">8.5.1.2.1. 单分区</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ota/ota.html#id4">8.5.1.2.2. 双分区</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ota/ota.html#id5">8.5.1.3. ota标志位</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ota/ota.html#update-flag">8.5.1.3.1. update_flag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ota/ota.html#reset-reson">8.5.1.3.2. reset_reson</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ota/ota.html#part-status">8.5.1.3.3. part_status</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ota/ota.html#id6">8.5.1.4. OTA升级脚本</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ota/ota.html#otaupdate">8.5.1.4.1. otaupdate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ota/ota.html#ota-utility">8.5.1.4.2. ota_utility</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ota/ota.html#ota-partition-sh">8.5.1.4.3. ota_partition.sh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ota/ota.html#s9updatecheck-sh">8.5.1.4.4. s9updatecheck.sh</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ota/ota.html#recovery">8.5.1.5. recovery实现</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ota/ota.html#id7">8.5.1.6. OTA升级流程</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ota/ota.html#id8">8.5.1.6.1. 单分区ota升级流程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ota/ota.html#id9">8.5.1.6.2. 双分区ota升级流程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="safeboot/index.html">8.6. 安全启动与加密</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="safeboot/safeboot.html">8.6.1. 安全启动与加密</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="safeboot/safeboot.html#id2">8.6.1.1. 概述</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="safeboot/safeboot.html#id3">8.6.1.1.1. 系统启动流程图</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="safeboot/safeboot.html#id4">8.6.1.2. 签名过程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="safeboot/safeboot.html#id5">8.6.1.3. 安全校验</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="safeboot/safeboot.html#ubootlinux">8.6.1.3.1. uboot校验linux内核</a></li>
+<li class="toctree-l4"><a class="reference internal" href="safeboot/safeboot.html#linux">8.6.1.3.2. linux内核校验根文件系统</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="yocto/index.html">8.7. Yocto使用总结</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="yocto/overview_concepts.html">8.7.1. yocto project concepts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yocto/overview_concepts.html#yocto-project-compoment">8.7.1.1. yocto project compoment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yocto/overview_concepts.html#bitbake">8.7.1.1.1. bitbake</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/overview_concepts.html#recipes">8.7.1.1.2. recipes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/overview_concepts.html#class">8.7.1.1.3. class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/overview_concepts.html#configurations">8.7.1.1.4. configurations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/overview_concepts.html#layers">8.7.1.2. layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/overview_concepts.html#openembedded">8.7.1.3. openembedded</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yocto/overview_concepts.html#id1">8.7.1.3.1. 用户配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/overview_concepts.html#id2">8.7.1.3.2. 元数据层</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/overview_concepts.html#bitbake-tool">8.7.1.3.3. bitbake tool</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yocto/source_struct.html">8.7.2. yocto源目录结构</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yocto/source_struct.html#id1">8.7.2.1. 顶层核心组件</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yocto/source_struct.html#bitbake">8.7.2.1.1. bitbake</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/source_struct.html#build">8.7.2.1.2. build</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/source_struct.html#documentation">8.7.2.1.3. documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/source_struct.html#meta">8.7.2.1.4. meta</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/source_struct.html#meta-poky">8.7.2.1.5. meta-poky</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/source_struct.html#meta-yocto-bsp">8.7.2.1.6. meta-yocto-bsp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/source_struct.html#meta-selftest">8.7.2.1.7. meta-selftest</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/source_struct.html#meta-skeleton">8.7.2.1.8. meta-skeleton</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/source_struct.html#scripts">8.7.2.1.9. scripts</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/source_struct.html#id2">8.7.2.2. 构建目录</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/source_struct.html#id3">8.7.2.3. 元数据</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yocto/task_variable.html">8.7.3. 任务以及变量汇总</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task_variable.html#id2">8.7.3.1. 自动构建的任务</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task_variable.html#id3">8.7.3.2. 手动执行的任务</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task_variable.html#image">8.7.3.3. image相关任务</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task_variable.html#id4">8.7.3.4. 内核相关任务</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task_variable.html#id5">8.7.3.5. 变量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yocto/task.html">8.7.4. 常见任务</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task.html#layer">8.7.4.1. 创建layer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yocto/task.html#id2">8.7.4.1.1. 创建layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/task.html#id3">8.7.4.1.2. 启用layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/task.html#id4">8.7.4.1.3. 管理layer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task.html#image">8.7.4.2. 自定义image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yocto/task.html#image-install">8.7.4.2.1. IMAGE_INSTALL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/task.html#image-feature">8.7.4.2.2. IMAGE_FEATURE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/task.html#bb">8.7.4.2.3. 使用自定义的.bb文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/task.html#id5">8.7.4.2.4. 使用自定义包组</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task.html#recipes">8.7.4.3. 编写新的recipes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task.html#id6">8.7.4.4. 示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yocto/recipet.html">8.7.5. recipet语法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yocto/task_continue.html">8.7.6. 常见任务 二</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task_continue.html#bitbake">8.7.6.1. bitbake 定位相关目录</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task_continue.html#id2">8.7.6.2. bitbake 执行任务</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task_continue.html#recipes">8.7.6.3. 升级recipes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yocto/task_continue.html#devtool-upgrade">8.7.6.3.1. 使用devtool upgrade</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/task_continue.html#id3">8.7.6.3.2. 手动升级recipes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task_continue.html#id4">8.7.6.4. 使用库</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task_continue.html#wic">8.7.6.5. 使用wic创建镜像分区</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/task_continue.html#id5">8.7.6.6. 文件系统相关</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yocto/bitbake.html">8.7.7. bitbake 总结</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="yocto/bitbake.html#id1">8.7.7.1. bitbake命令</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#id2">8.7.7.1.1. 示例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/bitbake.html#id3">8.7.7.2. bitbake运行机制</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#id4">8.7.7.2.1. 解析基础配置元数据</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#recipe">8.7.7.2.2. 定位和解析recipe</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/bitbake.html#id5">8.7.7.3. 语法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#id6">8.7.7.3.1. 变量</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/bitbake.html#id7">8.7.7.4. 共享</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/bitbake.html#id8">8.7.7.5. 功能</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#shell">8.7.7.5.1. shell函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#bitbakepython">8.7.7.5.2. bitbake风格的python函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#python">8.7.7.5.3. python函数</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/bitbake.html#id9">8.7.7.6. 任务</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#id10">8.7.7.6.1. 将函数提升为任务</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#id11">8.7.7.6.2. 删除任务</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/bitbake.html#id12">8.7.7.7. 依赖</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#id13">8.7.7.7.1. 构建依赖</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#id14">8.7.7.7.2. 运行时依赖</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#id15">8.7.7.7.3. 递归依赖</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#id16">8.7.7.7.4. 任务间依赖</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yocto/bitbake.html#id17">8.7.7.8. 代码获取</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#local-file">8.7.7.8.1. local file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#http-ftp-wget">8.7.7.8.2. http/ftp wget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#cvs">8.7.7.8.3. cvs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#svn">8.7.7.8.4. svn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#git">8.7.7.8.5. git</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yocto/bitbake.html#repo">8.7.7.8.6. repo</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="video/index.html">8.8. 视频相关</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="video/video_interface.html">8.8.1. 视频传输接口协议</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="video/video_interface.html#lvds">8.8.1.1. LVDS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="video/video_interface.html#id2">8.8.1.1.1. 物理层</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/video_interface.html#id3">8.8.1.1.2. 数据传输层</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="video/video_interface.html#hdmi">8.8.1.2. HDMI</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="video/video_interface.html#id4">8.8.1.2.1. 信号定义</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/video_interface.html#frame">8.8.1.2.2. 链路层Frame结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/video_interface.html#id5">8.8.1.2.3. 数据传输</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/video_interface.html#video">8.8.1.2.4. video中像素编码方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/video_interface.html#audio">8.8.1.2.5. Audio</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/video_interface.html#control">8.8.1.2.6. Control</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="video/video_interface.html#dsi">8.8.1.3. DSI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="video/LCD_timing.html">8.8.2. LCD timing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="video/LCD_timing.html#id1">8.8.2.1. LCD timing时序示意图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video/LCD_timing.html#lcd">8.8.2.2. LCD相关计算</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="video/mipi_csi.html">8.8.3. MIPI CSI传输协议解析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="video/mipi_csi.html#mipi">8.8.3.1. MIPI概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video/mipi_csi.html#multi-lane-distribution-and-merging">8.8.3.2. Multi-Lane Distribution and Merging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video/mipi_csi.html#low-level-protocol">8.8.3.3. Low Level Protocol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_csi.html#id1">8.8.3.3.1. 底层数据包格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_csi.html#data-id">8.8.3.3.2. Data ID</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="video/mipi_csi.html#virtual-channel">8.8.3.3.2.1. Virtual Channel</a></li>
+<li class="toctree-l5"><a class="reference internal" href="video/mipi_csi.html#data-type">8.8.3.3.2.2. Data Type</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_csi.html#ecc">8.8.3.3.3. ECC</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_csi.html#cs">8.8.3.3.4. CS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_csi.html#sync-short-package">8.8.3.3.5. Sync Short package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_csi.html#data-type-interleaving">8.8.3.3.6. Data Type Interleaving</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="video/mipi_csi.html#data-formats">8.8.3.4. Data Formats</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_csi.html#yuv-image-data">8.8.3.4.1. YUV Image data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_csi.html#rgb-image-data">8.8.3.4.2. RGB Image data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_csi.html#raw-image-data">8.8.3.4.3. RAW Image data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="video/mipi_dsi.html">8.8.4. MIPI DSI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="video/mipi_dsi.html#id1">8.8.4.1. 两种工作模式的区别</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video/mipi_dsi.html#video-mode">8.8.4.2. video mode时序控制模式</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_dsi.html#non-burst-mode-with-sync-pulses">8.8.4.2.1. Non-Burst MOde with SYnc Pulses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_dsi.html#non-burst-mode-with-sync-events">8.8.4.2.2. Non-Burst Mode with sync Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_dsi.html#burst-mode">8.8.4.2.3. Burst Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="video/mipi_dsi.html#command">8.8.4.3. Command模式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video/mipi_dsi.html#dsi">8.8.4.4. DSI 数据包</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_dsi.html#id2">8.8.4.4.1. 短数据包</a></li>
+<li class="toctree-l4"><a class="reference internal" href="video/mipi_dsi.html#id3">8.8.4.4.2. 长数据包</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="video/mipi_dsi.html#id4">8.8.4.5. DSI命令模式</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="video/bt656.html">8.8.5. BT656</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="video/bt656.html#id1">8.8.5.1. 基本概念</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video/bt656.html#bt656-vs-bt601">8.8.5.2. BT656 VS BT601</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video/bt656.html#ntsc-vs-pal">8.8.5.3. NTSC VS PAL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video/bt656.html#bt601-vs-bt709-vs-bt2020">8.8.5.4. BT601 VS BT709 VS BT2020</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bus/index.html">8.9. 嵌入式系统常见总线</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bus/standard_protocal.html">8.9.1. 标准接口规范协议</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#ddr">8.9.1.1. DDR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#pci-pcie">8.9.1.2. PCI &amp; PCIE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#usb">8.9.1.3. USB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#net">8.9.1.4. NET</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#i2c">8.9.1.5. I2C</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#hdmi">8.9.1.6. HDMI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#dp">8.9.1.7. DP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#lvds">8.9.1.8. LVDS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#jtag">8.9.1.9. JTAG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#i2s">8.9.1.10. I2S</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#lin">8.9.1.11. LIN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#mipi">8.9.1.12. MIPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#emmc">8.9.1.13. eMMC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#sdio">8.9.1.14. SDIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bus/standard_protocal.html#sata">8.9.1.15. SATA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bus/normal.html">8.9.2. 嵌入式系统常见总线</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bus/normal.html#i2c">8.9.2.1. I2C总线</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bus/normal.html#id2">8.9.2.1.1. I2C总线特征</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bus/normal.html#id3">8.9.2.1.2. I2C总线协议</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bus/normal.html#spi">8.9.2.2. SPI总线</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bus/normal.html#id4">8.9.2.2.1. SPI总线特征</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bus/normal.html#id5">8.9.2.2.2. SPI总线协议</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bus/usb.html">8.9.3. USB2.0概述及协议基础</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bus/usb.html#usb">8.9.3.1. USB总线接口</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bus/usb.html#id1">8.9.3.1.1. USB总线信号</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bus/usb.html#id2">8.9.3.1.2. USB数据编解码和位填充</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bus/usb.html#id3">8.9.3.1.3. USB拓扑结构</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bus/usb.html#id4">8.9.3.2. USB设备</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bus/usb.html#id5">8.9.3.2.1. USB设备供电方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bus/usb.html#id6">8.9.3.2.2. USB设备插入检测机制</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bus/usb.html#id7">8.9.3.2.3. USB设备状态</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bus/usb.html#id8">8.9.3.2.4. USB设备枚举过程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bus/usb.html#id9">8.9.3.2.5. USB描述符</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bus/usb.html#id10">8.9.3.3. USB传输</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bus/usb.html#packet">8.9.3.3.1. 包packet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bus/usb.html#transaction">8.9.3.3.2. 事务transaction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bus/usb.html#transfer">8.9.3.3.3. 传输transfer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bus/usb_description.html">8.9.4. USB描述符</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bus/usb_packet_sample.html">8.9.5. U盘插入及拔出过程中的USB数据包示例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hotplug/index.html">8.10. linux 热插拔之udev和mdev</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hotplug/hotplug.html">8.10.1. linux 热插拔之udev和mdev</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="hotplug/hotplug.html#udev">8.10.1.1. udev</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hotplug/hotplug.html#id1">8.10.1.1.1. udev工作原理</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hotplug/hotplug.html#mdev">8.10.1.2. mdev</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hardware/index.html">8.11. 硬件相关知识点总结</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hardware/pcb/index.html">8.11.1. PCB知识点笔记</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="hardware/pcb/package.html">8.11.1.1. 常见的芯片封装</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="buildroot/index.html">8.12. Buildroot笔记</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="buildroot/summary.html">8.12.1. Buildroot简介</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="buildroot/summary.html#id1">8.12.1.1. buildroot基本介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="buildroot/summary.html#id2">8.12.1.2. Buildroot目录结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="buildroot/summary.html#id3">8.12.1.3. Buildroot配置选项</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="buildroot/summary.html#target-options">8.12.1.3.1. Target options(目标选项)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buildroot/summary.html#build-options">8.12.1.3.2. Build options(编译选项)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buildroot/summary.html#toolchain">8.12.1.3.3. Toolchain(工具链)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buildroot/summary.html#system-configuration">8.12.1.3.4. System configuration(系统配置)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buildroot/summary.html#kernel">8.12.1.3.5. kernel(内核配置)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buildroot/summary.html#target-packages">8.12.1.3.6. Target packages(目标包配置)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buildroot/summary.html#filesystem-images">8.12.1.3.7. Filesystem images(文件系统)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buildroot/summary.html#bootloader">8.12.1.3.8. Bootloader(引导程序)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buildroot/summary.html#host-utilities">8.12.1.3.9. Host utilities(主机工具)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buildroot/summary.html#legacy-config-options">8.12.1.3.10. Legacy config options(旧版配置选项)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="buildroot/summary.html#id4">8.12.1.4. Buildroot常用命令</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="udev/index.html">8.13. udev</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="udev/udev_summary.html">8.13.1. uedev简介</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="udev/udev_summary.html#udev">8.13.1.1. udev规则</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../misc/linux_commond/net_tools.html" class="btn btn-neutral float-left" title="7.11.1. 网络调试工具" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="fs/index.html" class="btn btn-neutral float-right" title="8.1. 嵌入式文件系统" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

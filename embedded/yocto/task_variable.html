@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.7.3. 任务以及变量汇总 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.7.4. 常见任务" href="task.html" />
+    <link rel="prev" title="8.7.2. yocto源目录结构" href="source_struct.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.7. Yocto使用总结</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview_concepts.html">8.7.1. yocto project concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source_struct.html">8.7.2. yocto源目录结构</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.7.3. 任务以及变量汇总</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">8.7.3.1. 自动构建的任务</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">8.7.3.2. 手动执行的任务</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#image">8.7.3.3. image相关任务</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">8.7.3.4. 内核相关任务</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">8.7.3.5. 变量</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="task.html">8.7.4. 常见任务</a></li>
+<li class="toctree-l3"><a class="reference internal" href="recipet.html">8.7.5. recipet语法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="task_continue.html">8.7.6. 常见任务 二</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bitbake.html">8.7.7. bitbake 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">8.8. 视频相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.7. </span>Yocto使用总结</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.7.3. </span>任务以及变量汇总</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/yocto/task_variable.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">8.7.3. </span>任务以及变量汇总<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2><span class="section-number">8.7.3.1. </span>自动构建的任务<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>任务列表</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>do_build</p></td>
+<td><p>所有recipes的默认任务,此任务依赖其他任务</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_compile</p></td>
+<td><p>编译源代码，此任务运行在$B路径下</p></td>
+</tr>
+<tr class="row-even"><td><p>do_compile_ptest_base</p></td>
+<td><p>编译运行时的测试程序</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_configure</p></td>
+<td><p>如果没有找到Makefile或者CLEANBROKEN被设置为1，此任务什么都不做。</p></td>
+</tr>
+<tr class="row-even"><td><p>do_deploy</p></td>
+<td><p>此任务输出目标文件到${DEPLOYDIR},工作路径为${B}。do_deploy默认不添加为任务，需要手动添加，如addtask deploy after do_compile</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_fetch</p></td>
+<td><p>获取源代码，此任务使用SRC_URI变量和参数来确定代码源</p></td>
+</tr>
+<tr class="row-even"><td><p>do_image</p></td>
+<td><p>image生成任务</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_image_complete</p></td>
+<td><p>在do_image完成之后运行，相当于do_image的post process</p></td>
+</tr>
+<tr class="row-even"><td><p>do_install</p></td>
+<td><p>复制文件到${D}路径</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_package</p></td>
+<td><p>打包文件，此任务使用PACKAGES和FILES变量</p></td>
+</tr>
+<tr class="row-even"><td><p>do_package_write_deb</p></td>
+<td><p>创建deb包，并将其放到${DEPLOY_DIR_DEB}路径</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_package_write_tar</p></td>
+<td><p>创建tar包，并将其放到${DEPLOY_DIR_TAR}路径</p></td>
+</tr>
+<tr class="row-even"><td><p>do_patch</p></td>
+<td><p>定位补丁文件并将其应用到源代码,可以在SRC_URI语句中使用“apply=yes”或者”apply=no”来配置是否使用补丁文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_populate_lic</p></td>
+<td><p>写入license信息</p></td>
+</tr>
+<tr class="row-even"><td><p>do_populate_sdk</p></td>
+<td><p>为可安装的SDK创建文件和目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_populate_sysroot</p></td>
+<td><p>将do_install任务a安装的文件子集复制到sysroot中</p></td>
+</tr>
+<tr class="row-even"><td><p>do_rm_work</p></td>
+<td><p>删除工作目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_unpack</p></td>
+<td><p>将源代码解压到${WORKDIR}路径</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id3">
+<h2><span class="section-number">8.7.3.2. </span>手动执行的任务<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>以下任务通常手动执行的，可以通过以下方式执行</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ bitbake -c 任务 recips
+bitbake -c listtasks u-boot
+</pre></div>
+</div>
+<img alt="../../_images/listtasks.png" src="../../_images/listtasks.png" />
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>任务列表</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>do_checkuri</p></td>
+<td><p>验证SRC_URI</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_clean</p></td>
+<td><p>删除所有输出文件</p></td>
+</tr>
+<tr class="row-even"><td><p>do_cleanall</p></td>
+<td><p>删除所有输出文件，共享状态缓存和下载的源文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_cleansstate</p></td>
+<td><p>删除输出文件和共享缓存</p></td>
+</tr>
+<tr class="row-even"><td><p>do_listtasks</p></td>
+<td><p>列出目标已定义的任务</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="image">
+<h2><span class="section-number">8.7.3.3. </span>image相关任务<a class="headerlink" href="#image" title="此标题的永久链接"></a></h2>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>任务列表</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>do_bootimg</p></td>
+<td><p>创建可以启动的镜像文件</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_bundle_initramfs</p></td>
+<td><p>创建initramfs和镜像打包在一起的image</p></td>
+</tr>
+<tr class="row-even"><td><p>do_rootfs</p></td>
+<td><p>创建根文件系统</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_testimage_auto</p></td>
+<td><p>创建可自动运行测试程序的image</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id4">
+<h2><span class="section-number">8.7.3.4. </span>内核相关任务<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>任务列表</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>do_compile_kernelmodules</p></td>
+<td><p>编译内核模块</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_diffconfig</p></td>
+<td><p>创建do_kernel_configme任务生成的与之前的配置文件的差别， 可运行bitbake linux-yocto -c diffconfig 来运行此任务</p></td>
+</tr>
+<tr class="row-even"><td><p>do_kernel_checkout</p></td>
+<td><p>检出分支</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_kernel_configcheck</p></td>
+<td><p>验证由do_kernel_menuconfig任务生成的配置</p></td>
+</tr>
+<tr class="row-even"><td><p>do_kernel_configme</p></td>
+<td><p>将所有的内核配置片段合并到一起然后配置内核</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_kernel_menuconfig</p></td>
+<td><p>启动内核配置工具, bitbake linux-yocto -c menuconfig</p></td>
+</tr>
+<tr class="row-even"><td><p>do_kernel_metadata</p></td>
+<td><p>收集编译内核的配置信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>do_sizecheck</p></td>
+<td><p>此任务会根据KERNEL_IMAGE_MAXSIZE检查image大小是否超限</p></td>
+</tr>
+<tr class="row-even"><td><p>do_strip</p></td>
+<td><p>对vmlinux进行strip操作</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h2><span class="section-number">8.7.3.5. </span>变量<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>变量</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="source_struct.html" class="btn btn-neutral float-left" title="8.7.2. yocto源目录结构" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="task.html" class="btn btn-neutral float-right" title="8.7.4. 常见任务" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

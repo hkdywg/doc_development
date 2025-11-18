@@ -1,0 +1,493 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.14.5. plane代码分析 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.14.6. VKMS示例" href="simple_drm.html" />
+    <link rel="prev" title="4.14.4. crtc代码分析" href="crtc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.14. DRM框架分析</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="drm_frame.html">4.14.1. DRM框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="connector.html">4.14.2. connector代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="encoder.html">4.14.3. encoder代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crtc.html">4.14.4. crtc代码分析</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.14.5. plane代码分析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#struct-drm-plane">4.14.5.1. struct drm_plane结构体</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#drm-universal-plane-init">4.14.5.2. drm_universal_plane_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#func">4.14.5.3. func</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="simple_drm.html">4.14.6. VKMS示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.14. </span>DRM框架分析</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.14.5. </span>plane代码分析</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/drm/plane.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="plane">
+<h1><span class="section-number">4.14.5. </span>plane代码分析<a class="headerlink" href="#plane" title="此标题的永久链接"></a></h1>
+<section id="struct-drm-plane">
+<h2><span class="section-number">4.14.5.1. </span>struct drm_plane结构体<a class="headerlink" href="#struct-drm-plane" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct drm_plane {
+    /** @dev: DRM device this plane belongs to */
+    struct drm_device *dev;
+
+    struct list_head head;
+
+    char *name;
+
+    struct drm_modeset_lock mutex;
+
+    /** @base: base mode object */
+    struct drm_mode_object base;
+    //plane绑定的crtc
+    uint32_t possible_crtcs;
+    //plane支持的fb像素format类型数组，format类型如DRM_FORMAT_ARGB8888
+    uint32_t *format_types;
+    //plane支持的fb像素format类型数组大小
+    unsigned int format_count;
+
+    bool format_default;
+
+    //modifier数组，其存放的值DRM_FORMAT_MOD_LINEAR/DRM_FORMAT_MOD_X_TILED
+    uint64_t *modifiers;
+    //modifier数组大小
+    unsigned int modifier_count;
+
+    //d当前绑定的crtc
+    struct drm_crtc *crtc;
+
+    //no-atomic drivers用来标识当前绑定的fb
+    struct drm_framebuffer *fb;
+
+    //对于no-atomic drivers, old_fb用于在modeset操作时跟踪老的fb
+    struct drm_framebuffer *old_fb;
+
+    /** @funcs: plane control functions */
+    const struct drm_plane_funcs *funcs;
+
+    /** @properties: property tracking for this plane */
+    struct drm_object_properties properties;
+
+    /** @type: Type of plane, see &amp;enum drm_plane_type for details. */
+    enum drm_plane_type type;
+
+    /**
+     * @index: Position inside the mode_config.list, can be used as an array
+     * index. It is invariant over the lifetime of the plane.
+     */
+    unsigned index;
+
+    /** @helper_private: mid-layer private data */
+    const struct drm_plane_helper_funcs *helper_private;
+
+    //表示plane的各种状态，如其绑定的crtc/fb等，用于atomic操作
+    struct drm_plane_state *state;
+
+    /**
+     * @alpha_property:
+     * Optional alpha property for this plane. See
+     * drm_plane_create_alpha_property().
+     */
+    struct drm_property *alpha_property;
+    /**
+     * @zpos_property:
+     * Optional zpos property for this plane. See
+     * drm_plane_create_zpos_property().
+     */
+    struct drm_property *zpos_property;
+    /**
+     * @rotation_property:
+     * Optional rotation property for this plane. See
+     * drm_plane_create_rotation_property().
+     */
+    struct drm_property *rotation_property;
+    /**
+     * @blend_mode_property:
+     * Optional &quot;pixel blend mode&quot; enum property for this plane.
+     * Blend mode property represents the alpha blending equation selection,
+     * describing how the pixels from the current plane are composited with
+     * the background.
+     */
+    struct drm_property *blend_mode_property;
+
+    /**
+     * @color_encoding_property:
+     *
+     * Optional &quot;COLOR_ENCODING&quot; enum property for specifying
+     * color encoding for non RGB formats.
+     * See drm_plane_create_color_properties().
+     */
+    struct drm_property *color_encoding_property;
+    /**
+     * @color_range_property:
+     *
+     * Optional &quot;COLOR_RANGE&quot; enum property for specifying
+     * color range for non RGB formats.
+     * See drm_plane_create_color_properties().
+     */
+    struct drm_property *color_range_property;
+};
+</pre></div>
+</div>
+</section>
+<section id="drm-universal-plane-init">
+<h2><span class="section-number">4.14.5.2. </span>drm_universal_plane_init<a class="headerlink" href="#drm-universal-plane-init" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int drm_universal_plane_init(struct drm_device *dev, struct drm_plane *plane,
+                 uint32_t possible_crtcs,
+                 const struct drm_plane_funcs *funcs,
+                 const uint32_t *formats, unsigned int format_count,
+                 const uint64_t *format_modifiers,
+                 enum drm_plane_type type,
+                 const char *name, ...)
+{
+    struct drm_mode_config *config = &amp;dev-&gt;mode_config;
+    unsigned int format_modifier_count = 0;
+    int ret;
+
+    /* plane index is used with 32bit bitmasks */
+    if (WARN_ON(config-&gt;num_total_plane &gt;= 32))
+        return -EINVAL;
+
+    WARN_ON(drm_drv_uses_atomic_modeset(dev) &amp;&amp;
+        (!funcs-&gt;atomic_destroy_state ||
+         !funcs-&gt;atomic_duplicate_state));
+
+    //创建一个类型为DRM_MODE_OBJECT_PLANE的
+    ret = drm_mode_object_add(dev, &amp;plane-&gt;base, DRM_MODE_OBJECT_PLANE);
+    if (ret)
+        return ret;
+
+    drm_modeset_lock_init(&amp;plane-&gt;mutex);
+
+    plane-&gt;base.properties = &amp;plane-&gt;properties;
+    plane-&gt;dev = dev;
+    plane-&gt;funcs = funcs;
+    plane-&gt;format_types = kmalloc_array(format_count, sizeof(uint32_t),
+                        GFP_KERNEL);
+    if (!plane-&gt;format_types) {
+        DRM_DEBUG_KMS(&quot;out of memory when allocating plane\n&quot;);
+        drm_mode_object_unregister(dev, &amp;plane-&gt;base);
+        return -ENOMEM;
+    }
+
+    /*
+     * First driver to need more than 64 formats needs to fix this. Each
+     * format is encoded as a bit and the current code only supports a u64.
+     */
+    if (WARN_ON(format_count &gt; 64))
+        return -EINVAL;
+
+    if (format_modifiers) {
+        const uint64_t *temp_modifiers = format_modifiers;
+        while (*temp_modifiers++ != DRM_FORMAT_MOD_INVALID)
+            format_modifier_count++;
+    }
+
+    if (format_modifier_count)
+        config-&gt;allow_fb_modifiers = true;
+
+    plane-&gt;modifier_count = format_modifier_count;
+    plane-&gt;modifiers = kmalloc_array(format_modifier_count,
+                     sizeof(format_modifiers[0]),
+                     GFP_KERNEL);
+
+    if (format_modifier_count &amp;&amp; !plane-&gt;modifiers) {
+        DRM_DEBUG_KMS(&quot;out of memory when allocating plane\n&quot;);
+        kfree(plane-&gt;format_types);
+        drm_mode_object_unregister(dev, &amp;plane-&gt;base);
+        return -ENOMEM;
+    }
+
+    if (name) {
+        va_list ap;
+
+        va_start(ap, name);
+        plane-&gt;name = kvasprintf(GFP_KERNEL, name, ap);
+        va_end(ap);
+    } else {
+        plane-&gt;name = kasprintf(GFP_KERNEL, &quot;plane-%d&quot;,
+                    drm_num_planes(dev));
+    }
+    if (!plane-&gt;name) {
+        kfree(plane-&gt;format_types);
+        kfree(plane-&gt;modifiers);
+        drm_mode_object_unregister(dev, &amp;plane-&gt;base);
+        return -ENOMEM;
+    }
+
+    memcpy(plane-&gt;format_types, formats, format_count * sizeof(uint32_t));
+    plane-&gt;format_count = format_count;
+    memcpy(plane-&gt;modifiers, format_modifiers,
+           format_modifier_count * sizeof(format_modifiers[0]));
+    plane-&gt;possible_crtcs = possible_crtcs;
+    plane-&gt;type = type;
+
+    list_add_tail(&amp;plane-&gt;head, &amp;config-&gt;plane_list);
+    plane-&gt;index = config-&gt;num_total_plane++;
+
+    drm_object_attach_property(&amp;plane-&gt;base,
+                   config-&gt;plane_type_property,
+                   plane-&gt;type);
+
+    if (drm_core_check_feature(dev, DRIVER_ATOMIC)) {
+        drm_object_attach_property(&amp;plane-&gt;base, config-&gt;prop_fb_id, 0);
+        drm_object_attach_property(&amp;plane-&gt;base, config-&gt;prop_in_fence_fd, -1);
+        drm_object_attach_property(&amp;plane-&gt;base, config-&gt;prop_crtc_id, 0);
+        drm_object_attach_property(&amp;plane-&gt;base, config-&gt;prop_crtc_x, 0);
+        drm_object_attach_property(&amp;plane-&gt;base, config-&gt;prop_crtc_y, 0);
+        drm_object_attach_property(&amp;plane-&gt;base, config-&gt;prop_crtc_w, 0);
+        drm_object_attach_property(&amp;plane-&gt;base, config-&gt;prop_crtc_h, 0);
+        drm_object_attach_property(&amp;plane-&gt;base, config-&gt;prop_src_x, 0);
+        drm_object_attach_property(&amp;plane-&gt;base, config-&gt;prop_src_y, 0);
+        drm_object_attach_property(&amp;plane-&gt;base, config-&gt;prop_src_w, 0);
+        drm_object_attach_property(&amp;plane-&gt;base, config-&gt;prop_src_h, 0);
+    }
+
+    if (config-&gt;allow_fb_modifiers)
+        create_in_format_blob(dev, plane);
+
+    return 0;
+}
+</pre></div>
+</div>
+</section>
+<section id="func">
+<h2><span class="section-number">4.14.5.3. </span>func<a class="headerlink" href="#func" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>struct drm_plane_funcs</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/**
+ * struct drm_plane_funcs - driver plane control functions
+ */
+struct drm_plane_funcs {
+
+        /*使能配置plane的crtc和framebuffer.src_x/src_y/src_w/src_h指定fb的源区域
+         *crtc_x/crtc_y/crtc_w/crtc_h指定其显示在crtc上的目标区域
+         *atomic操作使用drm_atomic_helper_update_plane实现
+        */
+        int (*update_plane)(struct drm_plane *plane,
+                                struct drm_crtc *crtc, struct drm_framebuffer *fb,
+                                int crtc_x, int crtc_y,
+                                unsigned int crtc_w, unsigned int crtc_h,
+                                uint32_t src_x, uint32_t src_y,
+                                uint32_t src_w, uint32_t src_h,
+                                struct drm_modeset_acquire_ctx *ctx);
+
+        /*DRM_IOCTL_MODE_SETPLANE IOCTL调用时，fb id参数，如果为0，就会调用该接口
+         *关闭plane， atomic modeset使用drm_atomic_helper_disable_plane()实现该hook
+         */
+        int (*disable_plane)(struct drm_plane *plane,
+                                 struct drm_modeset_acquire_ctx *ctx);
+
+
+        //该接口仅在driver卸载的时候通过drm_mode_config_cleanup()调用来清空plane资源
+        void (*destroy)(struct drm_plane *plane);
+
+        /*reset plane的软硬件状态， 通过drm_mode_config_reset接口调用
+         *atomic drivers 使用drm_atomic_helper_plane_reset()实现该hook*/
+        void (*reset)(struct drm_plane *plane);
+
+        /*设置属性的legacy入口， atomic drivers不使用*/
+        int (*set_property)(struct drm_plane *plane,
+                                struct drm_property *property, uint64_t val);
+
+
+        /*复制plane state, atomic driver必须要有该接口
+         *drm_atomic_get_plane_state会调用到该hook*/
+        struct drm_plane_state *(*atomic_duplicate_state)(struct drm_plane *plane);
+
+        //销毁plane state
+        void (*atomic_destroy_state)(struct drm_plane *plane,
+                                         struct drm_plane_state *state);
+
+
+        /*设置驱动自定义的属性， 通过drm_atomic_plane_set_property调用*/
+        int (*atomic_set_property)(struct drm_plane *plane,
+                                   struct drm_plane_state *state,
+                                   struct drm_property *property,
+                                   uint64_t val);
+
+        //获取驱动自定义的属性， 通过drm_atomic_plane_get_property调用
+        int (*atomic_get_property)(struct drm_plane *plane,
+                                   const struct drm_plane_state *state,
+                                   struct drm_property *property,
+                                   uint64_t *val);
+
+        //drm_dev_register接口调用后，调用该hook注册额外的用户接口
+        int (*late_register)(struct drm_plane *plane);
+
+        //drm_dev_unregister()前调用，unregister用户空间接口
+        void (*early_unregister)(struct drm_plane *plane);
+
+
+        //打印plane state, drm_atomic_plane_print_state()会调用
+        void (*atomic_print_state)(struct drm_printer *p,
+                                   const struct drm_plane_state *state);
+
+        //检查format和modifier是否有效
+        bool (*format_mod_supported)(struct drm_plane *plane, uint32_t format,
+                                         uint64_t modifier);
+};
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>struct drm_plane_helper_funcs</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct drm_plane_helper_funcs {
+
+        //准备fb，主要包括设置fb fence,  映射fb虚拟地址等
+        int (*prepare_fb)(struct drm_plane *plane,
+                          struct drm_plane_state *new_state);
+
+        //和prepare_fb是相反的操作，比如解除fb虚拟地址的映射
+        void (*cleanup_fb)(struct drm_plane *plane,
+                           struct drm_plane_state *old_state);
+
+        //可选的检查plane属性的约束项
+        int (*atomic_check)(struct drm_plane *plane,
+                                struct drm_atomic_state *state);
+
+        /*更新plane的属性状态到软硬件中， 这个接口才是真正更新参数*/
+        void (*atomic_update)(struct drm_plane *plane,
+                                  struct drm_atomic_state *state);
+        //disable plane 非必需，不做介绍
+        void (*atomic_disable)(struct drm_plane *plane,
+                                   struct drm_atomic_state *state);
+
+        //异步检查 后续了解
+        int (*atomic_async_check)(struct drm_plane *plane,
+                                  struct drm_atomic_state *state);
+        //异步更新，后续了解
+        void (*atomic_async_update)(struct drm_plane *plane,
+                                        struct drm_atomic_state *state);
+};
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="crtc.html" class="btn btn-neutral float-left" title="4.14.4. crtc代码分析" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="simple_drm.html" class="btn btn-neutral float-right" title="4.14.6. VKMS示例" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

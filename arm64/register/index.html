@@ -1,0 +1,258 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12.1. arm64寄存器 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="12.2. 汇编语言" href="../assembly/index.html" />
+    <link rel="prev" title="12. arm64 arch" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">12. arm64 arch</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">12.1. arm64寄存器</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">12.1.1. 通用寄存器</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">12.1.2. 特殊寄存器</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../assembly/index.html">12.2. 汇编语言</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stack/index.html">12.3. arm64栈布局及函数调用栈恢复方法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../exception/index.html">12.4. arm64异常处理</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">12. </span>arm64 arch</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">12.1. </span>arm64寄存器</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/arm64/register/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="arm64">
+<h1><span class="section-number">12.1. </span>arm64寄存器<a class="headerlink" href="#arm64" title="此标题的永久链接"></a></h1>
+<p><a class="reference external" href="https://developer.arm.com/documentation/ddi0601/2023-12/AArch64-Registers?lang=en">寄存器官方参考文档</a></p>
+<section id="id2">
+<h2><span class="section-number">12.1.1. </span>通用寄存器<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>arm64提供了32个在任何时间任何特权级下都可以访问的64位通用寄存器， 他们通常被称为寄存器X0~X30</p>
+<img alt="../../_images/register_summary.png" src="../../_images/register_summary.png" />
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>寄存器</p></td>
+<td><p>描述</p></td>
+</tr>
+<tr class="row-even"><td><p>X30(LR)</p></td>
+<td><p>链接寄存器(函数返回地址)</p></td>
+</tr>
+<tr class="row-odd"><td><p>X29(FP寄存器)</p></td>
+<td><p>栈帧指针寄存器</p></td>
+</tr>
+<tr class="row-even"><td><p>X19~X28</p></td>
+<td><p>被调用函数保存的寄存器，在子函数使用时需要保存到栈中</p></td>
+</tr>
+<tr class="row-odd"><td><p>X18</p></td>
+<td><p>平台寄存器</p></td>
+</tr>
+<tr class="row-even"><td><p>X17</p></td>
+<td><p>临时寄存器或者第二个IPC(Intra-Procedure-Call)临时寄存器</p></td>
+</tr>
+<tr class="row-odd"><td><p>X16</p></td>
+<td><p>临时寄存器或者第一个IPC临时寄存器</p></td>
+</tr>
+<tr class="row-even"><td><p>X9~X15</p></td>
+<td><p>临时寄存器</p></td>
+</tr>
+<tr class="row-odd"><td><p>X8</p></td>
+<td><p>间接结果位置寄存器，用于保存子程序的返回地址</p></td>
+</tr>
+<tr class="row-even"><td><p>X0~X7</p></td>
+<td><p>用于传递子程序参数和结果，若参数个数大于8，就采用栈来传递。X0寄存器用于返回结果</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>每个异常级别都有自己的栈指针，SP_EL0, SP_EL1, SP_EL2, SP_EL3</p>
+</div>
+</section>
+<section id="id3">
+<h2><span class="section-number">12.1.2. </span>特殊寄存器<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<img alt="../../_images/armv8_special_register.png" src="../../_images/armv8_special_register.png" />
+<ul class="simple">
+<li><p>PC程序计数器: 指向当前运行指令的下一条指令的地址，用于控制程序中指令的运行顺序，但编程人员不能通过指令来直接访问它</p></li>
+<li><p>SP寄存器: 每个异常等级下都有一个专门的SP寄存器SP_ELn</p></li>
+<li><p>异常链接寄存器(ELR): 保存异常返回地址</p></li>
+<li><p>程序状态保存寄存器(SPSR): 当异常发生时，CPSR中的处理器状态佳能保存在相关的程序状态保存寄存器(SPSR)中， SPSR保存着异常发生之前的PSTATE的值，
+用于异常返回时恢复PSTATE的值</p></li>
+</ul>
+<img alt="../../_images/registers_spsr.png" src="../../_images/registers_spsr.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>N: 负数标志位，如果为负数则N=1</p></li>
+<li><p>Z: 零标志位，如果结果为零，则Z=1</p></li>
+<li><p>C: 进位标志位</p></li>
+<li><p>V: 溢出标志位</p></li>
+<li><p>SS: 软件步进标志位，表示一个异常发生时，软件步进是否开启</p></li>
+<li><p>IL: 非法执行状态位</p></li>
+<li><p>D: 程序状态调试掩码，在异常发生时的异常级别下，来自监视点、断点和软件单步调试事件中的调试异常是否被屏蔽</p></li>
+<li><p>A: SError(系统错误)掩码位</p></li>
+<li><p>I: IRQ掩码位</p></li>
+<li><p>F: FIQ掩码位</p></li>
+<li><p>M: 异常发生时的执行状态，0表示aarch64</p></li>
+<li><p>M[3:0]: 异常发生时的异常级别</p></li>
+</ul>
+</div>
+<ul class="simple">
+<li><p>处理器状态寄存器(PSTATE): 保存处理器的状态信息，包括条件标志、异常级别、IRQ使能状态等</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">|</span> <span class="mi">31</span>       <span class="o">|</span> <span class="mi">30</span> <span class="o">|</span> <span class="mi">29</span>  <span class="o">|</span> <span class="mi">28</span>   <span class="o">|</span> <span class="mi">27</span>    <span class="o">|</span> <span class="mi">26</span> <span class="o">|</span> <span class="mi">25</span> <span class="o">|</span> <span class="mi">24</span> <span class="o">|</span> <span class="mi">23</span><span class="o">-</span><span class="mi">22</span> <span class="o">|</span> <span class="mi">21</span><span class="o">-</span><span class="mi">20</span> <span class="o">|</span> <span class="mi">19</span><span class="o">-</span><span class="mi">16</span> <span class="o">|</span> <span class="mi">15</span><span class="o">-</span><span class="mi">10</span>    <span class="o">|</span> <span class="mi">9</span><span class="o">-</span><span class="mi">8</span> <span class="o">|</span> <span class="mi">7</span><span class="o">-</span><span class="mi">6</span>  <span class="o">|</span> <span class="mi">5</span><span class="o">-</span><span class="mi">4</span>  <span class="o">|</span> <span class="mi">3</span><span class="o">-</span><span class="mi">0</span> <span class="o">|</span>
+<span class="o">|----------|----|-----|------|-------|----|----|----|-------|-------|-------|----------|-----|------|------|-----|</span>
+<span class="o">|</span> <span class="n">Reserved</span> <span class="o">|</span><span class="n">PAN</span> <span class="o">|</span> <span class="n">DIT</span> <span class="o">|</span> <span class="n">SSBS</span> <span class="o">|</span> <span class="n">IL</span>    <span class="o">|</span> <span class="n">A</span>  <span class="o">|</span> <span class="n">I</span>  <span class="o">|</span> <span class="n">F</span>  <span class="o">|</span>   <span class="n">M</span>   <span class="o">|</span> <span class="n">T</span>     <span class="o">|</span> <span class="n">E</span>     <span class="o">|</span> <span class="n">Reserved</span> <span class="o">|</span> <span class="n">S</span>   <span class="o">|</span> <span class="n">M</span>    <span class="o">|</span> <span class="n">V</span>    <span class="o">|</span> <span class="n">C</span>   <span class="o">|</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>PAN: 该位控制是否允许在特权界别下访问某些内存区域，PAN=1时，禁止在特权模式下访问用户空间内存区域</p></li>
+<li><p>DIT: 禁用中断控制位</p></li>
+<li><p>SSBS: 控制是否禁用规范存储绕过</p></li>
+<li><p>IL: 标志指令的长度，arm64中可以使用32位及64位长度指令</p></li>
+<li><p>A: 是否能够响应一步中断</p></li>
+<li><p>I: 是否禁用IRQ</p></li>
+<li><p>F: 是否禁用FIQ</p></li>
+<li><p>M: 指示当前处理器异常级别</p></li>
+<li><p>T: 指示是否在thumb模式下执行指令，arm处理器支持arm和thumb两种指令集架构</p></li>
+<li><p>E: 存储当前处理器状态下的异常标志</p></li>
+<li><p>S: 用于控制堆栈指针对齐检查</p></li>
+<li><p>M: 指示当前处理器的工作模式</p></li>
+<li><p>V: 指示是否启用了向量处理器</p></li>
+<li><p>C: 表示条件标志，包括零标志、负标志</p></li>
+</ul>
+</div>
+<ul class="simple">
+<li><p>系统控制寄存器(SCTLR): 用来控制标准内存、配置系统能力、提供处理器核状态信息的寄存器</p></li>
+</ul>
+<img alt="../../_images/control_registers.png" src="../../_images/control_registers.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>UCI: 设置此位后，在arm64中DC CVAU, DC CIVAC, DC CVAC和IC IVAU指令启用EL0访问</p></li>
+<li><p>EE： 异常字节序，0小端， 1大端</p></li>
+<li><p>EOE: EL0显示数据访问的字节序</p></li>
+<li><p>WXN: 写权限不可执行，0可写区域不设置不可执行权限，1可写区域强制为不可执行</p></li>
+<li><p>nTWE: 不陷入WFE, 1表示WFE作为普通指令执行</p></li>
+<li><p>nTWI: 不陷入WFI, 1表示WFI作为普通指令执行</p></li>
+<li><p>UCT: 开启arm64的EL0访问CTR_EL0寄存器</p></li>
+<li><p>DNE: EL0下访问DC AVA指令，0禁止执行</p></li>
+<li><p>I: 开启指令缓存</p></li>
+<li><p>UMA: 用户屏蔽访问，控制从EL0的中断屏蔽访问</p></li>
+<li><p>SED: 禁止SETEND, 在EL0使用aarch32精致SETEND指令， 0使能，1禁止</p></li>
+<li><p>ITD: 禁止IT指令</p></li>
+<li><p>CP15BEN: CP15 barrier使能</p></li>
+<li><p>SA0: EL0栈对齐检查使能位</p></li>
+<li><p>C: 数据cache使能</p></li>
+<li><p>A: 对齐检查使能位</p></li>
+<li><p>M: 使能MMU</p></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../index.html" class="btn btn-neutral float-left" title="12. arm64 arch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../assembly/index.html" class="btn btn-neutral float-right" title="12.2. 汇编语言" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

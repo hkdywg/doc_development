@@ -1,191 +1,125 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN" >
+<html class="writer-html5" lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>2.2.1. 内核对设备树的支持 &mdash; ywg_dev_doc 0.1 文档</title>
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.5.1. 内核对设备树的支持 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
-        <script src="../../../_static/translations.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../../genindex.html" />
     <link rel="search" title="搜索" href="../../../search.html" />
-    <link rel="next" title="2.2.3. 代码分析" href="../source_analysis/index.html" />
-    <link rel="prev" title="2.2. DTS设备树详解" href="../index.html" /> 
+    <link rel="next" title="3.5.3. 代码分析" href="../source_analysis/index.html" />
+    <link rel="prev" title="3.5. DTS设备树详解" href="../index.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
           
-
-          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">1. u-boot dev note</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">2. kernel note</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">2.1. linux kernel debug tools</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html">2.2. DTS设备树详解</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">2.2.1. 内核对设备树的支持</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#machine-desc">2.2.1.1. 对设备树中平台信息的处理(选择machine_desc)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#dtbdevice-node">2.2.1.2. dtb转换为device_node</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#device-node-platfom-device">2.2.1.3. device_node 转换为platfom_device</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#platform-deviceplatform-driver">2.2.1.4. platform_device与platform_driver匹配</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id2">2.2.1.5. 内核中设备树操作函数</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id3">2.2.1.6. 根文件系统中查看设备树</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.5. DTS设备树详解</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.5.1. 内核对设备树的支持</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#machine-desc">3.5.1.1. 对设备树中平台信息的处理(选择machine_desc)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtbdevice-node">3.5.1.2. dtb转换为device_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-node-platfom-device">3.5.1.3. device_node 转换为platfom_device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#platform-deviceplatform-driver">3.5.1.4. platform_device与platform_driver匹配</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">3.5.1.5. 内核中设备树操作函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">3.5.1.6. 根文件系统中查看设备树</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#dtsdtb">2.2.2. DTS与DTB</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#device-tree">2.2.2.1. device tree结构</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#device-tree-source-file">2.2.2.2. device tree source file语法介绍</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#device-tree-binary">2.2.2.3. device tree binary格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dtsdtb">3.5.2. DTS与DTB</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#device-tree">3.5.2.1. device tree结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-tree-source-file">3.5.2.2. device tree source file语法介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-tree-binary">3.5.2.3. device tree binary格式</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../source_analysis/index.html">2.2.3. 代码分析</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../file_analysis/index.html">2.2.4. 文件结构解析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../source_analysis/index.html">3.5.3. 代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../file_analysis/index.html">3.5.4. 文件结构解析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/index.html">3.5.5. 设备树操作常用API</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">3. linux driver modules note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">4. file system note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">5. application development node</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../issues/index.html">8. Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">ywg_dev_doc</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../index.html"><span class="section-number">2. </span>kernel note</a> &raquo;</li>
-        
-          <li><a href="../index.html"><span class="section-number">2.2. </span>DTS设备树详解</a> &raquo;</li>
-        
-      <li><span class="section-number">2.2.1. </span>内核对设备树的支持</li>
-    
-    
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.5. </span>DTS设备树详解</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.5.1. </span>内核对设备树的支持</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../../../_sources/kernel/dts/dts_overview/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
+            <a href="../../../_sources/kernel/dts/dts_overview/index.rst.txt" rel="nofollow"> 查看页面源码</a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="id1">
-<h1><span class="section-number">2.2.1. </span>内核对设备树的支持<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+             
+  <section id="id1">
+<h1><span class="section-number">3.5.1. </span>内核对设备树的支持<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
 <p>从源头上分析，uboot将一些参数，设备树文件传递给内核。内核将如何处理设备树文件呢</p>
 <p>从内核的第一个执行文件head.S开始分析</p>
 <ul>
@@ -209,8 +143,8 @@ e)    将uboot传入的R2参数，保存到__atags_pointer中
 f)    调用C函数start_kernel</p>
 </li>
 </ul>
-<div class="section" id="machine-desc">
-<h2><span class="section-number">2.2.1.1. </span>对设备树中平台信息的处理(选择machine_desc)<a class="headerlink" href="#machine-desc" title="永久链接至标题">¶</a></h2>
+<section id="machine-desc">
+<h2><span class="section-number">3.5.1.1. </span>对设备树中平台信息的处理(选择machine_desc)<a class="headerlink" href="#machine-desc" title="此标题的永久链接"></a></h2>
 <ul>
 <li><p>内核是如何选择对应的machine_desc</p>
 <blockquote>
@@ -272,9 +206,9 @@ start_kernel 的调用过程如下</p>
 * 将/chosen节点中的bootargs属性的值存入全局变量boot_command_line
 * 确定根结点的两个属性的值#address-cells, #size-cells 分别存入全局变量 dt_root_addr_cells dt_root_size_cells
 * 解析/memory中reg属性。提取出base size，最终调用memblock_add(base,size);</p>
-</div>
-<div class="section" id="dtbdevice-node">
-<h2><span class="section-number">2.2.1.2. </span>dtb转换为device_node<a class="headerlink" href="#dtbdevice-node" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="dtbdevice-node">
+<h2><span class="section-number">3.5.1.2. </span>dtb转换为device_node<a class="headerlink" href="#dtbdevice-node" title="此标题的永久链接"></a></h2>
 <blockquote>
 <div><p>在dts文件里，每一个大括号{}代表一个节点，比如根结点里有个大括号,对应一个device_node结构体.memory也有一个大括号，也对应一个device_node结构体。
 节点中有各种属性，还有子节点，所以存在父子关系或者兄弟关系。
@@ -325,9 +259,9 @@ include/linux/of.h 中有对device_node结构体的定义：</p>
 </div>
 <p>两个结构体与dts内容的对应关系如下图所示：</p>
 <img alt="../../../_images/Ldd_devicetree_chapter3_4_001.jpg" src="../../../_images/Ldd_devicetree_chapter3_4_001.jpg" />
-</div>
-<div class="section" id="device-node-platfom-device">
-<h2><span class="section-number">2.2.1.3. </span>device_node 转换为platfom_device<a class="headerlink" href="#device-node-platfom-device" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="device-node-platfom-device">
+<h2><span class="section-number">3.5.1.3. </span>device_node 转换为platfom_device<a class="headerlink" href="#device-node-platfom-device" title="此标题的永久链接"></a></h2>
 <ul class="simple">
 <li><p>哪些device_node可以转换platform_device</p></li>
 </ul>
@@ -457,9 +391,9 @@ if(!dev || !of_match_node(matches,bus))  //如果bus节点的compatible属性不
             <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="platform-deviceplatform-driver">
-<h2><span class="section-number">2.2.1.4. </span>platform_device与platform_driver匹配<a class="headerlink" href="#platform-deviceplatform-driver" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="platform-deviceplatform-driver">
+<h2><span class="section-number">3.5.1.4. </span>platform_device与platform_driver匹配<a class="headerlink" href="#platform-deviceplatform-driver" title="此标题的永久链接"></a></h2>
 <ul class="simple">
 <li><p>注册platform_driver的过程</p></li>
 </ul>
@@ -508,9 +442,9 @@ if(!dev || !of_match_node(matches,bus))  //如果bus节点的compatible属性不
 <li><p>比较platform_dev.name和platform_driver.drv-&gt;name</p></li>
 </ol>
 <p>有一个匹配成功，即匹配成功</p>
-</div>
-<div class="section" id="id2">
-<h2><span class="section-number">2.2.1.5. </span>内核中设备树操作函数<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="id2">
+<h2><span class="section-number">3.5.1.5. </span>内核中设备树操作函数<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p>include/linux 目录下有很多of开头的头文件，dtb—-&gt;device_node—–&gt;platform_device</p>
 <ul class="simple">
 <li><p>处理dtb</p></li>
@@ -572,9 +506,9 @@ of_device.h     //设备相关的函数，比如of_match_device
 <li><p>处理device_node</p></li>
 <li><p>处理platform_device 设备相关信息</p></li>
 </ol>
-</div>
-<div class="section" id="id3">
-<h2><span class="section-number">2.2.1.6. </span>根文件系统中查看设备树<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="id3">
+<h2><span class="section-number">3.5.1.6. </span>根文件系统中查看设备树<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <ul class="simple">
 <li><p>查看原始dtb文件</p></li>
 </ul>
@@ -596,12 +530,12 @@ of_device.h     //设备相关的函数，比如of_match_device
 <p>/sys/devices/platform 系统中所有的platform_device，有来自设备树的，也有来自.c文件注册的</p>
 <p>对于来自设备树的platform_device。可以进入/sys/devices/platform/&lt;设备名&gt;/of_node 查看它的设备树属性</p>
 <p>/proc/device-tree 是链接文件，指向 /sys/firmware/devicetree/base</p>
-</div>
-</div>
-<div class="section" id="dtsdtb">
-<h1><span class="section-number">2.2.2. </span>DTS与DTB<a class="headerlink" href="#dtsdtb" title="永久链接至标题">¶</a></h1>
-<div class="section" id="device-tree">
-<h2><span class="section-number">2.2.2.1. </span>device tree结构<a class="headerlink" href="#device-tree" title="永久链接至标题">¶</a></h2>
+</section>
+</section>
+<section id="dtsdtb">
+<h1><span class="section-number">3.5.2. </span>DTS与DTB<a class="headerlink" href="#dtsdtb" title="此标题的永久链接"></a></h1>
+<section id="device-tree">
+<h2><span class="section-number">3.5.2.1. </span>device tree结构<a class="headerlink" href="#device-tree" title="此标题的永久链接"></a></h2>
 <p>dts文件通过编译生成dtb格式文件</p>
 <img alt="../../../_images/Ldd_devicetree_chapter2_1_001.jpg" src="../../../_images/Ldd_devicetree_chapter2_1_001.jpg" />
 <p>在描述divice tree结构之前，我们首先明确一个问题device tree是否需要描述系统中的所有硬件信息，答案是否定的。
@@ -662,9 +596,9 @@ unit-address就是寄存器地址。root node的node name是确定的，必须�
 <li><p>可能是一个数组，例如&lt;0x00000000 0x00000000 0x00000000 0x20000000&gt;</p></li>
 <li><p>可能是一个字符串，例如device_type=”memory”，当然也可能是一个string list.例如powerpc,970</p></li>
 </ol>
-</div>
-<div class="section" id="device-tree-source-file">
-<h2><span class="section-number">2.2.2.2. </span>device tree source file语法介绍<a class="headerlink" href="#device-tree-source-file" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="device-tree-source-file">
+<h2><span class="section-number">3.5.2.2. </span>device tree source file语法介绍<a class="headerlink" href="#device-tree-source-file" title="此标题的永久链接"></a></h2>
 <p>在linux_kernel中，扩展名为dts的文件就是描述硬件信心的device tree source file,在dts文件中，一个node被定义成</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">label</span><span class="p">:]</span><span class="n">node</span><span class="o">-</span><span class="n">name</span><span class="p">[</span><span class="nd">@unit</span><span class="o">-</span><span class="n">address</span><span class="p">]{</span>
     <span class="p">[</span><span class="n">properties</span> <span class="n">definitions</span><span class="p">]</span>
@@ -782,14 +716,11 @@ interrupt controller(术语叫做interrupt nexus)，然后报告到root interrup
 而不是interrupt nexuss</p></li>
 </ol>
 <p>对于根节点必须有个cpus的child node来描述系统中cpu信息。</p>
-</div>
-<div class="section" id="device-tree-binary">
-<h2><span class="section-number">2.2.2.3. </span>device tree binary格式<a class="headerlink" href="#device-tree-binary" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="device-tree-binary">
+<h2><span class="section-number">3.5.2.3. </span>device tree binary格式<a class="headerlink" href="#device-tree-binary" title="此标题的永久链接"></a></h2>
 <p>经过device tree compiler的编译，device tree source file变成了device tree blob格式</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 100%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>DTB header
 (struct boot_param_header)</p></td>
@@ -812,10 +743,6 @@ interrupt controller(术语叫做interrupt nexus)，然后报告到root interrup
 <li><p>dtb header</p></li>
 </ul>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 24%" />
-<col style="width: 76%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>header fild nam</p></td>
 <td><p>description</p></td>
@@ -892,63 +819,38 @@ padding</p>
 </ul>
 <p>device tree strings bloc定义了各个node中使用的属性的字符串表，由于很多属性会出现在多个node中，因此，所有的属性字符串组成了一个
 string block。这样可以压缩dtb的size</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../source_analysis/index.html" class="btn btn-neutral float-right" title="2.2.3. 代码分析" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../index.html" class="btn btn-neutral float-left" title="2.2. DTS设备树详解" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../index.html" class="btn btn-neutral float-left" title="3.5. DTS设备树详解" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../source_analysis/index.html" class="btn btn-neutral float-right" title="3.5.3. 代码分析" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; 版权所有 2020, yinwg
-
-    </p>
+    <p>&#169; 版权所有 2019, yinwg。</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

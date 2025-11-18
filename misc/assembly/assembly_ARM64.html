@@ -1,0 +1,829 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.10.1. ARM64汇编 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="7.10.2. linux arm64 head.S详解" href="linux_arm64_heads.html" />
+    <link rel="prev" title="7.10. 汇编语言" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance_optimzation/index.html">7.5. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.6. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile/index.html">7.7. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmake/index.html">7.8. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.9. 链接脚本</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.10. 汇编语言</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.10.1. ARM64汇编</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">7.10.1.1. 寄存器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">7.10.1.2. 模式与异常等级</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">7.10.1.3. 寻址方式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">7.10.1.4. 基本操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">7.10.1.5. 指令</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">7.10.1.6. 栈</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="linux_arm64_heads.html">7.10.2. linux arm64 head.S详解</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.11. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../markdown/index.html">7.12. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_commond/index.html">7.13. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64体系架构</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.10. </span>汇编语言</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.10.1. </span>ARM64汇编</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/misc/assembly/assembly_ARM64.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="arm64">
+<h1><span class="section-number">7.10.1. </span>ARM64汇编<a class="headerlink" href="#arm64" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">7.10.1.1. </span>寄存器<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>寄存器是CPU的一个组成部分，里面存放着指令、数据和地址等供CPU计算使用，速度比内存快。寄存器分为通用寄存器和专用寄存器</p>
+<p>arm64寄存器如下</p>
+<img alt="../../_images/register.png" src="../../_images/register.png" />
+<ul class="simple">
+<li><p>通用寄存器</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>arm64提供了31个64位通用寄存器，x0-x30</p></li>
+<li><p>可以通过w0-w30来访问这31个64位寄存器的低32位，写入时会将高32位清零</p></li>
+</ol>
+<ul class="simple">
+<li><p>浮点寄存器</p></li>
+</ul>
+<p>v0-v31，一共有32个浮点寄存器，每个寄存器的大小是128位，分别可以用不同的方式来访问不同的位数</p>
+<ol class="arabic simple">
+<li><p>Bn: 8位</p></li>
+<li><p>Hn: 16位</p></li>
+<li><p>Sn: 32位</p></li>
+<li><p>Dn: 64位</p></li>
+<li><p>Qn:128位</p></li>
+</ol>
+<ul class="simple">
+<li><p>特殊寄存器</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>程序计数器：即PC，保存着当前CPU执行指令的地址不能用作算术指令的源或目的地以及用作加载或存储指令给</p></li>
+<li><p>堆栈指针: sp, 即x31, 指向堆栈的顶部，sp不能被大多数指令引用，但一些算术指令如ADD指令，可以读写当前的堆栈指针来调整函数中的堆栈指针，每个异常级别都有一个专用的SP寄存器  fp: 即x29, 帧指针，指向当前frame的栈底，也就是高地址</p></li>
+<li><p>链接寄存器：lr, 即x30，存储着函数的返回地址</p></li>
+<li><p>程序状态寄存器: cpsr, 这个寄存器是按位起作用的，每一位都有专门的作用。 spsr, 当发生异常时，cpsr会存入spsr直到异常恢复在复制回cpsr</p></li>
+</ol>
+<img alt="../../_images/CPSR01.png" src="../../_images/CPSR01.png" />
+<img alt="../../_images/CPSR02.png" src="../../_images/CPSR02.png" />
+<p>在arm64中不再单一使用cpsr寄存器来保存当前状态，而是用PSTATE来保存处理器的状态</p>
+<p>PSTATE包括以下的系统寄存器</p>
+<p><strong>NZCV寄存器：保存条件标志</strong></p>
+<p>可读可写的寄存器</p>
+<img alt="../../_images/nzcv.png" src="../../_images/nzcv.png" />
+<p><strong>DAIF寄存器：DAIF状态</strong></p>
+<p>4种事件的mask</p>
+<img alt="../../_images/naif.png" src="../../_images/naif.png" />
+<p><strong>CurrentEL:当前的exception level</strong></p>
+<p>arm64有4个exception level,当前的EL，保存在这个寄存器中，这个寄存器是只读寄存器</p>
+<img alt="../../_images/currentEL.png" src="../../_images/currentEL.png" />
+<p><strong>SPSel: 当前栈的选择</strong></p>
+<p>在EL3, EL2, EL1是可以选择SP是使用SP_ELx还是SP_EL0，通过这个寄存器设置</p>
+<img alt="../../_images/spsel.png" src="../../_images/spsel.png" />
+<p><strong>PAN: privileged access never</strong></p>
+<img alt="../../_images/pan.png" src="../../_images/pan.png" />
+<p><strong>UAO: user access override</strong></p>
+<img alt="../../_images/uao.png" src="../../_images/uao.png" />
+<p>以上的寄存器可以通过 <code class="docutils literal notranslate"><span class="pre">mrs</span></code> 或 <code class="docutils literal notranslate"><span class="pre">msr</span></code> 指令进行访问</p>
+<ul class="simple">
+<li><p>函数返回值问题</p></li>
+</ul>
+<p>整型返回值被保存在x0和x1中，而浮点值则保存在v0-v3中，同时使用多个寄存器可以返回一个小型结构体类型的返回值。如果返回值为比较大的结构体，那么寄存器可能就变得不够用了，此时就需要调用者做出一些配合，
+调用者会在一开始为该结构体分配一块内存，然后将其地址写到x8寄存器中，在设置返回值的时候，直接往该地址中写入数据即可</p>
+<ul class="simple">
+<li><p>函数参数问题</p></li>
+</ul>
+<p>一般来说，函数参数(整型参数、地址)不超过8个的话，会存放在x0-x7里面，如果浮点型数据或者超过8个，会在调用函数之前将这些参数入栈，函数调用完之后出栈</p>
+</section>
+<section id="id2">
+<h2><span class="section-number">7.10.1.2. </span>模式与异常等级<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<section id="id3">
+<h3><span class="section-number">7.10.1.2.1. </span>模式<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>用户模式(USR): ARM处理器正常程序执行状态</p></li>
+<li><p>快速中断模式(FIQ): 高速数据传输或通道处理</p></li>
+<li><p>外部中断模式(IRQ): 通用的中断处理</p></li>
+<li><p>管理模式(supervisor): 操作系统使用的保护模式</p></li>
+<li><p>数据访问终止模式(abort): 当数据或指令预取终止时进入该模式，用于虚拟存储及存储保护</p></li>
+<li><p>系统模式(system): 运行具有特权的操作系统任务</p></li>
+<li><p>为定义指令终止模式(UND): 当未定义的指令执行时进入该模式</p></li>
+<li><p>hyp: 用于虚拟化扩展</p></li>
+<li><p>monitor: 用于security扩展</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3><span class="section-number">7.10.1.2.2. </span>异常等级<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>EL0: 非特权用户模式</p></li>
+<li><p>EL1: 操作系统内核</p></li>
+<li><p>EL2: Hypervisor，虚拟扩展</p></li>
+<li><p>EL3: secure monitor，安全扩展，实现EL0和EL1的secture和Non-secure之间的切换，可以起到物理屏障安全隔离作用</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3><span class="section-number">7.10.1.2.3. </span>模式与异常等级之间的关系<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>user模式： 只能在EL0执行</p></li>
+<li><p>monitor模式：只能在secure的EL3执行</p></li>
+<li><p>hyp模式：只能在non-secure的EL2执行，虚拟机</p></li>
+<li><p>system, supervisor, abort, undefined, IRQ, FIQ模式：依赖于secure模式</p></li>
+</ul>
+<img alt="../../_images/ExpetionLevel1.png" src="../../_images/ExpetionLevel1.png" />
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">7.10.1.3. </span>寻址方式<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<section id="id7">
+<h3><span class="section-number">7.10.1.3.1. </span>立即寻址<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>立即寻址也叫立即数寻址，这是一种特殊的寻址方式，操作数本身就在指令中给出，只要取出指令也就取到了操作数，这个操作数被称为立即数，对应的方式也称为立即寻址</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ADD</span> <span class="n">W0</span><span class="p">,</span> <span class="n">W1</span><span class="p">,</span> <span class="c1">#0x05</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3><span class="section-number">7.10.1.3.2. </span>寄存器寻址<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<p>寄存器寻址也就是利用寄存器中的数值作为操作数，这是一种常见的方式，也是效率比较高的寻址方式</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ADD</span> <span class="n">W0</span><span class="p">,</span> <span class="n">W1</span><span class="p">,</span> <span class="n">W2</span>
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3><span class="section-number">7.10.1.3.3. </span>寄存器间接寻址<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h3>
+<p>寄存器间接寻址就是以寄存器中值作为操作数的地址，而操作数本身存放在存储器中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ADD</span> <span class="n">W0</span><span class="p">,</span> <span class="n">W1</span><span class="p">,</span> <span class="p">[</span><span class="n">W2</span><span class="p">]</span>
+<span class="n">LDR</span> <span class="n">W3</span><span class="p">,</span> <span class="p">[</span><span class="n">W0</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3><span class="section-number">7.10.1.3.4. </span>基址变址寻址<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h3>
+<p>基址变址寻址就是将寄存器(该寄存器一般称作基址寄存器)的内容与指令中给出的地址偏移量相加，从而得到一个操作数的有效地址。变址寻址方式常用于访问某基地址附近的地址单元，
+常见的有以下几种形式</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>LDR W0, [W1, #4]        ;将寄存器w1中内容加上4作为地址，然后将该地址处的数据存入寄存器w0中
+LDR W0, [W1, #4]!       ;将寄存器w1中内容加上4作为地址，然后将该地址处的数据存入寄存器w0中,然后w1中的内容自增4
+LDR W0, [W1], #4        ;将寄存器w1中的内容作为地址，然后将该地址处的数据存入w0中，并将w1中内容自增4
+LDR W0, [W1, W2]        ;将w1和w2中的内容相加作为地址，然后将该地址处的数据存入w0
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id11">
+<h2><span class="section-number">7.10.1.4. </span>基本操作<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h2>
+<section id="id12">
+<h3><span class="section-number">7.10.1.4.1. </span>分配和初始化全局变量<a class="headerlink" href="#id12" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>定义一个未初始化的static静态局部变量和全局变量</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">byte</span> <span class="n">expressions</span>
+<span class="o">.</span><span class="n">byte2</span> <span class="n">expressions</span>
+<span class="o">.</span><span class="n">hword</span> <span class="n">expressions</span>
+<span class="o">.</span><span class="n">short</span> <span class="n">expressions</span>
+
+<span class="mf">.4</span><span class="n">byte</span> <span class="n">expressions</span>
+<span class="o">.</span><span class="n">word</span> <span class="n">expressions</span>
+<span class="o">.</span><span class="n">long</span> <span class="n">expressions</span>
+
+<span class="mf">.8</span><span class="n">byte</span> <span class="n">expressions</span>
+<span class="o">.</span><span class="n">quad</span> <span class="n">expressions</span>
+
+<span class="o">.</span><span class="n">ascii</span> <span class="s2">&quot;string&quot;</span>         <span class="p">;</span><span class="n">带</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="o">.</span><span class="n">szciz</span> <span class="s2">&quot;string&quot;</span>         <span class="p">;</span><span class="n">不带</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+<span class="o">.</span><span class="n">string</span> <span class="s2">&quot;string&quot;</span>
+
+<span class="o">.</span><span class="n">float</span> <span class="n">flonums</span>
+<span class="o">.</span><span class="n">single</span> <span class="n">flonums</span>
+<span class="o">.</span><span class="n">double</span> <span class="n">flonums</span>
+</pre></div>
+</div>
+</section>
+<section id="aligning">
+<h3><span class="section-number">7.10.1.4.2. </span>对齐aligning<a class="headerlink" href="#aligning" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.align abs-expr, abs-expr, abs-expr
+;第一个abs-expr：对齐的size
+;第二个abs-expr：填充
+;第三个abs-expr: 可选，对齐应该跳过的最大字节数
+
+.balign[lw] abs-expr, abs-expr, abs-expr
+
+.skip size, fill
+.space size, fill
+;分配一大块内存并将其全部初始化到相同的值，可以使用这两个指令
+
+.equ symbol, expression
+.set symbol, expression
+;宏定义，等价于define
+
+.equiv symbol, expression
+;宏定义，如果已经定义过了则产生error
+
+.global symbol
+;声明，声明后，所有文件都可以使用
+
+.comm symbol, length
+</pre></div>
+</div>
+</section>
+<section id="id13">
+<h3><span class="section-number">7.10.1.4.3. </span>函数<a class="headerlink" href="#id13" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">size</span> <span class="n">name</span><span class="p">,</span> <span class="n">expression</span>
+<span class="o">.</span><span class="n">type</span> <span class="n">name</span><span class="p">,</span> <span class="n">type_description</span>
+</pre></div>
+</div>
+</section>
+<section id="id14">
+<h3><span class="section-number">7.10.1.4.4. </span>条件<a class="headerlink" href="#id14" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="k">if</span> <span class="n">expression</span>
+<span class="o">.</span><span class="n">ifdef</span> <span class="n">symbol</span>
+<span class="o">.</span><span class="n">inndef</span> <span class="n">symbol</span>
+<span class="o">.</span><span class="k">else</span>
+<span class="o">.</span><span class="n">end</span>
+</pre></div>
+</div>
+</section>
+<section id="include">
+<h3><span class="section-number">7.10.1.4.5. </span>include文件<a class="headerlink" href="#include" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">include</span> <span class="s2">&quot;file&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id15">
+<h3><span class="section-number">7.10.1.4.6. </span>宏<a class="headerlink" href="#id15" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">macro</span> <span class="n">macname</span>
+<span class="o">.</span><span class="n">manro</span> <span class="n">macname</span> <span class="n">macargs</span> <span class="o">...</span>
+<span class="o">.</span><span class="n">endm</span>
+<span class="o">.</span><span class="n">exitm</span>
+</pre></div>
+</div>
+<p>如果宏使用参数，那么在宏体中使用该参数时添加前缀 “&quot;</p>
+</section>
+</section>
+<section id="id16">
+<h2><span class="section-number">7.10.1.5. </span>指令<a class="headerlink" href="#id16" title="此标题的永久链接"></a></h2>
+<p>常用指令</p>
+<img alt="../../_images/normal.png" src="../../_images/normal.png" />
+<p>大多数指令都是可以带条件的，条件码如下</p>
+<img alt="../../_images/ope.png" src="../../_images/ope.png" />
+<ul class="simple">
+<li><p>mov</p></li>
+</ul>
+<p>mov指令格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mov.{条件}{s} 目的寄存器，原操作数
+</pre></div>
+</div>
+<p>mov指令可以完成从另一个寄存器、移位寄存器或将一个立即数加载到目的寄存器，其中s选项决定指令的操作是否影响cpsr中的条件标志位的值，当没有s时指令不更新cpsr中条件标志位的值</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">text</span>
+<span class="o">.</span><span class="k">global</span> <span class="n">_test</span>
+
+<span class="n">_test</span><span class="p">:</span>
+<span class="n">mov</span> <span class="n">w1</span><span class="p">,</span> <span class="mi">8</span>
+<span class="n">mov</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w1</span>
+<span class="n">ret</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>mvn</p></li>
+</ul>
+<p>mvn指令格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mvn.{条件}{s} 目的寄存器，源操作数
+</pre></div>
+</div>
+<p>mvn指令可完成从另一个寄存器被移位的寄存器或将一个立即数加载到目的寄存器，与mov指令不同之处在于传送之前按位被取反了，即把一个被取反的值传送到目的寄存器中，其中s选项决定
+指令的操作是否影响cpsr中条件标志位的值，当没有s时指令不更新cpsr中条件标志位的值</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">text</span>
+<span class="o">.</span><span class="k">global</span> <span class="n">_test</span>
+
+<span class="n">_test</span><span class="p">:</span>
+<span class="n">mov</span> <span class="n">w1</span><span class="p">,</span> <span class="mi">0</span>
+<span class="n">mvn</span> <span class="n">w2</span><span class="p">,</span> <span class="n">w1</span>
+<span class="n">ret</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>add</p></li>
+</ul>
+<p>add指令的格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>add.{条件}{s} 目的寄存器， 操作数1, 操作数2
+</pre></div>
+</div>
+<p>add指令用于把两个操作数相加，并把结果存放到目的寄存器中，操作数1应是一个寄存器，操作数2可以是一个寄存器，被移位的寄存器，或是一个立即数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">text</span>
+<span class="o">.</span><span class="k">global</span> <span class="n">_test</span>
+
+<span class="n">_test</span><span class="p">:</span>
+<span class="n">mov</span> <span class="n">w1</span><span class="p">,</span> <span class="mi">2</span>
+<span class="n">mov</span> <span class="n">w2</span><span class="p">,</span> <span class="mi">4</span>
+<span class="n">add</span> <span class="n">w0</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span>
+<span class="n">ret</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>adc</p></li>
+</ul>
+<p>adc指令的格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>adc.{条件}{s} 目的寄存器， 操作数1, 操作数2
+</pre></div>
+</div>
+<p>adc指令用于把两个操作数相加，再加上cpsr中的C条件标志位的值，并将结果存放到目的寄存器中。它使用一个进位标志位，这样就可以做比64位大的数的加法，注意不要忘记
+设置s后缀来更改进位标志，操作数1应是一个寄存器，操作数2可以是一个寄存器，被移位的寄存器，或一个立即数</p>
+<ul class="simple">
+<li><p>sub</p></li>
+</ul>
+<p>sub指令的格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sub.{条件}{s} 目的寄存器， 操作数1，操作数2
+</pre></div>
+</div>
+<p>sub指令用于把操作数1减去操作数2,并将结果存放到目的寄存器中。操作数1应是一个寄存器，操作数2可以是一个寄存器，被移位的寄存器，或一个立即数。该指令可用于有符号数或
+无符号数的减法运算</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">text</span>
+<span class="o">.</span><span class="k">global</span> <span class="n">_test</span>
+
+<span class="n">_test</span><span class="p">:</span>
+<span class="n">mov</span> <span class="n">w1</span><span class="p">,</span> <span class="mi">4</span>
+<span class="n">mov</span> <span class="n">w2</span><span class="p">,</span> <span class="mi">2</span>
+<span class="n">sub</span> <span class="n">w0</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span>
+<span class="n">ret</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>sbc</p></li>
+</ul>
+<p>sbc指令的格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sbc.{条件}{s} 目的寄存器，操作数1, 操作数2
+</pre></div>
+</div>
+<p>sbc指令用于把操作数1减去操作数2，再减去cpsr中的C条件标志位的反码，并将结果存放到目的寄存器中，操作数1应是一个寄存器，操作数2可以是一个寄存器，被移位的寄存器，或一个立即数。
+该指令使用进位标志来标识借位，这样就可以做大于32位的减法，注意不要忘记设置s后缀来更改进位标志。该指令可用于有符号数或无符号数的减法运算</p>
+<ul class="simple">
+<li><p>mul</p></li>
+</ul>
+<p>mul指令格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mul.{条件}{s} 目的寄存器，操作数1, 操作数2
+</pre></div>
+</div>
+<p>mul指令完成操作数1和操作数2的乘法，并把结果放置到目的寄存器中，同时可以根据运算结果设置CPSR中相应的条件标志位，其中操作数1和操作数2均为64位的有符号或无符号数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">text</span>
+<span class="o">.</span><span class="k">global</span> <span class="n">_test</span>
+
+<span class="n">_test</span><span class="p">:</span>
+<span class="n">mov</span> <span class="n">w1</span><span class="p">,</span> <span class="mi">4</span>
+<span class="n">mov</span> <span class="n">w2</span><span class="p">,</span> <span class="mi">2</span>
+<span class="n">mul</span> <span class="n">w0</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span>
+<span class="n">ret</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>and</p></li>
+</ul>
+<p>and指令格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>and.{条件}{s} 目的寄存器，操作数1, 操作数2
+</pre></div>
+</div>
+<p>and指令用于在两个操作数上进行逻辑与运算，并把结果放置到目的寄存器中，操作数1应是一个寄存器，操作数2可以是一个寄存器，被移位的寄存器或一个立即数。该指令常用于屏蔽操作数1的某些位</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.text
+.global _test
+
+_test:
+mov w1, 4
+and w0, w1, 3  ;保持w1的0位和1位，其余位清零
+ret
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>orr</p></li>
+</ul>
+<p>orr指令格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>orr.{条件}{s} 目的寄存器， 操作数1, 操作数2
+</pre></div>
+</div>
+<p>orr指令用于在两个操作数上进行逻辑或运算，并把结果放置到目的寄存器中，操作数1应是一个寄存器，操作数2可以是一个寄存器，被移位的寄存器，或一个立即数。该指令常用于设置操作数1的某些位</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.text
+.global _test
+
+_test:
+mov w1, 4
+orr w0, w1, 3  ;设置w1的0, 1位，其余位保持不变
+ret
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>eor</p></li>
+</ul>
+<p>eor指令格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>eor.{条件}{s} 目的寄存器，操作数1，操作数2
+</pre></div>
+</div>
+<p>eor指令用于在两个操作数上进行逻辑异或运算，并把结果放置到目的寄存器中,操作数1应是一个寄存器，操作数2可以是一个寄存器，被移位的寄存器，或一个立即数。该指令常用于反转操作数1的某些位</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.text
+.global _test
+
+_test:
+mov w1, 4
+mov w0, w1, 3 ;反转w1的0，1位，其余位保持不变
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>tst</p></li>
+</ul>
+<p>tst指令格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tst</span><span class="o">.</span><span class="p">{</span><span class="n">条件</span><span class="p">}</span> <span class="n">操作数1</span><span class="p">,</span> <span class="n">操作数2</span>
+</pre></div>
+</div>
+<p>tst指令用于把一个寄存器的内容和另一个寄存器的内容或立即数进行按位与运算，并根据运算结果更新cpsr中条件标志位的值，操作数1是要测试的数据，而操作数2是一个位掩码。该指令一般用来检测是否设置了特定的位</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">text</span>
+<span class="o">.</span><span class="k">global</span> <span class="n">_test</span>
+
+<span class="n">_test</span><span class="p">:</span>
+<span class="n">mov</span> <span class="n">w1</span><span class="p">,</span> <span class="mi">0</span>
+<span class="n">tst</span> <span class="n">w1</span><span class="p">,</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>str</p></li>
+</ul>
+<p>str指令格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>str.{条件} 源寄存器， &lt;存储器地址&gt;
+</pre></div>
+</div>
+<p>str指令用于从源寄存器中将一个64位或32位(看使用rn还是wn)的字节数据传送到存储器中.</p>
+<p>str的示例与ldr一起说明</p>
+<ul class="simple">
+<li><p>strb</p></li>
+</ul>
+<p>strb指令格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>strb.{条件} 源寄存器，&lt;存储器地址&gt;
+</pre></div>
+</div>
+<p>strb： (store register byte) 将寄存器中的值写入到内存中（只存储一个字节）</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">strb</span> <span class="n">w8</span><span class="p">,</span> <span class="p">[</span><span class="n">sp</span><span class="p">,</span> <span class="c1">#7]   ;将寄存器w8中的低1个字节保存到栈内存[sp + 7] 处</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>adr</p></li>
+</ul>
+<p>adr主要用于形成pc的相对地址，把相对地址Load到寄存器中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adr</span> <span class="o">&lt;</span><span class="n">xd</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">label</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>当前指令到lable的偏移offset_to_label加上pc的值，然后将结果赋值给xd。offset_to_label可以是个负数。 经常被编译器转成add或sub指令</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add</span> <span class="o">&lt;</span><span class="n">xd</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">[</span><span class="n">PC</span><span class="p">,</span> <span class="c1">#offset_to_label]</span>
+<span class="n">或</span>
+<span class="n">sub</span> <span class="o">&lt;</span><span class="n">xd</span><span class="o">&gt;</span><span class="p">,</span> <span class="p">[</span><span class="n">PC</span><span class="p">,</span> <span class="c1">#-offset_to_label]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>adrp</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adrp</span> <span class="o">&lt;</span><span class="n">xd</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">label</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>adrp就是address page的简写，这里的page指的是大小为4KB的连续内存，和操作系统中的页不是一回事。该指令的作用是将label所在的页且4KB对齐的页基址放入寄存器xd中。
+lable表示的地址肯定在这个页基址确定的页内. 一般情况下会跟上一条ADD xd, xd, offset_to_lable 指令，这样label所在的地址就在xd寄存器中了</p>
+<p>该指令的作用就是将符号地址变为运行时地址</p>
+<ul class="simple">
+<li><p>mrs</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mrs</span><span class="o">.</span><span class="p">{</span><span class="n">条件</span><span class="p">}</span> <span class="n">通用寄存器</span><span class="p">,</span> <span class="n">程序状态寄存器</span>
+</pre></div>
+</div>
+<p>mrs指令用于将程序状态寄存器的内容传送到通用寄存器中，该指令一般用于以下两种情况</p>
+<ol class="arabic simple">
+<li><p>当需要改变程序状态寄存器的内容时，可用mrs将程序状态寄存器的内容读入通用寄存器修改后然后再写回程序状态寄存器</p></li>
+<li><p>当在异常处理或进程切换时，需要保存程序状态寄存器的值，可用该指令读出然后保存</p></li>
+</ol>
+<ul class="simple">
+<li><p>msr</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">msr</span><span class="o">.</span><span class="p">{</span><span class="n">条件</span><span class="p">}</span> <span class="n">程序状态寄存器</span> <span class="n">_</span><span class="o">&lt;</span><span class="n">域</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">操作数</span>
+</pre></div>
+</div>
+<p>msr指令用于将操作数的内容传送到程序状态寄存器的特定域中，其中操作数可以为通用寄存器或者立即数。&lt;域&gt;用于设置程序状态寄存器中需要操作的位</p>
+<ol class="arabic simple">
+<li><p>位[31：24]为条件标志位域，用f表示；</p></li>
+<li><p>位[23：16]为状态位域，用s表示；</p></li>
+<li><p>位[15：8]为扩展位域，用x表示；</p></li>
+<li><p>位[7：0]为控制位域，用c表示；</p></li>
+</ol>
+<ul class="simple">
+<li><p>ldr</p></li>
+</ul>
+<p>ldr指令格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ldr.{条件} 目的寄存器， &lt;存储器地址&gt;
+</pre></div>
+</div>
+<p>ldr指令用于从存储器中将一个64位或32位(看使用rn还是wn)的字节数据传送到目的寄存器中，当程序计数器pc作为目的寄存器时，指令从存储器中读取的字节数据被当作目的地址，从而可以实现程序流程的跳转</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">text</span>
+<span class="o">.</span><span class="k">global</span> <span class="n">_test</span>
+
+<span class="n">_test</span><span class="p">:</span>
+<span class="n">mov</span> <span class="n">w1</span><span class="p">,</span> <span class="mi">4</span>
+<span class="nb">str</span> <span class="n">w1</span><span class="p">,</span> <span class="p">[</span><span class="n">sp</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="n">ldr</span> <span class="n">w0</span><span class="p">,</span> <span class="p">[</span><span class="n">sp</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="n">ret</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>ldrsb</p></li>
+</ul>
+<p>ldrsb： (load register byte) 将内存中的值（只读取一个字节）读取到寄存器中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ldr x0, [x1]            ;将寄存器x1的值作为地址，取该内存地址的值放入寄存器x0中
+ldr w8, [sp, #0x8]  ;将栈内存[sp + 8]处的值读取到w8中
+ldr x0, [x1, #4]!   ;将寄存器x1中的值加上4作为内存地址，然后取出该内存中的值放入x0中，然后将寄存器x1的值加上4放入寄存器x1中
+ldr x0, [x1], #4        ;将寄存器x1的值作为内存地址，取该内存地址的值放入x0中，再将x1的值加上4放入x1中
+ldr x0, [x1, x2]        ;将x1和x2的值相加作为地址，然后取该地址的值存入x0中
+ldrsb   w8, [sp, #7]    ; 将栈内存 [sp + 7] 出的 低 1 字节的值读取到寄存器 w8 中
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>stru</p></li>
+</ul>
+<p>与str用法类似，将寄存器中的值写入到内存中(一般用于负地址运算中)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stru</span> <span class="n">w10</span><span class="p">,</span> <span class="p">[</span><span class="n">x29</span><span class="p">,</span> <span class="c1">#-0x04]                 ;将寄存器w10中的值保存到[x29 - 0x04]处</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>ldur</p></li>
+</ul>
+<p>与ldr用法类似，将内存中的值读取到寄存器中(一般用于负地址运算)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ldur</span> <span class="n">w8</span><span class="p">,</span> <span class="p">[</span><span class="n">x29</span><span class="p">,</span> <span class="c1">#-0x4]   ;将栈内存[x29 - 0x04]处的值读取到w8寄存器中</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>b</p></li>
+</ul>
+<p>b指令格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="p">{</span><span class="n">条件</span><span class="p">}</span> <span class="n">目的地址</span>
+</pre></div>
+</div>
+<p>b指令是最简单的跳转指令，遇到一个b指令，ARM处理器会立即跳转到给定的目标地址，从那里继续执行</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">text</span>
+<span class="o">.</span><span class="k">global</span> <span class="n">_test</span>
+
+<span class="n">_test</span><span class="p">:</span>
+<span class="n">b</span> <span class="n">label</span>
+<span class="n">mov</span> <span class="n">w2</span><span class="p">,</span> <span class="mi">5</span>
+
+<span class="n">lable</span><span class="p">:</span>
+<span class="n">mov</span> <span class="n">w0</span><span class="p">,</span> <span class="mi">3</span>
+<span class="n">mov</span> <span class="n">w1</span><span class="p">,</span> <span class="mi">4</span>
+<span class="n">ret</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>bl</p></li>
+</ul>
+<p>bl指令格式为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bl</span><span class="o">.</span><span class="p">{</span><span class="n">条件</span><span class="p">}</span> <span class="n">目标地址</span>
+</pre></div>
+</div>
+<p>同样是跳转指令，但在跳转之前，会在lr寄存器中保存pc的当前内容，因此，可以通过将lr的内容重新加载到pc中，来返回到跳转之后的那个指令处执行</p>
+<ul class="simple">
+<li><p>stp</p></li>
+</ul>
+<p>入栈指令(str 的变种指令，可以同时操作两个寄存器)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stp</span> <span class="n">x29</span><span class="p">,</span> <span class="n">x30</span><span class="p">,</span> <span class="p">[</span><span class="n">sp</span><span class="p">,</span> <span class="c1">#0x10]       ;将x29 x30的值存入sp偏移16个字节的位置</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>ldp</p></li>
+</ul>
+<p>出栈指令(ldr的变种指令，可以同时操作两个寄存器)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ldp</span> <span class="n">x29</span><span class="p">,</span> <span class="n">x30</span><span class="p">,</span> <span class="p">[</span><span class="n">sp</span><span class="p">,</span> <span class="c1">#0x10]       ;将sp偏移16个字节的值取出来，存入寄存器x29和寄存器x30中,</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>scvtf</p></li>
+</ul>
+<p>signed convert to float, 带符号定点数转为浮点数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scvtf</span> <span class="n">d1</span><span class="p">,</span> <span class="n">w0</span>    <span class="p">;</span><span class="n">将w0寄存器中的值保存到浮点寄存器d1中</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>fcvtzs</p></li>
+</ul>
+<p>float convert to zero signed，浮点数转化为定点数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fcvtzs</span> <span class="n">w0</span><span class="p">,</span> <span class="n">s0</span>           <span class="p">;</span><span class="n">将浮点寄存器s0的值保存到w0中</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>cbz</p></li>
+</ul>
+<p>和0比较，如果结果为0就跳转到后面的指令</p>
+<ul class="simple">
+<li><p>cbnz</p></li>
+</ul>
+<p>和非0比较，如果结果非零就跳转</p>
+<ul class="simple">
+<li><p>cmp</p></li>
+</ul>
+<p>比较指令，相当于subs，影响程序状态寄存器cpsr</p>
+<ul class="simple">
+<li><p>cset</p></li>
+</ul>
+<p>比较指令，满足条件，则置1，否则置0</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cmp w8, #2              ;将寄存器w8的值和常量2进行比较,结果会体现在cpsw寄存器中
+cset w8, gt     ;如果是大于(grater than)，则将寄存器w8的值设置为1，否则设置为0
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>ret</p></li>
+</ul>
+<p>子程序(函数调用)返回指令，返回地址已默认保存在寄存器lr(x30)中</p>
+<ul class="simple">
+<li><p>LSL LSR ASR ROR</p></li>
+</ul>
+<p>分别为：逻辑左移，逻辑右移，算数右移，循环右移</p>
+</section>
+<section id="id17">
+<h2><span class="section-number">7.10.1.6. </span>栈<a class="headerlink" href="#id17" title="此标题的永久链接"></a></h2>
+<p>函数在调用的时候系统会为每一个函数在栈区建立一个帧(frame),所有的函数内部变量都会保存在这个帧里面，然后结束后这个帧就会被回收，释放所有的内部变量。
+一般来说，调用帧有多少层，就有多少帧</p>
+<p>所有的帧都存放在 Stack，由于帧是一层层叠加的，所以 Stack 叫做栈。生成新的帧，叫做”入栈”，英文是 push；栈的回收叫做”出栈”，英文是 pop。
+Stack 的特点就是，最晚入栈的帧最早出栈（因为最内层的函数调用，最先结束运行），这就叫做”后进先出”的数据结构。每一次函数执行结束，就自动释放一个帧，所有函数执行结束，整个 Stack 就都释放了。</p>
+<p>看一个简单的程序</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>编译之后通过objdump 查看汇编代码</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">00000000000006e4</span> <span class="o">&lt;</span><span class="n">main</span><span class="o">&gt;</span><span class="p">:</span>
+<span class="n">d10043ff</span>        <span class="n">sub</span>     <span class="n">sp</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="c1">#0x10                  ;sp指针往低地址移动了16个字节</span>
+<span class="mi">52800040</span>        <span class="n">mov</span>     <span class="n">w0</span><span class="p">,</span> <span class="c1">#0x2                ;将立即数2写入寄存器w0</span>
+<span class="n">b9000be0</span>        <span class="nb">str</span>     <span class="n">w0</span><span class="p">,</span> <span class="p">[</span><span class="n">sp</span><span class="p">,</span> <span class="c1">#8]               ;从sp地址+8字节为基地址开始的4个字节内的数据用w0寄存器内的数据填充</span>
+<span class="mi">52800060</span>        <span class="n">mov</span>     <span class="n">w0</span><span class="p">,</span> <span class="c1">#0x3                ;将立即数3写入寄存器w0</span>
+<span class="n">b9000fe0</span>        <span class="nb">str</span>     <span class="n">w0</span><span class="p">,</span> <span class="p">[</span><span class="n">sp</span><span class="p">,</span> <span class="c1">#12]                  ;从sp地址+12字节为基地址开始的4个字节内的数据用w0寄存器内的数据填充</span>
+<span class="n">b9400be1</span>        <span class="n">ldr</span>     <span class="n">w1</span><span class="p">,</span> <span class="p">[</span><span class="n">sp</span><span class="p">,</span> <span class="c1">#8]                   ;从sp地址+8字节为及地址开始的4个字节数据放到w1寄存器中</span>
+<span class="n">b9400fe0</span>        <span class="n">ldr</span>     <span class="n">w0</span><span class="p">,</span> <span class="p">[</span><span class="n">sp</span><span class="p">,</span> <span class="c1">#12]              ;从sp地址+12字节为及地址开始的4个字节数据放到w0寄存器中</span>
+<span class="mb">0b0000</span><span class="mi">20</span>        <span class="n">add</span>     <span class="n">w0</span><span class="p">,</span> <span class="n">w1</span><span class="p">,</span> <span class="n">w0</span>                         <span class="p">;</span><span class="n">将w1和w0中的数据相加并写入w0中</span>
+<span class="mi">910043</span><span class="n">ff</span>        <span class="n">add</span>     <span class="n">sp</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="c1">#0x10              ;将sp指针往高地址移动16字节，回到最初的位置</span>
+<span class="n">d65f03c0</span>        <span class="n">ret</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>函数返回的结果保存在寄存器w0中(如果是64位则是x0)，但不是只有w0可以保存返回结果，w0-w7都是可以的。事实上我们用不到16个字节的栈，但为什么要开辟
+这么多呢，因为ARM64规定sp必须16字节对齐</p>
+</div>
+<ul class="simple">
+<li><p>堆栈平衡</p></li>
+</ul>
+<p>前面的示例代码中，<code class="docutils literal notranslate"><span class="pre">sub</span> <span class="pre">sp,</span> <span class="pre">sp,</span> <span class="pre">#0x10</span></code> 和结束时的 <code class="docutils literal notranslate"><span class="pre">add</span> <span class="pre">sp,</span> <span class="pre">sp,,</span> <span class="pre">#0x10</span></code> 这样做的目的就是为了维持堆栈平衡。函数开始时开辟堆栈空间，在结束时进行退栈操作，
+这就解释了函数内的变量都存在栈区，函数结束后变量会被释放掉</p>
+<ul class="simple">
+<li><p>参数传递</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">add</span><span class="p">(</span><span class="nb">int</span> <span class="n">a</span><span class="p">,</span> <span class="nb">int</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+        <span class="k">return</span> <span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>转换为汇编</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    a9bf7bfd        stp     x29, x30, [sp, #-16]!          ;将保存现场, x29, x30的值放到sp-16的地址处，然后将sp的值减去16并存入sp中, x29表示fp寄存器，x30表示lr寄存器
+;从sp地址往高地址偏移16个字节的地址开始，用16个字节保存fp和lr寄存器。前8个字节保存fp寄存器，后8个字节保存lr寄存器
+    910003fd        mov     x29, sp                                                ;将sp的值存入x29中
+    52800061        mov     w1, #0x3                       ;w1置为3
+    52800040        mov     w0, #0x2                       ;w0置为2
+    97fffff4        bl      6e4 &lt;add&gt;                                          ;跳转到add函数中
+    a8c17bfd        ldp     x29, x30, [sp], #16                    ;恢复现场:从sp+16地址处取出值存入x29, x30中,前8个字节保存fp寄存器
+    d65f03c0        ret
+
+    00000000000006e4 &lt;add&gt;:
+    d10043ff        sub     sp, sp, #0x10                          ;sp指针向下移动16字节
+    b9000fe0        str     w0, [sp, #12]                          ;取出w0的值放入sp+12地址处
+    b9000be1        str     w1, [sp, #8]                           ;取出w1的值放入sp+8地址处
+    b9400fe1        ldr     w1, [sp, #12]                          ;从sp+12地址处取出值存入w1
+    b9400be0        ldr     w0, [sp, #8]                           ;从sp+8地址出取出值存入w0
+    0b000020        add     w0, w1, w0                                     ;w1和w0做加法，并写入w0中
+    910043ff        add     sp, sp, #0x10                          ;sp指针向上移动16字节
+    d65f03c0        ret
+</pre></div>
+</div>
+<p>sp与fp之间的空间就是函数的栈空间,fp为栈底，sp为栈顶</p>
+<p>代码中一开始做了保存现场的操作，函数调用的时候我们通过跳转指令B或者BL来进行函数调用，在跳转的同时ARM会保存函数的返回地址到LR也就是下一条指令的入口地址，函数调用的时候
+进行LR压栈，函数返回的时候进行LR出栈从而保证正确执行程序返回后的后续指令</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="7.10. 汇编语言" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="linux_arm64_heads.html" class="btn btn-neutral float-right" title="7.10.2. linux arm64 head.S详解" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

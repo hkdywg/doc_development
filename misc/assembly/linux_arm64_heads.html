@@ -1,0 +1,477 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.10.2. linux arm64 head.S详解 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="7.11. 数据结构与算法" href="../datastruct_algo/index.html" />
+    <link rel="prev" title="7.10.1. ARM64汇编" href="assembly_ARM64.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance_optimzation/index.html">7.5. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.6. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile/index.html">7.7. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmake/index.html">7.8. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.9. 链接脚本</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.10. 汇编语言</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="assembly_ARM64.html">7.10.1. ARM64汇编</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.10.2. linux arm64 head.S详解</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#preserve-boot-args">7.10.2.1. preserve_boot_args</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#el2-setup">7.10.2.2. el2_setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-cpu-boot-mode-flag">7.10.2.3. set_cpu_boot_mode_flag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-page-tables">7.10.2.4. __create_page_tables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cpu-setup">7.10.2.5. __cpu_setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#primary-switch">7.10.2.6. __primary_switch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.11. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../markdown/index.html">7.12. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_commond/index.html">7.13. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64体系架构</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.10. </span>汇编语言</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.10.2. </span>linux arm64 head.S详解</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/misc/assembly/linux_arm64_heads.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux-arm64-head-s">
+<h1><span class="section-number">7.10.2. </span>linux arm64 head.S详解<a class="headerlink" href="#linux-arm64-head-s" title="此标题的永久链接"></a></h1>
+<p>首先贴出head.S中主要的代码段</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">__INIT</span>
+
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">The</span> <span class="n">following</span> <span class="n">callee</span> <span class="n">saved</span> <span class="n">general</span> <span class="n">purpose</span> <span class="n">registers</span> <span class="n">are</span> <span class="n">used</span> <span class="n">on</span> <span class="n">the</span>
+     <span class="o">*</span> <span class="n">primary</span> <span class="n">lowlevel</span> <span class="n">boot</span> <span class="n">path</span><span class="p">:</span>
+     <span class="o">*</span>
+     <span class="o">*</span>  <span class="n">Register</span>   <span class="n">Scope</span>                      <span class="n">Purpose</span>
+     <span class="o">*</span>  <span class="n">x21</span>        <span class="n">stext</span><span class="p">()</span> <span class="o">..</span> <span class="n">start_kernel</span><span class="p">()</span>  <span class="n">FDT</span> <span class="n">pointer</span> <span class="n">passed</span> <span class="n">at</span> <span class="n">boot</span> <span class="ow">in</span> <span class="n">x0</span>
+     <span class="o">*</span>  <span class="n">x23</span>        <span class="n">stext</span><span class="p">()</span> <span class="o">..</span> <span class="n">start_kernel</span><span class="p">()</span>  <span class="n">physical</span> <span class="n">misalignment</span><span class="o">/</span><span class="n">KASLR</span> <span class="n">offset</span>
+     <span class="o">*</span>  <span class="n">x28</span>        <span class="n">__create_page_tables</span><span class="p">()</span>     <span class="n">callee</span> <span class="n">preserved</span> <span class="n">temp</span> <span class="n">register</span>
+     <span class="o">*</span>  <span class="n">x19</span><span class="o">/</span><span class="n">x20</span>    <span class="n">__primary_switch</span><span class="p">()</span>         <span class="n">callee</span> <span class="n">preserved</span> <span class="n">temp</span> <span class="n">registers</span>
+     <span class="o">*</span>  <span class="n">x24</span>        <span class="n">__primary_switch</span><span class="p">()</span> <span class="o">..</span> <span class="n">relocate_kernel</span><span class="p">()</span>
+     <span class="o">*</span>                                        <span class="n">current</span> <span class="n">RELR</span> <span class="n">displacement</span>
+     <span class="o">*/</span>
+<span class="n">ENTRY</span><span class="p">(</span><span class="n">stext</span><span class="p">)</span>
+    <span class="n">bl</span>      <span class="n">preserve_boot_args</span>
+    <span class="n">bl</span>      <span class="n">el2_setup</span>                       <span class="o">//</span> <span class="n">Drop</span> <span class="n">to</span> <span class="n">EL1</span><span class="p">,</span> <span class="n">w0</span><span class="o">=</span><span class="n">cpu_boot_mode</span>
+    <span class="n">adrp</span>    <span class="n">x23</span><span class="p">,</span> <span class="n">__PHYS_OFFSET</span>
+    <span class="ow">and</span>     <span class="n">x23</span><span class="p">,</span> <span class="n">x23</span><span class="p">,</span> <span class="n">MIN_KIMG_ALIGN</span> <span class="o">-</span> <span class="mi">1</span>    <span class="o">//</span> <span class="n">KASLR</span> <span class="n">offset</span><span class="p">,</span> <span class="n">defaults</span> <span class="n">to</span> <span class="mi">0</span>
+    <span class="n">bl</span>      <span class="n">set_cpu_boot_mode_flag</span>
+    <span class="n">bl</span>      <span class="n">__create_page_tables</span>
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">The</span> <span class="n">following</span> <span class="n">calls</span> <span class="n">CPU</span> <span class="n">setup</span> <span class="n">code</span><span class="p">,</span> <span class="n">see</span> <span class="n">arch</span><span class="o">/</span><span class="n">arm64</span><span class="o">/</span><span class="n">mm</span><span class="o">/</span><span class="n">proc</span><span class="o">.</span><span class="n">S</span> <span class="k">for</span>
+     <span class="o">*</span> <span class="n">details</span><span class="o">.</span>
+     <span class="o">*</span> <span class="n">On</span> <span class="k">return</span><span class="p">,</span> <span class="n">the</span> <span class="n">CPU</span> <span class="n">will</span> <span class="n">be</span> <span class="n">ready</span> <span class="k">for</span> <span class="n">the</span> <span class="n">MMU</span> <span class="n">to</span> <span class="n">be</span> <span class="n">turned</span> <span class="n">on</span> <span class="ow">and</span>
+     <span class="o">*</span> <span class="n">the</span> <span class="n">TCR</span> <span class="n">will</span> <span class="n">have</span> <span class="n">been</span> <span class="nb">set</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">bl</span>      <span class="n">__cpu_setup</span>                     <span class="o">//</span> <span class="n">initialise</span> <span class="n">processor</span>
+    <span class="n">b</span>       <span class="n">__primary_switch</span>
+<span class="n">ENDPROC</span><span class="p">(</span><span class="n">stext</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这几个函数为head.S中主要函数，一次执行，最后通过__primary_switch进入start_kernel函数开始C语言代码的执行</p>
+<section id="preserve-boot-args">
+<h2><span class="section-number">7.10.2.1. </span>preserve_boot_args<a class="headerlink" href="#preserve-boot-args" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Preserve</span> <span class="n">the</span> <span class="n">arguments</span> <span class="n">passed</span> <span class="n">by</span> <span class="n">the</span> <span class="n">bootloader</span> <span class="ow">in</span> <span class="n">x0</span> <span class="o">..</span> <span class="n">x3</span>
+ <span class="o">*/</span>
+<span class="n">preserve_boot_args</span><span class="p">:</span>
+    <span class="n">mov</span>     <span class="n">x21</span><span class="p">,</span> <span class="n">x0</span>                         <span class="o">//</span> <span class="n">x21</span><span class="o">=</span><span class="n">FDT</span>
+
+    <span class="n">adr_l</span>   <span class="n">x0</span><span class="p">,</span> <span class="n">boot_args</span>                   <span class="o">//</span> <span class="n">record</span> <span class="n">the</span> <span class="n">contents</span> <span class="n">of</span>
+    <span class="n">stp</span>     <span class="n">x21</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="p">[</span><span class="n">x0</span><span class="p">]</span>                   <span class="o">//</span> <span class="n">x0</span> <span class="o">..</span> <span class="n">x3</span> <span class="n">at</span> <span class="n">kernel</span> <span class="n">entry</span>
+    <span class="n">stp</span>     <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">,</span> <span class="p">[</span><span class="n">x0</span><span class="p">,</span> <span class="c1">#16]</span>
+
+    <span class="n">dmb</span>     <span class="n">sy</span>                              <span class="o">//</span> <span class="n">needed</span> <span class="n">before</span> <span class="n">dc</span> <span class="n">ivac</span> <span class="k">with</span>
+                        <span class="o">//</span> <span class="n">MMU</span> <span class="n">off</span>
+
+    <span class="n">mov</span>     <span class="n">x1</span><span class="p">,</span> <span class="c1">#0x20                       // 4 x 8 bytes</span>
+    <span class="n">b</span>       <span class="n">__inval_dcache_area</span>             <span class="o">//</span> <span class="n">tail</span> <span class="n">call</span>
+<span class="n">ENDPROC</span><span class="p">(</span><span class="n">preserve_boot_args</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>bootloader把设备树的首地址赋值给了通用寄存器X0，因此现在X21保存着FDT的物理地址，用于后面的调用,同时也将x0寄存器腾了出来. 随后将x0~x3的值保存在boot_args标签所代表
+的地址空间内,并使用用dmb sy设置指令屏障, 随后调用__inval_dcache_area将该片内存中的cache使无效</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="o">/*</span>
+ <span class="o">*</span> <span class="n">The</span> <span class="n">recorded</span> <span class="n">values</span> <span class="n">of</span> <span class="n">x0</span> <span class="o">..</span> <span class="n">x3</span> <span class="n">upon</span> <span class="n">kernel</span> <span class="n">entry</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">u64</span> <span class="n">__cacheline_aligned</span> <span class="n">boot_args</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+</pre></div>
+</div>
+<p>解释一下adr_l这个宏，该宏的含义是将boot_args标签的物理地址赋给了x0。adr_l宏最终会调用adrp指令，该指令的作用就是将符号地址变为运行地址，(vxlinux.lds.S中定义的标签地址都是
+虚拟地址) ，运行时地址在目前情况下就是物理地址(此时MMU还没有打开)</p>
+</section>
+<section id="el2-setup">
+<h2><span class="section-number">7.10.2.2. </span>el2_setup<a class="headerlink" href="#el2-setup" title="此标题的永久链接"></a></h2>
+<p>ARMv8中有exception level的概念，即EL0~EL3一共4个level，这个概念代替了以往的普通模式，特权模式的概念。用户态所使用的app处于特权的最低等级EL0，内核OS运行于EL1层级，EL2则被用于
+虚拟化的应用，提供Security支持的seurity monitor位于EL3</p>
+<p>SPsel(stack pointer select)寄存器作用官方描述为Allow the Stack Pointer to be selected between SP_EL0 and SP_ELX.</p>
+<p>currentEL,可以通过它获取当前所处的exception level</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adrp</span>    <span class="n">x23</span><span class="p">,</span> <span class="n">__PHYS_OFFSET</span>
+<span class="ow">and</span> <span class="n">x23</span><span class="p">,</span> <span class="n">x23</span><span class="p">,</span> <span class="n">MIN_KIMG_ALIGN</span> <span class="o">-</span> <span class="mi">1</span>    <span class="o">//</span> <span class="n">KASLR</span> <span class="n">offset</span><span class="p">,</span> <span class="n">defaults</span> <span class="n">to</span> <span class="mi">0</span>
+
+<span class="c1">#define __PHYS_OFFSET   (KERNEL_START - TEXT_OFFSET)</span>
+
+<span class="c1">#define KERNEL_START    _text</span>
+<span class="c1">#define KERNEL_END              _end</span>
+
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">arm64</span> <span class="n">requires</span> <span class="n">the</span> <span class="n">kernel</span> <span class="n">image</span> <span class="n">to</span> <span class="n">placed</span>
+ <span class="o">*</span> <span class="n">TEXT_OFFSET</span> <span class="nb">bytes</span> <span class="n">beyond</span> <span class="n">a</span> <span class="mi">2</span> <span class="n">MB</span> <span class="n">aligned</span> <span class="n">base</span>
+ <span class="o">*/</span>
+<span class="c1">#define MIN_KIMG_ALIGN          SZ_2M</span>
+</pre></div>
+</div>
+<p>这两行代码时找到kernel起始的物理地址保存于x23(2M大小对齐),注意__PHYS_OFFSET是虚拟地址空间的值</p>
+</section>
+<section id="set-cpu-boot-mode-flag">
+<h2><span class="section-number">7.10.2.3. </span>set_cpu_boot_mode_flag<a class="headerlink" href="#set-cpu-boot-mode-flag" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Sets</span> <span class="n">the</span> <span class="n">__boot_cpu_mode</span> <span class="n">flag</span> <span class="n">depending</span> <span class="n">on</span> <span class="n">the</span> <span class="n">CPU</span> <span class="n">boot</span> <span class="n">mode</span> <span class="n">passed</span>
+ <span class="o">*</span> <span class="ow">in</span> <span class="n">w0</span><span class="o">.</span> <span class="n">See</span> <span class="n">arch</span><span class="o">/</span><span class="n">arm64</span><span class="o">/</span><span class="n">include</span><span class="o">/</span><span class="n">asm</span><span class="o">/</span><span class="n">virt</span><span class="o">.</span><span class="n">h</span> <span class="k">for</span> <span class="n">more</span> <span class="n">info</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">set_cpu_boot_mode_flag</span><span class="p">:</span>
+        <span class="n">adr_l</span>   <span class="n">x1</span><span class="p">,</span> <span class="n">__boot_cpu_mode</span>
+        <span class="n">cmp</span>     <span class="n">w0</span><span class="p">,</span> <span class="c1">#BOOT_CPU_MODE_EL2</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">ne</span>    <span class="mi">1</span><span class="n">f</span>
+        <span class="n">add</span>     <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="c1">#4</span>
+<span class="mi">1</span><span class="p">:</span>      <span class="nb">str</span>     <span class="n">w0</span><span class="p">,</span> <span class="p">[</span><span class="n">x1</span><span class="p">]</span>                        <span class="o">//</span> <span class="n">This</span> <span class="n">CPU</span> <span class="n">has</span> <span class="n">booted</span> <span class="ow">in</span> <span class="n">EL1</span>
+        <span class="n">dmb</span>     <span class="n">sy</span>
+        <span class="n">dc</span>      <span class="n">ivac</span><span class="p">,</span> <span class="n">x1</span>                        <span class="o">//</span> <span class="n">Invalidate</span> <span class="n">potentially</span> <span class="n">stale</span> <span class="n">cache</span> <span class="n">line</span>
+        <span class="n">ret</span>
+<span class="n">ENDPROC</span><span class="p">(</span><span class="n">set_cpu_boot_mode_flag</span><span class="p">)</span>
+
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">We</span> <span class="n">need</span> <span class="n">to</span> <span class="n">find</span> <span class="n">out</span> <span class="n">the</span> <span class="n">CPU</span> <span class="n">boot</span> <span class="n">mode</span> <span class="n">long</span> <span class="n">after</span> <span class="n">boot</span><span class="p">,</span> <span class="n">so</span> <span class="n">we</span> <span class="n">need</span> <span class="n">to</span>
+ <span class="o">*</span> <span class="n">store</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">writable</span> <span class="n">variable</span><span class="o">.</span>
+ <span class="o">*</span>
+ <span class="o">*</span> <span class="n">This</span> <span class="ow">is</span> <span class="ow">not</span> <span class="ow">in</span> <span class="o">.</span><span class="n">bss</span><span class="p">,</span> <span class="n">because</span> <span class="n">we</span> <span class="nb">set</span> <span class="n">it</span> <span class="n">sufficiently</span> <span class="n">early</span> <span class="n">that</span> <span class="n">the</span> <span class="n">boot</span><span class="o">-</span><span class="n">time</span>
+ <span class="o">*</span> <span class="n">zeroing</span> <span class="n">of</span> <span class="o">.</span><span class="n">bss</span> <span class="n">would</span> <span class="n">clobber</span> <span class="n">it</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">ENTRY</span><span class="p">(</span><span class="n">__boot_cpu_mode</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">long</span>   <span class="n">BOOT_CPU_MODE_EL2</span>
+        <span class="o">.</span><span class="n">long</span>   <span class="n">BOOT_CPU_MODE_EL1</span>
+</pre></div>
+</div>
+<p>该函数也相对简单，目的很明确，就是设置__boot_cpu_mode的值。在前面的el2_setup函数中，level的值已经保存在w0中了。由于系统启动之后仍然需要了解cpu启动时候的exception level
+,因此有一个全局变量__boot_cpu_mode用来保存启动时候的CPU mode</p>
+<p>如果启动的时候是EL1 mode，会修改变量__boot_cpu_mode A域，将其修改为BOOT_CPU_MODE_EL1</p>
+<p>如果启动的时候是EL2 mode，会修改变量__boot_cpu_mode B域，将其修改为BOOT_CPU_MODE_EL2</p>
+</section>
+<section id="create-page-tables">
+<h2><span class="section-number">7.10.2.4. </span>__create_page_tables<a class="headerlink" href="#create-page-tables" title="此标题的永久链接"></a></h2>
+<p>这是一段比较关键的代码，目的是建立页表，开启MMU</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+ * Setup the initial page tables. We only setup the barest amount which is
+ * required to get the kernel running. The following sections are required:
+ *   - identity mapping to enable the MMU (low address, TTBR0)
+ *   - first few MB of the kernel linear mapping to jump to once the MMU has
+ *     been enabled
+ */
+__create_page_tables:
+        mov     x28, lr
+
+        /*
+         * Invalidate the init page tables to avoid potential dirty cache lines
+         * being evicted. Other page tables are allocated in rodata as part of
+         * the kernel image, and thus are clean to the PoC per the boot
+         * protocol.
+         */
+        adrp    x0, init_pg_dir
+        adrp    x1, init_pg_end
+        sub     x1, x1, x0
+        bl      __inval_dcache_area
+
+        /*
+         * Clear the init page tables.
+         */
+        adrp    x0, init_pg_dir
+        adrp    x1, init_pg_end
+        sub     x1, x1, x0
+1:      stp     xzr, xzr, [x0], #16
+        stp     xzr, xzr, [x0], #16
+        stp     xzr, xzr, [x0], #16
+        stp     xzr, xzr, [x0], #16
+        subs    x1, x1, #64
+        b.ne    1b
+
+        mov     x7, SWAPPER_MM_MMUFLAGS
+
+        /*
+         * Create the identity mapping.
+         */
+        adrp    x0, idmap_pg_dir
+        adrp    x3, __idmap_text_start          // __pa(__idmap_text_start)
+
+#ifdef CONFIG_ARM64_VA_BITS_52
+        mrs_s   x6, SYS_ID_AA64MMFR2_EL1
+        and     x6, x6, #(0xf &lt;&lt; ID_AA64MMFR2_LVA_SHIFT)
+        mov     x5, #52
+        cbnz    x6, 1f
+#endif
+        mov     x5, #VA_BITS_MIN
+1:
+        adr_l   x6, vabits_actual
+        str     x5, [x6]
+        dmb     sy
+        dc      ivac, x6                // Invalidate potentially stale cache line
+
+        /*
+         * VA_BITS may be too small to allow for an ID mapping to be created
+         * that covers system RAM if that is located sufficiently high in the
+         * physical address space. So for the ID map, use an extended virtual
+         * range in that case, and configure an additional translation level
+         * if needed.
+         *
+         * Calculate the maximum allowed value for TCR_EL1.T0SZ so that the
+         * entire ID map region can be mapped. As T0SZ == (64 - #bits used),
+         * this number conveniently equals the number of leading zeroes in
+         * the physical address of __idmap_text_end.
+         */
+        adrp    x5, __idmap_text_end
+        clz     x5, x5
+        cmp     x5, TCR_T0SZ(VA_BITS)   // default T0SZ small enough?
+        b.ge    1f                      // .. then skip VA range extension
+
+        adr_l   x6, idmap_t0sz
+        str     x5, [x6]
+        dmb     sy
+        dc      ivac, x6                // Invalidate potentially stale cache line
+
+#if (VA_BITS &lt; 48)
+#define EXTRA_SHIFT     (PGDIR_SHIFT + PAGE_SHIFT - 3)
+#define EXTRA_PTRS      (1 &lt;&lt; (PHYS_MASK_SHIFT - EXTRA_SHIFT))
+
+        /*
+         * If VA_BITS &lt; 48, we have to configure an additional table level.
+         * First, we have to verify our assumption that the current value of
+         * VA_BITS was chosen such that all translation levels are fully
+         * utilised, and that lowering T0SZ will always result in an additional
+         * translation level to be configured.
+         */
+#if VA_BITS != EXTRA_SHIFT
+#error &quot;Mismatch between VA_BITS and page size/number of translation levels&quot;
+#endif
+
+        mov     x4, EXTRA_PTRS
+        create_table_entry x0, x3, EXTRA_SHIFT, x4, x5, x6
+#else
+        /*
+         * If VA_BITS == 48, we don&#39;t have to configure an additional
+         * translation level, but the top-level table has more entries.
+         */
+        mov     x4, #1 &lt;&lt; (PHYS_MASK_SHIFT - PGDIR_SHIFT)
+        str_l   x4, idmap_ptrs_per_pgd, x5
+#endif
+1:
+        ldr_l   x4, idmap_ptrs_per_pgd
+        mov     x5, x3                          // __pa(__idmap_text_start)
+        adr_l   x6, __idmap_text_end            // __pa(__idmap_text_end)
+
+        map_memory x0, x1, x3, x6, x7, x3, x4, x10, x11, x12, x13, x14
+
+        /*
+         * Map the kernel image (starting with PHYS_OFFSET).
+         */
+        adrp    x0, init_pg_dir
+        mov_q   x5, KIMAGE_VADDR + TEXT_OFFSET  // compile time __va(_text)
+        add     x5, x5, x23                     // add KASLR displacement
+        mov     x4, PTRS_PER_PGD
+        adrp    x6, _end                        // runtime __pa(_end)
+        adrp    x3, _text                       // runtime __pa(_text)
+        sub     x6, x6, x3                      // _end - _text
+        add     x6, x6, x5                      // runtime __va(_end)
+
+        map_memory x0, x1, x5, x6, x7, x3, x4, x10, x11, x12, x13, x14
+
+        /*
+         * Since the page tables have been populated with non-cacheable
+         * accesses (MMU disabled), invalidate the idmap and swapper page
+         * tables again to remove any speculatively loaded cache lines.
+         */
+        adrp    x0, idmap_pg_dir
+        adrp    x1, init_pg_end
+        sub     x1, x1, x0
+        dmb     sy
+        bl      __inval_dcache_area
+
+        ret     x28
+ENDPROC(__create_page_tables)
+</pre></div>
+</div>
+<p>主要包含两个部分:</p>
+<ol class="arabic simple">
+<li><p>为MMU的开启而准备的一致性映射identity mapping</p></li>
+<li><p>为内核的执行建立覆盖整个内核代码空间的线性映射swapper</p></li>
+</ol>
+<p>什么是一致性映射?我们知道在开启MMU之前，代码执行所用的地址都是物理地址，而在开启MMU之后则使用虚拟地址，通过translation table进行转换，最终才得以访问物理memory。
+也就是说在MMU开启的前后所使用的地址空间是不一样的</p>
+<p>………(这部分待完善，MMU部分看不明白)</p>
+</section>
+<section id="cpu-setup">
+<h2><span class="section-number">7.10.2.5. </span>__cpu_setup<a class="headerlink" href="#cpu-setup" title="此标题的永久链接"></a></h2>
+<p>…….这一段也跳过，日后再补</p>
+</section>
+<section id="primary-switch">
+<h2><span class="section-number">7.10.2.6. </span>__primary_switch<a class="headerlink" href="#primary-switch" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">__primary_switch</span><span class="p">:</span>
+<span class="c1">#ifdef CONFIG_RANDOMIZE_BASE</span>
+        <span class="n">mov</span>     <span class="n">x19</span><span class="p">,</span> <span class="n">x0</span>                         <span class="o">//</span> <span class="n">preserve</span> <span class="n">new</span> <span class="n">SCTLR_EL1</span> <span class="n">value</span>
+        <span class="n">mrs</span>     <span class="n">x20</span><span class="p">,</span> <span class="n">sctlr_el1</span>                  <span class="o">//</span> <span class="n">preserve</span> <span class="n">old</span> <span class="n">SCTLR_EL1</span> <span class="n">value</span>
+<span class="c1">#endif</span>
+
+        <span class="n">adrp</span>    <span class="n">x1</span><span class="p">,</span> <span class="n">init_pg_dir</span>
+        <span class="n">bl</span>      <span class="n">__enable_mmu</span>
+<span class="c1">#ifdef CONFIG_RELOCATABLE</span>
+<span class="c1">#ifdef CONFIG_RELR</span>
+        <span class="n">mov</span>     <span class="n">x24</span><span class="p">,</span> <span class="c1">#0                         // no RELR displacement yet</span>
+<span class="c1">#endif</span>
+        <span class="n">bl</span>      <span class="n">__relocate_kernel</span>
+<span class="c1">#ifdef CONFIG_RANDOMIZE_BASE</span>
+        <span class="n">ldr</span>     <span class="n">x8</span><span class="p">,</span> <span class="o">=</span><span class="n">__primary_switched</span>
+        <span class="n">adrp</span>    <span class="n">x0</span><span class="p">,</span> <span class="n">__PHYS_OFFSET</span>
+        <span class="n">blr</span>     <span class="n">x8</span>
+
+        <span class="o">/*</span>
+         <span class="o">*</span> <span class="n">If</span> <span class="n">we</span> <span class="k">return</span> <span class="n">here</span><span class="p">,</span> <span class="n">we</span> <span class="n">have</span> <span class="n">a</span> <span class="n">KASLR</span> <span class="n">displacement</span> <span class="ow">in</span> <span class="n">x23</span> <span class="n">which</span> <span class="n">we</span> <span class="n">need</span>
+         <span class="o">*</span> <span class="n">to</span> <span class="n">take</span> <span class="n">into</span> <span class="n">account</span> <span class="n">by</span> <span class="n">discarding</span> <span class="n">the</span> <span class="n">current</span> <span class="n">kernel</span> <span class="n">mapping</span> <span class="ow">and</span>
+         <span class="o">*</span> <span class="n">creating</span> <span class="n">a</span> <span class="n">new</span> <span class="n">one</span><span class="o">.</span>
+         <span class="o">*/</span>
+        <span class="n">pre_disable_mmu_workaround</span>
+        <span class="n">msr</span>     <span class="n">sctlr_el1</span><span class="p">,</span> <span class="n">x20</span>                  <span class="o">//</span> <span class="n">disable</span> <span class="n">the</span> <span class="n">MMU</span>
+        <span class="n">isb</span>
+        <span class="n">bl</span>      <span class="n">__create_page_tables</span>            <span class="o">//</span> <span class="n">recreate</span> <span class="n">kernel</span> <span class="n">mapping</span>
+
+        <span class="n">tlbi</span>    <span class="n">vmalle1</span>                         <span class="o">//</span> <span class="n">Remove</span> <span class="nb">any</span> <span class="n">stale</span> <span class="n">TLB</span> <span class="n">entries</span>
+        <span class="n">dsb</span>     <span class="n">nsh</span>
+
+        <span class="n">msr</span>     <span class="n">sctlr_el1</span><span class="p">,</span> <span class="n">x19</span>                  <span class="o">//</span> <span class="n">re</span><span class="o">-</span><span class="n">enable</span> <span class="n">the</span> <span class="n">MMU</span>
+        <span class="n">isb</span>
+        <span class="n">ic</span>      <span class="n">iallu</span>                           <span class="o">//</span> <span class="n">flush</span> <span class="n">instructions</span> <span class="n">fetched</span>
+        <span class="n">dsb</span>     <span class="n">nsh</span>                             <span class="o">//</span> <span class="n">via</span> <span class="n">old</span> <span class="n">mapping</span>
+        <span class="n">isb</span>
+
+        <span class="n">bl</span>      <span class="n">__relocate_kernel</span>
+<span class="c1">#endif</span>
+<span class="c1">#endif</span>
+        <span class="n">ldr</span>     <span class="n">x8</span><span class="p">,</span> <span class="o">=</span><span class="n">__primary_switched</span>
+        <span class="n">adrp</span>    <span class="n">x0</span><span class="p">,</span> <span class="n">__PHYS_OFFSET</span>
+        <span class="n">br</span>      <span class="n">x8</span>
+<span class="n">ENDPROC</span><span class="p">(</span><span class="n">__primary_switch</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>要进入start_kernel这样的C代码，没有stack可不行。用户空间的进程陷入内核态的时候，stack切换到内核栈，实际上就是该进程的thread info内存段(4k或8k)的顶部。
+init_thread_union就是0号进程swapper的thread info内存段， add sp, x4, #THREAD_SIZE 指向了栈顶</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="assembly_ARM64.html" class="btn btn-neutral float-left" title="7.10.1. ARM64汇编" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../datastruct_algo/index.html" class="btn btn-neutral float-right" title="7.11. 数据结构与算法" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

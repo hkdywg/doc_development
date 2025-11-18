@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.10.1. markdown 语法 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="7.11. linux命令汇总" href="../linux_commond/index.html" />
+    <link rel="prev" title="7.10. markdown笔记" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.9. 数据结构与算法</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.10. markdown笔记</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.10.1. markdown 语法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">7.10.1.1. 标题</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">7.10.1.2. 段落</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">7.10.1.3. 换行</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">7.10.1.4. 强调</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">7.10.1.5. 引用</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">7.10.1.6. 列表</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">7.10.1.7. 代码</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">7.10.1.8. 分割线</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">7.10.1.9. 链接</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id16">7.10.1.10. 图片</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id17">7.10.1.11. 转义字符</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#html">7.10.1.12. 内嵌HTML标签</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.10. </span>markdown笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.10.1. </span>markdown 语法</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/misc/markdown/markdown_grammar.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="markdown">
+<h1><span class="section-number">7.10.1. </span>markdown 语法<a class="headerlink" href="#markdown" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">7.10.1.1. </span>标题<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>markdown中使用 <code class="docutils literal notranslate"><span class="pre">#</span></code> 来创建标题, <code class="docutils literal notranslate"><span class="pre">#</span></code> 的数量代表了标题的级别．</p>
+<img alt="../../_images/heading_level.png" src="../../_images/heading_level.png" />
+</section>
+<section id="id2">
+<h2><span class="section-number">7.10.1.2. </span>段落<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>需要创建段落，则使用空白行进行分割</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">7.10.1.3. </span>换行<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>在一行的末尾添加两个或多个空格，然后按回车键，则可以创建一个换行</p>
+<img alt="../../_images/br.png" src="../../_images/br.png" />
+</section>
+<section id="id4">
+<h2><span class="section-number">7.10.1.4. </span>强调<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<section id="id5">
+<h3><span class="section-number">7.10.1.4.1. </span>粗体<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>如果要加粗文本，则在要加粗的文本前后添加两个星号或下划线</p>
+<img alt="../../_images/bold.png" src="../../_images/bold.png" />
+</section>
+<section id="id6">
+<h3><span class="section-number">7.10.1.4.2. </span>斜体<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h3>
+<p>在文本前后添加一个星号或下划线,则会实现斜体</p>
+<img alt="../../_images/italic.png" src="../../_images/italic.png" />
+<p>要同时使用粗体和斜体，则需要使用三个星号或下划线</p>
+<img alt="../../_images/bold_italic.png" src="../../_images/bold_italic.png" />
+</section>
+</section>
+<section id="id7">
+<h2><span class="section-number">7.10.1.5. </span>引用<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>要创建块引用，则在段落前加一个 <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> 符号</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">Dorothy</span> <span class="n">followed</span> <span class="n">her</span> <span class="n">through</span> <span class="n">many</span> <span class="n">of</span> <span class="n">the</span> <span class="n">beautiful</span> <span class="n">rooms</span> <span class="ow">in</span> <span class="n">her</span> <span class="n">castle</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>渲染效果如下</p>
+<img alt="../../_images/quote_1.png" src="../../_images/quote_1.png" />
+<ul class="simple">
+<li><p>多个段落的块引用，则在段落之间空白行添加一个 <code class="docutils literal notranslate"><span class="pre">&gt;</span></code></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">Dorothy</span> <span class="n">followed</span> <span class="n">her</span> <span class="n">through</span> <span class="n">many</span> <span class="n">of</span> <span class="n">the</span> <span class="n">beautiful</span> <span class="n">rooms</span> <span class="ow">in</span> <span class="n">her</span> <span class="n">castle</span><span class="o">.</span>
+<span class="o">&gt;</span>
+<span class="o">&gt;</span> <span class="n">The</span> <span class="n">Witch</span> <span class="n">bade</span> <span class="n">her</span> <span class="n">clean</span> <span class="n">the</span> <span class="n">pots</span> <span class="ow">and</span> <span class="n">kettles</span> <span class="ow">and</span> <span class="n">sweep</span> <span class="n">the</span> <span class="n">floor</span> <span class="ow">and</span> <span class="n">keep</span> <span class="n">the</span> <span class="n">fire</span> <span class="n">fed</span> <span class="k">with</span> <span class="n">wood</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>渲染效果如下</p>
+<img alt="../../_images/quote_2.png" src="../../_images/quote_2.png" />
+<ul class="simple">
+<li><p>嵌套块引用，在要嵌套的段落前添加一个 <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> 符号</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">Dorothy</span> <span class="n">followed</span> <span class="n">her</span> <span class="n">through</span> <span class="n">many</span> <span class="n">of</span> <span class="n">the</span> <span class="n">beautiful</span> <span class="n">rooms</span> <span class="ow">in</span> <span class="n">her</span> <span class="n">castle</span><span class="o">.</span>
+<span class="o">&gt;</span>
+<span class="o">&gt;&gt;</span> <span class="n">The</span> <span class="n">Witch</span> <span class="n">bade</span> <span class="n">her</span> <span class="n">clean</span> <span class="n">the</span> <span class="n">pots</span> <span class="ow">and</span> <span class="n">kettles</span> <span class="ow">and</span> <span class="n">sweep</span> <span class="n">the</span> <span class="n">floor</span> <span class="ow">and</span> <span class="n">keep</span> <span class="n">the</span> <span class="n">fire</span> <span class="n">fed</span> <span class="k">with</span> <span class="n">wood</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>渲染效果如下</p>
+<img alt="../../_images/quote_3.png" src="../../_images/quote_3.png" />
+<ul class="simple">
+<li><p>带有其他元素的块引用</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="c1">#### The quarterly results look great!</span>
+<span class="o">&gt;</span>
+<span class="o">&gt;</span> <span class="o">-</span> <span class="n">Revenue</span> <span class="n">was</span> <span class="n">off</span> <span class="n">the</span> <span class="n">chart</span><span class="o">.</span>
+<span class="o">&gt;</span> <span class="o">-</span> <span class="n">Profits</span> <span class="n">were</span> <span class="n">higher</span> <span class="n">than</span> <span class="n">ever</span><span class="o">.</span>
+<span class="o">&gt;</span>
+<span class="o">&gt;</span>  <span class="o">*</span><span class="n">Everything</span><span class="o">*</span> <span class="ow">is</span> <span class="n">going</span> <span class="n">according</span> <span class="n">to</span> <span class="o">**</span><span class="n">plan</span><span class="o">**.</span>
+</pre></div>
+</div>
+<p>渲染效果如下</p>
+<img alt="../../_images/quote_4.png" src="../../_images/quote_4.png" />
+</section>
+<section id="id8">
+<h2><span class="section-number">7.10.1.6. </span>列表<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
+<p>在每个列表项前加数字和英文句点可以创建有序表</p>
+<img alt="../../_images/list_1.png" src="../../_images/list_1.png" />
+<p>在每个列表项前面添加 <code class="docutils literal notranslate"><span class="pre">-</span></code> , <code class="docutils literal notranslate"><span class="pre">*</span></code> , <code class="docutils literal notranslate"><span class="pre">+</span></code> ,则可以创建无序表</p>
+<img alt="../../_images/list_2.png" src="../../_images/list_2.png" />
+<p>在列表中嵌套其他元素时，需要将该元素缩进四个空格或一个制表符</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span>   <span class="n">This</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">first</span> <span class="nb">list</span> <span class="n">item</span><span class="o">.</span>
+<span class="o">*</span>   <span class="n">Here</span><span class="s1">&#39;s the second list item.</span>
+
+    <span class="n">I</span> <span class="n">need</span> <span class="n">to</span> <span class="n">add</span> <span class="n">another</span> <span class="n">paragraph</span> <span class="n">below</span> <span class="n">the</span> <span class="n">second</span> <span class="nb">list</span> <span class="n">item</span><span class="o">.</span>
+
+<span class="o">*</span>   <span class="n">And</span> <span class="n">here</span><span class="s1">&#39;s the third list item.</span>
+</pre></div>
+</div>
+<p>渲染效果如下</p>
+<img alt="../../_images/list_3.png" src="../../_images/list_3.png" />
+</section>
+<section id="id9">
+<h2><span class="section-number">7.10.1.7. </span>代码<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
+<p>要将单词或短语表示为代码，请将其包裹在反引号 (`) 中。</p>
+<img alt="../../_images/code.png" src="../../_images/code.png" />
+<p>要创建代码块则需要在每一行缩进至少四个空格或一个制表符</p>
+</section>
+<section id="id10">
+<h2><span class="section-number">7.10.1.8. </span>分割线<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h2>
+<p>如果需要创建分割线，则在单独一行上使用三个或多个星号(<a href="#id11"><span class="problematic" id="id12">**</span></a><a href="#id13"><span class="problematic" id="id14">*</span></a>),破折号 (—) 或下划线 (___) ，并且不能包含其他内容。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">***</span>
+
+<span class="o">---</span>
+
+<span class="n">_______________</span>
+</pre></div>
+</div>
+</section>
+<section id="id15">
+<h2><span class="section-number">7.10.1.9. </span>链接<a class="headerlink" href="#id15" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">超链接语法</span>
+<span class="p">[</span><span class="n">超链接显示名</span><span class="p">](</span><span class="n">超链接地址</span>　<span class="s2">&quot;超链接title&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>这是一个链接 [Markdown语法](https://markdown.com.cn)。
+</pre></div>
+</div>
+<img alt="../../_images/link_1.png" src="../../_images/link_1.png" />
+<p>使用尖括号可以很方便地把URL或者email地址变成可点击的链接。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">markdown</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">cn</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">fake</span><span class="nd">@example</span><span class="o">.</span><span class="n">com</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<img alt="../../_images/link_2.png" src="../../_images/link_2.png" />
+</section>
+<section id="id16">
+<h2><span class="section-number">7.10.1.10. </span>图片<a class="headerlink" href="#id16" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>图片markdown语法:
+![图片alt](图片链接　&quot;图片title&quot;)
+
+例子
+![这是图片](/assets/img/philly-magic-garden.jpg &quot;Magic Gardens&quot;)
+</pre></div>
+</div>
+</section>
+<section id="id17">
+<h2><span class="section-number">7.10.1.11. </span>转义字符<a class="headerlink" href="#id17" title="此标题的永久链接"></a></h2>
+</section>
+<section id="html">
+<h2><span class="section-number">7.10.1.12. </span>内嵌HTML标签<a class="headerlink" href="#html" title="此标题的永久链接"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="7.10. markdown笔记" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../linux_commond/index.html" class="btn btn-neutral float-right" title="7.11. linux命令汇总" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

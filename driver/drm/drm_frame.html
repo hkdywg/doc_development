@@ -1,0 +1,415 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.14.1. DRM框架 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.14.2. connector代码分析" href="connector.html" />
+    <link rel="prev" title="4.14. DRM框架分析" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.14. DRM框架分析</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.14.1. DRM框架</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#kms">4.14.1.1. KMS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.14.1.2. 对象管理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#helper">4.14.1.3. helper架构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.14.1.4. 驱动入口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.14.1.5. 事件传递</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="connector.html">4.14.2. connector代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="encoder.html">4.14.3. encoder代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crtc.html">4.14.4. crtc代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plane.html">4.14.5. plane代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_drm.html">4.14.6. VKMS示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.14. </span>DRM框架分析</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.14.1. </span>DRM框架</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/drm/drm_frame.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="drm">
+<h1><span class="section-number">4.14.1. </span>DRM框架<a class="headerlink" href="#drm" title="此标题的永久链接"></a></h1>
+<p>DRM主要分为KMS和Render两大部分,从功能上讲KMS负责搭建显示控制器的pipeline,并控制显示硬件将图像缓冲区scanout到屏幕上,而如何加速生成framebuffer中的内容则是
+3D引擎(即Render)负责的事情.</p>
+<img alt="../../_images/drm_frame.png" src="../../_images/drm_frame.png" />
+<p>DRM在源码中的分布</p>
+<img alt="../../_images/kernel_drm_source_1.png" src="../../_images/kernel_drm_source_1.png" />
+<img alt="../../_images/kernel_drm_source_2.png" src="../../_images/kernel_drm_source_2.png" />
+<p>内核中的内容:</p>
+<ul class="simple">
+<li><p>DRM驱动通用代码:包括GEM,KMS</p></li>
+</ul>
+<p>用户态代码:</p>
+<ul class="simple">
+<li><p>MESA: OpenGL state tracker, egl, gbm</p></li>
+<li><p>libdrm:基本为内核提供的IOCTL的wrapper</p></li>
+</ul>
+<p>drm与fb框架对比</p>
+<img alt="../../_images/drm_fb.png" src="../../_images/drm_fb.png" />
+<section id="kms">
+<h2><span class="section-number">4.14.1.1. </span>KMS<a class="headerlink" href="#kms" title="此标题的永久链接"></a></h2>
+<p>KMS全称是kernel mode setting,这里的mode是指显示控制器的mode.</p>
+<p>其实KMS主要做了两件事: <code class="docutils literal notranslate"><span class="pre">更新画面</span></code> 和 <code class="docutils literal notranslate"><span class="pre">设置显示参数</span></code></p>
+<ul class="simple">
+<li><p>更新画面: 显示buffer的切换，多图层的合成方式，以及每个图层的显示位置</p></li>
+<li><p>设置显示参数: 包括分辨率、刷新率、电源状态(休眠唤醒)等</p></li>
+</ul>
+<p>KMS将整个显示控制器的显示pipeline抽象成以下几个部分:</p>
+<ul class="simple">
+<li><p>plane : 硬件图层，有的display硬件支持多层合成显示，但所有的display controller至少要有一个plane</p></li>
+<li><p>crtc : 显示控制器,产生时序信号的硬件模块，主要用于显示控制(如显示时序、分辨率、刷新率等)例如在RCAR-V3H中对应SOC内部的DU模块</p></li>
+<li><p>encoder : 负责将CRTC输出的timing时序转换成外部设备所需要的信号的模块,如HDMI转换器或DSI Controller</p></li>
+<li><p>connector : 连接物理显示设备的连接器，如HDMI, DSI总线，通常和Encoder驱动绑定在一起</p></li>
+<li><p>Bridge : 桥接设备,一般用户注册encoder后面另外连接的转换芯片,比如DSI2HDMI转换芯片</p></li>
+<li><p>Panel : 泛指LCDHDMI等显示设备的抽象</p></li>
+<li><p>Fb: Framebuffer,单个图层的显示内容，惟一一个和硬件无关的基本元素</p></li>
+<li><p>VBLANK: 软件和硬件的同步机制，时序中的垂直消隐区，软件通常使用硬件VSYNC来实现</p></li>
+</ul>
+<p><strong>基本元素</strong></p>
+<img alt="../../_images/drm_plane_crtc_encoder_con.jpeg" src="../../_images/drm_plane_crtc_encoder_con.jpeg" />
+<p>这些组件组合成display pipeline:</p>
+<img alt="../../_images/drm_pipeline.png" src="../../_images/drm_pipeline.png" />
+<p>或者用下面的图示表达</p>
+<img alt="../../_images/drm_pipe_line.png" src="../../_images/drm_pipe_line.png" />
+<p>通过上图可以看出，Plane是连接framebuffer与crtc的纽带，而encoder是连接crtc与connector的纽带。与物理buffer直接打交道的是
+gem而不是framebuffer</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>buffer是硬件设备，由gem分配和释放，framebuffer用于描述分配的显存的信息(如format, pitch, size等), 而plane则用于描述
+图层信息，描述的是framebuffer中哪些点处于同一个图层，多个plane隶属于同一个crtc，crtc控制显卡输出图像信号，encoder将
+crtc输出的图像信号转换成一定格式的数字信号,如HDMI，MIPI等。connector用于将encoder输出的信号传递给显示器，并与显示器建立连接</p>
+</div>
+</section>
+<section id="id1">
+<h2><span class="section-number">4.14.1.2. </span>对象管理<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>对上面几个部分,DRM框架将其称作对象,有一个公共的基类 <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_mode_object</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">drm_mode_object</span> <span class="p">{</span>
+    <span class="n">uint32_t</span> <span class="nb">id</span><span class="p">;</span>
+    <span class="n">uint32_t</span> <span class="nb">type</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">drm_object_properties</span> <span class="o">*</span><span class="n">properties</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">kref</span> <span class="n">refcount</span><span class="p">;</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">free_cb</span><span class="p">)(</span><span class="n">struct</span> <span class="n">kref</span> <span class="o">*</span><span class="n">kref</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">drm_plane</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="n">struct</span> <span class="n">drm_mode_object</span> <span class="n">base</span><span class="p">;</span>
+    <span class="o">...</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">drm_crtc</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="n">struct</span> <span class="n">drm_mode_object</span> <span class="n">base</span><span class="p">;</span>
+    <span class="o">...</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">drm_encoder</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="n">struct</span> <span class="n">drm_mode_object</span> <span class="n">base</span><span class="p">;</span>
+    <span class="o">...</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">drm_connector</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="n">struct</span> <span class="n">drm_mode_object</span> <span class="n">base</span><span class="p">;</span>
+    <span class="o">...</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>其中id和type分别为这个对象在KMS子系统中的ID和类型（即上面提到的几种）.当前DRM框架中存在如下的对象类型</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define DRM_MODE_OBJECT_CRTC 0xcccccccc</span>
+<span class="c1">#define DRM_MODE_OBJECT_CONNECTOR 0xc0c0c0c0</span>
+<span class="c1">#define DRM_MODE_OBJECT_ENCODER 0xe0e0e0e0</span>
+<span class="c1">#define DRM_MODE_OBJECT_MODE 0xdededede</span>
+<span class="c1">#define DRM_MODE_OBJECT_PROPERTY 0xb0b0b0b0</span>
+<span class="c1">#define DRM_MODE_OBJECT_FB 0xfbfbfbfb</span>
+<span class="c1">#define DRM_MODE_OBJECT_BLOB 0xbbbbbbbb</span>
+<span class="c1">#define DRM_MODE_OBJECT_PLANE 0xeeeeeeee</span>
+<span class="c1">#define DRM_MODE_OBJECT_ANY 0</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">drm_mode_object</span></code> 的id共用一个namespace，保存在 <code class="docutils literal notranslate"><span class="pre">drm_device-&gt;mode_config.object_idr</span></code> 中。因此，框架中提供了</dt><dd><p><code class="docutils literal notranslate"><span class="pre">drm_mode_object_find</span></code> 函数用于查找对应id的对象。</p>
+</dd>
+</dl>
+<p>drm_mode_object定义了两个比较重要的功能</p>
+<ul class="simple">
+<li><p>引用计数及生命周期管理</p></li>
+<li><p>属性管理</p></li>
+</ul>
+<p>属性在DRM中由 <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">drm_object_properties</span></code> 中表示, 其本质是一个 <code class="docutils literal notranslate"><span class="pre">DRM_MODE_OBJECT_PROPERTY</span></code> 类型的 <code class="docutils literal notranslate"><span class="pre">drm_mode_object</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">drm_property</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="n">struct</span> <span class="n">drm_mode_object</span> <span class="n">base</span><span class="p">;</span>
+    <span class="o">...</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">drm_object_properties</span> <span class="p">{</span>
+    <span class="nb">int</span> <span class="n">count</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">drm_property</span> <span class="o">*</span><span class="n">properties</span><span class="p">[</span><span class="n">DRM_OBJECT_MAX_PROPERTY</span><span class="p">];</span>
+    <span class="n">uint64_t</span> <span class="n">values</span><span class="p">[</span><span class="n">DRM_OBJECT_MAX_PROPERTY</span><span class="p">];</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>可以看到每一个对象最多可以有24个属性，</p>
+</section>
+<section id="helper">
+<h2><span class="section-number">4.14.1.3. </span>helper架构<a class="headerlink" href="#helper" title="此标题的永久链接"></a></h2>
+<p>DRM驱动核心的接口使用了helper架构，其基本思想是通过一组回调函数抽象特定组件的操作，比如 <code class="docutils literal notranslate"><span class="pre">drm_connector_funcs</span></code> ,
+同时又实用另外一组helper函数给出了原先那组回调函数的通用实现，让开发者实现这组helper函数抽象出的回调函数即可。</p>
+</section>
+<section id="id2">
+<h2><span class="section-number">4.14.1.4. </span>驱动入口<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>drm_device用于抽象一个完整的DRM设备,而其中与Mode Setting相关的部分则有drm_mode_config进行管理.为了让一个drm_device支持KMS相关的API,DRM框架要求驱动:</p>
+<ul class="simple">
+<li><p>注册drm_driver时,driver_feature标志中需要存在DRIVER_MODESET</p></li>
+<li><p>在probe函数中调用drm_mode_config_init函数初始化KMS框架,本质上是初始化drm_device中的mode_config结构体</p></li>
+<li><p>填充mode_config中int min_width,min_height; int max_width,max_height;的值,这些值是framebuffer的大小限制</p></li>
+<li><p>设置mode_config-&gt;funcs指针,本质上是一组由驱动实现的回调函数,涵盖KMS中一些相当基本的操作</p></li>
+<li><p>最后初始化drm_device中包含的drm_connector,drm_crtc等对象</p></li>
+</ul>
+<p>驱动程序填充file_operations结构体</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define DEFINE_DRM_GEM_CMA_FOPS(name) \</span>
+    <span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">file_operations</span> <span class="n">name</span> <span class="o">=</span> <span class="p">{</span>\
+        <span class="o">.</span><span class="n">owner</span>              <span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">,</span>\
+        <span class="o">.</span><span class="n">open</span>               <span class="o">=</span> <span class="n">drm_open</span><span class="p">,</span>\
+        <span class="o">.</span><span class="n">release</span>    <span class="o">=</span> <span class="n">drm_release</span><span class="p">,</span>\
+        <span class="o">.</span><span class="n">unlocked_ioctl</span>     <span class="o">=</span> <span class="n">drm_ioctl</span><span class="p">,</span>\
+        <span class="o">.</span><span class="n">compat_ioctl</span>       <span class="o">=</span> <span class="n">drm_compat_ioctl</span><span class="p">,</span>\
+        <span class="o">.</span><span class="n">poll</span>               <span class="o">=</span> <span class="n">drm_poll</span><span class="p">,</span>\
+        <span class="o">.</span><span class="n">read</span>               <span class="o">=</span> <span class="n">drm_read</span><span class="p">,</span>\
+        <span class="o">.</span><span class="n">llseek</span>             <span class="o">=</span> <span class="n">noop_llseek</span><span class="p">,</span>\
+        <span class="o">.</span><span class="n">mmap</span>               <span class="o">=</span> <span class="n">drm_gem_cma_mmap</span><span class="p">,</span>\
+        <span class="n">DRM_GEM_CMA_UNMAPPED_AREA_FOPS</span> \
+    <span class="p">}</span>
+</pre></div>
+</div>
+<section id="framebuffer">
+<h3><span class="section-number">4.14.1.4.1. </span>Framebuffer<a class="headerlink" href="#framebuffer" title="此标题的永久链接"></a></h3>
+<p>framebuffer应该是唯一一个与硬件无关的抽象了.驱动程序需要提供自己的framebuffer实现,其主要入口就是前面提到的 <code class="docutils literal notranslate"><span class="pre">drm_mode_config_funcs-&gt;fb_create回调函数.</span>
+<span class="pre">fb_create</span></code> 函数接受一个drm_mode_fb_cmd2类型的参数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">drm_mode_config_funcs</span> <span class="n">rcar_du_mode_config_funcs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">fb_create</span> <span class="o">=</span> <span class="n">rcar_du_fb_create</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">atomic_check</span> <span class="o">=</span> <span class="n">rcar_du_atomic_check</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">atomic_commit</span> <span class="o">=</span> <span class="n">drm_atomic_helper_commit</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">drm_mode_fb_cmd2</span> <span class="p">{</span>
+        <span class="n">__u32</span> <span class="n">fb_id</span><span class="p">;</span>
+        <span class="n">__u32</span> <span class="n">width</span><span class="p">;</span>
+        <span class="n">__u32</span> <span class="n">height</span><span class="p">;</span>
+        <span class="n">__u32</span> <span class="n">pixel_format</span><span class="p">;</span> <span class="o">/*</span> <span class="n">fourcc</span> <span class="n">code</span> <span class="kn">from</span> <span class="nn">drm_fourcc.h</span> <span class="o">*/</span>
+        <span class="n">__u32</span> <span class="n">flags</span><span class="p">;</span> <span class="o">/*</span> <span class="n">see</span> <span class="n">above</span> <span class="n">flags</span> <span class="o">*/</span>
+        <span class="n">__u32</span> <span class="n">handles</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+        <span class="n">__u32</span> <span class="n">pitches</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span> <span class="o">/*</span> <span class="n">pitch</span> <span class="k">for</span> <span class="n">each</span> <span class="n">plane</span> <span class="o">*/</span>
+        <span class="n">__u32</span> <span class="n">offsets</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span> <span class="o">/*</span> <span class="n">offset</span> <span class="n">of</span> <span class="n">each</span> <span class="n">plane</span> <span class="o">*/</span>
+        <span class="n">__u64</span> <span class="n">modifier</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span> <span class="o">/*</span> <span class="n">ie</span><span class="p">,</span> <span class="n">tiling</span><span class="p">,</span> <span class="n">compress</span> <span class="o">*/</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>其中最重要的就是handle, handle是buffer object的指针</p>
+</section>
+<section id="plane">
+<h3><span class="section-number">4.14.1.4.2. </span>Plane<a class="headerlink" href="#plane" title="此标题的永久链接"></a></h3>
+<p>plane由 <code class="docutils literal notranslate"><span class="pre">drm_plane</span></code> 表示,其本质是对显示控制器中scanout硬件的抽象,简单来说,给定一个plane可以让其与一个framebuffer关联表示进行scanout的数据.同时控制scanout时进行
+额外的操作,比如colorspace的改变,旋转,拉伸等操作.drm_plane是与硬件强相关的,显示控制器支持的plane是固定的,其支持的功能也是由硬件决定的.</p>
+<p>一个plane必须要与一个 <code class="docutils literal notranslate"><span class="pre">drm_device</span></code> 关联,且一个drm_device支持的所有plane都被保存在一个链表中,drm_plane中存有一个mask,用以表示该drm_plane可以绑定的CRTC,同时drm_plane中
+也保存了一个formate_type数组,用以表示该plane支持的framebuffer格式</p>
+<p>所有的drm_plane必为以下三种类型之一:</p>
+<ul class="simple">
+<li><p>Primary : 主plane,一般控制整个显示器的输出,CRTC必须要有一个这样的plane</p></li>
+<li><p>Curosr : 表示鼠标光标,可选</p></li>
+<li><p>Overlay : 叠加plane,可以在主plane上叠加一层输出,可选</p></li>
+</ul>
+</section>
+<section id="crtc">
+<h3><span class="section-number">4.14.1.4.3. </span>CRTC<a class="headerlink" href="#crtc" title="此标题的永久链接"></a></h3>
+<p>阴级摄像管上下文(显示控制器)，也可以理解为扫描仪(对显示buffer进行扫描，并产生时序信号的硬件模块). CRTC对内连接Framebuffer地址，对外连接Encoder, 会扫描Framebuffer上的内容，
+叠加上Planes的内容，最后传给Encoder.</p>
+<img alt="../../_images/crtc_sample.png" src="../../_images/crtc_sample.png" />
+</section>
+<section id="encoder">
+<h3><span class="section-number">4.14.1.4.4. </span>Encoder<a class="headerlink" href="#encoder" title="此标题的永久链接"></a></h3>
+<p>简单来说mode是一组信号时序，用以驱动显示器正确显示一帧图像</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span>               <span class="n">Active</span>                 <span class="n">Front</span>           <span class="n">Sync</span>           <span class="n">Back</span>
+<span class="o">*</span>              <span class="n">Region</span>                 <span class="n">Porch</span>                          <span class="n">Porch</span>
+<span class="o">*</span>     <span class="o">&lt;-----------------------&gt;&lt;----------------&gt;&lt;-------------&gt;&lt;--------------&gt;</span>
+<span class="o">*</span>       <span class="o">//////////////////////|</span>
+<span class="o">*</span>      <span class="o">//////////////////////</span> <span class="o">|</span>
+<span class="o">*</span>     <span class="o">//////////////////////</span>  <span class="o">|..................</span>               <span class="o">................</span>
+<span class="o">*</span>                                                <span class="n">_______________</span>
+<span class="o">*</span>     <span class="o">&lt;-----</span> <span class="p">[</span><span class="n">hv</span><span class="p">]</span><span class="n">display</span> <span class="o">-----&gt;</span>
+<span class="o">*</span>     <span class="o">&lt;-------------</span> <span class="p">[</span><span class="n">hv</span><span class="p">]</span><span class="n">sync_start</span> <span class="o">------------&gt;</span>
+<span class="o">*</span>     <span class="o">&lt;---------------------</span> <span class="p">[</span><span class="n">hv</span><span class="p">]</span><span class="n">sync_end</span> <span class="o">---------------------&gt;</span>
+<span class="o">*</span>     <span class="o">&lt;--------------------------------</span> <span class="p">[</span><span class="n">hv</span><span class="p">]</span><span class="n">total</span> <span class="o">-----------------------------&gt;*</span>
+</pre></div>
+</div>
+<p>上面内核注释中的字符画完美的解释了 <code class="docutils literal notranslate"><span class="pre">drm_display_mode</span></code> 中变量的定义。</p>
+<p>编码器/输出转换器，负责将CRTC输出的timing时序转换成外部设备所需要的信号的模块。它的作用就是将内存的pixel像素编码为显示器所需要的信号(因为画面显示到不同的设备上，所需要的电信号
+是不同的), 如RGB, LVDS, DSI, eDP, HDMI等显示接口。另外Encoder与CRTC之间的交互就是我们所说的ModeSetting, 其中还包含了前面提到的色彩模式、时序</p>
+</section>
+<section id="connector">
+<h3><span class="section-number">4.14.1.4.5. </span>Connector<a class="headerlink" href="#connector" title="此标题的永久链接"></a></h3>
+<p>connector抽象的是一个能够显示像素的设备,由struct drm_connector进行表示</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">drm_connector</span> <span class="p">{</span>
+<span class="o">/**</span> <span class="nd">@dev</span><span class="p">:</span> <span class="n">parent</span> <span class="n">DRM</span> <span class="n">device</span> <span class="o">*/</span>
+<span class="n">struct</span> <span class="n">drm_device</span> <span class="o">*</span><span class="n">dev</span><span class="p">;</span>
+<span class="o">/**</span> <span class="nd">@kdev</span><span class="p">:</span> <span class="n">kernel</span> <span class="n">device</span> <span class="k">for</span> <span class="n">sysfs</span> <span class="n">attributes</span> <span class="o">*/</span>
+<span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">kdev</span><span class="p">;</span>
+<span class="o">/**</span> <span class="nd">@attr</span><span class="p">:</span> <span class="n">sysfs</span> <span class="n">attributes</span> <span class="o">*/</span>
+<span class="n">struct</span> <span class="n">device_attribute</span> <span class="o">*</span><span class="n">attr</span><span class="p">;</span>
+        <span class="o">.......</span>
+</pre></div>
+</div>
+<p>从以上部分可以看出，struct drm_connector是sysfs树形结构的一员，也就是说drm_connector对象会对应 <code class="docutils literal notranslate"><span class="pre">/sys</span></code> 目录下的某个
+子文件夹(节点).</p>
+<p>connector代码层面的作用</p>
+<ul class="simple">
+<li><p>获取上报热插拔状态</p></li>
+<li><p>读取并解析屏的EDID信息</p></li>
+</ul>
+</section>
+</section>
+<section id="id3">
+<h2><span class="section-number">4.14.1.5. </span>事件传递<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>DRM可以异步的向用户态发送事件，最为常见的是Page Flip完成事件和vblank事件，但也可以是其他通用的事件。由于涉及用户态，
+那么相关定义肯定在 <code class="docutils literal notranslate"><span class="pre">uapi</span></code> 中， <code class="docutils literal notranslate"><span class="pre">include/uapi/drm/drm.h</span></code></p>
+<p>事件本身通过文件描述符的read操作传递，所有事件都有一个公共的header</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">drm_event</span> <span class="p">{</span>
+        <span class="n">__u32</span> <span class="nb">type</span><span class="p">;</span>
+        <span class="n">__u32</span> <span class="n">length</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>0-0x7FFFFFFF事件类型为通用的DRM事件，目前只看到三个定义，而超过0x80000000的事件则为设备特定的</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define DRM_EVENT_VBLANK        0x01</span>
+<span class="c1">#define DRM_EVENT_FLIP_COMPLETE 0x02</span>
+<span class="c1">#define DRM_EVENT_CRTC_SEQUENCE 0x03</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="4.14. DRM框架分析" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="connector.html" class="btn btn-neutral float-right" title="4.14.2. connector代码分析" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

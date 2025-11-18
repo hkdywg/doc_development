@@ -1,0 +1,391 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.8.3. MIPI CSI传输协议解析 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.8.4. MIPI DSI" href="mipi_dsi.html" />
+    <link rel="prev" title="8.8.2. LCD timing" href="LCD_timing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.8. 视频相关</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="video_interface.html">8.8.1. 视频传输接口协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LCD_timing.html">8.8.2. LCD timing</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.8.3. MIPI CSI传输协议解析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mipi">8.8.3.1. MIPI概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-lane-distribution-and-merging">8.8.3.2. Multi-Lane Distribution and Merging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#low-level-protocol">8.8.3.3. Low Level Protocol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-formats">8.8.3.4. Data Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_dsi.html">8.8.4. MIPI DSI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bt656.html">8.8.5. BT656</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.8. </span>视频相关</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.8.3. </span>MIPI CSI传输协议解析</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/video/mipi_csi.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mipi-csi">
+<h1><span class="section-number">8.8.3. </span>MIPI CSI传输协议解析<a class="headerlink" href="#mipi-csi" title="此标题的永久链接"></a></h1>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/0d358d53d174e029988626fdb8b87bea/MIPI_Alliance_Specification_for_Camera_S.pdf"><code class="xref download docutils literal notranslate"><span class="pre">mipi_stand_protocol.pdf</span></code></a></p></li>
+</ul>
+<section id="mipi">
+<h2><span class="section-number">8.8.3.1. </span>MIPI概述<a class="headerlink" href="#mipi" title="此标题的永久链接"></a></h2>
+<p><strong>传输模式</strong></p>
+<p>LP(Low-Power)模式: 用于传输控制信号,最高速率10MHZ</p>
+<p>HS(High-Speed)模式: 用于高速传输素据,速率范围[80M-1.5Gbps] per lane</p>
+<p>传输的最小单元为1字节,采用小端的方式即LSB first, MSB last</p>
+<p><strong>Lane States</strong></p>
+<p>LP mode有四种状态: LP00, LP01, LP10, LP11</p>
+<p>HS mode有两种状态: HS-0, HS-1</p>
+<p><strong>MIPI CLK 传输时序</strong></p>
+<p>mipi csi clk存在两种工作模式,一种是连续时钟模式,传输过程中不会切换LP状态,另一种是非连续时钟信号模式,每传输一帧图像,帧blanking时会切换为LP状态</p>
+<p>时序图如下</p>
+<img alt="../../_images/clk_transfer_timing.png" src="../../_images/clk_transfer_timing.png" />
+<p>从时序图可以看到,clk lane会有一个LP11—&gt;LP01—&gt;LP00的时序,从而进入HS模式</p>
+<p>如果camera sensor支持非连续时钟模式,建议配置为非连续时钟模式</p>
+<p><strong>MIPI DATA 传输时序</strong></p>
+<p>在数据线上由3种可能的操作模式: Escap mode, High-Speed(Burst) mode, Control mode</p>
+<ul class="simple">
+<li><p>Escap mode</p></li>
+</ul>
+<p>进入时序: LP11–&gt;LP10–&gt;LP00–&gt;LP01–&gt;LP00</p>
+<p>退出时序: LP10–&gt;LP11</p>
+<ul class="simple">
+<li><p>High-Speed mode</p></li>
+</ul>
+<p>进入时序：LP11–&gt;P01–&gt;LP00–&gt;SoT(0001_1101)</p>
+<p>退出时序：EoT–&gt;P11</p>
+<img alt="../../_images/data_transfer_timing.png" src="../../_images/data_transfer_timing.png" />
+<ul class="simple">
+<li><p>Turnaround</p></li>
+</ul>
+<p>进入时序：LP11–&gt;LP10–&gt;LP00–&gt;LP10–&gt;LP00</p>
+<p>退出时序：LP00–&gt;LP10–&gt;LP11</p>
+<ul class="simple">
+<li><p>MIPI典型时钟值</p></li>
+</ul>
+<img alt="../../_images/mipi_clk_type.jpg" src="../../_images/mipi_clk_type.jpg" />
+<img alt="../../_images/mipi_data_type.jpg" src="../../_images/mipi_data_type.jpg" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>UI即MIPI的CLK lane的高速时钟周期的二分之一，因为MIPI采用DDR时钟</p>
+</div>
+</section>
+<section id="multi-lane-distribution-and-merging">
+<h2><span class="section-number">8.8.3.2. </span>Multi-Lane Distribution and Merging<a class="headerlink" href="#multi-lane-distribution-and-merging" title="此标题的永久链接"></a></h2>
+<img alt="../../_images/multi_lane_dis.png" src="../../_images/multi_lane_dis.png" />
+<img alt="../../_images/two_lan_transfer.png" src="../../_images/two_lan_transfer.png" />
+<img alt="../../_images/four_lane_trans.png" src="../../_images/four_lane_trans.png" />
+</section>
+<section id="low-level-protocol">
+<h2><span class="section-number">8.8.3.3. </span>Low Level Protocol<a class="headerlink" href="#low-level-protocol" title="此标题的永久链接"></a></h2>
+<p>在mipi底层传输协议中,由短包和长包组成,这两种数据包都是由SoT开始EoT结束</p>
+<img alt="../../_images/low_level_protocol.png" src="../../_images/low_level_protocol.png" />
+<section id="id1">
+<h3><span class="section-number">8.8.3.3.1. </span>底层数据包格式<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<p><strong>长包数据格式</strong></p>
+<p>长包数据格式如下</p>
+<img alt="../../_images/long_package_struct.png" src="../../_images/long_package_struct.png" />
+<ul class="simple">
+<li><p>Data ID: 定义了虚拟通道以及数据类型</p></li>
+<li><p>WC: 定义了8-bit的data payload字节数</p></li>
+<li><p>ECC: package header的ECC校验,包括Data ID和WC数据域</p></li>
+<li><p>Data Payload: 数据域</p></li>
+<li><p>CS: checksum(16-bit)</p></li>
+</ul>
+<p><strong>短包数据格式</strong></p>
+<img alt="../../_images/short_package_struct.png" src="../../_images/short_package_struct.png" />
+</section>
+<section id="data-id">
+<h3><span class="section-number">8.8.3.3.2. </span>Data ID<a class="headerlink" href="#data-id" title="此标题的永久链接"></a></h3>
+<p>Data ID数据包格式如下</p>
+<img alt="../../_images/data_id_struct.png" src="../../_images/data_id_struct.png" />
+<section id="virtual-channel">
+<h4><span class="section-number">8.8.3.3.2.1. </span>Virtual Channel<a class="headerlink" href="#virtual-channel" title="此标题的永久链接"></a></h4>
+<p>虚拟通道标识符的目的是为在数据流交错的不同数据流中提供单独的通道</p>
+<img alt="../../_images/vc_channel.png" src="../../_images/vc_channel.png" />
+<p>即:MIPI接受端可以通过VC标识符将交错的几路视频数据进行拆分</p>
+<img alt="../../_images/vc_package.png" src="../../_images/vc_package.png" />
+</section>
+<section id="data-type">
+<h4><span class="section-number">8.8.3.3.2.2. </span>Data Type<a class="headerlink" href="#data-type" title="此标题的永久链接"></a></h4>
+<img alt="../../_images/data_type_class.png" src="../../_images/data_type_class.png" />
+<ul class="simple">
+<li><p>Synchronization Short Packet Data Types</p></li>
+</ul>
+<img alt="../../_images/data_type_codes.png" src="../../_images/data_type_codes.png" />
+<ul class="simple">
+<li><p>Generic Short Packet Data Types</p></li>
+</ul>
+<img alt="../../_images/generic_short_dt.png" src="../../_images/generic_short_dt.png" />
+<ul class="simple">
+<li><p>Generic Long Packet Data Types</p></li>
+</ul>
+<img alt="../../_images/generic_long_di.png" src="../../_images/generic_long_di.png" />
+<ul class="simple">
+<li><p>YUV Image Data Types</p></li>
+</ul>
+<img alt="../../_images/yuv_dt.png" src="../../_images/yuv_dt.png" />
+<ul class="simple">
+<li><p>RGB Image Data Types</p></li>
+</ul>
+<img alt="../../_images/rgb_dt.png" src="../../_images/rgb_dt.png" />
+<ul class="simple">
+<li><p>RAW Image Data Types</p></li>
+</ul>
+<img alt="../../_images/raw_dt.png" src="../../_images/raw_dt.png" />
+<ul class="simple">
+<li><p>User Defined Data Formats</p></li>
+</ul>
+<p>用户自定义数据则可以传输任意数据,例如JPEG或者MPEG4,或者其他类型的通信数据.</p>
+<img alt="../../_images/user_dt.png" src="../../_images/user_dt.png" />
+</section>
+</section>
+<section id="ecc">
+<h3><span class="section-number">8.8.3.3.3. </span>ECC<a class="headerlink" href="#ecc" title="此标题的永久链接"></a></h3>
+<img alt="../../_images/ECC_Example.png" src="../../_images/ECC_Example.png" />
+</section>
+<section id="cs">
+<h3><span class="section-number">8.8.3.3.4. </span>CS<a class="headerlink" href="#cs" title="此标题的永久链接"></a></h3>
+<p>ECC对Package header进行校验,而Checksum则对数据域(data payload)进行校验,使用16-bit CRC算法</p>
+<img alt="../../_images/package_cs.png" src="../../_images/package_cs.png" />
+</section>
+<section id="sync-short-package">
+<h3><span class="section-number">8.8.3.3.5. </span>Sync Short package<a class="headerlink" href="#sync-short-package" title="此标题的永久链接"></a></h3>
+<p>帧同步信号以及行同步信号内由短包进行发送,在短包的data type域中定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mh">0x00</span><span class="o">----&gt;</span><span class="mh">0x02</span><span class="o">----&gt;</span><span class="mh">0x03</span><span class="o">.......</span><span class="mf">.0</span><span class="n">x02</span><span class="o">-----&gt;</span><span class="mh">0x03</span><span class="o">------&gt;</span><span class="mh">0x01</span>
+<span class="n">FS</span>        <span class="n">LS</span>       <span class="n">LE</span>          <span class="n">LS</span>        <span class="n">LE</span>         <span class="n">FE</span>
+</pre></div>
+</div>
+<img alt="../../_images/frame_trans.png" src="../../_images/frame_trans.png" />
+<p><strong>hsync以及vsync示意</strong></p>
+<img alt="../../_images/line_frame_blanking.png" src="../../_images/line_frame_blanking.png" />
+<img alt="../../_images/hsync_example.png" src="../../_images/hsync_example.png" />
+<img alt="../../_images/vsync_example.png" src="../../_images/vsync_example.png" />
+<p><strong>frame示意图</strong></p>
+<img alt="../../_images/general_frame.png" src="../../_images/general_frame.png" />
+<img alt="../../_images/digital_interlaced_frame.png" src="../../_images/digital_interlaced_frame.png" />
+</section>
+<section id="data-type-interleaving">
+<h3><span class="section-number">8.8.3.3.6. </span>Data Type Interleaving<a class="headerlink" href="#data-type-interleaving" title="此标题的永久链接"></a></h3>
+<p>CSI-2支持在同一视频数据中交错传输不同图像格式,也就是MIPI-CSI支持传输不同分辨率不同数据格式的图像.</p>
+<p>有两种方式传输交错的视频数据1. 使用Data Type  2.使用Vrtual Channel</p>
+<img alt="../../_images/interleaved_trans.png" src="../../_images/interleaved_trans.png" />
+<img alt="../../_images/interleaved_trans_vc.png" src="../../_images/interleaved_trans_vc.png" />
+<img alt="../../_images/packet_interleaved.png" src="../../_images/packet_interleaved.png" />
+</section>
+</section>
+<section id="data-formats">
+<h2><span class="section-number">8.8.3.4. </span>Data Formats<a class="headerlink" href="#data-formats" title="此标题的永久链接"></a></h2>
+<section id="yuv-image-data">
+<h3><span class="section-number">8.8.3.4.1. </span>YUV Image data<a class="headerlink" href="#yuv-image-data" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>Legacy YUV420 8-bit</p></li>
+</ul>
+<img alt="../../_images/legacy_yuv420_8.png" src="../../_images/legacy_yuv420_8.png" />
+<img alt="../../_images/legacy_yuv420_frame.png" src="../../_images/legacy_yuv420_frame.png" />
+<ul class="simple">
+<li><p>YUV420 8-bit</p></li>
+</ul>
+<img alt="../../_images/yuv420-8.png" src="../../_images/yuv420-8.png" />
+<img alt="../../_images/yuv420_8_frame.png" src="../../_images/yuv420_8_frame.png" />
+<ul class="simple">
+<li><p>YUV420 10-bit</p></li>
+</ul>
+<img alt="../../_images/yuv420_10.png" src="../../_images/yuv420_10.png" />
+<img alt="../../_images/yuv420_10_frame.png" src="../../_images/yuv420_10_frame.png" />
+<ul class="simple">
+<li><p>YUV422 8-bit</p></li>
+</ul>
+<img alt="../../_images/yuv422_8.png" src="../../_images/yuv422_8.png" />
+<img alt="../../_images/yuv422_8_frame.png" src="../../_images/yuv422_8_frame.png" />
+<ul class="simple">
+<li><p>YUV422 10-bit</p></li>
+</ul>
+<img alt="../../_images/yuv422_10.png" src="../../_images/yuv422_10.png" />
+<img alt="../../_images/yuv422_10_frame.png" src="../../_images/yuv422_10_frame.png" />
+</section>
+<section id="rgb-image-data">
+<h3><span class="section-number">8.8.3.4.2. </span>RGB Image data<a class="headerlink" href="#rgb-image-data" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>RGB888</p></li>
+</ul>
+<img alt="../../_images/rgb_888.png" src="../../_images/rgb_888.png" />
+<img alt="../../_images/rgb_888_frame.png" src="../../_images/rgb_888_frame.png" />
+<ul class="simple">
+<li><p>RGB666</p></li>
+</ul>
+<img alt="../../_images/rgb_666.png" src="../../_images/rgb_666.png" />
+<img alt="../../_images/rgb_666_frame.png" src="../../_images/rgb_666_frame.png" />
+<ul class="simple">
+<li><p>RGB565</p></li>
+</ul>
+<img alt="../../_images/rgb_565.png" src="../../_images/rgb_565.png" />
+<img alt="../../_images/rgb_565_frame.png" src="../../_images/rgb_565_frame.png" />
+<ul class="simple">
+<li><p>RGB555</p></li>
+</ul>
+<img alt="../../_images/rgb_555.png" src="../../_images/rgb_555.png" />
+<ul class="simple">
+<li><p>RGB444</p></li>
+</ul>
+<img alt="../../_images/rgb_444.png" src="../../_images/rgb_444.png" />
+</section>
+<section id="raw-image-data">
+<h3><span class="section-number">8.8.3.4.3. </span>RAW Image data<a class="headerlink" href="#raw-image-data" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>RAW6</p></li>
+</ul>
+<img alt="../../_images/raw_6.png" src="../../_images/raw_6.png" />
+<img alt="../../_images/raw_6_frame.png" src="../../_images/raw_6_frame.png" />
+<ul class="simple">
+<li><p>RAW7</p></li>
+</ul>
+<img alt="../../_images/raw_7.png" src="../../_images/raw_7.png" />
+<img alt="../../_images/raw_7_frame.png" src="../../_images/raw_7_frame.png" />
+<ul class="simple">
+<li><p>RAW8</p></li>
+</ul>
+<img alt="../../_images/raw_8.png" src="../../_images/raw_8.png" />
+<img alt="../../_images/raw_8_frame.png" src="../../_images/raw_8_frame.png" />
+<ul class="simple">
+<li><p>RAW10</p></li>
+</ul>
+<img alt="../../_images/raw_10.png" src="../../_images/raw_10.png" />
+<img alt="../../_images/raw_10_frame.png" src="../../_images/raw_10_frame.png" />
+<ul class="simple">
+<li><p>RAW12</p></li>
+</ul>
+<img alt="../../_images/raw_12.png" src="../../_images/raw_12.png" />
+<img alt="../../_images/raw_12_frame.png" src="../../_images/raw_12_frame.png" />
+<ul class="simple">
+<li><p>RAW14</p></li>
+</ul>
+<img alt="../../_images/raw_10.png" src="../../_images/raw_10.png" />
+<img alt="../../_images/raw_14_frame.png" src="../../_images/raw_14_frame.png" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="LCD_timing.html" class="btn btn-neutral float-left" title="8.8.2. LCD timing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="mipi_dsi.html" class="btn btn-neutral float-right" title="8.8.4. MIPI DSI" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

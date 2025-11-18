@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.8.1. 视频传输接口协议 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.8.2. LCD timing" href="LCD_timing.html" />
+    <link rel="prev" title="8.8. 视频相关" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.8. 视频相关</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.8.1. 视频传输接口协议</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lvds">8.8.1.1. LVDS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hdmi">8.8.1.2. HDMI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dsi">8.8.1.3. DSI</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="LCD_timing.html">8.8.2. LCD timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html">8.8.3. MIPI CSI传输协议解析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_dsi.html">8.8.4. MIPI DSI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bt656.html">8.8.5. BT656</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.8. </span>视频相关</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.8.1. </span>视频传输接口协议</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/video/video_interface.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">8.8.1. </span>视频传输接口协议<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="lvds">
+<h2><span class="section-number">8.8.1.1. </span>LVDS<a class="headerlink" href="#lvds" title="此标题的永久链接"></a></h2>
+<section id="id2">
+<h3><span class="section-number">8.8.1.1.1. </span>物理层<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>LVDS, 全称是Low-Voltage Differential Signaling, 即”低压差分信号”,是一种在功耗,无码率,串扰,辐射等方面非常优越的差分信号技术.</p>
+<p>差分传输是一种高速信号传输的技术,区别于传统的一根信号线一根地线的做法,差分传输在两根线上都传输信号,这两个信号的振幅相同,相位相反.信号接受端
+比较这两个电压的差值来判断发送段发送的逻辑状态.</p>
+<img alt="../../_images/diff_sig.png" src="../../_images/diff_sig.png" />
+<p>差分信号和普通的单端信号相比,有以下三方面优势</p>
+<p>1.抗干扰能力强,因为两根差分走线之间的耦合很好,当外界存在噪声时,几乎同时被耦合到两根线上,而接受端关心的指示两根信号线的差值,所以外界的共模噪声可以被完全抵消</p>
+<img alt="../../_images/ds-jamming.png" src="../../_images/ds-jamming.png" />
+<p>2.能有效抑制EMI.两根信号线相互平行,由于两根信号线的极性相反,他们对外界的辐射可以相互抵消,耦合的越紧密,释放到外界的电磁能量越少.</p>
+<img alt="../../_images/ds-magnaticfield.png" src="../../_images/ds-magnaticfield.png" />
+<p>3.时序定位精确.由于差分信号的开关变化是位于两个信号的交点,而不像普通单端信号依靠高低两个阈值电压判断,因而受工艺,温度的影响小.</p>
+<p>在dV / dt = 1.32 V/ns的升压速度下，当信号幅度为3.3 V时，从低电平（20%）翻转到高电平（60%）需要1 ns，而如果信号幅度只有500 mV时，从低电平（20%）翻转到高电平（80%）仅需要303ps。通过这样的方式，可以大幅提升差分信号的频率，从而提升传输速度。</p>
+<p>即在相同升压速度下,低压差分信号的电平翻转时间短,从而可以提升传输速度.</p>
+<img alt="../../_images/ds-voltage.png" src="../../_images/ds-voltage.png" />
+<p>LVDS通过驱动3.5mA的稳定电流电源，可在100Ω終端时，以350mV这样非常低振幅的差动信号来高速传送数据。</p>
+<p>LVDS的接口电路比较简单,由差分时钟线(一对或两对),和差分数据线(3对或4对或6对或8对)组成.</p>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/67d8505f0b8676b80654725882ab13a4/snla187.pdf"><code class="xref download docutils literal notranslate"><span class="pre">LVDS用户手册</span></code></a></p></li>
+</ul>
+<p>LVDS有两种常见的扫描方式:逐行扫描和隔行扫描</p>
+<ul class="simple">
+<li><p>逐行扫描: 在逐行扫描中，每个视频帧都包含了所有的图像行．也就是说，每一帧都包含图像的所有行，从顶部到底部．</p></li>
+<li><p>隔行扫描: 在隔行扫描中，每个视频帧只包含图像的一半行数．一帧包含奇数行(1,3,5…行),而下一帧包括偶数行(如2,4,6…行)．这样两帧图像交替包含了所有的图像行．
+隔行扫描可以减少带宽需求，提高视频信号的稳定性，减少电磁干扰的影响，但可能会在快速移动的对象或高速摄象中引入闪烁．</p></li>
+</ul>
+<p>这会涉及到另外一个概念，lvds奇偶场信号</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">8.8.1.1.2. </span>数据传输层<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>更准确的来说,LVDS是一个物理层传输协议,它并不只是一个视频总线,事实上,在LVDS上可以传输各种协商好的上层数据.</p>
+<p>在视频信号传输的相关场景下使用的LVDS总线,常常遵循一种叫OpenLDI的协议,即Open LVDS  Display Interface,</p>
+<p>在OLDI协议中,LVDS接口可以分为这样的几类, <code class="docutils literal notranslate"><span class="pre">单路6bit</span></code> , <code class="docutils literal notranslate"><span class="pre">双路6bit</span></code> , <code class="docutils literal notranslate"><span class="pre">单路8bit</span></code> , <code class="docutils literal notranslate"><span class="pre">双路8bit</span></code></p>
+<p>比如单路6bit:它采用单路方式传输,一次只传输一个像素.这里的6bit指的是RGB的采样深度为6bit,即RGB666. 这样一个周期只传输18bit的数据,因此也称为18bit LVDS接口</p>
+<p>而在双路6 bit中，信号采用双路方式传输，也就是说一次性传输两个像素。这样一来奇路数据为18位，偶路数据为18位，一个周期共传输36 bit 数据。因此，也称36 bit LVDS接口</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>LVDS接口类型</p></td>
+<td><p>色彩深度</p></td>
+<td><p>一个周期传输像素数</p></td>
+<td><p>使用差分信号对数</p></td>
+</tr>
+<tr class="row-even"><td><p>18 bit</p></td>
+<td><p>6 bit</p></td>
+<td><p>1</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p>36 bit</p></td>
+<td><p>6 bit</p></td>
+<td><p>2</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-even"><td><p>24 bit</p></td>
+<td><p>8 bit</p></td>
+<td><p>1</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p>48 bit</p></td>
+<td><p>8 bit</p></td>
+<td><p>2</p></td>
+<td><p>10</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>24bit JEIDA编码</strong></p>
+<img alt="../../_images/oldi-24bit-1.png" src="../../_images/oldi-24bit-1.png" />
+<p><strong>24bit VESA编码</strong></p>
+<img alt="../../_images/oldi-24bit-2.png" src="../../_images/oldi-24bit-2.png" />
+<p><strong>18bit JEIDA编码</strong></p>
+<img alt="../../_images/oldi-18bit.png" src="../../_images/oldi-18bit.png" />
+<p><strong>双路LVDS JEIDA编码</strong></p>
+<img alt="../../_images/oldi-2chanel-1.png" src="../../_images/oldi-2chanel-1.png" />
+<p><strong>双路LVDS VESA编码</strong></p>
+<img alt="../../_images/oldi-2channel-2.png" src="../../_images/oldi-2channel-2.png" />
+</section>
+</section>
+<section id="hdmi">
+<h2><span class="section-number">8.8.1.2. </span>HDMI<a class="headerlink" href="#hdmi" title="此标题的永久链接"></a></h2>
+<p>HDMI是一种基于TMDS协议的音视频传输协议.</p>
+<section id="id4">
+<h3><span class="section-number">8.8.1.2.1. </span>信号定义<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<img alt="../../_images/pin_define.png" src="../../_images/pin_define.png" />
+<p>传输接口可以分为: 三对差分数据线,一对差分时钟线,一组i2c控制信号线,CEC信号线, hot plug detect引脚,5V电源</p>
+</section>
+<section id="frame">
+<h3><span class="section-number">8.8.1.2.2. </span>链路层Frame结构<a class="headerlink" href="#frame" title="此标题的永久链接"></a></h3>
+<img alt="../../_images/hdmi_frame.png" src="../../_images/hdmi_frame.png" />
+</section>
+<section id="id5">
+<h3><span class="section-number">8.8.1.2.3. </span>数据传输<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>HDMI传输如下四种数据类型:</p>
+<ol class="arabic simple">
+<li><p>preamble控制信息,图中的CTLx,可用来表示后面传输的data island还是video data, 通过channel1和channel2的D[1:0]传输,占用4bit</p></li>
+<li><p>Data Island, 即数据包,如Audio数据包,通过3个channel的[3:0]传输,占用12bit</p></li>
+<li><p>Video Data, 视频数据,R G B通过3个channel的D[7:0]传输,占用24bit</p></li>
+<li><p>HSYNC, VSYNC, 使用channel0的[1:0]传输,占用2bit</p></li>
+</ol>
+<p>8bit的数据经过TMDS encoder后得到10bit的数据,经过serializer串行输出, 另外HDMI是stream式的传输,不涉及packet式的传输</p>
+<img alt="../../_images/hdmi_tranfer.png" src="../../_images/hdmi_tranfer.png" />
+<p>上图展示的是720x480p video的hdmi timing.</p>
+<p>data island和control period都是在消隐区进行</p>
+<img alt="../../_images/data_type.png" src="../../_images/data_type.png" />
+<p><strong>control period</strong></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>CTL0</p></td>
+<td><p>CTL1</p></td>
+<td><p>CTL2</p></td>
+<td><p>CTL3</p></td>
+<td><p>data period type</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>video Data Period</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>Data island period</p></td>
+</tr>
+</tbody>
+</table>
+<p>控制preamble信号和HSYNC, VSYNC信号传输.preamble信号出现在每个video data和data island信号之前,用于确定是哪种信号类型</p>
+<p><strong>vide data period</strong></p>
+<p>video data period以2个bit的leading guard band开始,在链路层对这部分数据没有要求,但是物理层其根据TMDS通道产生, guard band如下</p>
+<p>ch0: q_out[9:0] = 0b1011001100</p>
+<p>ch1: q_out[9:0] = 0b0100110011</p>
+<p>ch2: q_out[9:0] = 0b1011001100</p>
+<p><strong>data island period</strong></p>
+<p>data island period传输audio数据和辅助数据,辅助数据包括infoframe和其他用于音视频信息描述的数据,data island period以2个字符长度的leading guard band开始,并以2个bit的trailing guard band
+结束.</p>
+<p>ch0: q_out[9:0] = n.a</p>
+<p>ch1: q_out[9:0] = 0b0100110011</p>
+<p>ch2: q_out[9:0] = 0b0100110011</p>
+<p>data island period, 分别占用3个channel的D[3:0],channel0的D[1:0]传输HSYNC和VSYNC, chanel0的D[3:2]传输packet headr, channel 1,2的D[3:0]传输packet.并且两端以guard band隔离</p>
+<p>packet包含4个子packet,每个子packet包含64bit数据,前56bit为有效数据,后8bit为ECC校验.</p>
+<img alt="../../_images/data_packet_0.png" src="../../_images/data_packet_0.png" />
+<img alt="../../_images/data_packet_1.png" src="../../_images/data_packet_1.png" />
+<p>data island数据包头为32位,前1个字节为数据包类型,中间2个字节包含一些特别信息,最后一个字节为ECC校验</p>
+<ul class="simple">
+<li><p>data island 包类型</p></li>
+</ul>
+<img alt="../../_images/packet_type.png" src="../../_images/packet_type.png" />
+<p>三个传输阶段的过度过程如下图所示</p>
+<img alt="../../_images/hdmi_frame_tranfer.png" src="../../_images/hdmi_frame_tranfer.png" />
+<p>依次解析如下</p>
+<ol class="arabic simple">
+<li><p>control period, 分别占用3个channel的D[1:0],channel0传输HSYNC和VSYNC, channel1 2传输preamble</p></li>
+<li><p>data island period, 分别占用3个channel的D[3:0],channel0的D[1:0]传输HSYNC和VSYNC, chanel0的D[3:2]传输packet headr, channel 1,2的D[3:0]传输packet.并且两端以guard band隔离</p></li>
+<li><p>control period</p></li>
+<li><p>video period,占用三个通道,并且以guard band隔离</p></li>
+</ol>
+</section>
+<section id="video">
+<h3><span class="section-number">8.8.1.2.4. </span>video中像素编码方式<a class="headerlink" href="#video" title="此标题的永久链接"></a></h3>
+<p><strong>RGB格式</strong></p>
+<img alt="../../_images/packet_rgb.png" src="../../_images/packet_rgb.png" />
+<p><strong>YUV422格式</strong></p>
+<p>YUV422格式中Y占12bit, U占12bit</p>
+<img alt="../../_images/packet_yuv422.png" src="../../_images/packet_yuv422.png" />
+<p><strong>YUV444格式</strong></p>
+<img alt="../../_images/packet_yuv444.png" src="../../_images/packet_yuv444.png" />
+</section>
+<section id="audio">
+<h3><span class="section-number">8.8.1.2.5. </span>Audio<a class="headerlink" href="#audio" title="此标题的永久链接"></a></h3>
+<p>Audio数据以Audio Sample Packet或High Bitrate Audio Stream Packet的形式传输,但是HDMI没有传输audio clock,因此sink设备需要进行audio clock regeneration.</p>
+</section>
+<section id="control">
+<h3><span class="section-number">8.8.1.2.6. </span>Control<a class="headerlink" href="#control" title="此标题的永久链接"></a></h3>
+<p>Infoframe以Infoframe packet的形式传输，它的大小不超过30字节加上一个checksum字节。具体infoframe的格式及内容需要查看spec。</p>
+<p>AVI(Auxiliary Video Information) Infoframe</p>
+<p>Audio Infoframe</p>
+<p>HDMI Vendor Specific Infoframe, 传输4kx2k或3D格式时需要发送此packet</p>
+<ul class="simple">
+<li><p>EDID &amp; DDC</p></li>
+</ul>
+<p>sink设备在ROM中存放EDID信息，source在收到HPD后会通过DDC通道读取EDID得到显示设备的属性。EDID包含两部分，前128字节符合EDID1.3数据结构，128字节的扩展EDID，符合CEA extension verison3</p>
+</section>
+</section>
+<section id="dsi">
+<h2><span class="section-number">8.8.1.3. </span>DSI<a class="headerlink" href="#dsi" title="此标题的永久链接"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="8.8. 视频相关" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="LCD_timing.html" class="btn btn-neutral float-right" title="8.8.2. LCD timing" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

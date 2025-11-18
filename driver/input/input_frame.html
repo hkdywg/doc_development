@@ -1,0 +1,463 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.12.1. 输入子系统框架 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.12.2. 输入核心层" href="input_core.html" />
+    <link rel="prev" title="4.12. 输入子系统" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.12. 输入子系统</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.12.1. 输入子系统框架</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.12.1.1. 概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.12.1.2. 数据结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4.12.1.3. 输入子系统初始化</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="input_core.html">4.12.2. 输入核心层</a></li>
+<li class="toctree-l3"><a class="reference internal" href="input_event.html">4.12.3. 输入事件驱动层</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.12. </span>输入子系统</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.12.1. </span>输入子系统框架</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/input/input_frame.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">4.12.1. </span>输入子系统框架<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2><span class="section-number">4.12.1.1. </span>概述<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>input驱动程序是linux输入设备的驱动程序，分成游戏杆(joystick)、鼠标(mouse和mice)、键盘(keyboard)、事件设备(event)。其中事件设备驱动程序是目前通用的驱动程序，
+可支持键盘、鼠标、触摸屏等多种输入设备</p>
+<p>linux input子系统将一个输入设备的输入过程分成了设备驱动(input device driver)和事件驱动(input event driver)两个层。前者负责从底层硬件采集数据，后者负责与用户程序接口，
+将采集到的数据分发给不同的用户接口。通过这样的设计，将千差万别的设备统一到了为数不多的几种驱动接口上，同一种事件驱动可以用来处理多个同类设备，同一个设备也可以和多种
+事件驱动相衔接。而事件驱动和设备驱动则由输入核心层进行连接，匹配</p>
+<p>首先输入子系统是分为三层的，面对应用层的是 <code class="docutils literal notranslate"><span class="pre">输入事件层(handler)</span></code> ，处理底层驱动的是 <code class="docutils literal notranslate"><span class="pre">输入设备层(dirver或device)</span></code> 。而衔接dev和handler的则是 <code class="docutils literal notranslate"><span class="pre">输入核心层(core)</span></code> 。
+真个输入子系统的核心层起到承上启下的作用</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>上：输入事件驱动层         （打包数据，面向应用）
+
+中：输入核心层             （向下提供注册接口，向上给具体的hander发送数据）
+
+下：输入设备驱动层         （底层驱动，面向硬件）
+</pre></div>
+</div>
+<img alt="../../_images/Input_des.png" src="../../_images/Input_des.png" />
+<p>应用程序使用input子系统的核心是，对驱动层打包好的数据进行分析，其中打包的数据结构如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+ * The event structure itself
+ */
+
+struct input_event {
+        struct timeval time;    //表示输入的时间
+        __u16 type;                             //表示输入设备是哪种类型，鼠标键盘等
+        __u16 code;                             //不同的type有不同的code，比如键盘的哪个按键等
+        __s32 value;                    //根据不同的type和code决定，比如键盘A键按下和松开，鼠标的移动方向等
+};
+</pre></div>
+</div>
+<p>一个设备可能对应两个设备驱动，比如鼠标既可以对应mouse也可以对应event。event事件设备驱动程序是通用的，也是目前的主流。后面的内容将以此为例进行分析</p>
+<p>一次鼠标按下事件为例，说明input输入子系统的工作过程</p>
+<ol class="arabic simple">
+<li><p>设备驱动层:当鼠标左键被按下时就会触发中断，然后去执行中断注册的处理函数，在函数中会读取硬件寄存器来判断按下的是哪个按键和状态</p></li>
+<li><p>然后将按键信息上报给input core层，input core层处理完成之后会上报给input event层，input event层会将我们的输入事件封装成一个input_event结构体放入到一个缓冲区</p></li>
+<li><p>应用层read就会将缓冲区中的数据读取出去</p></li>
+</ol>
+<p>输入子系统整体由核心层维护，主要使用两条链表，维护着两个层</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">LIST_HEAD</span><span class="p">(</span><span class="n">input_dev_list</span><span class="p">);</span>   <span class="o">//</span><span class="n">维护着所有的dev</span>
+<span class="n">static</span> <span class="n">LIST_HEAD</span><span class="p">(</span><span class="n">input_handler_list</span><span class="p">);</span>   <span class="o">//</span><span class="n">维护着所有的handler</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2><span class="section-number">4.12.1.2. </span>数据结构<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<section id="input-handler">
+<h3><span class="section-number">4.12.1.2.1. </span>input_handler<a class="headerlink" href="#input-handler" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">input_handler</span> <span class="p">{</span>
+
+        <span class="n">void</span> <span class="o">*</span><span class="n">private</span><span class="p">;</span>
+
+        <span class="o">//</span><span class="n">用于向上层上报输入事件的函数</span>
+        <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">event</span><span class="p">)(</span><span class="n">struct</span> <span class="n">input_handle</span> <span class="o">*</span><span class="n">handle</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="nb">type</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">code</span><span class="p">,</span> <span class="nb">int</span> <span class="n">value</span><span class="p">);</span>
+        <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">events</span><span class="p">)(</span><span class="n">struct</span> <span class="n">input_handle</span> <span class="o">*</span><span class="n">handle</span><span class="p">,</span>
+                           <span class="n">const</span> <span class="n">struct</span> <span class="n">input_value</span> <span class="o">*</span><span class="n">vals</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">count</span><span class="p">);</span>
+        <span class="nb">bool</span> <span class="p">(</span><span class="o">*</span><span class="nb">filter</span><span class="p">)(</span><span class="n">struct</span> <span class="n">input_handle</span> <span class="o">*</span><span class="n">handle</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="nb">type</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">code</span><span class="p">,</span> <span class="nb">int</span> <span class="n">value</span><span class="p">);</span>
+        <span class="o">//</span><span class="n">函数用来匹配handler与input_dev</span>
+        <span class="nb">bool</span> <span class="p">(</span><span class="o">*</span><span class="n">match</span><span class="p">)(</span><span class="n">struct</span> <span class="n">input_handler</span> <span class="o">*</span><span class="n">handler</span><span class="p">,</span> <span class="n">struct</span> <span class="n">input_dev</span> <span class="o">*</span><span class="n">dev</span><span class="p">);</span>
+        <span class="o">//</span><span class="n">当handler与input_dev匹配成功之后用来连接</span>
+        <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">connect</span><span class="p">)(</span><span class="n">struct</span> <span class="n">input_handler</span> <span class="o">*</span><span class="n">handler</span><span class="p">,</span> <span class="n">struct</span> <span class="n">input_dev</span> <span class="o">*</span><span class="n">dev</span><span class="p">,</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">input_device_id</span> <span class="o">*</span><span class="nb">id</span><span class="p">);</span>
+        <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">disconnect</span><span class="p">)(</span><span class="n">struct</span> <span class="n">input_handle</span> <span class="o">*</span><span class="n">handle</span><span class="p">);</span>
+        <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">start</span><span class="p">)(</span><span class="n">struct</span> <span class="n">input_handle</span> <span class="o">*</span><span class="n">handle</span><span class="p">);</span>
+
+        <span class="nb">bool</span> <span class="n">legacy_minors</span><span class="p">;</span>
+        <span class="nb">int</span> <span class="n">minor</span><span class="p">;</span>              <span class="o">//</span><span class="n">该handler编号</span><span class="p">(</span><span class="n">在input_table数组中用来计算数组下标</span><span class="p">),</span> <span class="n">input_table数组就是input子系统用来管理注册的handler的一个数据结构</span>
+        <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+
+        <span class="n">const</span> <span class="n">struct</span> <span class="n">input_device_id</span> <span class="o">*</span><span class="n">id_table</span><span class="p">;</span> <span class="o">//</span><span class="n">里面保存着dev和handler能匹配在一起的信息</span>
+
+        <span class="n">struct</span> <span class="n">list_head</span>        <span class="n">h_list</span><span class="p">;</span>
+        <span class="n">struct</span> <span class="n">list_head</span>        <span class="n">node</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>用此数据结构来表述一个handler，主要是面向应用层的。 node用于把该handler链接在input_handler_list链表上，h_list用于指向handle</p>
+</section>
+<section id="input-handle">
+<h3><span class="section-number">4.12.1.2.2. </span>input_handle<a class="headerlink" href="#input-handle" title="此标题的永久链接"></a></h3>
+<p>handle: 用于将input_dev和handler连接起来，对应于一个具体的设备文件</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/**</span>
+ <span class="o">*</span> <span class="n">struct</span> <span class="n">input_handle</span> <span class="o">-</span> <span class="n">links</span> <span class="nb">input</span> <span class="n">device</span> <span class="k">with</span> <span class="n">an</span> <span class="nb">input</span> <span class="n">handler</span>
+ <span class="o">*</span> <span class="nd">@private</span><span class="p">:</span> <span class="n">handler</span><span class="o">-</span><span class="n">specific</span> <span class="n">data</span>
+ <span class="o">*</span> <span class="nd">@open</span><span class="p">:</span> <span class="n">counter</span> <span class="n">showing</span> <span class="n">whether</span> <span class="n">the</span> <span class="n">handle</span> <span class="ow">is</span> <span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span> <span class="n">should</span> <span class="n">deliver</span>
+ <span class="o">*</span>      <span class="n">events</span> <span class="kn">from</span> <span class="nn">its</span> <span class="n">device</span>
+ <span class="o">*</span> <span class="nd">@name</span><span class="p">:</span> <span class="n">name</span> <span class="n">given</span> <span class="n">to</span> <span class="n">the</span> <span class="n">handle</span> <span class="n">by</span> <span class="n">handler</span> <span class="n">that</span> <span class="n">created</span> <span class="n">it</span>
+ <span class="o">*</span> <span class="nd">@dev</span><span class="p">:</span> <span class="nb">input</span> <span class="n">device</span> <span class="n">the</span> <span class="n">handle</span> <span class="ow">is</span> <span class="n">attached</span> <span class="n">to</span>
+ <span class="o">*</span> <span class="nd">@handler</span><span class="p">:</span> <span class="n">handler</span> <span class="n">that</span> <span class="n">works</span> <span class="k">with</span> <span class="n">the</span> <span class="n">device</span> <span class="n">through</span> <span class="n">this</span> <span class="n">handle</span>
+ <span class="o">*</span> <span class="nd">@d_node</span><span class="p">:</span> <span class="n">used</span> <span class="n">to</span> <span class="n">put</span> <span class="n">the</span> <span class="n">handle</span> <span class="n">on</span> <span class="n">device</span><span class="s1">&#39;s list of attached handles</span>
+ <span class="o">*</span> <span class="nd">@h_node</span><span class="p">:</span> <span class="n">used</span> <span class="n">to</span> <span class="n">put</span> <span class="n">the</span> <span class="n">handle</span> <span class="n">on</span> <span class="n">handler</span><span class="s1">&#39;s list of handles from which</span>
+ <span class="o">*</span>      <span class="n">it</span> <span class="n">gets</span> <span class="n">events</span>
+ <span class="o">*/</span>
+<span class="n">struct</span> <span class="n">input_handle</span> <span class="p">{</span>
+
+        <span class="n">void</span> <span class="o">*</span><span class="n">private</span><span class="p">;</span>
+
+        <span class="nb">int</span> <span class="nb">open</span><span class="p">;</span>               <span class="o">//</span><span class="n">打开计数</span>
+        <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+
+        <span class="n">struct</span> <span class="n">input_dev</span> <span class="o">*</span><span class="n">dev</span><span class="p">;</span>  <span class="o">//</span><span class="n">用来指向该handle绑定的input_dev结构体</span>
+        <span class="n">struct</span> <span class="n">input_handler</span> <span class="o">*</span><span class="n">handler</span><span class="p">;</span>  <span class="o">//</span><span class="n">用来指向该handle绑定的handler结构体</span>
+
+        <span class="n">struct</span> <span class="n">list_head</span>        <span class="n">d_node</span><span class="p">;</span>
+        <span class="n">struct</span> <span class="n">list_head</span>        <span class="n">h_node</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>这个数据结构用来连接dev和handler，这里要说明的是一个dev可能会连接多个handler，所以会有多个handle负责连接dev和多个handler.</p>
+</section>
+<section id="input-dev">
+<h3><span class="section-number">4.12.1.2.3. </span>input_dev<a class="headerlink" href="#input-dev" title="此标题的永久链接"></a></h3>
+<p>input_dev代表着具体的输入设备，负责底层的实现，它直接从硬件中读取数据，并以事件的形式转发，包括该输入设备支持的输入类型，键值等.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct input_dev {
+        const char *name;       //设备名称
+        const char *phys;       //设备在分层系统的路径
+        const char *uniq;
+        struct input_id id;             //设备信息
+        //可以上报的事件类型有哪些，用位图来表示
+        unsigned long propbit[BITS_TO_LONGS(INPUT_PROP_CNT)];
+
+        unsigned long evbit[BITS_TO_LONGS(EV_CNT)];
+        unsigned long keybit[BITS_TO_LONGS(KEY_CNT)];
+        unsigned long relbit[BITS_TO_LONGS(REL_CNT)];
+        unsigned long absbit[BITS_TO_LONGS(ABS_CNT)];
+        unsigned long mscbit[BITS_TO_LONGS(MSC_CNT)];
+        unsigned long ledbit[BITS_TO_LONGS(LED_CNT)];
+        unsigned long sndbit[BITS_TO_LONGS(SND_CNT)];
+        unsigned long ffbit[BITS_TO_LONGS(FF_CNT)];
+        unsigned long swbit[BITS_TO_LONGS(SW_CNT)];
+
+        unsigned int hint_events_per_packet;
+
+        unsigned int keycodemax;
+        unsigned int keycodesize;
+        void *keycode;
+
+        int (*setkeycode)(struct input_dev *dev,
+                          const struct input_keymap_entry *ke,
+                          unsigned int *old_keycode);
+        int (*getkeycode)(struct input_dev *dev,
+                          struct input_keymap_entry *ke);
+
+        struct ff_device *ff;
+
+        unsigned int repeat_key;        //重复上报键值，比如键盘A按着一直不松手
+        struct timer_list timer;        //重复上报时间
+
+        int rep[REP_CNT];
+
+        struct input_mt *mt;
+
+        struct input_absinfo *absinfo;
+
+        unsigned long key[BITS_TO_LONGS(KEY_CNT)];
+        unsigned long led[BITS_TO_LONGS(LED_CNT)];
+        unsigned long snd[BITS_TO_LONGS(SND_CNT)];
+        unsigned long sw[BITS_TO_LONGS(SW_CNT)];
+
+        int (*open)(struct input_dev *dev);             //设备open函数
+        void (*close)(struct input_dev *dev);
+        int (*flush)(struct input_dev *dev, struct file *file);
+        int (*event)(struct input_dev *dev, unsigned int type, unsigned int code, int value); //上报事件
+
+        struct input_handle __rcu *grab;
+
+        spinlock_t event_lock;
+        struct mutex mutex;
+
+        unsigned int users;
+        bool going_away;
+
+        struct device dev;
+
+        struct list_head        h_list; //用来挂接这个struct input_dev和所有struct handler的链表头
+        struct list_head        node;   //
+
+        unsigned int num_vals;
+        unsigned int max_vals;
+        struct input_value *vals;
+
+        bool devres_managed;
+};
+</pre></div>
+</div>
+<p>以上几个数据结构之间的关系可以用下面的图示说明</p>
+<img alt="../../_images/input_struct.png" src="../../_images/input_struct.png" />
+<p>下面是系统目前为设备定义的次设备号信息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define JOYDEV_MINOR_BASE       0        /* 游戏手柄类次设备号开始位置 */</span>
+<span class="c1">#define JOYDEV_MINORS           16       /* 游戏手柄类次设备号个数 */</span>
+
+<span class="c1">#define MOUSEDEV_MINOR_BASE     32       /*鼠标类次设备号开始位置 */</span>
+<span class="c1">#define MOUSEDEV_MINORS         32       /* 鼠标类次设备号个数 */</span>
+
+<span class="c1">#define EVDEV_MINOR_BASE        64       /*通用事件类次设备号开始位置 */</span>
+<span class="c1">#define EVDEV_MINORS            32       /*通用事件类次设备号个数 */</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">4.12.1.3. </span>输入子系统初始化<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">__init</span> <span class="n">input_init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="nb">int</span> <span class="n">err</span><span class="p">;</span>
+
+        <span class="n">err</span> <span class="o">=</span> <span class="n">class_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">input_class</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">pr_err</span><span class="p">(</span><span class="s2">&quot;unable to register input_dev class</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+                <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">err</span> <span class="o">=</span> <span class="n">input_proc_init</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span>
+                <span class="n">goto</span> <span class="n">fail1</span><span class="p">;</span>
+
+        <span class="o">/*</span> <span class="n">一次性注册完所有的次设备</span> <span class="o">*/</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="n">register_chrdev_region</span><span class="p">(</span><span class="n">MKDEV</span><span class="p">(</span><span class="n">INPUT_MAJOR</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                                         <span class="n">INPUT_MAX_CHAR_DEVICES</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">pr_err</span><span class="p">(</span><span class="s2">&quot;unable to register char major </span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">INPUT_MAJOR</span><span class="p">);</span>
+                <span class="n">goto</span> <span class="n">fail2</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+ <span class="n">fail2</span><span class="p">:</span> <span class="n">input_proc_exit</span><span class="p">();</span>
+ <span class="n">fail1</span><span class="p">:</span> <span class="n">class_unregister</span><span class="p">(</span><span class="o">&amp;</span><span class="n">input_class</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">subsys_initcall</span><span class="p">(</span><span class="n">input_init</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>start_kernel中会调用subsys_initcall函数来完成input_init的的调用</p>
+<p>在dev和handler匹配上之后，会调用connect, 不同的输入设备有不同的connect函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+ * Create new evdev device. Note that input core serializes calls
+ * to connect and disconnect.
+ */
+static int evdev_connect(struct input_handler *handler, struct input_dev *dev,
+                         const struct input_device_id *id)
+{
+        struct evdev *evdev;
+        int minor;
+        int dev_no;
+        int error;
+
+        minor = input_get_new_minor(EVDEV_MINOR_BASE, EVDEV_MINORS, true);
+        if (minor &lt; 0) {
+                error = minor;
+                pr_err(&quot;failed to reserve new minor: %d\n&quot;, error);
+                return error;
+        }
+
+        evdev = kzalloc(sizeof(struct evdev), GFP_KERNEL);
+        if (!evdev) {
+                error = -ENOMEM;
+                goto err_free_minor;
+        }
+
+        INIT_LIST_HEAD(&amp;evdev-&gt;client_list);
+        spin_lock_init(&amp;evdev-&gt;client_lock);
+        mutex_init(&amp;evdev-&gt;mutex);
+        init_waitqueue_head(&amp;evdev-&gt;wait);
+        evdev-&gt;exist = true;
+
+        dev_no = minor;
+        /* Normalize device number if it falls into legacy range */
+        if (dev_no &lt; EVDEV_MINOR_BASE + EVDEV_MINORS)
+                dev_no -= EVDEV_MINOR_BASE;
+        dev_set_name(&amp;evdev-&gt;dev, &quot;event%d&quot;, dev_no);
+
+        evdev-&gt;handle.dev = input_get_device(dev);
+        evdev-&gt;handle.name = dev_name(&amp;evdev-&gt;dev);
+        evdev-&gt;handle.handler = handler;
+        evdev-&gt;handle.private = evdev;
+
+        evdev-&gt;dev.devt = MKDEV(INPUT_MAJOR, minor);
+        evdev-&gt;dev.class = &amp;input_class;
+        evdev-&gt;dev.parent = &amp;dev-&gt;dev;
+        evdev-&gt;dev.release = evdev_free;
+        device_initialize(&amp;evdev-&gt;dev);
+
+        error = input_register_handle(&amp;evdev-&gt;handle);
+        if (error)
+                goto err_free_evdev;
+
+        cdev_init(&amp;evdev-&gt;cdev, &amp;evdev_fops);
+        evdev-&gt;cdev.kobj.parent = &amp;evdev-&gt;dev.kobj;
+        error = cdev_add(&amp;evdev-&gt;cdev, evdev-&gt;dev.devt, 1);
+        if (error)
+                goto err_unregister_handle;
+
+        error = device_add(&amp;evdev-&gt;dev);
+        if (error)
+                goto err_cleanup_evdev;
+
+        return 0;
+
+ err_cleanup_evdev:
+        evdev_cleanup(evdev);
+ err_unregister_handle:
+        input_unregister_handle(&amp;evdev-&gt;handle);
+ err_free_evdev:
+        put_device(&amp;evdev-&gt;dev);
+ err_free_minor:
+        input_free_minor(minor);
+        return error;
+}
+</pre></div>
+</div>
+<p>真正的设备注册主要由cdev_init和cdev_add函数完成</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="4.12. 输入子系统" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="input_core.html" class="btn btn-neutral float-right" title="4.12.2. 输入核心层" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

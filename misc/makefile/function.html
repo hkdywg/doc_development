@@ -1,0 +1,587 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.6.2. Makefile函数总结 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="7.6.3. gcc编译选项总结" href="gcc_compile.html" />
+    <link rel="prev" title="7.6.1. Makefile规则介绍" href="rule.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.6. Makfile应用笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rule.html">7.6.1. Makefile规则介绍</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.6.2. Makefile函数总结</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">7.6.2.1. 字符串处理函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">7.6.2.2. 文件名操作函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#foreach">7.6.2.3. foreach函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#if">7.6.2.4. if 函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#call">7.6.2.5. call函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#origin">7.6.2.6. origin函数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#shell">7.6.2.7. shell函数</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gcc_compile.html">7.6.3. gcc编译选项总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.9. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.6. </span>Makfile应用笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.6.2. </span>Makefile函数总结</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/misc/makefile/function.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="makefile">
+<h1><span class="section-number">7.6.2. </span>Makefile函数总结<a class="headerlink" href="#makefile" title="此标题的永久链接"></a></h1>
+<p>makefile函数调用，很像变量的使用，也是以”$”来标识的，其语法如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(&lt;function&gt; &lt;arguments&gt;)
+</pre></div>
+</div>
+<p>function就是函数名,arguments为函数参数，参数间以 <code class="docutils literal notranslate"><span class="pre">,</span></code> 隔开,函数名与参数之间以空格隔开</p>
+<section id="id1">
+<h2><span class="section-number">7.6.2.1. </span>字符串处理函数<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">subst</span> <span class="pre">from,to,text</span></span></dt>
+<dd><p>字符串替换函数，将字符串text中的from替换为to</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>from</strong><strong>,</strong><strong>to</strong><strong>,</strong><strong>text</strong> – from待替换的字符，to目标字符，text待处理的字符串</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回替换完成的字符串</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(subst ee,EE,feet on eth street)
+返回结果为fEEt on eth strEEt
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">patsubst</span> <span class="pre">pattern,replacement,text</span></span></dt>
+<dd><p>模式字符串替换函数，查找text中的单词(单词以空格、tab、回车、换行分割)是否符合pattern模式，如果匹配的话则以replacement替换</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pattern</strong><strong>,</strong><strong>replacement</strong> – pattern匹配的模式，replace替换的字符串</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回替换完成的字符串</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(patsubst %.c,%.o,bar.c test.c
+返回结果为bar.o test.o
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">strip</span> <span class="pre">string</span></span></dt>
+<dd><p>去空格函数，去掉sting字符串中开头和结尾的空字符,并将中间的连续多个空字符合并为一个空字符</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>string</strong> – 要处理的字符串</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回替换完成的字符串</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(strip         a       b c d)
+返回结果为 a b c d
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">findstring</span> <span class="pre">find,in</span></span></dt>
+<dd><p>查找字符串函数，在字符串in中查找find字符串</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>find</strong><strong>,</strong><strong>in</strong> – 输入字符串in,查找字符串find</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>如果找到则返回find字符串，没有找到则返回空字符串</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(findstring cat,cat dog)
+返回结果为 cat
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">filter</span> <span class="pre">pattern,</span> <span class="pre">text</span></span></dt>
+<dd><p>过滤函数，以pattern模式过滤text字符串中的单词，patter可以有多个模式</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>pattern</em><em>,</em>) – pattern:过滤模式  text:需要处理的字符串</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回符合模式pattern的字串</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sources := foo.c bar.c baz.s ugh.h
+foo: $(sources)
+    gcc $(filter %.c, %.s, $(sources)) -o foo
+
+filter返回结果为 foo.c bar.c baz.s
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">filter-out</span> <span class="pre">pattern,</span> <span class="pre">text</span></span></dt>
+<dd><p>反过滤函数，以pattern模式过滤text字符串中的单词，去除符合模式的单词，patter可以有多个模式</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>pattern</em><em>,</em>) – pattern:过滤模式  text:需要处理的字符串</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回去除符合模式pattern后的字串</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sources := foo.c bar.c baz.s
+foo: $(sources)
+    gcc $(filter-out %.c, $(sources)) -o foo
+
+filter-out返回结果为 baz.s
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">sort</span> <span class="pre">list</span></span></dt>
+<dd><p>排序函数，给字符串list中的单词进行排序(升序)</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list</strong> – 需要排序的字符串</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回排序后的字符串</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(sort this is a test string)
+返回结果为 a i string test this
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">word</span> <span class="pre">n,text</span></span></dt>
+<dd><p>取单词函数，取字符串text中的第n个单词，从一开始</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>n</em><em>,</em>) – n第n个单词    text需要处理的字符串</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回第n个单词</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(word 4, this is a test string)
+返回结果为 test
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">words</span> <span class="pre">text</span></span></dt>
+<dd><p>字符串统计函数，统计text中单词的个数</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> – text需要处理的字符串</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回text中有多个单词</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(words  this is a test string)
+返回结果为 5
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">firstword</span> <span class="pre">text</span></span></dt>
+<dd><p>取首单词函数，返回字符串的第一个单词</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> – text需要处理的字符串</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回text的第一个单词</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(firstword this is a test string)
+返回结果为 this
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">7.6.2.2. </span>文件名操作函数<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">dir</span> <span class="pre">names</span></span></dt>
+<dd><p>取目录函数，从文件名序列names中取出目录部分</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>names</strong> – names需要处理的文件名</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回names文件的目录部分</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(dir /usr/bin/bzip2)
+返回结果为 /usr/bin
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">notdir</span> <span class="pre">names</span></span></dt>
+<dd><p>取文件函数，从文件名序列names中取出文件部分</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>names</strong> – names需要处理的文件名</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回names文件的文件部分</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(dir /usr/bin/bzip2)
+返回结果为 bzip2
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">suffix</span> <span class="pre">names</span></span></dt>
+<dd><p>取后缀函数</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>names</strong> – names需要处理的文件名</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回names文件的后缀名</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(suffix foo.c bar.s)
+返回结果为 .c .s
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">basename</span> <span class="pre">names</span></span></dt>
+<dd><p>取前缀函数</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>names</strong> – names需要处理的文件名</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回names文件的前缀</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(basename foo.c bar.s)
+返回结果为 foo bar
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">addsuffix</span> <span class="pre">suffix,names</span></span></dt>
+<dd><p>增加后缀函数</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>names</strong> (<em>suffix</em><em>,</em>) – suffix添加的后缀名 names需要处理的文件名</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回添加完后缀名的文件名序列</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(addsuffix .o, foo bar)
+返回结果为 foo.o bar.o
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">addsprefix</span> <span class="pre">prefix,names</span></span></dt>
+<dd><p>增加前缀函数</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>names</strong> (<em>prefix</em><em>,</em>) – prefix添加的前缀名 names需要处理的文件名</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回添加完前缀名的文件名序列</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(addsuffix test_, foo.c bar.c)
+返回结果为 test_foo.c test_bar.c
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">join</span> <span class="pre">list1,list2</span></span></dt>
+<dd><p>字符串连接函数,把字符串list2对应的加到list1的后面，如果&lt;list1&gt;的单词个数要比&lt;list2&gt;的多，那么，&lt;list1&gt;中的多出来的单词将保持原样。如果&lt;list2&gt;的单词个数要比&lt;list1&gt;多，那么，&lt;list2&gt;多出来的单词将被复制到&lt;list1&gt;中</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list2</strong> (<em>list1</em><em>,</em>) – 需要连接的字符串list1 list2</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回连接过后的字符串</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(join aa bb, 11 22 33)
+返回结果为 aa11 bb22 33
+</pre></div>
+</div>
+</section>
+<section id="foreach">
+<h2><span class="section-number">7.6.2.3. </span>foreach函数<a class="headerlink" href="#foreach" title="此标题的永久链接"></a></h2>
+<p>foreach函数和别的函数不一样，因为这个函数是用来做循环用的，Makefile中的foreach函数几乎是仿照shell中的for语句构建的</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">foreach</span> <span class="pre">par,list,text</span></span></dt>
+<dd><p>这个函数的意思是把参数list中的单词逐一取出放到参数所指定的变量中，然后再执行text中包含的表达式,每一次text会返回一个字符串，循环过程中返回的的字符串会以空格分割,循环结束时整个返回</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>list</strong> (<em>par</em><em>,</em>) – par变量， list循环列表</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回text的所有返回值</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<dl class="simple">
+<dt>::</dt><dd><p>names := foo bar
+$(foreach par,$(names),$(addsufix .c,$(par)))
+返回结果为 foo.c bar.c</p>
+</dd>
+</dl>
+</section>
+<section id="if">
+<h2><span class="section-number">7.6.2.4. </span>if 函数<a class="headerlink" href="#if" title="此标题的永久链接"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">if</span> <span class="pre">condition,</span> <span class="pre">then-part,</span> <span class="pre">else-part</span></span></dt>
+<dd><p>if判断函数，也可以不含else部分。表达式condition为真则执行then-part部分,否则执行else-part部分</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>else-part</strong> (<em>condition</em><em>, </em><em>then-part</em><em>,</em>) – condition条件判断表达式</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>返回then-part或else-part的执行结果</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>source := Makefile.build xxx_defconfig
+$(if $(filter %.c,$(source)), $(addprefix uboot_,$(source)), $(addsufix .cmd,$(source)))
+返回结果为 uboot_Makefile.build uboot_xxx_defconfig
+</pre></div>
+</div>
+</section>
+<section id="call">
+<h2><span class="section-number">7.6.2.5. </span>call函数<a class="headerlink" href="#call" title="此标题的永久链接"></a></h2>
+<p>call函数是唯一一个可以用来创建新的参数化的函数，你可以写一个非常复杂的表达式，这个表达式中你可以定义很多参数，然后你可以用call函数来向这个表达式传递参数</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">call</span> <span class="pre">expression,</span> <span class="pre">parm1,</span> <span class="pre">parm2</span></span></dt>
+<dd><p>调用自定义的表达式expression</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>param</strong> (<em>expression</em><em>,</em>) – express调用的表达式  pram参数</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>expression的返回值</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>reverse = $(2) $(1)
+foo = $(call revers, a, b)
+此时foo的值就等于 b a
+</pre></div>
+</div>
+</section>
+<section id="origin">
+<h2><span class="section-number">7.6.2.6. </span>origin函数<a class="headerlink" href="#origin" title="此标题的永久链接"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">origin</span> <span class="pre">variable</span></span></dt>
+<dd><p>返回变量是从哪里来的</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>variable</strong> – 需要判断的变量</p>
+</dd>
+<dt class="field-even">返回类型<span class="colon">:</span></dt>
+<dd class="field-even"><p>变量来源</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="shell">
+<h2><span class="section-number">7.6.2.7. </span>shell函数<a class="headerlink" href="#shell" title="此标题的永久链接"></a></h2>
+<p>shell函数是Makefile中直接调用shell命令</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>contexts := $(shell cat foo)
+files := $(shell echo *.c)
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="rule.html" class="btn btn-neutral float-left" title="7.6.1. Makefile规则介绍" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="gcc_compile.html" class="btn btn-neutral float-right" title="7.6.3. gcc编译选项总结" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

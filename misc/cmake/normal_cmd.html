@@ -1,0 +1,445 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.7.3. CMake常见指令 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="7.8. 链接脚本" href="../ld_scripts/index.html" />
+    <link rel="prev" title="7.7.2. Cmake基础知识" href="base.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.7. Cmake学习笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html">7.7.1. CMake简明</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base.html">7.7.2. Cmake基础知识</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.7.3. CMake常见指令</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">7.7.3.1. 常见指令语法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.9. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.7. </span>Cmake学习笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.7.3. </span>CMake常见指令</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/misc/cmake/normal_cmd.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cmake">
+<h1><span class="section-number">7.7.3. </span>CMake常见指令<a class="headerlink" href="#cmake" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">7.7.3.1. </span>常见指令语法<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>project指令语法</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">project</span><span class="p">(</span><span class="n">projectname</span> <span class="p">[</span><span class="n">CXX</span><span class="p">]</span> <span class="p">[</span><span class="n">C</span><span class="p">]</span> <span class="p">[</span><span class="n">Java</span><span class="p">])</span>
+<span class="c1">##可以使用这个指令定义工程名称，并可指定工程支持的语言，支持的语言是可以忽略的，默认情况下支持所有语言。这个指令隐式的定义了两个cmake变量</span>
+<span class="c1">##&lt;project&gt;_BINARY_DIR以及&lt;project&gt;_SOURCE_DIR</span>
+<span class="c1">#建议直接使用PROJECT_BINARY_DIR以及PROJECT_SOURCE_DIR,这样修改工程名称后也不会影响这两个变量</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>set指令语法</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="n">VAR</span> <span class="p">[</span><span class="n">VALUE</span><span class="p">]</span> <span class="p">[</span><span class="n">CACHE</span> <span class="n">TYPE</span> <span class="n">DOCSTRING</span> <span class="p">[</span><span class="n">FORCE</span><span class="p">]])</span>
+<span class="c1">#set指令用来显式的定义变量</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>message指令语法</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">message</span><span class="p">([</span><span class="n">SEND_ERROR</span> <span class="o">|</span> <span class="n">STATUS</span> <span class="o">|</span> <span class="n">FATAL_ERROR</span><span class="p">]</span> <span class="s2">&quot;message to display&quot;</span> <span class="o">...</span><span class="p">)</span>
+<span class="c1">#这个命令用于向终端输出用户定义的信息，包含了三种类型:SEND_ERROR(产生错误，生成过程被跳过)、STATUS(输出前缀为-的信息)、FATAL_ERROR(立即终止所有cmake过程)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>add_library: 该指令的主要作用就是将指定的源文件生成链接文件，然后添加到工程中去</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_library</span><span class="p">(</span><span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">STATIC</span> <span class="o">|</span> <span class="n">SHARED</span> <span class="o">|</span> <span class="n">MODULE</span> <span class="o">|</span> <span class="n">OBJECT</span><span class="p">]</span>
+            <span class="p">[</span><span class="n">EXCLUDE_FROM_ALL</span><span class="p">]</span>
+            <span class="n">source1</span> <span class="p">[</span><span class="n">source2</span> <span class="o">...</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>name:表示库文件的名字，该库文件会根据命令中列出的源文件来创建
+STATIC|SHARED|MODULE|OBJECT: 分别对应静态库，动态库，MODULE(一种不会被链接到其他目标中的插件，但可能会运行时加载), OBJECT(可以将源代码编译为对象文件)</p>
+</div>
+<ul class="simple">
+<li><p>option: 为用户提供一个可选项，如果没有指定，将使用OFF作为初始值</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>option(&lt;option_variable&gt; &quot;help string&quot; [initial value])
+#&lt;option_variable&gt;: 选项名
+#&quot;help string&quot; 提示用户的信息
+#[initial value]: 变量初始值ON or OFF
+例：
+option(WITH_BLUEFS &quot;libbluefs library&quot; OFF)
+构建过程中，会提示libbluefs library文字，等待用户输入(ON or OFF),输入的值保存在WITH_BLUEFS变量里
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>execute_process: 执行进程．该命令可以执行一个或多个命令作为当前命令的子命令，将输出结果保存在cmake变量或文件中，所有的进程使用单个的标准错误输出管道</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">execute_process</span><span class="p">(</span><span class="n">COMMAND</span> <span class="o">&lt;</span><span class="n">cmd1</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">args1</span> <span class="o">...</span><span class="p">]</span>
+                <span class="n">COMMAND</span> <span class="o">&lt;</span><span class="n">cmd2</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">args2</span><span class="o">...</span><span class="p">]</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">WORKING_DIRECTORY</span> <span class="o">&lt;</span><span class="n">directory</span><span class="o">&gt;</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">TIMEOUT</span> <span class="o">&lt;</span><span class="n">seconds</span><span class="o">&gt;</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">RESULT_VARIABLE</span> <span class="o">&lt;</span><span class="n">variable</span><span class="o">&gt;</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">OUTPUT_VARIABLE</span> <span class="o">&lt;</span><span class="n">variable</span><span class="o">&gt;</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">ERROR_VARIABLE</span> <span class="o">&lt;</span><span class="n">variable</span><span class="o">&gt;</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">INPUT_FILE</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">OUTPUT_FILE</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">ERROR_FILE</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">OUTPUT_QUIET</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">ERROR_QUIET</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">OUTPUT_STRIP_TRAILING_WHITESPACE</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">ERROR_STRIP_TRAILING_WHITESPACE</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果指定了WORKING_DIRECTORY，则指定的目录将作为子进程当前的工作目录
+如果指定了TIMEOUT,则如果在指定时间内子进程未完成，将会被中断
+RESULT_VARIABLE保存最后命令执行的结果
+OUTPUT_VARIABLE,ERROR_VARIABLE保存标准输出和标准错误输出的内容
+OUTPUT_QUIET,ERROR_QUIER忽略标准输出和错误输出</p>
+</div>
+<p>例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>excute_process(
+    COMMAND
+    ${PYTHON_EXECUTABLE} &quot;-c&quot; &quot;print(&#39;hello, world!&#39;)&quot;
+    RESULT_VARIABLE _status
+    OUTPUT_VARIABLE _hello_world
+    ERROR_QUIET
+)
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>target_sources:往source文件中追加源文件</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_executable</span><span class="p">(</span><span class="n">test_app</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">target_sources</span><span class="p">(</span><span class="n">test_app</span>
+    <span class="n">PRIVATE</span>
+    <span class="n">subsource</span><span class="o">.</span><span class="n">cpp</span>
+    <span class="n">PUBLIC</span>
+    <span class="n">subsource</span><span class="o">.</span><span class="n">h</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>源文件一般指定为PRIVATE，因为源文件只是在构建时使用，而头文件指定为PUBLIC，是因为构建和编译时都会使用</p>
+</div>
+<ul class="simple">
+<li><p>add_custom_command: 为生成的构建系统添加一条自定义的构建规则</p></li>
+</ul>
+<p>有两种使用方法:</p>
+<p>方法一:　增加一个自定义命令用来产生一个输出</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_custom_command</span><span class="p">(</span><span class="n">OUTPUT</span> <span class="n">output1</span> <span class="p">[</span><span class="n">output2</span><span class="o">...</span><span class="p">]</span>            <span class="c1">#输出，可以输出到一个变量中</span>
+              <span class="n">COMMAND</span> <span class="n">command1</span> <span class="p">[</span><span class="n">ARGS</span><span class="p">]</span> <span class="p">[</span><span class="n">args1</span><span class="o">...</span><span class="p">]</span>          <span class="c1">#自定义的命令</span>
+              <span class="n">COMMAND</span> <span class="n">command2</span> <span class="p">[</span><span class="n">ARGS</span><span class="p">]</span> <span class="p">[</span><span class="n">args2</span><span class="o">...</span><span class="p">]</span>
+              <span class="p">[</span><span class="n">MAIN_DEPENDENCY</span> <span class="n">depend</span><span class="p">]</span>
+              <span class="p">[</span><span class="n">DEPENDS</span><span class="p">[</span><span class="n">depends</span><span class="o">...</span><span class="p">]]</span>                       <span class="c1">#列出该命令的依赖项</span>
+              <span class="p">[</span><span class="n">IMPLICIT_DEPENDS</span><span class="o">&lt;</span><span class="n">lang1</span><span class="o">&gt;</span> <span class="n">depend1</span> <span class="o">...</span><span class="p">]</span>
+              <span class="p">[</span><span class="n">WORKING_DIRECTORY</span> <span class="nb">dir</span><span class="p">]</span>                     <span class="c1">#指定在哪个目录下执行该命令</span>
+              <span class="p">[</span><span class="n">COMMENT</span> <span class="n">comment</span><span class="p">]</span> <span class="p">[</span><span class="n">VERBATIM</span><span class="p">]</span> <span class="p">[</span><span class="n">APPEND</span><span class="p">])</span>      <span class="c1">#COMMENT提示信息会在构建时打印出来，</span>
+                                                          <span class="c1">#VERBATIM告诉Cmake为指定的生成器和平台生成正确的命令，来确保是与平台无关的</span>
+</pre></div>
+</div>
+<p>方法二:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_custom_command</span><span class="p">(</span><span class="n">TARGET</span> <span class="n">target</span>
+                    <span class="n">PRE_BUILD</span> <span class="o">|</span> <span class="n">PRE_LINK</span> <span class="o">|</span> <span class="n">POST_BUILD</span>
+                    <span class="n">COMMAND</span> <span class="n">command1</span> <span class="p">[</span><span class="n">args1</span><span class="o">...</span><span class="p">]</span>
+                    <span class="n">COMMAND</span> <span class="n">command2</span> <span class="p">[</span><span class="n">args2</span><span class="o">...</span><span class="p">]</span>
+                    <span class="p">[</span><span class="n">WORKING_DIRECTORY</span> <span class="nb">dir</span><span class="p">]</span>
+                    <span class="p">[</span><span class="n">COMMENT</span> <span class="n">comment</span><span class="p">]</span> <span class="p">[</span><span class="n">VERBATIM</span><span class="p">])</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>function &amp; macro</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span><span class="p">(</span><span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">arg1</span> <span class="p">[</span><span class="n">arg2</span> <span class="p">[</span><span class="n">arg3</span> <span class="o">...</span><span class="p">]]])</span>
+    <span class="n">COMMAND1</span><span class="p">(</span><span class="n">ARGS</span> <span class="o">...</span><span class="p">)</span>
+    <span class="n">COMMAND2</span><span class="p">(</span><span class="n">ARGS</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">endfunction</span><span class="p">(</span><span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">)</span>
+
+<span class="n">macro</span><span class="p">(</span><span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">arg1</span> <span class="p">[</span><span class="n">arg2</span> <span class="p">[</span><span class="n">arg3</span> <span class="o">...</span><span class="p">]]])</span>
+    <span class="n">COMMAND1</span><span class="p">(</span><span class="n">ARGS</span> <span class="o">...</span><span class="p">)</span>
+    <span class="n">COMMAND2</span><span class="p">(</span><span class="n">ARGS</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">endmacro</span><span class="p">(</span><span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>相同点: function和macro都没有返回值
+不同点:function和macro的变量作用域不同，如果宏内修改变量值宏外相同名称的变量值也会更改，function内则不会，如果想达到同样的效果则需要使用关键字PARENT_SCOPE</p>
+</div>
+<ul class="simple">
+<li><p>check_cxx_compiler_flag: 判断C++编译器是否支持某flag，flag可以是-g,-std=c++11等</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">check_cxx_compiler_flag</span><span class="p">(</span><span class="o">&lt;</span><span class="n">flag</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">var</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="n">例</span>
+<span class="n">check_cxx_compiler_flag</span><span class="p">(</span><span class="s2">&quot;-std=c++11&quot;</span> <span class="n">COMPILER_SUPPORTS_CXX11</span><span class="p">)</span>
+<span class="n">unset</span><span class="p">(</span><span class="n">COMPILER_SUPPORTS_CXX11</span> <span class="n">CACHE</span><span class="p">)</span>
+<span class="k">if</span><span class="p">(</span><span class="n">COMPILER_SUPPORTS_CXX11</span><span class="p">)</span>
+    <span class="nb">set</span><span class="p">(</span><span class="n">CMAKE_CXX_FLAGS</span> <span class="s2">&quot;$</span><span class="si">{CMAKE_CXX_FLAGS}</span><span class="s2"> -std=c++11&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">()</span>
+    <span class="n">message</span><span class="p">(</span><span class="n">STATUS</span> <span class="s2">&quot;the compiler has no C++11 support&quot;</span><span class="p">)</span>
+<span class="n">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>check_c_compiler_flag使用方法类似</p>
+<ul class="simple">
+<li><p>configure_file: 拷贝input文件到output,并更改其中的内容</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">configure_file</span><span class="p">(</span><span class="o">&lt;</span><span class="nb">input</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">output</span><span class="o">&gt;</span>
+                <span class="p">[</span><span class="n">COPYONLY</span><span class="p">]</span> <span class="p">[</span><span class="n">ESCAPE_QUOTES</span><span class="p">]</span> <span class="p">[</span><span class="nd">@ONLY</span><span class="p">]</span>
+                <span class="p">[</span><span class="n">NEWLINE_STYLE</span> <span class="p">[</span><span class="n">UNIX</span><span class="o">|</span><span class="n">DOS</span><span class="o">|</span><span class="n">WIN32</span><span class="o">|</span><span class="n">LF</span><span class="o">|</span><span class="n">CRLF</span><span class="p">]])</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>set_target_properties: 为目标文件设置属性，语法如下</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">set_target_properties</span><span class="p">(</span><span class="n">target1</span> <span class="n">target2</span> <span class="o">...</span>
+                    <span class="n">PROPERTIES</span> <span class="n">prop1</span> <span class="n">value1</span>
+                    <span class="n">prop2</span> <span class="n">value2</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>include_directories: 添加头文件目录，相当于把路径添加到环境变量中</p></li>
+<li><p>link_directories: 添加库文件目录，相当于把需要链接的库文件目录添加到LD_LIBRARY_PATH中</p></li>
+<li><p>find_library: 查找库所在的目录</p></li>
+<li><p>list: 列表操作，有以下方法</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#返回list的长度</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">LENGTH</span> <span class="o">&lt;</span><span class="nb">list</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">output</span> <span class="n">variable</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="c1">#返回list中index的element到value中</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">GET</span> <span class="o">&lt;</span><span class="nb">list</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">element</span> <span class="n">index</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">element</span> <span class="n">index</span><span class="o">&gt;</span> <span class="o">...</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">output</span> <span class="n">variable</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="c1">#添加新的element到list中</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">APPEND</span> <span class="o">&lt;</span><span class="nb">list</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">element</span><span class="o">&gt;</span> <span class="o">...</span><span class="p">])</span>
+<span class="c1">#返回list中element的index,没有找到返回-1</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">FIND</span> <span class="o">&lt;</span><span class="nb">list</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">output</span> <span class="n">variable</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="c1">#将新element插入到list中的index位置</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">INSERT</span> <span class="o">&lt;</span><span class="nb">list</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">element_index</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">element</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">element</span><span class="o">&gt;</span> <span class="o">...</span><span class="p">])</span>
+<span class="c1">#从list中删除某个element</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">REMOVE_ITEM</span> <span class="o">&lt;</span><span class="nb">list</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span> <span class="o">...</span><span class="p">])</span>
+<span class="c1">#从list中删除指定index的element</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">REMOVE_AT</span> <span class="o">&lt;</span><span class="nb">list</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">index</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">index</span><span class="o">&gt;</span> <span class="o">...</span><span class="p">])</span>
+<span class="c1">#从list中删除重复的element</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">REMOVE_DUPLICATES</span> <span class="o">&lt;</span><span class="nb">list</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="c1">#将list的内容反转</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">REVERSE</span> <span class="o">&lt;</span><span class="nb">list</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="c1">#将list按字母顺序排序</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">SORT</span> <span class="o">&lt;</span><span class="nb">list</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>file: 文件操作命令</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#Reading</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">READ</span> <span class="o">&lt;</span><span class="n">filename</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">...</span><span class="p">])</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">STRINGS</span> <span class="o">&lt;</span><span class="n">filename</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">...</span><span class="p">])</span>
+    <span class="n">file</span><span class="p">(</span><span class="o">&lt;</span><span class="n">HASH</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">filename</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span><span class="p">)</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">TIMESTAMP</span> <span class="o">&lt;</span><span class="n">filename</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">...</span><span class="p">])</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">GET_RUNTIME_DEPENDENCIES</span> <span class="p">[</span><span class="o">...</span><span class="p">])</span>
+
+<span class="c1">#Writing</span>
+    <span class="n">file</span><span class="p">({</span><span class="n">WRITE</span> <span class="o">|</span> <span class="n">APPEND</span><span class="p">}</span> <span class="o">&lt;</span><span class="n">filename</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">content</span><span class="o">&gt;</span> <span class="o">...</span><span class="p">)</span>
+    <span class="n">file</span><span class="p">({</span><span class="n">TOUCH</span> <span class="o">|</span> <span class="n">TOUCH_NOCREATE</span><span class="p">}</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span> <span class="o">...</span><span class="p">])</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">GENERATE</span> <span class="n">OUTPUT</span> <span class="o">&lt;</span><span class="n">output</span><span class="o">-</span><span class="n">file</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">...</span><span class="p">])</span>
+
+<span class="c1">#Filesystem</span>
+    <span class="n">file</span><span class="p">({</span><span class="n">GLOG</span> <span class="o">|</span> <span class="n">GLOB_RECURSE</span><span class="p">}</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">globbing</span><span class="o">-</span><span class="n">expr</span><span class="o">&gt;...</span><span class="p">])</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">RENAME</span> <span class="o">&lt;</span><span class="n">oldname</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">newname</span><span class="o">&gt;</span><span class="p">)</span>
+    <span class="n">file</span><span class="p">({</span><span class="n">REMOVE</span> <span class="o">|</span> <span class="n">REMOVE_RECURSE</span><span class="p">}</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">files</span><span class="o">&gt;</span> <span class="o">...</span><span class="p">])</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">MAKE_DIRECTORY</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">dir</span><span class="o">&gt;...</span><span class="p">])</span>
+    <span class="n">file</span><span class="p">({</span><span class="n">COPY</span> <span class="o">|</span> <span class="n">INSTALL</span><span class="p">}</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;...</span> <span class="n">DESTINATION</span> <span class="o">&lt;</span><span class="nb">dir</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">...</span><span class="p">])</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">SIZE</span> <span class="o">&lt;</span><span class="n">filename</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span><span class="p">)</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">READ_SYMLINK</span> <span class="o">&lt;</span><span class="n">linkname</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span><span class="p">)</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">CREATE_LINK</span> <span class="o">&lt;</span><span class="n">original</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">linkname</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">...</span><span class="p">])</span>
+
+<span class="c1">#Path Conversion</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">RELATIVE_PATH</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">directory</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
+    <span class="n">file</span><span class="p">({</span><span class="n">TO_CMAKE_PATH</span> <span class="o">|</span> <span class="n">TO_NATIVE_PATH</span><span class="p">}</span> <span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span><span class="p">)</span>
+
+<span class="c1">#Transfer</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">DOWNLOAD</span> <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">...</span><span class="p">])</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">UPLOAD</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">...</span><span class="p">])</span>
+
+<span class="c1">#Locking</span>
+    <span class="n">file</span><span class="p">(</span><span class="n">LOCK</span> <span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">...</span><span class="p">])</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>string</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#search and replace</span>
+    <span class="n">string</span><span class="p">(</span><span class="n">FIND</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">substring</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">...</span><span class="p">])</span>
+    <span class="n">string</span><span class="p">(</span><span class="n">REPLACE</span> <span class="o">&lt;</span><span class="n">match</span><span class="o">-</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">replace</span><span class="o">-</span><span class="n">string</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">input</span><span class="o">&gt;</span> <span class="o">...</span><span class="p">)</span>
+
+<span class="c1">#Regular Expressions</span>
+    <span class="n">string</span><span class="p">(</span><span class="n">REGEX</span> <span class="n">MATCH</span> <span class="o">&lt;</span><span class="n">match</span><span class="o">-</span><span class="n">regex</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">input</span><span class="o">&gt;...</span><span class="p">)</span>
+    <span class="n">string</span><span class="p">(</span><span class="n">REGEX</span> <span class="n">MATCHALL</span> <span class="o">&lt;</span><span class="n">match</span><span class="o">-</span><span class="n">regex</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">input</span><span class="o">&gt;...</span><span class="p">)</span>
+    <span class="n">string</span><span class="p">(</span><span class="n">REGEX</span> <span class="n">REPLACE</span> <span class="o">&lt;</span><span class="n">match</span><span class="o">-</span><span class="n">regex</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">replace</span><span class="o">-</span><span class="n">expr</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">input</span><span class="o">&gt;...</span><span class="p">)</span>
+
+<span class="c1">#Manipulation</span>
+    <span class="n">string</span><span class="p">(</span><span class="n">APPEND</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">input</span><span class="o">&gt;...</span><span class="p">])</span>
+    <span class="n">string</span><span class="p">(</span><span class="n">PREPEND</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">input</span><span class="o">&gt;...</span><span class="p">])</span>
+    <span class="n">string</span><span class="p">(</span><span class="n">CONCAT</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">input</span><span class="o">&gt;...</span><span class="p">])</span>
+    <span class="n">string</span><span class="p">(</span><span class="n">JOIN</span> <span class="o">&lt;</span><span class="n">glue</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">out</span><span class="o">-</span><span class="n">var</span><span class="o">&gt;</span> <span class="p">[</span><span class="o">&lt;</span><span class="nb">input</span><span class="o">&gt;...</span><span class="p">])</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>fin_package: 寻找外部项目，并加载设置</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">find_package</span><span class="p">(</span><span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span> <span class="p">[</span><span class="n">version</span><span class="p">]</span> <span class="p">[</span><span class="n">EXACT</span><span class="p">]</span> <span class="p">[</span><span class="n">QUIET</span><span class="p">]</span> <span class="p">[</span><span class="n">MODULE</span><span class="p">]</span>
+            <span class="p">[</span><span class="n">REQUIRED</span><span class="p">]</span> <span class="p">[[</span><span class="n">COMPONENTS</span><span class="p">]</span> <span class="p">[</span><span class="n">components</span><span class="o">...</span><span class="p">]]</span>
+            <span class="p">[</span><span class="n">OPTIONAL_COMPONENTS</span> <span class="n">components</span><span class="o">...</span><span class="p">]</span>
+            <span class="p">[</span><span class="n">NO_POLICY_SCOPE</span><span class="p">])</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>cmake_parse_arguments: CMake参数解析命令，可以用于解析函数或宏的参数列表</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cmake_parse_arguments</span><span class="p">(</span><span class="o">&lt;</span><span class="n">prefix</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">options</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">one_value_keywords</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">multi_value_keywords</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">args</span><span class="o">&gt;...</span><span class="p">)</span>
+<span class="n">cmake_parse_arguments</span><span class="p">(</span><span class="n">PARSE_ARGV</span> <span class="o">&lt;</span><span class="n">N</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">prefix</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">options</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">one_value_keywords</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">multi_value_keywords</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>options:可选值，此处包含可选项的变量的名称，对应的值为TRUE或FALSE
+one_value_keywords:单值关键词列表
+multi_value_keywords:多值关键词列表
+args:参数，一般传入${ARGN}即可
+prefix:前缀，解析出的参数都会按照prefix_参数名的形式形成新的变量</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>function(my_install)
+    set(options OPTIONAL FAST)
+    set(oneValueArgs DESTINATION RENAME)
+    set(multiValueArgs TARGETS CONFIGURATIONS)
+    cmake_parse_arguments(my_install &quot;${options}&quot; &quot;${oneValueArgs}&quot; &quot;${multiValueArgs}&quot; ${ARGN})
+endfunction()
+
+函数调用
+my_install(TARGETS foo bar DESTINATION bin OPTIONAL blub)
+#可选值OPTIONAL和FAST，函数调用时传入了OPTIONAL
+#单值关键词列表包含DESTINATION和RENAME，函数调用时传入DESTINATION，参数名为bin
+#多值关键词列表包含TARGETS和CONFIGURATIONS
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="base.html" class="btn btn-neutral float-left" title="7.7.2. Cmake基础知识" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../ld_scripts/index.html" class="btn btn-neutral float-right" title="7.8. 链接脚本" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

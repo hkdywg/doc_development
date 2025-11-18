@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2.4. uboot解析uImage的kernel信息 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="2.5. bootm原理" href="bootm.html" />
+    <link rel="prev" title="2.3. Legacy-uImage &amp; FIT-uImage" href="legacy-fit_img.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../optee/index.html">1. tee</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. u-boot dev note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compile.html">2.1. uboot编译流程分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html">2.2. source analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="legacy-fit_img.html">2.3. Legacy-uImage &amp; FIT-uImage</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.4. uboot解析uImage的kernel信息</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kernel">2.4.1. kernel信息的存放位置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#legacy-uimagekernel">2.4.2. legacy-uImage中kernel信息的解析代码流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fit-uimagekernel">2.4.3. FIT-uImage中kernel信息的解析</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bootm.html">2.5. bootm原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transfer_param.html">2.6. uboot向kernel的传参机制–bootm与tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uboot_memory.html">2.7. uboot-kernel地址空间</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_core_startup.html">2.8. 多核异构平台系统启动分析</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>u-boot dev note</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2.4. </span>uboot解析uImage的kernel信息</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/u-boot/parsing_uimage.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ubootuimagekernel">
+<h1><span class="section-number">2.4. </span>uboot解析uImage的kernel信息<a class="headerlink" href="#ubootuimagekernel" title="此标题的永久链接"></a></h1>
+<section id="kernel">
+<h2><span class="section-number">2.4.1. </span>kernel信息的存放位置<a class="headerlink" href="#kernel" title="此标题的永久链接"></a></h2>
+<p>kernel信息主要包括两方面内容:</p>
+<ul class="simple">
+<li><p>kernel的镜像信息(包括其加载地址)：放在bootm_headers_t images-&gt;image_info_t os中</p></li>
+<li><p>kernel的入口地址:放在bootm_headers_t images-&gt;ulong ep中</p></li>
+</ul>
+<p>详细可以参考 <code class="docutils literal notranslate"><span class="pre">include/image.h</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">struct</span> <span class="n">bootm_headers</span> <span class="p">{</span>
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">Legacy</span> <span class="n">os</span> <span class="n">image</span> <span class="n">header</span><span class="p">,</span> <span class="k">if</span> <span class="n">it</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">multi</span> <span class="n">component</span> <span class="n">image</span>
+     <span class="o">*</span> <span class="n">then</span> <span class="n">boot_get_ramdisk</span><span class="p">()</span> <span class="ow">and</span> <span class="n">get_fdt</span><span class="p">()</span> <span class="n">will</span> <span class="n">attempt</span> <span class="n">to</span> <span class="n">get</span>
+     <span class="o">*</span> <span class="n">data</span> <span class="kn">from</span> <span class="nn">second</span> <span class="ow">and</span> <span class="n">third</span> <span class="n">component</span> <span class="n">accordingly</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">image_header_t</span>  <span class="o">*</span><span class="n">legacy_hdr_os</span><span class="p">;</span>         <span class="o">/*</span> <span class="n">image</span> <span class="n">header</span> <span class="n">pointer</span> <span class="o">*/</span>
+    <span class="n">image_header_t</span>  <span class="n">legacy_hdr_os_copy</span><span class="p">;</span>     <span class="o">/*</span> <span class="n">header</span> <span class="n">copy</span> <span class="o">*/</span>
+    <span class="n">ulong</span>           <span class="n">legacy_hdr_valid</span><span class="p">;</span>
+
+<span class="c1">#if IMAGE_ENABLE_FIT</span>
+    <span class="n">const</span> <span class="n">char</span>      <span class="o">*</span><span class="n">fit_uname_cfg</span><span class="p">;</span> <span class="o">/*</span> <span class="n">configuration</span> <span class="n">node</span> <span class="n">unit</span> <span class="n">name</span> <span class="o">*/</span>
+
+    <span class="n">void</span>            <span class="o">*</span><span class="n">fit_hdr_os</span><span class="p">;</span>    <span class="o">/*</span> <span class="n">os</span> <span class="n">FIT</span> <span class="n">image</span> <span class="n">header</span> <span class="o">*/</span>
+    <span class="n">const</span> <span class="n">char</span>      <span class="o">*</span><span class="n">fit_uname_os</span><span class="p">;</span>  <span class="o">/*</span> <span class="n">os</span> <span class="n">subimage</span> <span class="n">node</span> <span class="n">unit</span> <span class="n">name</span> <span class="o">*/</span>
+    <span class="nb">int</span>             <span class="n">fit_noffset_os</span><span class="p">;</span> <span class="o">/*</span> <span class="n">os</span> <span class="n">subimage</span> <span class="n">node</span> <span class="n">offset</span> <span class="o">*/</span>
+
+    <span class="n">void</span>            <span class="o">*</span><span class="n">fit_hdr_rd</span><span class="p">;</span>    <span class="o">/*</span> <span class="n">init</span> <span class="n">ramdisk</span> <span class="n">FIT</span> <span class="n">image</span> <span class="n">header</span> <span class="o">*/</span>
+    <span class="n">const</span> <span class="n">char</span>      <span class="o">*</span><span class="n">fit_uname_rd</span><span class="p">;</span>  <span class="o">/*</span> <span class="n">init</span> <span class="n">ramdisk</span> <span class="n">subimage</span> <span class="n">node</span> <span class="n">unit</span> <span class="n">name</span> <span class="o">*/</span>
+    <span class="nb">int</span>             <span class="n">fit_noffset_rd</span><span class="p">;</span> <span class="o">/*</span> <span class="n">init</span> <span class="n">ramdisk</span> <span class="n">subimage</span> <span class="n">node</span> <span class="n">offset</span> <span class="o">*/</span>
+
+    <span class="n">void</span>            <span class="o">*</span><span class="n">fit_hdr_fdt</span><span class="p">;</span>   <span class="o">/*</span> <span class="n">FDT</span> <span class="n">blob</span> <span class="n">FIT</span> <span class="n">image</span> <span class="n">header</span> <span class="o">*/</span>
+    <span class="n">const</span> <span class="n">char</span>      <span class="o">*</span><span class="n">fit_uname_fdt</span><span class="p">;</span> <span class="o">/*</span> <span class="n">FDT</span> <span class="n">blob</span> <span class="n">subimage</span> <span class="n">node</span> <span class="n">unit</span> <span class="n">name</span> <span class="o">*/</span>
+    <span class="nb">int</span>             <span class="n">fit_noffset_fdt</span><span class="p">;</span><span class="o">/*</span> <span class="n">FDT</span> <span class="n">blob</span> <span class="n">subimage</span> <span class="n">node</span> <span class="n">offset</span> <span class="o">*/</span>
+
+    <span class="n">void</span>            <span class="o">*</span><span class="n">fit_hdr_setup</span><span class="p">;</span> <span class="o">/*</span> <span class="n">x86</span> <span class="n">setup</span> <span class="n">FIT</span> <span class="n">image</span> <span class="n">header</span> <span class="o">*/</span>
+    <span class="n">const</span> <span class="n">char</span>      <span class="o">*</span><span class="n">fit_uname_setup</span><span class="p">;</span> <span class="o">/*</span> <span class="n">x86</span> <span class="n">setup</span> <span class="n">subimage</span> <span class="n">node</span> <span class="n">name</span> <span class="o">*/</span>
+    <span class="nb">int</span>             <span class="n">fit_noffset_setup</span><span class="p">;</span><span class="o">/*</span> <span class="n">x86</span> <span class="n">setup</span> <span class="n">subimage</span> <span class="n">node</span> <span class="n">offset</span> <span class="o">*/</span>
+<span class="c1">#endif</span>
+
+<span class="c1">#ifndef USE_HOSTCC</span>
+    <span class="n">image_info_t</span>    <span class="n">os</span><span class="p">;</span>             <span class="o">/*</span> <span class="n">os</span> <span class="n">image</span> <span class="n">info</span> <span class="o">*/</span>
+    <span class="n">ulong</span>           <span class="n">ep</span><span class="p">;</span>             <span class="o">/*</span> <span class="n">entry</span> <span class="n">point</span> <span class="n">of</span> <span class="n">OS</span> <span class="o">*/</span>
+
+    <span class="n">ulong</span>           <span class="n">rd_start</span><span class="p">,</span> <span class="n">rd_end</span><span class="p">;</span><span class="o">/*</span> <span class="n">ramdisk</span> <span class="n">start</span><span class="o">/</span><span class="n">end</span> <span class="o">*/</span>
+
+    <span class="n">char</span>            <span class="o">*</span><span class="n">ft_addr</span><span class="p">;</span>       <span class="o">/*</span> <span class="n">flat</span> <span class="n">dev</span> <span class="n">tree</span> <span class="n">address</span> <span class="o">*/</span>
+    <span class="n">ulong</span>           <span class="n">ft_len</span><span class="p">;</span>         <span class="o">/*</span> <span class="n">length</span> <span class="n">of</span> <span class="n">flat</span> <span class="n">device</span> <span class="n">tree</span> <span class="o">*/</span>
+
+    <span class="n">ulong</span>           <span class="n">initrd_start</span><span class="p">;</span>
+    <span class="n">ulong</span>           <span class="n">initrd_end</span><span class="p">;</span>
+    <span class="n">ulong</span>           <span class="n">cmdline_start</span><span class="p">;</span>
+    <span class="n">ulong</span>           <span class="n">cmdline_end</span><span class="p">;</span>
+    <span class="n">bd_t</span>            <span class="o">*</span><span class="n">kbd</span><span class="p">;</span>
+<span class="c1">#endif</span>
+
+    <span class="nb">int</span>             <span class="n">verify</span><span class="p">;</span>         <span class="o">/*</span> <span class="n">env_get</span><span class="p">(</span><span class="s2">&quot;verify&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;n&#39;</span> <span class="o">*/</span>
+
+<span class="c1">#define     BOOTM_STATE_START       (0x00000001)</span>
+<span class="c1">#define     BOOTM_STATE_FINDOS      (0x00000002)</span>
+<span class="c1">#define     BOOTM_STATE_FINDOTHER   (0x00000004)</span>
+<span class="c1">#define     BOOTM_STATE_LOADOS      (0x00000008)</span>
+<span class="c1">#define     BOOTM_STATE_RAMDISK     (0x00000010)</span>
+<span class="c1">#define     BOOTM_STATE_FDT         (0x00000020)</span>
+<span class="c1">#define     BOOTM_STATE_OS_CMDLINE  (0x00000040)</span>
+<span class="c1">#define     BOOTM_STATE_OS_BD_T     (0x00000080)</span>
+<span class="c1">#define     BOOTM_STATE_OS_PREP     (0x00000100)</span>
+<span class="c1">#define     BOOTM_STATE_OS_FAKE_GO  (0x00000200)    /* &#39;Almost&#39; run the OS */</span>
+<span class="c1">#define     BOOTM_STATE_OS_GO       (0x00000400)</span>
+    <span class="nb">int</span>             <span class="n">state</span><span class="p">;</span>
+
+<span class="c1">#ifdef CONFIG_LMB</span>
+    <span class="n">struct</span> <span class="n">lmb</span>      <span class="n">lmb</span><span class="p">;</span>            <span class="o">/*</span> <span class="k">for</span> <span class="n">memory</span> <span class="n">mgmt</span> <span class="o">*/</span>
+<span class="c1">#endif</span>
+<span class="p">}</span> <span class="n">bootm_headers_t</span><span class="p">;</span>
+
+<span class="n">extern</span> <span class="n">bootm_headers_t</span> <span class="n">images</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>image_info_t的详细解释如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>typedef struct image_info {
+    ulong           start, end;             /* start/end of blob */     //包括附加节点信息之内的整个kernel节点的起始地址和结束地址
+    ulong           image_start, image_len; /* start of image within blob, len of image */      //kernel镜像的起始地址，镜像长度
+    ulong           load;                   /* load addr for the image */       //镜像的加载地址
+    uint8_t         comp, type, os;         /* compression, type of image, os type */       //镜像的压缩格式，镜像类型，操作系统类型
+    uint8_t         arch;                   /* CPU architecture */      //CPU体系结构
+} image_info_t;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>image_header数据结构如下</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Legacy</span> <span class="nb">format</span> <span class="n">image</span> <span class="n">header</span><span class="p">,</span>
+ <span class="o">*</span> <span class="nb">all</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">network</span> <span class="n">byte</span> <span class="n">order</span> <span class="p">(</span><span class="n">aka</span> <span class="n">natural</span> <span class="n">aka</span> <span class="n">bigendian</span><span class="p">)</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">typedef</span> <span class="n">struct</span> <span class="n">image_header</span> <span class="p">{</span>
+    <span class="n">__be32</span>          <span class="n">ih_magic</span><span class="p">;</span>       <span class="o">/*</span> <span class="n">Image</span> <span class="n">Header</span> <span class="n">Magic</span> <span class="n">Number</span>    <span class="o">*/</span>
+    <span class="n">__be32</span>          <span class="n">ih_hcrc</span><span class="p">;</span>        <span class="o">/*</span> <span class="n">Image</span> <span class="n">Header</span> <span class="n">CRC</span> <span class="n">Checksum</span>    <span class="o">*/</span>
+    <span class="n">__be32</span>          <span class="n">ih_time</span><span class="p">;</span>        <span class="o">/*</span> <span class="n">Image</span> <span class="n">Creation</span> <span class="n">Timestamp</span>     <span class="o">*/</span>
+    <span class="n">__be32</span>          <span class="n">ih_size</span><span class="p">;</span>        <span class="o">/*</span> <span class="n">Image</span> <span class="n">Data</span> <span class="n">Size</span>              <span class="o">*/</span>
+    <span class="n">__be32</span>          <span class="n">ih_load</span><span class="p">;</span>        <span class="o">/*</span> <span class="n">Data</span>  <span class="n">Load</span>  <span class="n">Address</span>          <span class="o">*/</span>
+    <span class="n">__be32</span>          <span class="n">ih_ep</span><span class="p">;</span>          <span class="o">/*</span> <span class="n">Entry</span> <span class="n">Point</span> <span class="n">Address</span>          <span class="o">*/</span>
+    <span class="n">__be32</span>          <span class="n">ih_dcrc</span><span class="p">;</span>        <span class="o">/*</span> <span class="n">Image</span> <span class="n">Data</span> <span class="n">CRC</span> <span class="n">Checksum</span>      <span class="o">*/</span>
+    <span class="n">uint8_t</span>         <span class="n">ih_os</span><span class="p">;</span>          <span class="o">/*</span> <span class="n">Operating</span> <span class="n">System</span>             <span class="o">*/</span>
+    <span class="n">uint8_t</span>         <span class="n">ih_arch</span><span class="p">;</span>        <span class="o">/*</span> <span class="n">CPU</span> <span class="n">architecture</span>             <span class="o">*/</span>
+    <span class="n">uint8_t</span>         <span class="n">ih_type</span><span class="p">;</span>        <span class="o">/*</span> <span class="n">Image</span> <span class="n">Type</span>                   <span class="o">*/</span>
+    <span class="n">uint8_t</span>         <span class="n">ih_comp</span><span class="p">;</span>        <span class="o">/*</span> <span class="n">Compression</span> <span class="n">Type</span>             <span class="o">*/</span>
+    <span class="n">uint8_t</span>         <span class="n">ih_name</span><span class="p">[</span><span class="n">IH_NMLEN</span><span class="p">];</span>      <span class="o">/*</span> <span class="n">Image</span> <span class="n">Name</span>           <span class="o">*/</span>
+<span class="p">}</span> <span class="n">image_header_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>解析uImage的时候主要目的就是填充image_info_t os和ulong ep</p>
+<p>解析完成之后的示例如下</p>
+<img alt="../_images/images_header.png" src="../_images/images_header.png" />
+</section>
+<section id="legacy-uimagekernel">
+<h2><span class="section-number">2.4.2. </span>legacy-uImage中kernel信息的解析代码流程<a class="headerlink" href="#legacy-uimagekernel" title="此标题的永久链接"></a></h2>
+<p>从bootm_find_os入口开始说明，代码位于 <code class="docutils literal notranslate"><span class="pre">common/bootm.c</span></code> 中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static int bootm_find_os(cmd_tbl_t *cmdtp, int flag, int argc,
+             char * const argv[])
+{
+    //uImage地址对应传进来的参数argv[0]
+    const void *os_hdr;
+    bool ep_found = false;
+    int ret;
+
+    /* get kernel image header, start address and length */
+    os_hdr = boot_get_kernel(cmdtp, flag, argc, argv,
+            &amp;images, &amp;images.os.image_start, &amp;images.os.image_len);
+    //在boot_get_kernel中会设置images.os.image_start和images.os.image_len值
+    if (images.os.image_len == 0) {
+        puts(&quot;ERROR: can&#39;t get kernel image!\n&quot;);
+        return 1;
+    }
+
+    /* get image parameters */
+    switch (genimg_get_format(os_hdr)) {
+#if defined(CONFIG_IMAGE_FORMAT_LEGACY)
+    case IMAGE_FORMAT_LEGACY:
+        images.os.type = image_get_type(os_hdr);        //从头部中获取各参数值
+        images.os.comp = image_get_comp(os_hdr);
+        images.os.os = image_get_os(os_hdr);
+
+        images.os.end = image_get_image_end(os_hdr);
+        images.os.load = image_get_load(os_hdr);
+        images.os.arch = image_get_arch(os_hdr);
+        break;
+#endif
+#if IMAGE_ENABLE_FIT
+    case IMAGE_FORMAT_FIT:
+        if (fit_image_get_type(images.fit_hdr_os,
+                       images.fit_noffset_os,
+                       &amp;images.os.type)) {
+            puts(&quot;Can&#39;t get image type!\n&quot;);
+            bootstage_error(BOOTSTAGE_ID_FIT_TYPE);
+            return 1;
+        }
+
+        if (fit_image_get_comp(images.fit_hdr_os,
+                       images.fit_noffset_os,
+                       &amp;images.os.comp)) {
+            puts(&quot;Can&#39;t get image compression!\n&quot;);
+            bootstage_error(BOOTSTAGE_ID_FIT_COMPRESSION);
+            return 1;
+        }
+
+        if (fit_image_get_os(images.fit_hdr_os, images.fit_noffset_os,
+                     &amp;images.os.os)) {
+            puts(&quot;Can&#39;t get image OS!\n&quot;);
+            bootstage_error(BOOTSTAGE_ID_FIT_OS);
+            return 1;
+        }
+
+        if (fit_image_get_arch(images.fit_hdr_os,
+                       images.fit_noffset_os,
+                       &amp;images.os.arch)) {
+            puts(&quot;Can&#39;t get image ARCH!\n&quot;);
+            return 1;
+        }
+
+        images.os.end = fit_get_end(images.fit_hdr_os);
+
+        if (fit_image_get_load(images.fit_hdr_os, images.fit_noffset_os,
+                       &amp;images.os.load)) {
+            puts(&quot;Can&#39;t get image load address!\n&quot;);
+            bootstage_error(BOOTSTAGE_ID_FIT_LOADADDR);
+            return 1;
+        }
+        break;
+#endif
+#ifdef CONFIG_ANDROID_BOOT_IMAGE
+    case IMAGE_FORMAT_ANDROID:
+        images.os.type = IH_TYPE_KERNEL;
+        images.os.comp = IH_COMP_GZIP;
+        images.os.os = IH_OS_LINUX;
+
+        images.os.end = android_image_get_end(os_hdr);
+        images.os.load = android_image_get_kload(os_hdr);
+        images.ep = images.os.load;
+        ep_found = true;
+        break;
+#endif
+    default:
+        puts(&quot;ERROR: unknown image format type!\n&quot;);
+        return 1;
+    }
+
+    /* If we have a valid setup.bin, we will use that for entry (x86) */
+    if (images.os.arch == IH_ARCH_I386 ||
+        images.os.arch == IH_ARCH_X86_64) {
+        ulong len;
+
+        ret = boot_get_setup(&amp;images, IH_ARCH_I386, &amp;images.ep, &amp;len);
+        if (ret &lt; 0 &amp;&amp; ret != -ENOENT) {
+            puts(&quot;Could not find a valid setup.bin for x86\n&quot;);
+            return 1;
+        }
+        /* Kernel entry point is the setup.bin */
+    } else if (images.legacy_hdr_valid) {
+        images.ep = image_get_ep(&amp;images.legacy_hdr_os_copy);
+#if IMAGE_ENABLE_FIT
+    } else if (images.fit_uname_os) {
+        int ret;
+
+        ret = fit_image_get_entry(images.fit_hdr_os,
+                      images.fit_noffset_os, &amp;images.ep);
+        if (ret) {
+            puts(&quot;Can&#39;t get entry point property!\n&quot;);
+            return 1;
+        }
+#endif
+    } else if (!ep_found) {
+        puts(&quot;Could not find kernel entry point!\n&quot;);
+        return 1;
+    }
+
+    if (images.os.type == IH_TYPE_KERNEL_NOLOAD) {
+        if (CONFIG_IS_ENABLED(CMD_BOOTI) &amp;&amp;
+            images.os.arch == IH_ARCH_ARM64) {
+            ulong image_addr;
+            ulong image_size;
+
+            ret = booti_setup(images.os.image_start, &amp;image_addr,
+                      &amp;image_size, true);
+            if (ret != 0)
+                return 1;
+
+            images.os.type = IH_TYPE_KERNEL;
+            images.os.load = image_addr;
+            images.ep = image_addr;
+        } else {
+            images.os.load = images.os.image_start;
+            images.ep += images.os.image_start;
+        }
+    }
+
+    images.os.start = map_to_sysmem(os_hdr);
+
+    return 0;
+}
+</pre></div>
+</div>
+<p>通过上述代码就完成了bootm_header_t images中的image_info_t os和ulong ep成员的实现,这里的核心代码是boot_get_kernel会实现uImage类型的判断以及头部的设置</p>
+<ul class="simple">
+<li><p>boot_get_kernel</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/**
+ * boot_get_kernel - find kernel image
+ * @os_data: pointer to a ulong variable, will hold os data start address
+ * @os_len: pointer to a ulong variable, will hold os data length
+ *
+ * boot_get_kernel() tries to find a kernel image, verifies its integrity
+ * and locates kernel data.
+ *
+ * returns:
+ *     pointer to image header if valid image was found, plus kernel start
+ *     address and length, otherwise NULL
+ */
+static const void *boot_get_kernel(cmd_tbl_t *cmdtp, int flag, int argc,
+                   char * const argv[], bootm_headers_t *images,
+                   ulong *os_data, ulong *os_len)
+{
+#if defined(CONFIG_IMAGE_FORMAT_LEGACY)
+    image_header_t  *hdr;
+#endif
+    ulong           img_addr;
+    const void *buf;
+    const char      *fit_uname_config = NULL;
+    const char      *fit_uname_kernel = NULL;
+#if IMAGE_ENABLE_FIT
+    int             os_noffset;
+#endif
+
+    //因为传进来的kernel地址argv[0]是一个字符串类型，所以这里需要将其转换为长整型
+    img_addr = genimg_get_kernel_addr_fit(argc &lt; 1 ? NULL : argv[0],
+                          &amp;fit_uname_config,
+                          &amp;fit_uname_kernel);
+
+    bootstage_mark(BOOTSTAGE_ID_CHECK_MAGIC);
+
+    /* check image type, for FIT images get FIT kernel node */
+    *os_data = *os_len = 0;
+    buf = map_sysmem(img_addr, 0);  //映射到物理地址，因为在uboot中MMU一般是没有打开的，所以这个值不会变化
+    switch (genimg_get_format(buf)) {   //这里根据幻数判断uImage类型
+#if defined(CONFIG_IMAGE_FORMAT_LEGACY)
+    case IMAGE_FORMAT_LEGACY:
+        printf(&quot;## Booting kernel from Legacy Image at %08lx ...\n&quot;,
+               img_addr);
+        hdr = image_get_kernel(img_addr, images-&gt;verify);
+        if (!hdr)
+            return NULL;
+        bootstage_mark(BOOTSTAGE_ID_CHECK_IMAGETYPE);
+
+        /* get os_data and os_len */
+        switch (image_get_type(hdr)) {
+        case IH_TYPE_KERNEL:
+        case IH_TYPE_KERNEL_NOLOAD:
+            *os_data = image_get_data(hdr);     //设置镜像地址及长度
+            *os_len = image_get_data_size(hdr);
+            break;
+        case IH_TYPE_MULTI:
+            image_multi_getimg(hdr, 0, os_data, os_len);
+            break;
+        case IH_TYPE_STANDALONE:
+            *os_data = image_get_data(hdr);
+            *os_len = image_get_data_size(hdr);
+            break;
+        default:
+            printf(&quot;Wrong Image Type for %s command\n&quot;,
+                   cmdtp-&gt;name);
+            bootstage_error(BOOTSTAGE_ID_CHECK_IMAGETYPE);
+            return NULL;
+        }
+
+        /*
+         * copy image header to allow for image overwrites during
+         * kernel decompression.
+         */
+        memmove(&amp;images-&gt;legacy_hdr_os_copy, hdr,
+            sizeof(image_header_t));
+
+        /* save pointer to image header */
+        images-&gt;legacy_hdr_os = hdr;
+
+        images-&gt;legacy_hdr_valid = 1;
+        bootstage_mark(BOOTSTAGE_ID_DECOMP_IMAGE);
+        break;
+#endif
+#if IMAGE_ENABLE_FIT
+    case IMAGE_FORMAT_FIT:
+        os_noffset = fit_image_load(images, img_addr,
+                &amp;fit_uname_kernel, &amp;fit_uname_config,
+                IH_ARCH_DEFAULT, IH_TYPE_KERNEL,
+                BOOTSTAGE_ID_FIT_KERNEL_START,
+                FIT_LOAD_IGNORED, os_data, os_len);
+        if (os_noffset &lt; 0)
+            return NULL;
+
+        images-&gt;fit_hdr_os = map_sysmem(img_addr, 0);
+        images-&gt;fit_uname_os = fit_uname_kernel;
+        images-&gt;fit_uname_cfg = fit_uname_config;
+        images-&gt;fit_noffset_os = os_noffset;
+        break;
+#endif
+#ifdef CONFIG_ANDROID_BOOT_IMAGE
+    case IMAGE_FORMAT_ANDROID:
+#if !(UBOOT_LOG_OPTIMIZE)
+        printf(&quot;## Booting Android Image at 0x%08lx ...\n&quot;, img_addr);
+#endif
+        if (android_image_get_kernel(buf, images-&gt;verify,
+                         os_data, os_len))
+            return NULL;
+        break;
+#endif
+    default:
+        printf(&quot;Wrong Image Format for %s command\n&quot;, cmdtp-&gt;name);
+        bootstage_error(BOOTSTAGE_ID_FIT_KERNEL_INFO);
+        return NULL;
+    }
+
+    debug(&quot;   kernel data at 0x%08lx, len = 0x%08lx (%ld)\n&quot;,
+          *os_data, *os_len, *os_len);
+
+    return buf;
+}
+</pre></div>
+</div>
+</section>
+<section id="fit-uimagekernel">
+<h2><span class="section-number">2.4.3. </span>FIT-uImage中kernel信息的解析<a class="headerlink" href="#fit-uimagekernel" title="此标题的永久链接"></a></h2>
+<p>FIT-uImage信息的解析可以参考上述代码的实现</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="legacy-fit_img.html" class="btn btn-neutral float-left" title="2.3. Legacy-uImage &amp; FIT-uImage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="bootm.html" class="btn btn-neutral float-right" title="2.5. bootm原理" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

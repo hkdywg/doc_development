@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.2.2.2. 创新型模式之工厂方法模式 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="6.3. 汽车功能安全规范及设计" href="../../function_safety/index.html" />
+    <link rel="prev" title="6.2.2.1. C++常用设计模式汇总" href="summary.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">6.2. C++应用笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../base/index.html">6.2.1. C++基础语法</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">6.2.2. C++设计模式</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="summary.html">6.2.2.1. C++常用设计模式汇总</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">6.2.2.2. 创新型模式之工厂方法模式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../communication/index.html">6.4. 通信中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6.2. </span>C++应用笔记</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.2.2. </span>C++设计模式</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.2.2.2. </span>创新型模式之工厂方法模式</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user/c++/design_pattern/abstract_factory.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">6.2.2.2. </span>创新型模式之工厂方法模式<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<p>工厂方法模式(Factory Method Pattern)是一种常用的对象创建型设计模式，此模式的核心思想是封装类中不变的部分，提取其中个性化善变的部分为独立类，
+通过依赖注入以达到解耦，复用以及方便后期维护拓展的目的．</p>
+<section id="id2">
+<h2><span class="section-number">6.2.2.2.1. </span>模式结构<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<img alt="../../../_images/factory_struct.png" src="../../../_images/factory_struct.png" />
+<ul class="simple">
+<li><p>Factory(抽象工厂): 是工厂方法模式的核心，与应用程序无关．任何在模式中创建的对象的工厂类必须实现这个接口</p></li>
+<li><p>ConcreteFactory(具体工厂): 实现抽象工厂接口的具体工厂类, 包含与应用程序密切相关的逻辑，并且被应用程序调用以创建产品对象</p></li>
+<li><p>Product(抽象产品): 所创建对象的基类，也就是具体产品的共同父类或共同拥有的接口</p></li>
+<li><p>ConcreteProduct(具体产品): 实现来抽象产品角色所定义的接口．某具体产品有专门的具体工厂创建，他们之间往往一一对应</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2><span class="section-number">6.2.2.2.2. </span>优缺点<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>优点: 克服了简单工厂模式违背开放-封闭原则的缺点，又保留了封装对象创建过程的优点，降低客户端和工厂的耦合性．所以说，”工厂方法模式”是”简单
+工厂模式”的进一步抽象和推广</p></li>
+<li><p>缺点: 每增加一个产品，相应的也要增加一个子工厂，加大了额外的开发量</p></li>
+</ul>
+</section>
+<section id="id4">
+<h2><span class="section-number">6.2.2.2.3. </span>代码实现<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>创建抽象产品</p></li>
+</ul>
+<p>在此示例中，创建一个汽车产品</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ICar</span>
+<span class="p">{</span>
+<span class="n">public</span><span class="p">:</span>
+    <span class="n">virtual</span> <span class="n">string</span> <span class="n">Name</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="o">//</span><span class="n">汽车名称</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>创建具体产品</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BenzCar</span> <span class="p">:</span> <span class="n">public</span> <span class="n">ICar</span>
+<span class="p">{</span>
+<span class="n">public</span><span class="p">:</span>
+    <span class="n">string</span> <span class="n">Name</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s2">&quot;Benz Car&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">BmwCar</span> <span class="p">:</span> <span class="n">public</span> <span class="n">ICar</span>
+<span class="p">{</span>
+<span class="n">public</span><span class="p">:</span>
+    <span class="n">string</span> <span class="n">Name</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s2">&quot;Bmw Car&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>创建工厂</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AFactory</span>
+<span class="p">{</span>
+<span class="n">public</span><span class="p">:</span>
+    <span class="n">virtual</span> <span class="n">ICar</span><span class="o">*</span> <span class="n">CreateCar</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="o">//</span><span class="n">生产汽车</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>创建具体工厂</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BenzFactory</span> <span class="p">:</span> <span class="n">public</span> <span class="n">AFactory</span>
+<span class="p">{</span>
+<span class="n">public</span><span class="p">:</span>
+    <span class="n">ICar</span><span class="o">*</span> <span class="n">CreateCar</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">new</span> <span class="n">BenzCar</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">BmwFactory</span> <span class="p">:</span> <span class="n">public</span> <span class="n">AFactory</span>
+<span class="p">{</span>
+<span class="n">public</span><span class="p">:</span>
+    <span class="n">ICar</span><span class="o">*</span> <span class="n">CreateCar</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">new</span> <span class="n">BmwCar</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="summary.html" class="btn btn-neutral float-left" title="6.2.2.1. C++常用设计模式汇总" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../function_safety/index.html" class="btn btn-neutral float-right" title="6.3. 汽车功能安全规范及设计" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

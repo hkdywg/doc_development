@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.5.2. H264结构 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="6.5.3. RTP协议" href="rtp.html" />
+    <link rel="prev" title="6.5.1. MP4文件格式" href="mp4_muxer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/index.html">6.4. 通信中间件</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">6.5. 视频笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mp4_muxer.html">6.5.1. MP4文件格式</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">6.5.2. H264结构</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nal">6.5.2.1. 网络提取层(NAL)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rtp.html">6.5.3. RTP协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rtsp.html">6.5.4. RTSP协议</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.5. </span>视频笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.5.2. </span>H264结构</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user/video/h264.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="h264">
+<h1><span class="section-number">6.5.2. </span>H264结构<a class="headerlink" href="#h264" title="此标题的永久链接"></a></h1>
+<p>H.264原始码流是由一个个的NALU组成，它的功能分为两层， <code class="docutils literal notranslate"><span class="pre">VCL(视频编码层)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">NAL(网络提取层)</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------+-----------------------------------------------------------------------------</span>
+<span class="o">|</span>   <span class="n">H</span><span class="mf">.264</span>      <span class="o">|</span>    <span class="n">VAL</span><span class="p">(</span><span class="n">Video</span> <span class="n">Coding</span> <span class="n">Layer</span><span class="p">)</span> <span class="o">+</span> <span class="n">NAL</span><span class="p">(</span><span class="n">Network</span> <span class="n">Abstraction</span> <span class="n">Layer</span><span class="p">)</span>                <span class="o">|</span>
+<span class="o">---------------+-----------------------------------------------------------------------------</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>VCL: 进行视频编解码，包括预测(帧内预测和帧间预测)，DCT变化和量化，墒编码和切分数据等功能，是为了实现更高的视频压缩比</p></li>
+<li><p>NAL: 负责以网络所要求的恰当方式对VCL数据进行打包和传送</p></li>
+</ul>
+<p>VCL是管理h264的视频数据层，是为了实现更高的视频压缩比，抛开H264压缩算法细节来看就3步</p>
+<ol class="arabic simple">
+<li><p>压缩: 预测(帧内预测和帧间预测)—–&gt;DCT变化和量化———&gt;比特流编码</p></li>
+<li><p>切分数据</p></li>
+<li><p>压缩切分后的VCL数据会包装成为NAL的一部分</p></li>
+</ol>
+<section id="nal">
+<h2><span class="section-number">6.5.2.1. </span>网络提取层(NAL)<a class="headerlink" href="#nal" title="此标题的永久链接"></a></h2>
+<p>NAL(Network Abstraction Layer),这块和H264的压缩算法无关，设计NAL的目的就是为了实现良好的网络亲和性，即适用于各种传输网络</p>
+<p>NAL的组成单元是NALU</p>
+<img alt="../../_images/nalu_struct.png" src="../../_images/nalu_struct.png" />
+<ul class="simple">
+<li><p>header: 一般存储标志信息，比如NALU的类型．NAL会打包VCL数据，但这并不意味着所有的NALU负载都是VCL</p></li>
+<li><p>payload: 存储了真正的数据</p></li>
+</ul>
+<section id="nalu-header">
+<h3><span class="section-number">6.5.2.1.1. </span>NALU Header<a class="headerlink" href="#nalu-header" title="此标题的永久链接"></a></h3>
+<p>NALU只占一个字节，即8位</p>
+<img alt="../../_images/nalu_header.jpg" src="../../_images/nalu_header.jpg" />
+<ul class="simple">
+<li><p>forbidden_zero_bit: 在网络传输中发生错误时，会被置为1,告诉接收方丢弃该单元</p></li>
+<li><p>nal_ref_idc: 用于表示当前NALU的重要性，值越大，越重要</p></li>
+<li><p>nal_unit_type: 表示NALU的数据类型</p></li>
+</ul>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Nal_unit_type</p></td>
+<td><p>NAL</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>未使用</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>不区分，非IDR图像的片</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>编码slice数据划分A(一般不会用到)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>编码slice数据划分B(一般不会用到)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>编码slice数据划分C(一般不会用到)</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>IDR图像中的片</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>补充增强信息单元(SEI)</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>序列参数集(SPS)</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>图像参数集(PPS)</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>分界符</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>序列结束</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>码流结束</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>填充</p></td>
+</tr>
+<tr class="row-odd"><td><p>13~23</p></td>
+<td><p>保留</p></td>
+</tr>
+<tr class="row-even"><td><p>24~31</p></td>
+<td><p>未使用</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sps">
+<h3><span class="section-number">6.5.2.1.2. </span>SPS语法元素及其含义<a class="headerlink" href="#sps" title="此标题的永久链接"></a></h3>
+<p>SPS中的信息至关重要，如果其中的数据丢失或出现错误，那么解码过程可能会导致失败．</p>
+<p>SPS(Sequence Paramater Set),称为序列参数集，SPS中保存了一组编码视频序列的全局参数．所谓的编码视频序列即原始视频的一帧一帧
+的像素数据经过编码之后的结构组成的序列．一般情况下SPS和PPS的NALU单元通常位于整个码流的起始位置，但网络直播中一般每个I帧前面会带SPS和PPS信息</p>
+<img alt="../../_images/sps_define.jpg" src="../../_images/sps_define.jpg" />
+<ul class="simple">
+<li><p>profile_idc: 标识当前码流的profile: 基准档次(baseline profile), 主要档次(main profile), 扩展档次(extended profile)</p></li>
+<li><p>level_idc: 当前码流的level. 编码的level定义了某种条件下的最大视频分辨率，最大视频帧率等参数</p></li>
+<li><p>seq_parameter_set_id: 表示当前序列参数集的id,通过该id值，图像参数集pps可以引用其代表的sps中的参数</p></li>
+<li><p>log2_max_frame_num_minus4: 用于计算MaxFrameNum的值．计算公式为MaxFrameNum=2^(log2_max_frame_num_minus4 + 4). MaxFrameNum是frame_num的上限值，frame_num是
+图像序号的一种表示方法，在帧间编码中常作为一种参考帧标记的手段</p></li>
+<li><p>pic_order_cnt_type: 表示解码picture order count(POC)的方法，POC是另一种计量图像序号的方式，与frame_num有着不同的计算方法．该语法元素的取值为0, 1, 2</p></li>
+<li><p>log2_max_oic_order_cnt_lsb_minus4: 用于计算MaxPicOrderCntLsb的值，该值表示POC的上限．计算方法为MaxPicOrderCntLsb=2^(log2_max_pic_order_cnt_lsb_minus4 + 4)</p></li>
+<li><p>max_num_ref_frames: 用于表示参考帧的最大数目</p></li>
+<li><p>gaps_in_frame_num_value_allowed_flag: 标识位，说明frame_num中是否允许不连续的值</p></li>
+<li><p>pic_width_in_mbs_minus1: 用于计算图像的宽度，单位为宏块的个数，图像实际宽度为: frame_width = 16 * (pic_width_in_mbs_minus1 + 1)</p></li>
+<li><p>pic_height_in_map_units_minus1: 使用PicHeightInMapUnit来度量视频中一帧图像的高度</p></li>
+<li><p>frame_mbs_only_flag: 说明宏块的编码方式，0时宏块可能为帧编码或场编码，1时所有宏块采用帧编码</p></li>
+<li><p>mb_adaptive_frame_field_flag: 标识位，说明是否采用宏块级的帧场自适应编码,该标识位为0时，不存在帧编码和场编码之间的切换．为1时，宏块可能在帧编码
+和场编码之间进行选择</p></li>
+<li><p>direct_8x8_inference_flag: 标识位，用于B_Skip, B_Direct模式运动矢量的推导计算</p></li>
+<li><p>frame_cropping_flag: 标识位，说明是否需要对图像帧进行裁剪</p></li>
+<li><p>vui_parameters_present_flag: 标识位，说明SPS中是否存在VUI信息</p></li>
+</ul>
+</section>
+<section id="pps">
+<h3><span class="section-number">6.5.2.1.3. </span>PPS语法元素及其含义<a class="headerlink" href="#pps" title="此标题的永久链接"></a></h3>
+<p>封装格式中，PPS通常与SPS一起保存在视频文件的文件头中</p>
+<img alt="../../_images/pps_define.jpg" src="../../_images/pps_define.jpg" />
+<ul class="simple">
+<li><p>pic_parameter_set_id:</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="mp4_muxer.html" class="btn btn-neutral float-left" title="6.5.1. MP4文件格式" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="rtp.html" class="btn btn-neutral float-right" title="6.5.3. RTP协议" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

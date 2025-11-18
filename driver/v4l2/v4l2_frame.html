@@ -1,0 +1,545 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.15.1. V4L2框架概述 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.16. rpmsg应用笔记" href="../rpmsg/index.html" />
+    <link rel="prev" title="4.15. linux V4L2视频框架" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.15. linux V4L2视频框架</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.15.1. V4L2框架概述</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.15.1.1. 整体框架</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.15.1.2. 主要的数据结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.15.1.3. 代码分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4.15.1.4. 应用层处理流程</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.15. </span>linux V4L2视频框架</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.15.1. </span>V4L2框架概述</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/v4l2/v4l2_frame.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="v4l2">
+<h1><span class="section-number">4.15.1. </span>V4L2框架概述<a class="headerlink" href="#v4l2" title="此标题的永久链接"></a></h1>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/75ebe93f910b2f49e32fb3bfec7ddcc3/v4l2_%E9%A9%B1%E5%8A%A8%E7%BC%96%E5%86%99%E6%8C%87%E5%8D%97.pdf"><code class="xref download docutils literal notranslate"><span class="pre">v4l2_驱动编写指南.pdf</span></code></a></p></li>
+</ul>
+<section id="id1">
+<h2><span class="section-number">4.15.1.1. </span>整体框架<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>Video for Linux 2,简称V4L2,是linux内核中关于视频设备的内核驱动框架,为上层访问底层的视频设备提供了统一的接口.</p>
+<p>V4L2框架主要涉及以下几个部分</p>
+<ul class="simple">
+<li><p>字符设备驱动程序核心: V4L2本身就是一个字符设备,具有字符设备所有的特性,暴露接口给用户空间</p></li>
+<li><p>V4L2驱动核心: 主要是构建一个内核中标准视频设别驱动的框架,为视频操作提供统一的接口</p></li>
+<li><p>平台V4L2设备驱动:在V4L2框架下,根据平台自身的特性实现与平台相关的V4L2驱动部分,包括注册video_device和v4l2_device</p></li>
+<li><p>具体的sensor驱动: 实现各种设备控制方法供上层调用,并注册v4l2_subdev</p></li>
+</ul>
+<img alt="../../_images/v4l2_frame.png" src="../../_images/v4l2_frame.png" />
+<p>内核中V4L2各组件关系图</p>
+<img alt="../../_images/v4l2_struct.png" src="../../_images/v4l2_struct.png" />
+<p>图中包含来以下几个关键因素</p>
+<p><strong>cocntroler主要抽象的结构体</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v4l2_device</span></code> : 这是整个输入设备的总结构体,可以认为他是整个v4l2框架的入口,充当驱动的管理者.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">video_device</span></code> : 用于生成设备节点(/dev/videoX), 给用户提供操作接口,如查询/设置参数,获取buffer数据,向内核提交处理好的buffer等</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">v4l2_async_notifier</span></code> : 用于子设备的异步注册,subdev子设备的注册通常和controller设备是分开的,controler设备需要通过v4l2_async_notifier查找子设备并将其注册到v4l2_device进行统一管理</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">media_device</span></code> : 用于运行时数据流的管理,嵌在V4L2 device内部</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vb2_queue</span></code> : 提供内核与用户空间的buffer流转接口,包括buffer的申请,buffer在内核和用户空间之间的切换等</p></li>
+</ul>
+<p><strong>subdev子设备主要抽象的结构体</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">v4l2_subdev</span></code> : 子设备抽象结构体,提供子设备的基本参数设置及函数接口</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">v4l2_ctrl_handler</span></code> : 控制模块,提供子设备(主要是ISP和video)在用户空间的操作接口,比如改变图像的亮度,对比度等</p></li>
+</ul>
+<img alt="../../_images/v4l2_device.png" src="../../_images/v4l2_device.png" />
+<img alt="../../_images/V4L2_submode.jpg" src="../../_images/V4L2_submode.jpg" />
+</section>
+<section id="id2">
+<h2><span class="section-number">4.15.1.2. </span>主要的数据结构<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>在V4L2架构下视频的获取以及控制通过open,read以及ioctl等系统调用接口完成</p>
+<p>数据结构关系图</p>
+<img alt="../../_images/v4l2_data_relation.jpg" src="../../_images/v4l2_data_relation.jpg" />
+<section id="v4l2-fops">
+<h3><span class="section-number">4.15.1.2.1. </span>v4l2_fops<a class="headerlink" href="#v4l2-fops" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">file_operations</span> <span class="n">v4l2_fops</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">read</span> <span class="o">=</span> <span class="n">v4l2_read</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">write</span> <span class="o">=</span> <span class="n">v4l2_write</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">open</span> <span class="o">=</span> <span class="n">v4l2_open</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">get_unmapped_area</span> <span class="o">=</span> <span class="n">v4l2_get_unmapped_area</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">mmap</span> <span class="o">=</span> <span class="n">v4l2_mmap</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">unlocked_ioctl</span> <span class="o">=</span> <span class="n">v4l2_ioctl</span><span class="p">,</span>
+<span class="c1">#ifdef CONFIG_COMPAT</span>
+    <span class="o">.</span><span class="n">compat_ioctl</span> <span class="o">=</span> <span class="n">v4l2_compat_ioctl32</span><span class="p">,</span>
+<span class="c1">#endif</span>
+    <span class="o">.</span><span class="n">release</span> <span class="o">=</span> <span class="n">v4l2_release</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">poll</span> <span class="o">=</span> <span class="n">v4l2_poll</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">llseek</span> <span class="o">=</span> <span class="n">no_llseek</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>v4l2_fops在__video_register_device函数中会被绑定到一个cdev上,并注册到系统中去</p>
+</section>
+<section id="video-device">
+<h3><span class="section-number">4.15.1.2.2. </span>video_device<a class="headerlink" href="#video-device" title="此标题的永久链接"></a></h3>
+<p>video_device结构体用于在/dev目录下生成设备节点文件,把操作设备的接口暴露给用户空间.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">video_device</span>
+<span class="p">{</span>
+<span class="c1">#if defined(CONFIG_MEDIA_CONTROLLER)</span>
+    <span class="n">struct</span> <span class="n">media_entity</span> <span class="n">entity</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">media_intf_devnode</span> <span class="o">*</span><span class="n">intf_devnode</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">media_pipeline</span> <span class="n">pipe</span><span class="p">;</span>
+<span class="c1">#endif</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_file_operations</span> <span class="o">*</span><span class="n">fops</span><span class="p">;</span>    <span class="c1">#设备操作函数</span>
+
+    <span class="n">u32</span> <span class="n">device_caps</span><span class="p">;</span>
+
+    <span class="o">/*</span> <span class="n">sysfs</span> <span class="o">*/</span>
+    <span class="n">struct</span> <span class="n">device</span> <span class="n">dev</span><span class="p">;</span>  <span class="c1">#V4L2设备</span>
+    <span class="n">struct</span> <span class="n">cdev</span> <span class="o">*</span><span class="n">cdev</span><span class="p">;</span>  <span class="c1">#字符设备</span>
+
+    <span class="n">struct</span> <span class="n">v4l2_device</span> <span class="o">*</span><span class="n">v4l2_dev</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev_parent</span><span class="p">;</span>  <span class="c1">#父设备</span>
+
+    <span class="n">struct</span> <span class="n">v4l2_ctrl_handler</span> <span class="o">*</span><span class="n">ctrl_handler</span><span class="p">;</span>
+
+    <span class="n">struct</span> <span class="n">vb2_queue</span> <span class="o">*</span><span class="n">queue</span><span class="p">;</span>
+
+    <span class="n">struct</span> <span class="n">v4l2_prio_state</span> <span class="o">*</span><span class="n">prio</span><span class="p">;</span>
+
+    <span class="o">/*</span> <span class="n">device</span> <span class="n">info</span> <span class="o">*/</span>
+    <span class="n">char</span> <span class="n">name</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>      <span class="c1">#设备信息</span>
+    <span class="n">enum</span> <span class="n">vfl_devnode_type</span> <span class="n">vfl_type</span><span class="p">;</span>
+    <span class="n">enum</span> <span class="n">vfl_devnode_direction</span> <span class="n">vfl_dir</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">minor</span><span class="p">;</span>
+    <span class="n">u16</span> <span class="n">num</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">flags</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">index</span><span class="p">;</span>
+
+    <span class="o">/*</span> <span class="n">V4L2</span> <span class="n">file</span> <span class="n">handles</span> <span class="o">*/</span>
+    <span class="n">spinlock_t</span>              <span class="n">fh_lock</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_head</span>        <span class="n">fh_list</span><span class="p">;</span>
+
+    <span class="nb">int</span> <span class="n">dev_debug</span><span class="p">;</span>
+
+    <span class="n">v4l2_std_id</span> <span class="n">tvnorms</span><span class="p">;</span>
+
+    <span class="o">/*</span> <span class="n">callbacks</span> <span class="o">*/</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">release</span><span class="p">)(</span><span class="n">struct</span> <span class="n">video_device</span> <span class="o">*</span><span class="n">vdev</span><span class="p">);</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_ioctl_ops</span> <span class="o">*</span><span class="n">ioctl_ops</span><span class="p">;</span>
+    <span class="n">DECLARE_BITMAP</span><span class="p">(</span><span class="n">valid_ioctls</span><span class="p">,</span> <span class="n">BASE_VIDIOC_PRIVATE</span><span class="p">);</span>
+
+    <span class="n">struct</span> <span class="n">mutex</span> <span class="o">*</span><span class="n">lock</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="v4l2-device">
+<h3><span class="section-number">4.15.1.2.3. </span>v4l2_device<a class="headerlink" href="#v4l2-device" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">v4l2_device</span> <span class="p">{</span>
+    <span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">media_device</span> <span class="o">*</span><span class="n">mdev</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="n">subdevs</span><span class="p">;</span>   <span class="c1">#用于跟踪注册的subdevs</span>
+    <span class="n">spinlock_t</span> <span class="n">lock</span><span class="p">;</span>
+    <span class="n">char</span> <span class="n">name</span><span class="p">[</span><span class="n">V4L2_DEVICE_NAME_SIZE</span><span class="p">];</span>   <span class="c1">#设备名称,默认情况下,驱动程序名字+总线ID</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">notify</span><span class="p">)(</span><span class="n">struct</span> <span class="n">v4l2_subdev</span> <span class="o">*</span><span class="n">sd</span><span class="p">,</span>
+            <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">notification</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">);</span>  <span class="c1">#由子设备调用的回调函数</span>
+    <span class="n">struct</span> <span class="n">v4l2_ctrl_handler</span> <span class="o">*</span><span class="n">ctrl_handler</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">v4l2_prio_state</span> <span class="n">prio</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">kref</span> <span class="n">ref</span><span class="p">;</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">release</span><span class="p">)(</span><span class="n">struct</span> <span class="n">v4l2_device</span> <span class="o">*</span><span class="n">v4l2_dev</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>每个设备实例都通过v4l2_vevice(v4l2-device.h)结构体来表示,大多数情况下这个结构体会嵌入式到更大的结构体中</p>
+<p>v4l2_device_register(struct device dev, struct v4l2_device v4l2_dev);函数可以注册一个v4l2设备</p>
+</section>
+<section id="v4l2-subdev">
+<h3><span class="section-number">4.15.1.2.4. </span>v4l2_subdev<a class="headerlink" href="#v4l2-subdev" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">v4l2_subdev</span> <span class="p">{</span>
+<span class="c1">#if defined(CONFIG_MEDIA_CONTROLLER)</span>
+    <span class="n">struct</span> <span class="n">media_entity</span> <span class="n">entity</span><span class="p">;</span>
+<span class="c1">#endif</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="nb">list</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">module</span> <span class="o">*</span><span class="n">owner</span><span class="p">;</span>
+    <span class="nb">bool</span> <span class="n">owner_v4l2_dev</span><span class="p">;</span>
+    <span class="n">u32</span> <span class="n">flags</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">v4l2_device</span> <span class="o">*</span><span class="n">v4l2_dev</span><span class="p">;</span>   <span class="o">//</span><span class="n">指向父设备</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_subdev_ops</span> <span class="o">*</span><span class="n">ops</span><span class="p">;</span> <span class="o">//</span><span class="n">v4l2设备操作接口</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_subdev_internal_ops</span> <span class="o">*</span><span class="n">internal_ops</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">v4l2_ctrl_handler</span> <span class="o">*</span><span class="n">ctrl_handler</span><span class="p">;</span>     <span class="o">//</span><span class="n">subdev控制接口</span>
+    <span class="n">char</span> <span class="n">name</span><span class="p">[</span><span class="n">V4L2_SUBDEV_NAME_SIZE</span><span class="p">];</span>
+    <span class="n">u32</span> <span class="n">grp_id</span><span class="p">;</span>
+    <span class="n">void</span> <span class="o">*</span><span class="n">dev_priv</span><span class="p">;</span> <span class="c1">#私有数据指针</span>
+    <span class="n">void</span> <span class="o">*</span><span class="n">host_priv</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">video_device</span> <span class="o">*</span><span class="n">devnode</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">fwnode_handle</span> <span class="o">*</span><span class="n">fwnode</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="n">async_list</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">v4l2_async_subdev</span> <span class="o">*</span><span class="n">asd</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">v4l2_async_notifier</span> <span class="o">*</span><span class="n">notifier</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">v4l2_async_notifier</span> <span class="o">*</span><span class="n">subdev_notifier</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">v4l2_subdev_platform_data</span> <span class="o">*</span><span class="n">pdata</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+<span class="n">struct</span> <span class="n">v4l2_subdev_ops</span> <span class="p">{</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_subdev_core_ops</span>       <span class="o">*</span><span class="n">core</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_subdev_tuner_ops</span>      <span class="o">*</span><span class="n">tuner</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_subdev_audio_ops</span>      <span class="o">*</span><span class="n">audio</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_subdev_video_ops</span>      <span class="o">*</span><span class="n">video</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_subdev_vbi_ops</span>        <span class="o">*</span><span class="n">vbi</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_subdev_ir_ops</span>         <span class="o">*</span><span class="n">ir</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_subdev_sensor_ops</span>     <span class="o">*</span><span class="n">sensor</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_subdev_pad_ops</span>        <span class="o">*</span><span class="n">pad</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>设备驱动程序必须向v4l2_device注册v4l2_subdev, v4l2_device_register_subdev(v4l2_dev, sd).注册成功后subdev-&gt;dev就指向来v4l2_device</p>
+</section>
+<section id="media-device">
+<h3><span class="section-number">4.15.1.2.5. </span>media_device<a class="headerlink" href="#media-device" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">media_device</span> <span class="p">{</span>
+    <span class="o">/*</span> <span class="n">dev</span><span class="o">-&gt;</span><span class="n">driver_data</span> <span class="n">points</span> <span class="n">to</span> <span class="n">this</span> <span class="n">struct</span><span class="o">.</span> <span class="o">*/</span>
+    <span class="n">struct</span> <span class="n">device</span> <span class="o">*</span><span class="n">dev</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">media_devnode</span> <span class="o">*</span><span class="n">devnode</span><span class="p">;</span>
+
+    <span class="n">char</span> <span class="n">model</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+    <span class="n">char</span> <span class="n">driver_name</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+    <span class="n">char</span> <span class="n">serial</span><span class="p">[</span><span class="mi">40</span><span class="p">];</span>
+    <span class="n">char</span> <span class="n">bus_info</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+    <span class="n">u32</span> <span class="n">hw_revision</span><span class="p">;</span>
+
+    <span class="n">u64</span> <span class="n">topology_version</span><span class="p">;</span>
+
+    <span class="n">u32</span> <span class="nb">id</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">ida</span> <span class="n">entity_internal_idx</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">entity_internal_idx_max</span><span class="p">;</span>
+
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="n">entities</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="n">interfaces</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="n">pads</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="n">links</span><span class="p">;</span>
+
+    <span class="o">/*</span> <span class="n">notify</span> <span class="n">callback</span> <span class="nb">list</span> <span class="n">invoked</span> <span class="n">when</span> <span class="n">a</span> <span class="n">new</span> <span class="n">entity</span> <span class="ow">is</span> <span class="n">registered</span> <span class="o">*/</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="n">entity_notify</span><span class="p">;</span>
+
+    <span class="o">/*</span> <span class="n">Serializes</span> <span class="n">graph</span> <span class="n">operations</span><span class="o">.</span> <span class="o">*/</span>
+    <span class="n">struct</span> <span class="n">mutex</span> <span class="n">graph_mutex</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">media_graph</span> <span class="n">pm_count_walk</span><span class="p">;</span>
+
+    <span class="n">void</span> <span class="o">*</span><span class="n">source_priv</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">enable_source</span><span class="p">)(</span><span class="n">struct</span> <span class="n">media_entity</span> <span class="o">*</span><span class="n">entity</span><span class="p">,</span>
+                 <span class="n">struct</span> <span class="n">media_pipeline</span> <span class="o">*</span><span class="n">pipe</span><span class="p">);</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">disable_source</span><span class="p">)(</span><span class="n">struct</span> <span class="n">media_entity</span> <span class="o">*</span><span class="n">entity</span><span class="p">);</span>
+
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">media_device_ops</span> <span class="o">*</span><span class="n">ops</span><span class="p">;</span>
+
+    <span class="n">struct</span> <span class="n">mutex</span> <span class="n">req_queue_mutex</span><span class="p">;</span>
+    <span class="n">atomic_t</span> <span class="n">request_id</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id3">
+<h2><span class="section-number">4.15.1.3. </span>代码分析<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>以下的代码分析基于瑞萨的rcar平台</p>
+<p>rcar-core.c中的rcar_vin_probe函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">rcar_vin_probe</span><span class="p">(</span><span class="n">struct</span> <span class="n">platform_device</span> <span class="o">*</span><span class="n">pdev</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">soc_device_attribute</span> <span class="o">*</span><span class="n">attr</span><span class="p">,</span> <span class="o">*</span><span class="n">dev_attr</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">rvin_dev</span> <span class="o">*</span><span class="n">vin</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">resource</span> <span class="o">*</span><span class="n">mem</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">irq</span><span class="p">,</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">device_node</span> <span class="o">*</span><span class="n">isp_node</span><span class="p">;</span>
+
+    <span class="n">vin</span><span class="o">-&gt;</span><span class="n">dev</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">pdev</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">;</span>
+
+    <span class="n">rvin_mc_init</span><span class="p">(</span><span class="n">vin</span><span class="p">)</span>
+    <span class="o">----</span><span class="n">rvin_group_get</span><span class="p">(</span><span class="n">vin</span><span class="p">)</span>
+        <span class="o">----</span><span class="n">rvin_group_init</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">vin</span><span class="p">)</span>
+            <span class="o">----</span><span class="n">mdev</span><span class="o">-&gt;</span><span class="n">dev</span> <span class="o">=</span> <span class="n">vin</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">;</span>
+            <span class="o">----</span><span class="n">mdev</span><span class="o">-&gt;</span><span class="n">ops</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">rvin_media_ops</span><span class="p">;</span>
+            <span class="o">----</span><span class="n">media_device_init</span><span class="p">(</span><span class="n">mdev</span><span class="p">)</span>
+    <span class="o">----</span><span class="n">rvin_mc_parse_of_graph</span><span class="p">(</span><span class="n">vin</span><span class="p">)</span>
+        <span class="o">----</span><span class="n">v4l2_async_notifier_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">group</span><span class="o">-&gt;</span><span class="n">notifier</span><span class="p">)</span>
+        <span class="o">----</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">group</span><span class="o">-&gt;</span><span class="n">notifier</span><span class="o">.</span><span class="n">ops</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">rvin_group_notify_ops</span><span class="p">;</span>
+        <span class="o">----</span><span class="n">v4l2_async_notifier_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">v4l2_dev</span><span class="p">,</span><span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">group</span><span class="o">-&gt;</span><span class="n">notifier</span><span class="p">)</span>
+            <span class="o">----</span><span class="n">v4l2_async_notifier_try_all_subdevs</span><span class="p">(</span><span class="n">notifier</span><span class="p">)</span>
+                <span class="o">----</span><span class="n">v4l2_async_match_notify</span><span class="p">(</span><span class="n">notifier</span><span class="p">,</span> <span class="n">v4l2_dev</span><span class="p">,</span> <span class="n">sd</span><span class="p">,</span> <span class="n">asd</span><span class="p">)</span>
+                    <span class="o">----</span><span class="n">v4l2_device_register_subdev</span><span class="p">(</span><span class="n">v4l2_dev</span><span class="p">,</span> <span class="n">sd</span><span class="p">);</span>
+            <span class="o">----</span><span class="n">v4l2_async_notifier_try_complete</span><span class="p">(</span><span class="n">notifier</span><span class="p">)</span>
+                <span class="o">----</span><span class="n">v4l2_async_notifier_call_complete</span><span class="p">(</span><span class="n">notifier</span><span class="p">)</span>
+                    <span class="o">----</span><span class="n">notifier</span><span class="o">-&gt;</span><span class="n">ops</span><span class="o">-&gt;</span><span class="n">complete</span><span class="p">(</span><span class="n">notifier</span><span class="p">)</span>       <span class="o">//</span><span class="n">此函数会调用rvin_v4l2_register函数</span>
+    <span class="o">----</span><span class="n">v4l2_ctrl_handler_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">ctrl_handler</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="o">----</span><span class="n">v4l2_ctrl_new_std</span><span class="p">(</span><span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">ctrl_handler</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rvin_ctrl_ops</span><span class="o">...</span><span class="p">)</span>
+    <span class="o">----</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">vdev</span><span class="o">.</span><span class="n">ctrl_handler</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">ctrl_handler</span><span class="p">;</span>
+
+
+    <span class="n">rvin_parallel_init</span><span class="p">(</span><span class="n">vin</span><span class="p">)</span>
+    <span class="o">----</span><span class="n">v4l2_async_notifier_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">v4l2_dev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">notifier</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>rcar-csi2.c中的rcsi2_probe函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">rcsi2_probe</span><span class="p">(</span><span class="n">struct</span> <span class="n">platform_device</span> <span class="o">*</span><span class="n">pdev</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">rcar_csi2</span> <span class="o">*</span> <span class="n">priv</span><span class="p">;</span>
+    <span class="n">v4l2_subdev_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">priv</span><span class="o">-&gt;</span><span class="n">subdev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pdev</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">)</span>
+    <span class="n">v4l2_set_subdevdata</span><span class="p">(</span><span class="o">&amp;</span><span class="n">priv</span><span class="o">-&gt;</span><span class="n">subdev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pdev</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">)</span>
+    <span class="n">priv</span><span class="o">-&gt;</span><span class="n">subdev</span><span class="o">.</span><span class="n">entity</span><span class="o">.</span><span class="n">ops</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">rcar_csi2_entity_ops</span><span class="p">;</span>
+
+    <span class="n">media_entity_pads_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">priv</span><span class="o">-&gt;</span><span class="n">subdev</span><span class="o">.</span><span class="n">entity</span><span class="p">,</span> <span class="n">NR_OF_RCAR_CSI2_PAD</span><span class="p">,</span> <span class="n">priv</span><span class="o">-&gt;</span><span class="n">pads</span><span class="p">)</span>
+
+    <span class="n">v4l2_async_register_subdev</span><span class="p">(</span><span class="o">&amp;</span><span class="n">priv</span><span class="o">-&gt;</span><span class="n">subdev</span><span class="p">)</span>
+    <span class="o">----</span><span class="n">list_for_each_entry</span><span class="p">(</span><span class="n">notifier</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">notifier_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="o">----</span><span class="n">v4l2_async_notifier_find_v4l2_dev</span><span class="p">(</span><span class="n">notifier</span><span class="p">)</span>
+    <span class="o">----</span><span class="n">v4l2_async_find_match</span><span class="p">(</span><span class="n">notifier</span><span class="p">,</span> <span class="n">sd</span><span class="p">);</span>
+    <span class="o">----</span><span class="n">v4l2_async_match_notify</span><span class="p">(</span><span class="n">notifier</span><span class="p">,</span> <span class="n">v4l2_dev</span><span class="p">,</span> <span class="n">sd</span><span class="p">,</span> <span class="n">asd</span><span class="p">)</span>
+        <span class="o">----</span><span class="n">v4l2_device_register_subdev</span><span class="p">(</span><span class="n">v4l2_dev</span><span class="p">,</span> <span class="n">sd</span><span class="p">)</span>
+            <span class="o">----</span><span class="n">v4l2_async_notifier_call_bound</span><span class="p">(</span><span class="n">notifier</span><span class="p">,</span> <span class="n">sd</span><span class="p">,</span> <span class="n">asd</span><span class="p">)</span>
+                <span class="o">----</span><span class="n">notifier</span><span class="o">-&gt;</span><span class="n">ops</span><span class="o">-&gt;</span><span class="n">bound</span>
+    <span class="o">----</span><span class="n">v4l2_async_notifier_try_complete</span><span class="p">(</span><span class="n">notifier</span><span class="p">);</span>
+        <span class="o">----</span><span class="n">notifier</span><span class="o">-&gt;</span><span class="n">ops</span><span class="o">-&gt;</span><span class="n">complete</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>rcar-v4l2.c中主要的函数是rvin_v4l2_register, 此函数在rcar-core.c中的rvin_parallel_notify_complete调用. 而rvin_parallel_notify_complete被注册到rvin_parallel_notify_ops
+结构体中.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">rvin_v4l2_register</span><span class="p">(</span><span class="n">struct</span> <span class="n">rvin_dev</span> <span class="o">*</span><span class="n">vin</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">video_device</span> <span class="o">*</span><span class="n">vdev</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">vdev</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="n">vin</span><span class="o">-&gt;</span><span class="n">v4l2_dev</span><span class="o">.</span><span class="n">notify</span> <span class="o">=</span> <span class="n">rvin_notify</span><span class="p">;</span>
+
+    <span class="o">/*</span> <span class="n">video</span> <span class="n">node</span> <span class="o">*/</span>
+    <span class="n">vdev</span><span class="o">-&gt;</span><span class="n">v4l2_dev</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">v4l2_dev</span><span class="p">;</span>
+    <span class="n">vdev</span><span class="o">-&gt;</span><span class="n">queue</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">queue</span><span class="p">;</span>
+    <span class="n">snprintf</span><span class="p">(</span><span class="n">vdev</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">vdev</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">),</span> <span class="s2">&quot;VIN</span><span class="si">%u</span><span class="s2"> output&quot;</span><span class="p">,</span> <span class="n">vin</span><span class="o">-&gt;</span><span class="nb">id</span><span class="p">);</span>
+    <span class="n">vdev</span><span class="o">-&gt;</span><span class="n">release</span> <span class="o">=</span> <span class="n">video_device_release_empty</span><span class="p">;</span>
+    <span class="n">vdev</span><span class="o">-&gt;</span><span class="n">lock</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">;</span>
+    <span class="n">vdev</span><span class="o">-&gt;</span><span class="n">fops</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">rvin_fops</span><span class="p">;</span>
+    <span class="n">vdev</span><span class="o">-&gt;</span><span class="n">device_caps</span> <span class="o">=</span> <span class="n">V4L2_CAP_VIDEO_CAPTURE</span> <span class="o">|</span> <span class="n">V4L2_CAP_STREAMING</span> <span class="o">|</span>
+        <span class="n">V4L2_CAP_READWRITE</span><span class="p">;</span>
+
+    <span class="o">/*</span> <span class="n">Set</span> <span class="n">a</span> <span class="n">default</span> <span class="nb">format</span> <span class="o">*/</span>
+    <span class="n">vin</span><span class="o">-&gt;</span><span class="nb">format</span><span class="o">.</span><span class="n">pixelformat</span> <span class="o">=</span> <span class="n">RVIN_DEFAULT_FORMAT</span><span class="p">;</span>
+    <span class="n">vin</span><span class="o">-&gt;</span><span class="nb">format</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">RVIN_DEFAULT_WIDTH</span><span class="p">;</span>
+    <span class="n">vin</span><span class="o">-&gt;</span><span class="nb">format</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">RVIN_DEFAULT_HEIGHT</span><span class="p">;</span>
+    <span class="n">vin</span><span class="o">-&gt;</span><span class="nb">format</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="n">RVIN_DEFAULT_FIELD</span><span class="p">;</span>
+    <span class="n">vin</span><span class="o">-&gt;</span><span class="nb">format</span><span class="o">.</span><span class="n">colorspace</span> <span class="o">=</span> <span class="n">RVIN_DEFAULT_COLORSPACE</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">use_mc</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">vdev</span><span class="o">-&gt;</span><span class="n">ioctl_ops</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">rvin_mc_ioctl_ops</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">vdev</span><span class="o">-&gt;</span><span class="n">ioctl_ops</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">rvin_ioctl_ops</span><span class="p">;</span>
+        <span class="n">rvin_reset_format</span><span class="p">(</span><span class="n">vin</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">rvin_format_align</span><span class="p">(</span><span class="n">vin</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="nb">format</span><span class="p">);</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">video_register_device</span><span class="p">(</span><span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">vdev</span><span class="p">,</span> <span class="n">VFL_TYPE_GRABBER</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ret</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">vin_err</span><span class="p">(</span><span class="n">vin</span><span class="p">,</span> <span class="s2">&quot;Failed to register video device</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">video_set_drvdata</span><span class="p">(</span><span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">vdev</span><span class="p">,</span> <span class="n">vin</span><span class="p">);</span>
+
+    <span class="n">v4l2_info</span><span class="p">(</span><span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">v4l2_dev</span><span class="p">,</span> <span class="s2">&quot;Device registered as </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+          <span class="n">video_device_node_name</span><span class="p">(</span><span class="o">&amp;</span><span class="n">vin</span><span class="o">-&gt;</span><span class="n">vdev</span><span class="p">));</span>
+
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>rvin_fops</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_file_operations</span> <span class="n">rvin_fops</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">owner</span>          <span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">unlocked_ioctl</span> <span class="o">=</span> <span class="n">video_ioctl2</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">open</span>           <span class="o">=</span> <span class="n">rvin_open</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">release</span>        <span class="o">=</span> <span class="n">rvin_release</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">poll</span>           <span class="o">=</span> <span class="n">vb2_fop_poll</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">mmap</span>           <span class="o">=</span> <span class="n">vb2_fop_mmap</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">read</span>           <span class="o">=</span> <span class="n">vb2_fop_read</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>rvin_mc_ioctl_ops</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">v4l2_ioctl_ops</span> <span class="n">rvin_mc_ioctl_ops</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">vidioc_querycap</span>                <span class="o">=</span> <span class="n">rvin_querycap</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_try_fmt_vid_cap</span>         <span class="o">=</span> <span class="n">rvin_mc_try_fmt_vid_cap</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_g_fmt_vid_cap</span>           <span class="o">=</span> <span class="n">rvin_g_fmt_vid_cap</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_s_fmt_vid_cap</span>           <span class="o">=</span> <span class="n">rvin_mc_s_fmt_vid_cap</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_enum_fmt_vid_cap</span>        <span class="o">=</span> <span class="n">rvin_enum_fmt_vid_cap</span><span class="p">,</span>
+
+    <span class="o">.</span><span class="n">vidioc_g_selection</span>             <span class="o">=</span> <span class="n">rvin_g_selection</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_s_selection</span>             <span class="o">=</span> <span class="n">rvin_s_selection</span><span class="p">,</span>
+
+    <span class="o">.</span><span class="n">vidioc_enum_input</span>              <span class="o">=</span> <span class="n">rvin_mc_enum_input</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_g_input</span>                 <span class="o">=</span> <span class="n">rvin_g_input</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_s_input</span>                 <span class="o">=</span> <span class="n">rvin_s_input</span><span class="p">,</span>
+
+    <span class="o">.</span><span class="n">vidioc_reqbufs</span>                 <span class="o">=</span> <span class="n">vb2_ioctl_reqbufs</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_create_bufs</span>             <span class="o">=</span> <span class="n">vb2_ioctl_create_bufs</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_querybuf</span>                <span class="o">=</span> <span class="n">vb2_ioctl_querybuf</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_qbuf</span>                    <span class="o">=</span> <span class="n">vb2_ioctl_qbuf</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_dqbuf</span>                   <span class="o">=</span> <span class="n">vb2_ioctl_dqbuf</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_expbuf</span>                  <span class="o">=</span> <span class="n">vb2_ioctl_expbuf</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_prepare_buf</span>             <span class="o">=</span> <span class="n">vb2_ioctl_prepare_buf</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_streamon</span>                <span class="o">=</span> <span class="n">vb2_ioctl_streamon</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_streamoff</span>               <span class="o">=</span> <span class="n">vb2_ioctl_streamoff</span><span class="p">,</span>
+
+    <span class="o">.</span><span class="n">vidioc_log_status</span>              <span class="o">=</span> <span class="n">v4l2_ctrl_log_status</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_subscribe_event</span>         <span class="o">=</span> <span class="n">rvin_subscribe_event</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">vidioc_unsubscribe_event</span>       <span class="o">=</span> <span class="n">v4l2_event_unsubscribe</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2><span class="section-number">4.15.1.4. </span>应用层处理流程<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>图像数据从内核空间传输到用户空间主要有两种方法:</p>
+<ul class="simple">
+<li><p>用户空间通过read系统调用进入内核空间,驱动程序通过v4l2_file_operation-&gt;read函数调用copy_to_user将数据拷贝到用户空间.这种方式效率比较低</p></li>
+<li><p>通过指针传递的方式,有两种方式, 1)buffer在用户空间申请,然后传递给内核驱动层 2) buffer在内核空间申请,用户空间通过 <code class="docutils literal notranslate"><span class="pre">mmap</span></code> 函数映射到buffer</p></li>
+</ul>
+<img alt="../../_images/buffer_process.png" src="../../_images/buffer_process.png" />
+<p>V4L2驱动中会维护 <code class="docutils literal notranslate"><span class="pre">queue_list</span></code> 和 <code class="docutils literal notranslate"><span class="pre">done_list</span></code> 两个存储buffer指针的队列</p>
+<ol class="arabic simple">
+<li><p>用户空间app端会向内核申请已经写入新数据的buffer，内核空间驱动从done_list队列中返回buffer指针</p></li>
+<li><p>app得到buffer数据进行处理，处理完成后将buffer提交给内核，内核将app提交的buffer添加到queue_list队列中</p></li>
+<li><p>内核驱动从queue_list队列中取出空闲的buffer，并写入最新的视频数据，当一帧数据更新完后，将该buffer加入到 done_list队列中等待app获取</p></li>
+</ol>
+<img alt="../../_images/v4l2_app_1.png" src="../../_images/v4l2_app_1.png" />
+<img alt="../../_images/v4l2_app_2.png" src="../../_images/v4l2_app_2.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="4.15. linux V4L2视频框架" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../rpmsg/index.html" class="btn btn-neutral float-right" title="4.16. rpmsg应用笔记" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

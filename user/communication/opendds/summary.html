@@ -1,0 +1,224 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.4.1.1. opendds 简介 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="6.4.1.2. opendds简单示例" href="simple_example.html" />
+    <link rel="prev" title="6.4.1. opendds" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">6.4. 通信中间件</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">6.4.1. opendds</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">6.4.1.1. opendds 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html">6.4.1.2. opendds简单示例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="condition_listener.html">6.4.1.3. condition和listener</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configure.html">6.4.1.4. opendds配置选项</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../some_ip/index.html">6.4.2. SOME/IP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mqtt/index.html">6.4.3. mqtt协议</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6.4. </span>通信中间件</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.4.1. </span>opendds</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.4.1.1. </span>opendds 简介</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user/communication/opendds/summary.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="opendds">
+<h1><span class="section-number">6.4.1.1. </span>opendds 简介<a class="headerlink" href="#opendds" title="此标题的永久链接"></a></h1>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../../_downloads/b96dea2893cd42032551eb04c0554d8b/OpenDDS-3.22.pdf"><code class="xref download docutils literal notranslate"><span class="pre">opendds官方应用手册.pdf</span></code></a></p></li>
+</ul>
+<p>DDS(DataDistributionService)是数据分发服务的首字母的缩略词</p>
+<p>DDS采用发布/订阅体系架构，强调以数据为中心，提供丰富的QOS服务质量策略，能保障数据进行实时，高效，灵活的分发，可满足各种分布式
+实时通信应用需求</p>
+<p>DDS中以数据为中心的发布/订阅(DCPS)模型构建了一个共享的”全局数据空间”的概念，所有的数据对象都存在于此空间中，分布式节点通过简单的读，写操作便可以
+访问这些数据对象．实际上，数据并非存在于所有计算机的地址空间中，它仅存在于那些对它感兴趣的应用程序的本地缓存中，而这一点正式发布/订阅模型的关键所在</p>
+<p>DDS规范列举并定义了一整套全面的Qos(Quality of service, 服务质量)策略，能利用Qos进行系统控制</p>
+<section id="id1">
+<h2><span class="section-number">6.4.1.1.1. </span>基本概念<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>下图显示了dds dcps层的概述</p>
+<img alt="../../../_images/dcps_overview.png" src="../../../_images/dcps_overview.png" />
+<section id="dds">
+<h3><span class="section-number">6.4.1.1.1.1. </span>dds通信的基本要素<a class="headerlink" href="#dds" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>域(domain): 域是DCPS中基本分区单元，每个域中的实体只能与此域中的实体进行通信</p></li>
+<li><p>域参与者(domainparticipant): 域参与者是应用程序的入口点，以方便在特定域中进行交互.域参与者是写入或读取数据多个对象的工厂</p></li>
+<li><p>主题(topic): 主题是发布，订阅应用程序之间进行交互的根本手段，每个主题在域里面都有一个独特的名称以及它发布的一个具体数据类型．发送数据时，发布过程
+总是指定主题，订阅者通过主题请求数据．在DCPS模型中，使用者可以通过不同实例发布相同主题的数据样本</p></li>
+<li><p>数据写入器(data writer): 发送数据的组件</p></li>
+<li><p>数据读取器(data reader): 接受数据的组件</p></li>
+<li><p>发布者(publisher): 发布者负责获取所发布的数据，并且把它分发到域中所有相关订阅者处</p></li>
+<li><p>订阅者(subscriber): 订阅者从发布者处接受信息，并递送到任何与它相连的、相关的数据读取者上。</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3><span class="section-number">6.4.1.1.1.2. </span>内置主题<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>dds规范定义了许多主题，这些主题被嵌入到dds实现中，订阅这些嵌入式主题，使应用程序开发人员能访问正在被使用的域的状态，包括哪些主题被注册，
+哪些DataReader, DataWriter被连接以及断开，以及各种实体的Qos设置．</p>
+</section>
+<section id="qos">
+<h3><span class="section-number">6.4.1.1.1.3. </span>QoS策略<a class="headerlink" href="#qos" title="此标题的永久链接"></a></h3>
+<p>dds规范定义了许多QoS策略，应用程序利用这些策略，指定他们对于服务质量QoS的要求．参与者指定：从服务中，需要什么行为．同时，服务也决定了如何实现
+这些行为．这些策略可应用到DCPS的所有实体中(比如主题，DataWriter, DataReader, 发布者，订阅者，域参与者),但对于所有实体类型而言能，不是所有的策略均有效</p>
+<p>通过使用请求-提供(Request-Offered, RxO)模式，可以把订阅者和发布者进行匹配．</p>
+</section>
+<section id="listener">
+<h3><span class="section-number">6.4.1.1.1.4. </span>Listener<a class="headerlink" href="#listener" title="此标题的永久链接"></a></h3>
+<p>DCPS层为每个实体定义了一个回调接口，便于应用程序可以侦听关与那个实体的某些状态改变或事件．例如：当不存在可以读取的可用数据时，就会通知datareader</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">6.4.1.1.1.5. </span>条件<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>条件(condition)和等待集(waitset)能够为listeners在dds中检测感兴趣的时间提供选择，一般模式为</p>
+<ul class="simple">
+<li><p>应用程序创建一种特定的condition对象，比如状态条件，并附加到一个waitset上</p></li>
+<li><p>应用程序在waitset上等待，直到一个或多个条件为true</p></li>
+<li><p>应用程序在相应的实体对象上进行调用，以便于提取必要信息</p></li>
+<li><p>datareader接口也具有带有读取条件参数的操作</p></li>
+<li><p>提供查询条件对象，以作为订阅内容配置文件实现的一部分</p></li>
+</ul>
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">6.4.1.1.2. </span>OpenDDS架构<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>OpenDDS实现是在OMG IDL PSM严格解释说明的基础上的</p>
+<section id="id5">
+<h3><span class="section-number">6.4.1.1.2.1. </span>可扩展传输框架<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>OpenDDS使用由DDS规范定义的IDL接口，以便于初始化以及控制服务使用．通过一个OpenDDS特有的传输框架，可以实现数据传输，而此框架可以允许服务利用各种传输协议，
+因此可称为 <code class="docutils literal notranslate"><span class="pre">可插拔的传输层</span></code> ，使得OpenDDS的架构具有很大的灵活性. 目前OpenDDS支持TCP/UDP/IP多点发送/共享内存以及RTPS_UDP等多种传输协议.传输协议可以通过
+配置文件指定</p>
+<img alt="../../../_images/opendds_trans.png" src="../../../_images/opendds_trans.png" />
+</section>
+<section id="id6">
+<h3><span class="section-number">6.4.1.1.2.2. </span>dds发现<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h3>
+<p>dds实现必须通过一些 <code class="docutils literal notranslate"><span class="pre">集中式代理</span></code> 或者 <code class="docutils literal notranslate"><span class="pre">分布式策略</span></code> 发现彼此，而opendds的一个重要特征：通过利用 <code class="docutils literal notranslate"><span class="pre">DCPS信息仓库(DCPSInfoRepo)</span></code> 或者 <code class="docutils literal notranslate"><span class="pre">RTPS发现(Discovery)</span></code> ,
+但在datawriter和datareader之间采用不同的传输协议进行数据传输</p>
+<ul class="simple">
+<li><p>信息仓库(InfoRepo): 集中式的存储库类型，其作为一个单独的进行运行，可以允许发布者和订阅者以集中式发现彼此</p></li>
+<li><p>RTPS发现: 一种对等的发现类型，使用RTPS协议通知可用性和本地信息</p></li>
+</ul>
+<p>DCPSInfoRepo是OpenDDS执行的一种独立式服务，以便于实现集中式方法，它作为一个CORBA服务器进行实现．当用户请求一个关于主题的订阅时，DCPSInfoRepo就会定位主题，
+通知发布者目前有新的订阅者．</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="6.4.1. opendds" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="simple_example.html" class="btn btn-neutral float-right" title="6.4.1.2. opendds简单示例" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.7.1. socket概述 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="6.7.2. udp socket" href="socket_udp.html" />
+    <link rel="prev" title="6.7. linux socket编程" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/index.html">6.4. 通信中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">6.7. linux socket编程</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">6.7.1. socket概述</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">6.7.1.1. socket函数接口</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="socket_udp.html">6.7.2. udp socket</a></li>
+<li class="toctree-l3"><a class="reference internal" href="socket_tcp.html">6.7.3. tcp socket</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.7. </span>linux socket编程</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.7.1. </span>socket概述</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user/socket/socket_summary.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="socket">
+<h1><span class="section-number">6.7.1. </span>socket概述<a class="headerlink" href="#socket" title="此标题的永久链接"></a></h1>
+<p>socket主要分为 <code class="docutils literal notranslate"><span class="pre">流式套接字SOCK_STREAM</span></code> 和 <code class="docutils literal notranslate"><span class="pre">数据报套接字SOCK_DGRAM</span></code> . SOCK_STREAM是一种可靠的，双向的有序的通讯流，对应使用的是TCP协议．SOCK_DGRAM是
+不可靠的，无序的通讯流，对应使用的UDP协议</p>
+<p>基本的编程接口有: socket, bind, listen, accept, connect, send, recv等</p>
+<section id="id1">
+<h2><span class="section-number">6.7.1.1. </span>socket函数接口<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>创建通信套接字:socket</p></li>
+</ul>
+<p>socket函数创建一个通信的端点，并返回一个指向该端点的文件描述符(linux下一切皆是文件)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+
+/*
+ * domain: 通信协议簇，例如AF_INET, AF_UNIX...
+ * type: SOCK_STREAM, SOCK_DGRAM
+ * protocal: 通常为0
+ * return: 成功返回文件描述符，失败返回-1,并设置erron
+ */
+int socket(int domain, int type, int protocol);
+</pre></div>
+</div>
+<p>例如服务器端创建一个用于接收客户端连接的socket代码</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">server_fd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">==</span> <span class="n">server_fd</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">perror</span><span class="p">(</span><span class="s2">&quot;socket&quot;</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>分配套接字名称: bind</p></li>
+</ul>
+<p>当用socket函数创建套接字后，并没有为它分配IP地址和端口，我们还需要bind函数来将指定的IP和端口号分配给已经创建的socket</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+
+/*
+ * sockfd: socket 返回的文件描述符
+ * addr: 含有要绑定的IP和端口的地址结构体指针
+ * addrlen: 第二个参数的大小，使用sizeof来计算
+ * return: 成功返回0, 失败返回-1,并设置erron
+ */
+int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>第二个参数需要注意，参数指定的是struct sockaddr *类型，一般不直接使用这个结构体，这个类型在linux上有需要的变种，例如sockaddr_in和sockaddr_un,
+经常使用后面这两个结构定义IP和端口，然后强制转换</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">struct</span> <span class="n">sockaddr_un</span> <span class="n">myaddr</span><span class="p">;</span>
+<span class="n">struct</span> <span class="n">sockaddr_in</span> <span class="n">myaddr</span><span class="p">;</span>
+<span class="n">myaddr</span><span class="o">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+<span class="o">//</span><span class="n">接受任何IP的连接</span>
+<span class="n">myaddr</span><span class="o">.</span><span class="n">sin_add</span><span class="o">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">htonl</span><span class="p">(</span><span class="n">INADDR_ANY</span><span class="p">);</span>
+<span class="n">myaddr</span><span class="o">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="n">htons</span><span class="p">(</span><span class="mi">8080</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="n">bind</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span> <span class="p">(</span><span class="n">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">myaddr</span><span class="p">,</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">sockaddr_in</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">perror</span><span class="p">(</span><span class="s2">&quot;bind&quot;</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>开始监听: listen</p></li>
+</ul>
+<p>使用listen来建立一个监听客户端连接的队列</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;sys/types.h&gt;</span>
+<span class="c1">#include &lt;sys/socket.h&gt;</span>
+
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">sockfd</span><span class="p">:</span> <span class="n">监听的socket描述符</span>
+ <span class="o">*</span> <span class="n">backlog</span><span class="p">:</span> <span class="n">建立的最大连接数</span>
+ <span class="o">*</span> <span class="k">return</span><span class="p">:</span> <span class="n">成功返回0</span><span class="p">,</span> <span class="n">失败返回</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">并设置erron</span>
+<span class="o">*/</span>
+<span class="nb">int</span> <span class="n">listen</span><span class="p">(</span><span class="nb">int</span> <span class="n">sockfd</span><span class="p">,</span> <span class="nb">int</span> <span class="n">backlog</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>例如创建一个可以监听10个客户端连接请求的队列</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="n">listen</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">perror</span><span class="p">(</span><span class="s2">&quot;listen&quot;</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>接收连接请求: accept</p></li>
+</ul>
+<p>网络编程的核心异步就是建立客户端和服务器端的连接，使用accept来建立两者的连接</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+
+/*
+ * sockfd: 已经创建的本地正在监听的socket
+ * addr: 保存连接的客户端的地址信息
+ * addrlen: sockaddr的长度指针
+ * return: 成功返回客户端的socket文件描述符，失败返回-1,并设置erron
+*/
+int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+</pre></div>
+</div>
+<p>后面两个参数需要定义，但是不需要初始化，在连接成功后客户端的socket信息会自动填入</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">sockaddr_in</span> <span class="n">clientaddr</span><span class="p">;</span>
+<span class="nb">int</span> <span class="n">clientaddr_len</span> <span class="o">=</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">clientaddr</span><span class="p">);</span>
+
+<span class="nb">int</span> <span class="n">client_fd</span> <span class="o">=</span> <span class="n">accept</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span> <span class="p">(</span><span class="n">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">clientaddr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">clientaddr_len</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="n">client_fd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">perror</span><span class="p">(</span><span class="s2">&quot;accept&quot;</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>发送数据: send, sendto</p></li>
+</ul>
+<p>在建立连接后，当然要发送数据，既然socket也是文件，发送数据其实就是写文件，我们使用send函数来发送socket数据</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+
+/*
+ * sockfd: 接收数据的socket
+ * buf: 要发送的上数据
+ * len: 数据长度
+ * flags: 当这个参数为0,该函数等价与write
+ * return: 成功返回发送的字节数，失败返回-1,并设置erron
+*/
+ssize_t send(int sockfd, const void *buf, size_t len, int flags);
+
+/* sendto 功能是将数据发送到指定的地址dest_addr, 其他参数基本相同 */
+ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,
+                const struct sockaddr *dest_addr, socklen_t addrlen);
+</pre></div>
+</div>
+<p>例如服务器在建立连接后发送一个字符串到客户端:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">char</span> <span class="n">msg</span><span class="p">[]</span> <span class="o">=</span> <span class="s2">&quot;Hello Client...&quot;</span><span class="p">;</span>
+<span class="n">send</span><span class="p">(</span><span class="n">client_fd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">sendto</span><span class="p">(</span><span class="n">client_fd</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">dst_addr</span><span class="p">,</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">dest_addr</span><span class="p">));</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>接收数据:recv, recvfrom</p></li>
+</ul>
+<p>既然有发送数据，必然有接收数据的函数，与send类似, recv的功能也跟 read几乎相同</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+
+/*
+ * sockfd: 接收的socket fd
+ * buf: 接收缓冲区
+ * len: 缓冲区长度
+ * flags: 当这个参数为0, 该函数等价为readd
+ * return: 成功返回接收的字节数，失败返回-1,并设置erron
+*/
+ssize_t recv(int sockfd, void *buf, size_t len, int flags);
+sszie_t recvfrom(int sockfd, void *buf, size_t len, int flags,
+                    struct sockaddr *src_addr, socklen_t *addr);
+</pre></div>
+</div>
+<p>例如接收服务器发送的字符串</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">char</span> <span class="n">msg_buf</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0x55</span><span class="p">};</span>
+<span class="n">recv</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span> <span class="n">msg_buf</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="nb">int</span> <span class="n">srcaddr_len</span> <span class="o">=</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">src_addr</span><span class="p">);</span>
+<span class="n">recvfrom</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span> <span class="n">msg_buf</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">src_addr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">srcaddr_len</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="6.7. linux socket编程" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="socket_udp.html" class="btn btn-neutral float-right" title="6.7.2. udp socket" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

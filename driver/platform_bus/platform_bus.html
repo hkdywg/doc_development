@@ -1,0 +1,566 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.1.1. platform总线 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.1.2. platform驱动" href="platform_driver.html" />
+    <link rel="prev" title="4.1. platform总线" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.1. platform总线</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.1.1. platform总线</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.1.1.1. 概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.1.1.2. 数据结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resource">4.1.1.3. resource</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#platform-device">4.1.1.4. platform_device注册</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="platform_driver.html">4.1.2. platform驱动</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.1. </span>platform总线</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.1.1. </span>platform总线</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/platform_bus/platform_bus.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="platform">
+<h1><span class="section-number">4.1.1. </span>platform总线<a class="headerlink" href="#platform" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">4.1.1.1. </span>概述<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>嵌入式系统中有很多物理总线: i2c、spi、USB、uart、PCIE等。linux中引入了一种驱动管理和注册的机制platform平台总线，它是一条虚拟的总线，并不是一个物理的总线。
+相比于PCI、USB等它主要用于描述SOC上的片上资源，platform所描述的资源有一个共同点:在CPU的总线上直接取址</p>
+<ol class="arabic simple">
+<li><p>platform总线相关代码: driver/base/platform.c</p></li>
+<li><p>相关结构体定义: include/linux/platform_device.h</p></li>
+</ol>
+</section>
+<section id="id2">
+<h2><span class="section-number">4.1.1.2. </span>数据结构<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>resource结构体保存了设备资源信息</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">include</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">ioport</span><span class="o">.</span><span class="n">h</span>
+<span class="n">struct</span> <span class="n">resource</span> <span class="p">{</span>
+        <span class="n">resource_size_t</span> <span class="n">start</span><span class="p">;</span> <span class="o">//</span><span class="n">资源起始地址</span>
+        <span class="n">resource_size_t</span> <span class="n">end</span><span class="p">;</span>   <span class="o">//</span><span class="n">资源结束地址</span>
+        <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+        <span class="n">unsigned</span> <span class="n">long</span> <span class="n">flags</span><span class="p">;</span>    <span class="o">//</span><span class="n">资源类型</span>
+        <span class="n">struct</span> <span class="n">resource</span> <span class="o">*</span><span class="n">parent</span><span class="p">,</span> <span class="o">*</span><span class="n">sibling</span><span class="p">,</span> <span class="o">*</span><span class="n">child</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>platform_device</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">include</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">platform_device</span><span class="o">.</span><span class="n">h</span>
+<span class="n">struct</span> <span class="n">platform_device</span> <span class="p">{</span>
+        <span class="n">const</span> <span class="n">char</span>  <span class="o">*</span><span class="n">name</span><span class="p">;</span>        <span class="o">//</span><span class="n">设备的名字</span>
+        <span class="nb">int</span>     <span class="nb">id</span><span class="p">;</span>                <span class="o">//</span><span class="n">ID</span> <span class="n">是用来区分如果设备名字相同的时候</span>
+        <span class="nb">bool</span>        <span class="n">id_auto</span><span class="p">;</span>
+        <span class="n">struct</span> <span class="n">device</span>   <span class="n">dev</span><span class="p">;</span>       <span class="o">//</span><span class="n">设备结构</span>
+        <span class="n">u32</span>     <span class="n">num_resources</span><span class="p">;</span>     <span class="o">//</span><span class="n">resource结构个数</span>
+        <span class="n">struct</span> <span class="n">resource</span> <span class="o">*</span><span class="n">resource</span><span class="p">;</span>  <span class="o">//</span><span class="n">设备资源</span>
+
+        <span class="n">const</span> <span class="n">struct</span> <span class="n">platform_device_id</span> <span class="o">*</span><span class="n">id_entry</span><span class="p">;</span>
+
+        <span class="o">/*</span> <span class="n">MFD</span> <span class="n">cell</span> <span class="n">pointer</span> <span class="o">*/</span>
+        <span class="n">struct</span> <span class="n">mfd_cell</span> <span class="o">*</span><span class="n">mfd_cell</span><span class="p">;</span>
+
+        <span class="o">/*</span> <span class="n">arch</span> <span class="n">specific</span> <span class="n">additions</span> <span class="o">*/</span>
+        <span class="n">struct</span> <span class="n">pdev_archdata</span>    <span class="n">archdata</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>platform_driver</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct platform_driver {
+        int (*probe)(struct platform_device *);  //探测函数，在注册平台设备时被调用
+        int (*remove)(struct platform_device *); //删除函数，在注销平台设备时被调用
+        void (*shutdown)(struct platform_device *);
+        int (*suspend)(struct platform_device *, pm_message_t state);
+        int (*resume)(struct platform_device *);
+        struct device_driver driver;              //设备驱动结构
+        const struct platform_device_id *id_table;//该设备驱动支持的设备的列表
+        bool prevent_deferred_probe;
+};
+</pre></div>
+</div>
+</section>
+<section id="resource">
+<h2><span class="section-number">4.1.1.3. </span>resource<a class="headerlink" href="#resource" title="此标题的永久链接"></a></h2>
+<p>linux platform驱动中常见的几种资源如下:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define IORESOURCE_IO           0x00000100      /* PCI/ISA I/O ports */</span>
+<span class="c1">#define IORESOURCE_MEM          0x00000200</span>
+<span class="c1">#define IORESOURCE_REG          0x00000300      /* Register offsets */</span>
+<span class="c1">#define IORESOURCE_IRQ          0x00000400</span>
+<span class="c1">#define IORESOURCE_DMA          0x00000800</span>
+<span class="c1">#define IORESOURCE_BUS          0x00001000</span>
+</pre></div>
+</div>
+<p>我们主要分析前三种资源，即IO，MEM，REG</p>
+<p>几乎每一种外设都是通过读写设备上的寄存器来进行的，外设的寄存器通常被连续的编址。根据CPU体系结构的不同，CPU对IO端口的编址方式有两种</p>
+<ol class="arabic simple">
+<li><p>I/O映射方式(I/O-mapped)</p></li>
+</ol>
+<p>典型的，如X86处理器为外设专门实现了一个单独的地址空间，称为i/o地址空间或i/o端口空间</p>
+<ol class="arabic simple" start="2">
+<li><p>内存映射方式(memory-mapped)</p></li>
+</ol>
+<p>RISC指令系统的CPU(如ARM)通常只实现一个物理地址空间，像这种情况，外设的I/O端口的物理地址就被映射到内存地址空间中，外设I/O端口称为内存的一部分。此时CPU可以像访问一个内存单元
+那样去访问外设I/O端口，而不需要设立专门的外设I/O指令</p>
+<p>我们先分析一下资源树的总信息，然后再分析如何把资源加入到资源树中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">kernel</span><span class="o">/</span><span class="n">resource</span><span class="o">.</span><span class="n">c</span><span class="p">]</span>
+<span class="n">struct</span> <span class="n">resource</span> <span class="n">ioport_resource</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">name</span>   <span class="o">=</span> <span class="s2">&quot;PCI IO&quot;</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">start</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">end</span>    <span class="o">=</span> <span class="n">IO_SPACE_LIMIT</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">flags</span>  <span class="o">=</span> <span class="n">IORESOURCE_IO</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="n">EXPORT_SYMBOL</span><span class="p">(</span><span class="n">ioport_resource</span><span class="p">);</span>
+
+<span class="n">struct</span> <span class="n">resource</span> <span class="n">iomem_resource</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">name</span>   <span class="o">=</span> <span class="s2">&quot;PCI mem&quot;</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">start</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">end</span>    <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">flags</span>  <span class="o">=</span> <span class="n">IORESOURCE_MEM</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="n">EXPORT_SYMBOL</span><span class="p">(</span><span class="n">iomem_resource</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>可以使用 <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">/proc/iomem</span></code> 来查看已经插入的资源</p>
+<img alt="../../_images/cat_iomem.png" src="../../_images/cat_iomem.png" />
+<p>实际的插入动作由 __insert_resource函数完成</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+ * Insert a resource into the resource tree. If successful, return NULL,
+ * otherwise return the conflicting resource (compare to __request_resource())
+ */
+static struct resource * __insert_resource(struct resource *parent, struct resource *new)
+{
+        struct resource *first, *next;
+
+        /* 注意这里是个循环,失败了也是会继续更新parrnt尝试插入的,除非返回值为NULL,或new相对与parent无效 */
+        for (;; parent = first) {
+                first = __request_resource(parent, new);    /* 返回NULL表示已经插入 */
+                if (!first)
+                        return first;    /* NULL表示已经插入,这里直接返回 */
+
+                if (first == parent)        /* 插入的超过root范围或插入范围无效 */
+                        return first;
+                if (WARN_ON(first == new))      /* duplicated insertion 重复插入个资源 */
+                        return first;
+
+                /* 失败节点,的start大于new-&gt;start 或  失败节点的end小于new-&gt;end*/
+                if ((first-&gt;start &gt; new-&gt;start) || (first-&gt;end &lt; new-&gt;end))
+                        break;
+                /* new和某段资源重复了 */
+                if ((first-&gt;start == new-&gt;start) &amp;&amp; (first-&gt;end == new-&gt;end))
+                        break;
+        }
+
+        /* 到这里表示通过break出来的,即要插入的资源和资源池里面的资源有重叠 */
+        for (next = first; ; next = next-&gt;sibling) {
+                /* Partial overlap? Bad, and unfixable,部分重叠会认为是bad, */
+                if (next-&gt;start &lt; new-&gt;start || next-&gt;end &gt; new-&gt;end)
+                        return next;
+                if (!next-&gt;sibling)
+                        break;
+                if (next-&gt;sibling-&gt;start &gt; new-&gt;end)    /* 找到的某个资源的start大于new-&gt;end,即new资源整个都小于next-&gt;siblig,即可能可以做next-&gt;siblig节点的child */
+                        break;
+        }
+
+        new-&gt;parent = parent;        /* new的parent指向根节点 */
+        new-&gt;sibling = next-&gt;sibling;    /* new的sibling指向上一个节点(new &lt; next) */
+        new-&gt;child = first;            /* 挂接属于new范围内的资源到new里面 */
+
+        next-&gt;sibling = NULL;
+        for (next = first; next; next = next-&gt;sibling)
+                next-&gt;parent = new;
+
+        if (parent-&gt;child == first) {
+                parent-&gt;child = new;
+        } else {
+                next = parent-&gt;child;
+                while (next-&gt;sibling != first)
+                        next = next-&gt;sibling;
+                next-&gt;sibling = new;
+        }
+        return NULL;
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>几个常用的资源注册函数</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[lib/devres.c]
+/**
+ * devm_ioremap_resource() - check, request region, and ioremap resource
+ * @dev: generic device to handle the resource for
+ * @res: resource to be handled
+ *
+ * Checks that a resource is a valid memory region, requests the memory
+ * region and ioremaps it. All operations are managed and will be undone
+ * on driver detach.
+ *
+ * Returns a pointer to the remapped memory or an ERR_PTR() encoded error code
+ * on failure. Usage example:
+ *
+ *  res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ *  base = devm_ioremap_resource(&amp;pdev-&gt;dev, res);
+ *  if (IS_ERR(base))
+ *      return PTR_ERR(base);
+ */
+void __iomem *devm_ioremap_resource(struct device *dev,
+                                  const struct resource *res)
+{
+    resource_size_t size;
+    void __iomem *dest_ptr;
+
+    BUG_ON(!dev);
+
+        //通常ioremap的都是mem资源，如果不是则退出
+    if (!res || resource_type(res) != IORESOURCE_MEM) {
+          dev_err(dev, &quot;invalid resource\n&quot;);
+          return IOMEM_ERR_PTR(-EINVAL);
+    }
+
+    size = resource_size(res);  //得到资源的大小
+
+        //请求资源
+    if (!devm_request_mem_region(dev, res-&gt;start, size, dev_name(dev))) {
+          dev_err(dev, &quot;can&#39;t request region for resource %pR\n&quot;, res);
+          return IOMEM_ERR_PTR(-EBUSY);
+    }
+        //ioremap映射物理地址到虚拟地址
+    dest_ptr = devm_ioremap(dev, res-&gt;start, size);
+    if (!dest_ptr) {
+          dev_err(dev, &quot;ioremap failed for resource %pR\n&quot;, res);
+          devm_release_mem_region(dev, res-&gt;start, size);
+          dest_ptr = IOMEM_ERR_PTR(-ENOMEM);
+    }
+
+    return dest_ptr;
+}
+EXPORT_SYMBOL(devm_ioremap_resource);
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#define devm_request_mem_region(dev,start,n,name) \
+__devm_request_region(dev, &amp;iomem_resource, (start), (n), (name))
+
+  struct resource *
+  __devm_request_region(struct device *dev, struct resource *parent,
+                                resource_size_t start, resource_size_t n, const char *name)
+  {
+          struct region_devres *dr = NULL;
+          struct resource *res;
+
+          //申请空间，管理资源
+          dr = devres_alloc(devm_region_release, sizeof(struct region_devres),
+                                GFP_KERNEL);
+          if (!dr)
+                  return NULL;
+
+          dr-&gt;parent = parent;  //初始化
+          dr-&gt;start = start;
+          dr-&gt;n = n;
+
+          res = __request_region(parent, start, n, name, 0);
+          if (res)
+                  devres_add(dev, dr);  //把申请到的资源加入到该设备中
+          else
+                  devres_free(dr);
+
+          return res;
+  }
+  EXPORT_SYMBOL(__devm_request_region);
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>      /**
+ * __request_region - create a new busy resource region
+ * @parent: parent resource descriptor
+ * @start: resource start address
+ * @n: resource region size
+ * @name: reserving caller&#39;s ID string
+ * @flags: IO resource flags
+ */
+struct resource * __request_region(struct resource *parent,
+                   resource_size_t start, resource_size_t n,
+                   const char *name, int flags)
+{
+    DECLARE_WAITQUEUE(wait, current);
+    struct resource *res = alloc_resource(GFP_KERNEL);
+
+    if (!res)
+        return NULL;
+
+    //填充资源信息
+    res-&gt;name = name;
+    res-&gt;start = start;
+    res-&gt;end = start + n - 1;
+
+    write_lock(&amp;resource_lock);
+
+    for (;;) {
+        struct resource *conflict;
+
+        res-&gt;flags = resource_type(parent) | resource_ext_type(parent);
+        res-&gt;flags |= IORESOURCE_BUSY | flags;
+        res-&gt;desc = parent-&gt;desc;
+
+        conflict = __request_resource(parent, res);
+        if (!conflict)
+            break;
+        /*
+         * mm/hmm.c reserves physical addresses which then
+         * become unavailable to other users.  Conflicts are
+         * not expected.  Warn to aid debugging if encountered.
+         */
+        if (conflict-&gt;desc == IORES_DESC_DEVICE_PRIVATE_MEMORY) {
+            pr_warn(&quot;Unaddressable device %s %pR conflicts with %pR&quot;,
+                conflict-&gt;name, conflict, res);
+        }
+        if (conflict != parent) {
+            if (!(conflict-&gt;flags &amp; IORESOURCE_BUSY)) {
+                parent = conflict;
+                continue;
+            }
+        }
+        //如果这个资源是多个设备使用的话，把这个设备加入到等待队列，资源可用时再唤醒
+        if (conflict-&gt;flags &amp; flags &amp; IORESOURCE_MUXED) {
+            add_wait_queue(&amp;muxed_resource_wait, &amp;wait);
+            write_unlock(&amp;resource_lock);
+            set_current_state(TASK_UNINTERRUPTIBLE);
+            schedule();
+</pre></div>
+</div>
+</section>
+<section id="platform-device">
+<h2><span class="section-number">4.1.1.4. </span>platform_device注册<a class="headerlink" href="#platform-device" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">drivers</span><span class="o">/</span><span class="n">base</span><span class="o">/</span><span class="n">platform</span><span class="o">.</span><span class="n">c</span><span class="p">]</span>
+<span class="nb">int</span> <span class="n">platform_device_register</span><span class="p">(</span><span class="n">struct</span> <span class="n">platform_device</span> <span class="o">*</span><span class="n">pdev</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="n">device_initialize</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pdev</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">);</span>
+                <span class="o">|--</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">kobj</span><span class="o">.</span><span class="n">kset</span> <span class="o">=</span> <span class="n">devices_kset</span><span class="p">;</span>
+                <span class="o">|--</span><span class="n">kobject_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">kobj</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">device_ktype</span><span class="p">);</span>
+                <span class="o">|--</span><span class="n">INIT_LIST_HEAD</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">dma_pools</span><span class="p">);</span>
+                <span class="o">|--</span><span class="n">mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>
+                <span class="o">|--</span><span class="n">lockdep_set_novalidate_class</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>
+                <span class="o">|--</span><span class="n">spin_lock_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">devres_lock</span><span class="p">);</span>
+                <span class="o">|--</span><span class="n">INIT_LIST_HEAD</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">devres_head</span><span class="p">);</span>
+                <span class="o">|--</span><span class="n">device_pm_init</span><span class="p">(</span><span class="n">dev</span><span class="p">);</span>
+                <span class="o">|--</span><span class="n">set_dev_node</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+                <span class="o">|--</span><span class="n">INIT_LIST_HEAD</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">links</span><span class="o">.</span><span class="n">consumers</span><span class="p">);</span>
+                <span class="o">|--</span><span class="n">INIT_LIST_HEAD</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">links</span><span class="o">.</span><span class="n">suppliers</span><span class="p">);</span>
+                <span class="o">|--</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">links</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">DL_DEV_NO_DRIVER</span><span class="p">;</span>
+        <span class="n">arch_setup_pdev_archdata</span><span class="p">(</span><span class="n">pdev</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">platform_device_add</span><span class="p">(</span><span class="n">pdev</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int platform_device_add(struct platform_device *pdev)
+{
+        u32 i;
+        int ret;
+
+        if (!pdev)
+                return -EINVAL;
+
+        if (!pdev-&gt;dev.parent)
+                pdev-&gt;dev.parent = &amp;platform_bus;       //设置总线的父设备为平台设备
+
+        pdev-&gt;dev.bus = &amp;platform_bus_type;             //设备挂接在平台总线下
+
+        switch (pdev-&gt;id) {
+        default:        //设置设备标号
+                dev_set_name(&amp;pdev-&gt;dev, &quot;%s.%d&quot;, pdev-&gt;name,  pdev-&gt;id);
+                break;
+        case PLATFORM_DEVID_NONE:       //-1表示不需要设备标号
+                dev_set_name(&amp;pdev-&gt;dev, &quot;%s&quot;, pdev-&gt;name);
+                break;
+        case PLATFORM_DEVID_AUTO:       //由总线自行分配
+                /*
+                 * Automatically allocated device ID. We mark it as such so
+                 * that we remember it must be freed, and we append a suffix
+                 * to avoid namespace collision with explicit IDs.
+                 */
+                ret = ida_simple_get(&amp;platform_devid_ida, 0, 0, GFP_KERNEL);
+                if (ret &lt; 0)
+                        goto err_out;
+                pdev-&gt;id = ret;
+                pdev-&gt;id_auto = true;
+                dev_set_name(&amp;pdev-&gt;dev, &quot;%s.%d.auto&quot;, pdev-&gt;name, pdev-&gt;id);
+                break;
+        }
+
+        //对该设备的资源插入资源树
+        for (i = 0; i &lt; pdev-&gt;num_resources; i++) {
+                struct resource *p, *r = &amp;pdev-&gt;resource[i];
+
+                if (r-&gt;name == NULL)
+                        r-&gt;name = dev_name(&amp;pdev-&gt;dev); //如果没有设置资源名字则和设备名一样
+
+                p = r-&gt;parent;
+                if (!p) {
+                        if (resource_type(r) == IORESOURCE_MEM) //如果没有父节点则检查资源是否是MEM或者IO
+                                p = &amp;iomem_resource;    //iomem资源树
+                        else if (resource_type(r) == IORESOURCE_IO)
+                                p = &amp;ioport_resource;
+                }
+
+                if (p) {
+                        ret = insert_resource(p, r);    //插入资源
+                        if (ret) {
+                                dev_err(&amp;pdev-&gt;dev, &quot;failed to claim resource %d: %pR\n&quot;, i, r);
+                                goto failed;
+                        }
+                }
+        }
+
+        pr_debug(&quot;Registering platform device &#39;%s&#39;. Parent at %s\n&quot;,
+                 dev_name(&amp;pdev-&gt;dev), dev_name(pdev-&gt;dev.parent));
+
+        //增加设备，节点，sysfs信息
+        ret = device_add(&amp;pdev-&gt;dev);
+        if (ret == 0)
+                return ret;
+
+ failed:
+        if (pdev-&gt;id_auto) {
+                ida_simple_remove(&amp;platform_devid_ida, pdev-&gt;id);
+                pdev-&gt;id = PLATFORM_DEVID_AUTO;
+        }
+
+        while (i--) {
+                struct resource *r = &amp;pdev-&gt;resource[i];
+                if (r-&gt;parent)
+                        release_resource(r);
+        }
+
+ err_out:
+        return ret;
+}
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="4.1. platform总线" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="platform_driver.html" class="btn btn-neutral float-right" title="4.1.2. platform驱动" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

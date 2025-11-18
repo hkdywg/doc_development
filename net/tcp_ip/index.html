@@ -1,0 +1,201 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>9.2. TCP/IP详解 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="9.2.1. 概述" href="overview.html" />
+    <link rel="prev" title="9.1. linux 网络概览" href="../overview/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">9. net</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../overview/index.html">9.1. linux 网络概览</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">9.2. TCP/IP详解</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview.html">9.2.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datalink_layer.html">9.2.2. 数据链路层</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ip_protocol.html">9.2.3. IP:网际协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="arp.html">9.2.4. ARP地址解析协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="icmp.html">9.2.5. ICMP internet控制报文协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="routing.html">9.2.6. IP选路</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcp.html">9.2.7. TCP传输控制协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="udp.html">9.2.8. UDP用户数据报协议</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../AVB/index.html">9.3. AVB笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tc8/index.html">9.4. TC-8测试</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">9. </span>net</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">9.2. </span>TCP/IP详解</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/net/tcp_ip/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tcp-ip">
+<h1><span class="section-number">9.2. </span>TCP/IP详解<a class="headerlink" href="#tcp-ip" title="此标题的永久链接"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">9.2.1. 概述</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#id2">9.2.1.1. 分层</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#id3">9.2.1.2. 互联网地址</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#id4">9.2.1.3. 域名系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#id5">9.2.1.4. 封装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#id6">9.2.1.5. 分用</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="datalink_layer.html">9.2.2. 数据链路层</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="datalink_layer.html#ieee-802">9.2.2.1. IEEE 802和以太网封装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datalink_layer.html#slip-ip">9.2.2.2. SLIP:串行线路IP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datalink_layer.html#ppp">9.2.2.3. PPP: 点对点协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datalink_layer.html#id2">9.2.2.4. 环回接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datalink_layer.html#mtu">9.2.2.5. MTU</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ip_protocol.html">9.2.3. IP:网际协议</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ip_protocol.html#id1">9.2.3.1. IP首部</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_protocol.html#id2">9.2.3.2. IP路由选择</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="arp.html">9.2.4. ARP地址解析协议</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="arp.html#id1">9.2.4.1. ARP高速缓存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="arp.html#id2">9.2.4.2. ARP的分组格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="arp.html#id3">9.2.4.3. 示例</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="icmp.html">9.2.5. ICMP internet控制报文协议</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="icmp.html#icmp">9.2.5.1. ICMP报文类型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icmp.html#id1">9.2.5.2. ICMP地址掩码请求与应答</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icmp.html#id2">9.2.5.3. ICMP时间戳请求与应答</a></li>
+<li class="toctree-l2"><a class="reference internal" href="icmp.html#ping">9.2.5.4. ping</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="routing.html">9.2.6. IP选路</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="routing.html#id1">9.2.6.1. 选路的原理</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="routing.html#id2">9.2.6.1.1. 简单路由表</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="routing.html#id3">9.2.6.2. 动态选路协议</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="routing.html#rip">9.2.6.2.1. RIP选路信息协议</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tcp.html">9.2.7. TCP传输控制协议</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tcp.html#id1">9.2.7.1. TCP数据封装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcp.html#id2">9.2.7.2. TCP连接的建立与终止</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tcp.html#id3">9.2.7.2.1. 建立连接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcp.html#id4">9.2.7.2.2. 终止连接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcp.html#id5">9.2.7.2.3. TCP状态迁移图</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcp.html#id6">9.2.7.2.4. TCP选项</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tcp.html#id7">9.2.7.3. TCP的交互数据流</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tcp.html#id8">9.2.7.4. TCP的超时与重传</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="udp.html">9.2.8. UDP用户数据报协议</a></li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../overview/index.html" class="btn btn-neutral float-left" title="9.1. linux 网络概览" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="overview.html" class="btn btn-neutral float-right" title="9.2.1. 概述" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

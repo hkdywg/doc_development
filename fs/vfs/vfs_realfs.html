@@ -1,0 +1,408 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.1.5. vfs与real_fs关联 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="5.1.6. 文件系统系统调用" href="fs_io_read.html" />
+    <link rel="prev" title="5.1.4. 文件系统mount" href="fs_mount.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. file system note</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.1. linux 虚拟文件系统</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="vfs_architecture.html">5.1.1. 虚拟文件系统概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vfs_datastruct.html">5.1.2. vfs数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs_store.html">5.1.3. 文件的存储</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fs_mount.html">5.1.4. 文件系统mount</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.1.5. vfs与real_fs关联</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">5.1.5.1. 文件系统的注册与挂载</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vfs">5.1.5.2. VFS与具体的文件系统操作挂钩</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="fs_io_read.html">5.1.6. 文件系统系统调用</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ext4/index.html">5.2. ext4文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sysfs/index.html">5.3. linux文件系统之sysfs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>file system note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.1. </span>linux 虚拟文件系统</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5.1.5. </span>vfs与real_fs关联</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/fs/vfs/vfs_realfs.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="vfsreal-fs">
+<h1><span class="section-number">5.1.5. </span>vfs与real_fs关联<a class="headerlink" href="#vfsreal-fs" title="此标题的永久链接"></a></h1>
+<p>虚拟文件系统(VFS)提供了一种抽象接口，使不同类型的实际文件系统可以通过统一的接口进行操作．VFS是一个中间层，它将用户空间的系统调用
+映射到具体的文件系统操作上．实际的文件系统通过实现这些标准化接口，并将这些接口与VFS进行挂钩．</p>
+<section id="id1">
+<h2><span class="section-number">5.1.5.1. </span>文件系统的注册与挂载<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<section id="id2">
+<h3><span class="section-number">5.1.5.1.1. </span>文件系统类型的注册<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>每种实际文件系统在内核中都需要进行注册，这通常在文件系统模块加载时完成．注册时，文件系统需要提供一组操作函数，这些函数定义了文件
+系统的行为．具体的，这些函数会存储在 <code class="docutils literal notranslate"><span class="pre">file_system_type</span></code> 结构中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/**
+ * 对内核支持的每一种文件系统，存在一个这样的结构对其进行描述。
+ */
+struct file_system_type {
+    /**
+     * 文件系统类型的名称
+     */
+    const char *name;
+    /**
+     * 此文件系统类型的属性
+     */
+    int fs_flags;
+    /**
+     * 函数指针，当安装此类型的文件系统时，就由VFS调用此例程从设备上将此文件系统的superblock读入内存中
+     */
+    struct super_block *(*get_sb) (struct file_system_type *, int,
+                       const char *, void *);
+    /**
+     * 删除超级块的方法。
+     */
+    void (*kill_sb) (struct super_block *);
+    /**
+     * 指向实现文件系统的模块的指针。
+     */
+    struct module *owner;
+    /**
+     * 下一个文件系统指针。
+     */
+    struct file_system_type * next;
+    /**
+     * 具有相同文件系统类型的超级块对象链表的头。
+     */
+    struct list_head fs_supers;
+};
+</pre></div>
+</div>
+<p>内核通过 <code class="docutils literal notranslate"><span class="pre">register_filesystem</span></code> 函数将文件系统类型注册到VFS</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">struct</span> <span class="n">file_system_type</span> <span class="n">ext2_fs_type</span> <span class="o">=</span> <span class="p">{</span>
+<span class="o">.</span><span class="n">owner</span>      <span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">,</span>
+<span class="o">.</span><span class="n">name</span>       <span class="o">=</span> <span class="s2">&quot;ext2&quot;</span><span class="p">,</span>
+<span class="o">.</span><span class="n">get_sb</span>     <span class="o">=</span> <span class="n">ext2_get_sb</span><span class="p">,</span>
+<span class="o">.</span><span class="n">kill_sb</span>    <span class="o">=</span> <span class="n">kill_block_super</span><span class="p">,</span>
+<span class="o">.</span><span class="n">fs_flags</span>   <span class="o">=</span> <span class="n">FS_REQUIRES_DEV</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="n">static</span> <span class="nb">int</span> <span class="n">__init</span> <span class="n">init_ext2_fs</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">err</span> <span class="o">=</span> <span class="n">init_ext2_xattr</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">init_inodecache</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span>
+        <span class="n">goto</span> <span class="n">out1</span><span class="p">;</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">register_filesystem</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ext2_fs_type</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span>
+        <span class="n">goto</span> <span class="n">out</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">out</span><span class="p">:</span>
+    <span class="n">destroy_inodecache</span><span class="p">();</span>
+<span class="n">out1</span><span class="p">:</span>
+    <span class="n">exit_ext2_xattr</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">module_init</span><span class="p">(</span><span class="n">init_ext2_fs</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="vfs">
+<h2><span class="section-number">5.1.5.2. </span>VFS与具体的文件系统操作挂钩<a class="headerlink" href="#vfs" title="此标题的永久链接"></a></h2>
+<p>VFS使用一组标准化的操作接口来与实际的文件系统交互．这些定义在 <code class="docutils literal notranslate"><span class="pre">super_operations</span></code> , <code class="docutils literal notranslate"><span class="pre">inode_operations</span></code>, <code class="docutils literal notranslate"><span class="pre">file_operation</span></code> 等结构中.</p>
+<p><strong>超级块操作: 定义了与超级块相关的操作，例如读取inode, 同步文件系统等</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">super_operations</span> <span class="p">{</span>
+    <span class="n">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">alloc_inode</span><span class="p">)(</span><span class="n">struct</span> <span class="n">super_block</span> <span class="o">*</span><span class="n">sb</span><span class="p">);</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">destroy_inode</span><span class="p">)(</span><span class="n">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">);</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">write_inode</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">,</span> <span class="n">struct</span> <span class="n">writeback_control</span> <span class="o">*</span><span class="n">wbc</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">sync_fs</span><span class="p">)(</span><span class="n">struct</span> <span class="n">super_block</span> <span class="o">*</span><span class="n">sb</span><span class="p">,</span> <span class="nb">int</span> <span class="n">wait</span><span class="p">);</span>
+    <span class="o">//</span> <span class="n">其他操作函数</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p><strong>inode操作: 定义了与inode相关的操作，如创建inode,查找目录项等</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">inode_operations</span> <span class="p">{</span>
+    <span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">lookup</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">,</span><span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">create</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">,</span><span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="p">,</span> <span class="n">umode_t</span><span class="p">,</span> <span class="nb">bool</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">link</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="p">,</span><span class="n">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">,</span><span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">unlink</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">,</span><span class="n">struct</span> <span class="n">dentry</span> <span class="o">*</span><span class="p">);</span>
+    <span class="o">//</span> <span class="n">其他操作函数</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p><strong>文件操作: 定义了与文件描述符相关的操作，如读写文件等</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">file_operations</span> <span class="p">{</span>
+    <span class="n">loff_t</span> <span class="p">(</span><span class="o">*</span><span class="n">llseek</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">,</span> <span class="n">loff_t</span><span class="p">,</span> <span class="nb">int</span><span class="p">);</span>
+    <span class="n">ssize_t</span> <span class="p">(</span><span class="o">*</span><span class="n">read</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">,</span> <span class="n">char</span> <span class="n">__user</span> <span class="o">*</span><span class="p">,</span> <span class="n">size_t</span><span class="p">,</span> <span class="n">loff_t</span> <span class="o">*</span><span class="p">);</span>
+    <span class="n">ssize_t</span> <span class="p">(</span><span class="o">*</span><span class="n">write</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="n">__user</span> <span class="o">*</span><span class="p">,</span> <span class="n">size_t</span><span class="p">,</span> <span class="n">loff_t</span> <span class="o">*</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="nb">open</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">,</span> <span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">);</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">release</span><span class="p">)</span> <span class="p">(</span><span class="n">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">,</span> <span class="n">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">);</span>
+    <span class="o">//</span> <span class="n">其他操作函数</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>mount一个文件系统时，会调用 <code class="docutils literal notranslate"><span class="pre">do_new_mount</span></code> 函数，此函数中完成mount相关操作</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static int do_new_mount(struct nameidata *nd, char *type, int flags,
+         int mnt_flags, char *name, void *data)
+     {
+             struct vfsmount *mnt;
+
+             if (!type || !memchr(type, 0, PAGE_SIZE))
+                     return -EINVAL;
+
+             /* we need capabilities... */
+             /* 检查权限 */
+             if (!capable(CAP_SYS_ADMIN))
+                     return -EPERM;
+
+             /**
+              * do_kern_mount可能让当前进程睡眠。
+              * 同时，另外一个进程可能在完全相同的安装点上安装文件系统或者甚至更改根文件系统。
+              * 验证在该安装点上最近安装的文件系统是否仍然指向当前的namespace。如果不是，则返回错误码
+              */
+             mnt = do_kern_mount(type, flags, name, data);
+             if (IS_ERR(mnt))
+                     return PTR_ERR(mnt);
+
+             /* 将子文件系统实例与父文件系统装载点进行关联 */
+             return do_add_mount(mnt, nd, mnt_flags, NULL);
+     }
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>do_kern_mount</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct vfsmount *
+do_kern_mount(const char *fstype, int flags, const char *name, void *data)
+{
+         /**
+         * 获得文件系统名称对应的文件系统对象。
+         */
+        struct file_system_type *type = get_fs_type(fstype);
+        struct super_block *sb = ERR_PTR(-ENOMEM);
+        struct vfsmount *mnt;
+
+        mnt = alloc_vfsmnt(name);
+
+        /**
+         * 调用文件系统的get_sb分配并初始化一个新的超级块。
+         * 例如ext2的get_sb方法是ext2_get_sb。
+         */
+        sb = type-&gt;get_sb(type, flags, name, data);
+        if (IS_ERR(sb))
+                goto out_free_secdata;
+        error = security_sb_kern_mount(sb, secdata);
+        if (error)
+                goto out_sb;
+        mnt-&gt;mnt_sb = sb;
+        /**
+         * 将此字段初始化为与文件系统根目录对应的目录项对象的地址。并增加其引用计数值。
+         */
+        mnt-&gt;mnt_root = dget(sb-&gt;s_root);
+        mnt-&gt;mnt_mountpoint = sb-&gt;s_root;
+        /**
+         * 将mnt_parent指向自身，表示它是一个独立的根。
+         * 上层调用者可以修改它。
+         */
+        mnt-&gt;mnt_parent = mnt;
+        mnt-&gt;mnt_namespace = current-&gt;namespace;
+
+        return mnt;
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>do_add_mount</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int do_add_mount(struct vfsmount *newmnt, struct nameidata *nd,
+ int mnt_flags, struct list_head *fslist)
+{
+        ...
+        //以下代码为attach_mnt函数中内容，attach_mnt被do_add_mount函数调用
+        mnt-&gt;mnt_parent = mntget(nd-&gt;mnt);
+        mnt-&gt;mnt_mountpoint = dget(nd-&gt;dentry);
+        //将新的vfs mount加入到mount链表中。open函数调用时会检查目录项是否是一个文件系统的挂载点，会遍历mount链表
+        list_add(&amp;mnt-&gt;mnt_hash, mount_hashtable+hash(nd-&gt;mnt, nd-&gt;dentry));
+        list_add_tail(&amp;mnt-&gt;mnt_child, &amp;nd-&gt;mnt-&gt;mnt_mounts);
+        nd-&gt;dentry-&gt;d_mounted++;
+        ...
+}
+</pre></div>
+</div>
+<p>文件系统的mount操作中，以下代码行是实际的文件系统与vfs关联的关键步骤，open/read/write等操作也会被vfs重定向到实际文件系统中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnt</span><span class="o">-&gt;</span><span class="n">mnt_root</span> <span class="o">=</span> <span class="n">dget</span><span class="p">(</span><span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_root</span><span class="p">);</span>
+<span class="n">mnt</span><span class="o">-&gt;</span><span class="n">mnt_mountpoint</span> <span class="o">=</span> <span class="n">sb</span><span class="o">-&gt;</span><span class="n">s_root</span><span class="p">;</span>
+
+<span class="n">mnt</span><span class="o">-&gt;</span><span class="n">mnt_parent</span> <span class="o">=</span> <span class="n">mnt</span><span class="p">;</span>
+<span class="n">mnt</span><span class="o">-&gt;</span><span class="n">mnt_namespace</span> <span class="o">=</span> <span class="n">current</span><span class="o">-&gt;</span><span class="n">namespace</span><span class="p">;</span>
+
+<span class="n">mnt</span><span class="o">-&gt;</span><span class="n">mnt_parent</span> <span class="o">=</span> <span class="n">mntget</span><span class="p">(</span><span class="n">nd</span><span class="o">-&gt;</span><span class="n">mnt</span><span class="p">);</span>
+<span class="n">mnt</span><span class="o">-&gt;</span><span class="n">mnt_mountpoint</span> <span class="o">=</span> <span class="n">dget</span><span class="p">(</span><span class="n">nd</span><span class="o">-&gt;</span><span class="n">dentry</span><span class="p">);</span>
+<span class="n">list_add</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mnt</span><span class="o">-&gt;</span><span class="n">mnt_hash</span><span class="p">,</span> <span class="n">mount_hashtable</span><span class="o">+</span><span class="nb">hash</span><span class="p">(</span><span class="n">nd</span><span class="o">-&gt;</span><span class="n">mnt</span><span class="p">,</span> <span class="n">nd</span><span class="o">-&gt;</span><span class="n">dentry</span><span class="p">));</span>
+</pre></div>
+</div>
+<p><strong>open文件</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct file *filp_open(const char * filename, int flags, int mode)
+{
+        ...
+        //路径查找中，会对每一个找到的目录项进行挂载点判断
+
+        //在当前目录中搜索下一个分量
+        err = do_lookup(nd, &amp;this, &amp;next);
+        检查刚解析的分量是否对应一个文件系统的挂载点
+        follow_mount(struct vfsmount **mnt, struct dentry **dentry)
+        {
+                while (d_mountpoint(*dentry)) {
+                        /* 在哈希表中查找当前路径的文件系统装载实例 */
+                        struct vfsmount *mounted = lookup_mnt(*mnt, *dentry);
+                                                                                {
+                                                                                        struct list_head * head = mount_hashtable + hash(mnt, dentry);
+                                                                                        struct list_head * tmp = head;
+                                                                                        struct vfsmount *p, *found = NULL;
+
+                                                                                        spin_lock(&amp;vfsmount_lock);
+                                                                                        for (;;) {
+                                                                                                tmp = tmp-&gt;next;
+                                                                                                p = NULL;
+                                                                                                if (tmp == head)
+                                                                                                        break;
+                                                                                                p = list_entry(tmp, struct vfsmount, mnt_hash);
+                                                                                                if (p-&gt;mnt_parent == mnt &amp;&amp; p-&gt;mnt_mountpoint == dentry) {
+                                                                                                        found = mntget(p);
+                                                                                                        break;
+                                                                                                }
+                                                                                        }
+                                                                                        spin_unlock(&amp;vfsmount_lock);
+                                                                                        return found;
+                                                                                }
+                        if (!mounted)/* 未加载文件系统，退出 */
+                                break;
+                        /* 将文件系统的根目录作为当前路径，继续查找 */
+                        mntput(*mnt);
+                        *mnt = mounted;
+                        dput(*dentry);
+                        //此步骤较为关键，此步骤后文件操作重定向为实际文件系统对应的inode操作
+                        *dentry = dget(mounted-&gt;mnt_root);
+                        res = 1;
+        }
+        }
+
+        ...
+}
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>mount操作中的 <code class="docutils literal notranslate"><span class="pre">mnt-&gt;mnt_root</span> <span class="pre">=</span> <span class="pre">dget(sb-&gt;s_root);</span></code> <code class="docutils literal notranslate"><span class="pre">mnt-&gt;mnt_parent</span> <span class="pre">=</span> <span class="pre">mntget(nd-&gt;mnt);</span></code> <code class="docutils literal notranslate"><span class="pre">mnt-&gt;mnt_mountpoint</span> <span class="pre">=</span> <span class="pre">dget(nd-&gt;dentry);</span></code> 设置vfs mount挂载点关键信息。
+open操作中则在路径查找的过程中对每一级目录进行挂载点对比(if (p-&gt;mnt_parent == mnt &amp;&amp; p-&gt;mnt_mountpoint == dentry)),如果这一级目录为文件系统挂载点，则 <code class="docutils literal notranslate"><span class="pre">修改dentry(*dentry</span> <span class="pre">=</span> <span class="pre">dget(mounted-&gt;mnt_root);)</span></code>
+这一步骤较为关键。此步骤后对目录项及文件的操作均重定向为实际文件系统对应的inode操作</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="fs_mount.html" class="btn btn-neutral float-left" title="5.1.4. 文件系统mount" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="fs_io_read.html" class="btn btn-neutral float-right" title="5.1.6. 文件系统系统调用" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

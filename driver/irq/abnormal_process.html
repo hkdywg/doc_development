@@ -1,0 +1,451 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.4.1. linux异常处理流程 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.4.2. linux中断初始化和基本调用流程" href="irq_init_call.html" />
+    <link rel="prev" title="4.4. linux 中断" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.4. linux 中断</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.4.1. linux异常处理流程</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.4.1.1. 异常向量表的建立</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.4.1.2. 异常向量表内容</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.4.1.3. 异常的初步跳转分析</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="irq_init_call.html">4.4.2. linux中断初始化和基本调用流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_init_arm64.html">4.4.3. ARM64中断初始化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_frame.html">4.4.4. linux 中断框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_soft_hard.html">4.4.5. 创建软硬中断号映射</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_process.html">4.4.6. linux中断处理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_soft.html">4.4.7. 软中断</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tasklet.html">4.4.8. tasklet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.4. </span>linux 中断</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.4.1. </span>linux异常处理流程</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/irq/abnormal_process.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux">
+<h1><span class="section-number">4.4.1. </span>linux异常处理流程<a class="headerlink" href="#linux" title="此标题的永久链接"></a></h1>
+<p>linux异常处理与裸流程基本是一样的</p>
+<ol class="arabic simple">
+<li><p>设置好异常向量表(把异常向量表放在异常向量的位置)</p></li>
+<li><p>写异常处理函数</p></li>
+<li><p>执行异常处理</p></li>
+</ol>
+<ul class="simple">
+<li><p>异常向量表在启动过程中的流程所在的位置</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">start_kernel</span><span class="p">()</span>
+    <span class="o">...</span>
+    <span class="n">local_irq_disable</span><span class="p">()</span>
+    <span class="o">...</span>
+    <span class="n">setup_arch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">command_line</span><span class="p">)</span>
+        <span class="n">paging_init</span>
+            <span class="n">devicemaps_init</span>
+                <span class="n">early_trap_init</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>    <span class="o">//</span><span class="n">设置异常向量表</span>
+    <span class="o">...</span>
+    <span class="n">trap_init</span><span class="p">()</span>
+    <span class="o">...</span>
+    <span class="n">early_irq_init</span><span class="p">()</span>
+    <span class="n">init_IRQ</span><span class="p">()</span>
+    <span class="o">...</span>
+    <span class="n">local_irq_enabled</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="id1">
+<h2><span class="section-number">4.4.1.1. </span>异常向量表的建立<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>void __init early_trap_init(void *vectors_base)
+{
+#ifndef CONFIG_CPU_V7M
+    unsigned long vectors = (unsigned long)vectors_base; //异常向量表vectors的基址
+    extern char __stubs_start[], __stubs_end[];     //汇编和链接脚本定义的各异常处理的核心代码
+    extern char __vectors_start[], __vectors_end[];     //汇编中定义的异常向量表的标号
+    unsigned i;
+
+    vectors_page = vectors_base;
+
+    /*
+     * Poison the vectors page with an undefined instruction.  This
+     * instruction is chosen to be undefined for both ARM and Thumb
+     * ISAs.  The Thumb version is an undefined instruction with a
+     * branch back to the undefined instruction.
+     */
+    for (i = 0; i &lt; PAGE_SIZE / sizeof(u32); i++)
+        ((u32 *)vectors_base)[i] = 0xe7fddef1;
+
+    /*
+     * Copy the vectors, stubs and kuser helpers (in entry-armv.S)
+     * into the vector page, mapped at 0xffff0000, and ensure these
+     * are visible to the instruction stream.
+     */
+    //拷贝异常向量表到vectors起始地址
+    memcpy((void *)vectors, __vectors_start, __vectors_end - __vectors_start);
+    //拷贝异常处理核心代码到异常向量表base+0x1000位置
+    memcpy((void *)vectors + 0x1000, __stubs_start, __stubs_end - __stubs_start);
+
+    //从用户空间可以访问的内核段提供的用户代码拷贝到固定位置
+    kuser_init(vectors_base);
+
+    //刷异常向量这两页，如果icache中有相关代码的话
+    flush_icache_range(vectors, vectors + PAGE_SIZE * 2);
+#else /* ifndef CONFIG_CPU_V7M */
+    /*
+     * on V7-M there is no need to copy the vector table to a dedicated
+     * memory area. The address is configurable and so a table in the kernel
+     * image can be used.
+     */
+#endif
+}
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">4.4.1.2. </span>异常向量表内容<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>以下内容在 arch/arm/kernel/entry-armv.S中定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.L__vectors_start:
+    W(b)    vector_rst  //复位异常
+    W(b)    vector_und  //未定义指令异常
+    W(ldr)  pc, .L__vectors_start + 0x1000  //软中断swi异常
+    W(b)    vector_pabt     //预取指异常
+    W(b)    vector_dabt     //数据异常(如访问没有权限的地址)
+    W(b)    vector_addrexcptn   //保留，没使用
+    W(b)    vector_irq      //中断
+    W(b)    vector_fiq      //快速中断
+
+    .data
+    .align  2
+
+    .globl  cr_alignment
+cr_alignment:
+    .space  4
+</pre></div>
+</div>
+<p>以下内容在 arch/arm/kernel/vmlinux.lds.h中定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define ARM_VECTORS                                                 \</span>
+    <span class="n">__vectors_start</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>                                            \
+    <span class="o">.</span><span class="n">vectors</span> <span class="mh">0xffff0000</span> <span class="p">:</span> <span class="n">AT</span><span class="p">(</span><span class="n">__vectors_start</span><span class="p">)</span> <span class="p">{</span>                     \
+        <span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">vectors</span><span class="p">)</span>                                         \
+    <span class="p">}</span>                                                               \
+    <span class="o">.</span> <span class="o">=</span> <span class="n">__vectors_start</span> <span class="o">+</span> <span class="n">SIZEOF</span><span class="p">(</span><span class="o">.</span><span class="n">vectors</span><span class="p">);</span>                         \
+    <span class="n">__vectors_end</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>                                              \
+                                    \
+    <span class="n">__stubs_start</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>                                              \
+    <span class="o">.</span><span class="n">stubs</span> <span class="n">ADDR</span><span class="p">(</span><span class="o">.</span><span class="n">vectors</span><span class="p">)</span> <span class="o">+</span> <span class="mh">0x1000</span> <span class="p">:</span> <span class="n">AT</span><span class="p">(</span><span class="n">__stubs_start</span><span class="p">)</span> <span class="p">{</span>            \
+        <span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">stubs</span><span class="p">)</span>                                           \
+    <span class="p">}</span>                                                               \
+    <span class="o">.</span> <span class="o">=</span> <span class="n">__stubs_start</span> <span class="o">+</span> <span class="n">SIZEOF</span><span class="p">(</span><span class="o">.</span><span class="n">stubs</span><span class="p">);</span>                             \
+    <span class="n">__stubs_end</span> <span class="o">=</span> <span class="o">.</span><span class="p">;</span>                                                \
+                                    \
+    <span class="n">PROVIDE</span><span class="p">(</span><span class="n">vector_fiq_offset</span> <span class="o">=</span> <span class="n">vector_fiq</span> <span class="o">-</span> <span class="n">ADDR</span><span class="p">(</span><span class="o">.</span><span class="n">vectors</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>vectors_start开始位置为0xffff0000</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">4.4.1.3. </span>异常的初步跳转分析<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>vector_rst:
+ ARM(       swi     SYS_ERROR0      )   //复位异常，这里执行软中断异常
+ THUMB(     svc     #0              )
+ THUMB(     nop                     )
+    b       vector_und
+
+/*
+ * Interrupt dispatcher     //irq中断处理
+ */
+    vector_stub     irq, IRQ_MODE, 4
+
+    .long   __irq_usr                       @  0  (USR_26 / USR_32)
+    .long   __irq_invalid                   @  1  (FIQ_26 / FIQ_32)
+    .long   __irq_invalid                   @  2  (IRQ_26 / IRQ_32)
+    .long   __irq_svc                       @  3  (SVC_26 / SVC_32)
+    .long   __irq_invalid                   @  4
+    .long   __irq_invalid                   @  5
+    .long   __irq_invalid                   @  6
+    .long   __irq_invalid                   @  7
+    .long   __irq_invalid                   @  8
+    .long   __irq_invalid                   @  9
+    .long   __irq_invalid                   @  a
+    .long   __irq_invalid                   @  b
+    .long   __irq_invalid                   @  c
+    .long   __irq_invalid                   @  d
+    .long   __irq_invalid                   @  e
+    .long   __irq_invalid                   @  f
+
+/*
+ * Data abort dispatcher
+ * Enter in ABT mode, spsr = USR CPSR, lr = USR PC
+ */
+    //数据异常
+    vector_stub     dabt, ABT_MODE, 8
+
+    .long   __dabt_usr                      @  0  (USR_26 / USR_32)
+    .long   __dabt_invalid                  @  1  (FIQ_26 / FIQ_32)
+    .long   __dabt_invalid                  @  2  (IRQ_26 / IRQ_32)
+    .long   __dabt_svc                      @  3  (SVC_26 / SVC_32)
+    .long   __dabt_invalid                  @  4
+    .long   __dabt_invalid                  @  5
+    .long   __dabt_invalid                  @  6
+    .long   __dabt_invalid                  @  7
+    .long   __dabt_invalid                  @  8
+    .long   __dabt_invalid                  @  9
+    .long   __dabt_invalid                  @  a
+    .long   __dabt_invalid                  @  b
+    .long   __dabt_invalid                  @  c
+    .long   __dabt_invalid                  @  d
+    .long   __dabt_invalid                  @  e
+    .long   __dabt_invalid                  @  f
+
+/*
+ * Prefetch abort dispatcher
+ * Enter in ABT mode, spsr = USR CPSR, lr = USR PC
+ */
+    //预取指异常
+    vector_stub     pabt, ABT_MODE, 4
+
+    .long   __pabt_usr                      @  0 (USR_26 / USR_32)
+    .long   __pabt_invalid                  @  1 (FIQ_26 / FIQ_32)
+    .long   __pabt_invalid                  @  2 (IRQ_26 / IRQ_32)
+    .long   __pabt_svc                      @  3 (SVC_26 / SVC_32)
+    .long   __pabt_invalid                  @  4
+    .long   __pabt_invalid                  @  5
+    .long   __pabt_invalid                  @  6
+    .long   __pabt_invalid                  @  7
+    .long   __pabt_invalid                  @  8
+    .long   __pabt_invalid                  @  9
+    .long   __pabt_invalid                  @  a
+    .long   __pabt_invalid                  @  b
+    .long   __pabt_invalid                  @  c
+    .long   __pabt_invalid                  @  d
+    .long   __pabt_invalid                  @  e
+    .long   __pabt_invalid                  @  f
+
+/*
+ * Undef instr entry dispatcher
+ * Enter in UND mode, spsr = SVC/USR CPSR, lr = SVC/USR PC
+ */
+    //未定义异常
+    vector_stub     und, UND_MODE
+
+    .long   __und_usr                       @  0 (USR_26 / USR_32)
+    .long   __und_invalid                   @  1 (FIQ_26 / FIQ_32) .long    __und_invalid                   @  2 (IRQ_26 / IRQ_32)
+    .long   __und_svc                       @  3 (SVC_26 / SVC_32)
+    .long   __und_invalid                   @  4
+    .long   __und_invalid                   @  5
+    .long   __und_invalid                   @  6
+    .long   __und_invalid                   @  7
+    .long   __und_invalid                   @  8
+    .long   __und_invalid                   @  9
+    .long   __und_invalid                   @  a
+    .long   __und_invalid                   @  b
+    .long   __und_invalid                   @  c
+    .long   __und_invalid                   @  d
+    .long   __und_invalid                   @  e
+    .long   __und_invalid                   @  f
+
+    .align  5
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Vector</span> <span class="n">stubs</span><span class="o">.</span>
+ <span class="o">*</span>
+ <span class="o">*</span> <span class="n">This</span> <span class="n">code</span> <span class="ow">is</span> <span class="n">copied</span> <span class="n">to</span> <span class="mh">0xffff1000</span> <span class="n">so</span> <span class="n">we</span> <span class="n">can</span> <span class="n">use</span> <span class="n">branches</span> <span class="ow">in</span> <span class="n">the</span>
+ <span class="o">*</span> <span class="n">vectors</span><span class="p">,</span> <span class="n">rather</span> <span class="n">than</span> <span class="n">ldr</span><span class="s1">&#39;s.  Note that this code must not exceed</span>
+ <span class="o">*</span> <span class="n">a</span> <span class="n">page</span> <span class="n">size</span><span class="o">.</span>
+ <span class="o">*</span>
+ <span class="o">*</span> <span class="n">Common</span> <span class="n">stub</span> <span class="n">entry</span> <span class="n">macro</span><span class="p">:</span>
+ <span class="o">*</span>   <span class="n">Enter</span> <span class="ow">in</span> <span class="n">IRQ</span> <span class="n">mode</span><span class="p">,</span> <span class="n">spsr</span> <span class="o">=</span> <span class="n">SVC</span><span class="o">/</span><span class="n">USR</span> <span class="n">CPSR</span><span class="p">,</span> <span class="n">lr</span> <span class="o">=</span> <span class="n">SVC</span><span class="o">/</span><span class="n">USR</span> <span class="n">PC</span>
+ <span class="o">*</span>
+ <span class="o">*</span> <span class="n">SP</span> <span class="n">points</span> <span class="n">to</span> <span class="n">a</span> <span class="n">minimal</span> <span class="n">amount</span> <span class="n">of</span> <span class="n">processor</span><span class="o">-</span><span class="n">private</span> <span class="n">memory</span><span class="p">,</span> <span class="n">the</span> <span class="n">address</span>
+ <span class="o">*</span> <span class="n">of</span> <span class="n">which</span> <span class="ow">is</span> <span class="n">copied</span> <span class="n">into</span> <span class="n">r0</span> <span class="k">for</span> <span class="n">the</span> <span class="n">mode</span> <span class="n">specific</span> <span class="n">abort</span> <span class="n">handler</span><span class="o">.</span>
+ <span class="o">*/</span>
+ <span class="o">//</span><span class="n">这是一个宏定义</span><span class="p">,</span><span class="n">上面代码中会用到此宏</span>
+    <span class="o">.</span><span class="n">macro</span>  <span class="n">vector_stub</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">correction</span><span class="o">=</span><span class="mi">0</span>
+    <span class="o">.</span><span class="n">align</span>  <span class="mi">5</span>
+
+<span class="n">vector_</span>\<span class="n">name</span><span class="p">:</span>
+    <span class="o">.</span><span class="k">if</span> \<span class="n">correction</span>
+    <span class="n">sub</span>     <span class="n">lr</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="c1">#\correction</span>
+    <span class="o">.</span><span class="n">endif</span>
+
+    <span class="o">@</span>
+    <span class="o">@</span> <span class="n">Save</span> <span class="n">r0</span><span class="p">,</span> <span class="n">lr_</span><span class="o">&lt;</span><span class="n">exception</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">parent</span> <span class="n">PC</span><span class="p">)</span> <span class="ow">and</span> <span class="n">spsr_</span><span class="o">&lt;</span><span class="n">exception</span><span class="o">&gt;</span>
+    <span class="o">@</span> <span class="p">(</span><span class="n">parent</span> <span class="n">CPSR</span><span class="p">)</span>
+    <span class="o">@</span>
+    <span class="n">stmia</span>   <span class="n">sp</span><span class="p">,</span> <span class="p">{</span><span class="n">r0</span><span class="p">,</span> <span class="n">lr</span><span class="p">}</span>            <span class="o">@</span> <span class="n">save</span> <span class="n">r0</span><span class="p">,</span> <span class="n">lr</span>
+    <span class="n">mrs</span>     <span class="n">lr</span><span class="p">,</span> <span class="n">spsr</span>
+    <span class="nb">str</span>     <span class="n">lr</span><span class="p">,</span> <span class="p">[</span><span class="n">sp</span><span class="p">,</span> <span class="c1">#8]            @ save spsr</span>
+
+    <span class="o">@</span>
+    <span class="o">@</span> <span class="n">Prepare</span> <span class="k">for</span> <span class="n">SVC32</span> <span class="n">mode</span><span class="o">.</span>  <span class="n">IRQs</span> <span class="n">remain</span> <span class="n">disabled</span><span class="o">.</span>
+    <span class="o">@</span>
+    <span class="n">mrs</span>     <span class="n">r0</span><span class="p">,</span> <span class="n">cpsr</span>
+    <span class="n">eor</span>     <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="c1">#(\mode ^ SVC_MODE | PSR_ISETSTATE)</span>
+    <span class="n">msr</span>     <span class="n">spsr_cxsf</span><span class="p">,</span> <span class="n">r0</span>
+
+    <span class="o">@</span>
+    <span class="o">@</span> <span class="n">the</span> <span class="n">branch</span> <span class="n">table</span> <span class="n">must</span> <span class="n">immediately</span> <span class="n">follow</span> <span class="n">this</span> <span class="n">code</span>
+    <span class="o">@</span>
+    <span class="ow">and</span>     <span class="n">lr</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="c1">#0x0f</span>
+ <span class="n">THUMB</span><span class="p">(</span>     <span class="n">adr</span>     <span class="n">r0</span><span class="p">,</span> <span class="mi">1</span><span class="n">f</span>                  <span class="p">)</span>
+ <span class="n">THUMB</span><span class="p">(</span>     <span class="n">ldr</span>     <span class="n">lr</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">lsl</span> <span class="c1">#2]    )</span>
+    <span class="n">mov</span>     <span class="n">r0</span><span class="p">,</span> <span class="n">sp</span>
+ <span class="n">ARM</span><span class="p">(</span>       <span class="n">ldr</span>     <span class="n">lr</span><span class="p">,</span> <span class="p">[</span><span class="n">pc</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">lsl</span> <span class="c1">#2]    )</span>
+    <span class="n">movs</span>    <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>                  <span class="o">@</span> <span class="n">branch</span> <span class="n">to</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">SVC</span> <span class="n">mode</span>
+<span class="n">ENDPROC</span><span class="p">(</span><span class="n">vector_</span>\<span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>irq中断</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">__irq_usr</span><span class="p">:</span>
+    <span class="n">usr_entry</span>
+    <span class="n">kuser_cmpxchg_check</span>
+    <span class="n">irq_handler</span>
+    <span class="n">get_thread_info</span> <span class="n">tsk</span>
+    <span class="n">mov</span>     <span class="n">why</span><span class="p">,</span> <span class="c1">#0</span>
+    <span class="n">b</span>       <span class="n">ret_to_user_from_irq</span>
+ <span class="n">UNWIND</span><span class="p">(</span><span class="o">.</span><span class="n">fnend</span>              <span class="p">)</span>
+<span class="n">ENDPROC</span><span class="p">(</span><span class="n">__irq_usr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>user_entry ret_ro_user_from_irq等都在此文件中定义，此处不再列出</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">macro</span>  <span class="n">irq_handler</span>
+<span class="c1">#ifdef CONFIG_GENERIC_IRQ_MULTI_HANDLER</span>
+    <span class="n">ldr</span> <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">handle_arch_irq</span>
+    <span class="n">mov</span> <span class="n">r0</span><span class="p">,</span> <span class="n">sp</span>
+    <span class="n">badr</span>        <span class="n">lr</span><span class="p">,</span> <span class="mi">9997</span><span class="n">f</span>
+    <span class="n">ldr</span> <span class="n">pc</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">]</span>
+<span class="c1">#else</span>
+    <span class="n">arch_irq_handler_default</span>
+<span class="c1">#endif</span>
+<span class="mi">9997</span><span class="p">:</span>
+<span class="o">.</span><span class="n">endm</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="4.4. linux 中断" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="irq_init_call.html" class="btn btn-neutral float-right" title="4.4.2. linux中断初始化和基本调用流程" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

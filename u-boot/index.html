@@ -1,240 +1,213 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN" >
+<html class="writer-html5" lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>1. u-boot dev note &mdash; ywg_dev_doc 0.1 文档</title>
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. u-boot dev note &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
-        <script src="../_static/translations.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="1.1. source analysis" href="source_analysis/index.html" />
-    <link rel="prev" title="Welcome to ywg_dev_doc’s documentation!" href="../index.html" /> 
+    <link rel="next" title="2.1. uboot编译流程分析" href="compile.html" />
+    <link rel="prev" title="1.2.2. TrustZone和ATF功能概述" href="../optee/optee/trustzone.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
           
-
-          
+          <a href="../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">1. u-boot dev note</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html">1.1. source analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optee/index.html">1. tee</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. u-boot dev note</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compile.html">2.1. uboot编译流程分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html">2.2. source analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="legacy-fit_img.html">2.3. Legacy-uImage &amp; FIT-uImage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsing_uimage.html">2.4. uboot解析uImage的kernel信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bootm.html">2.5. bootm原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transfer_param.html">2.6. uboot向kernel的传参机制–bootm与tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uboot_memory.html">2.7. uboot-kernel地址空间</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_core_startup.html">2.8. 多核异构平台系统启动分析</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../kernel/index.html">2. kernel note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. linux driver modules note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../fs/index.html">4. file system note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user/index.html">5. application development node</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">6. application development node</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../misc/index.html">7. misc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../issues/index.html">8. Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arm64/index.html">12. arm64 arch</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">ywg_dev_doc</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-      <li><span class="section-number">1. </span>u-boot dev note</li>
-    
-    
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2. </span>u-boot dev note</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../_sources/u-boot/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
+            <a href="../_sources/u-boot/index.rst.txt" rel="nofollow"> 查看页面源码</a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="u-boot-dev-note">
-<h1><span class="section-number">1. </span>u-boot dev note<a class="headerlink" href="#u-boot-dev-note" title="永久链接至标题">¶</a></h1>
+             
+  <section id="u-boot-dev-note">
+<h1><span class="section-number">2. </span>u-boot dev note<a class="headerlink" href="#u-boot-dev-note" title="此标题的永久链接"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="source_analysis/index.html">1.1. source analysis</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html#id1">1.1.1. 目录结构</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html#id2">1.1.2. 重要文件</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html#id3">1.1.3. 生成文件</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html#u-boot">1.1.4. u-boot启动流程</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="source_analysis/index.html#spl">1.1.4.1. SPL启动流程分析</a></li>
-<li class="toctree-l3"><a class="reference internal" href="source_analysis/index.html#id4">1.1.4.2. u-boot 启动流程分析</a></li>
-<li class="toctree-l3"><a class="reference internal" href="source_analysis/index.html#id5">1.1.4.3. 移植u-boot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="source_analysis/index.html#id6">1.1.4.4. u-boot命令总结</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compile.html">2.1. uboot编译流程分析</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compile.html#make-xxx-defconfig">2.1.1. make xxx_defconfig配置分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="compile.html#xxx-defconfig">2.1.1.1. xxx_defconfig依赖检查更新</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compile.html#id1">2.1.1.2. xxx_defconfig目标命令执行</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="compile.html#make">2.1.2. make执行流程分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="compile.html#allall-all-y">2.1.2.1. 目标_all和all对$(ALL-y)的依赖</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compile.html#u-boot">2.1.2.2. u-boot目标编译</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="compile.html#prepare">2.1.2.2.1. prepare编译</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="source_analysis/index.html">2.2. source analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html#id1">2.2.1. 目录结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html#id2">2.2.2. 重要文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html#id3">2.2.3. 生成文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html#u-boot">2.2.4. u-boot启动流程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source_analysis/index.html#spl">2.2.4.1. SPL启动流程分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source_analysis/index.html#id4">2.2.4.2. u-boot 启动流程分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source_analysis/index.html#id5">2.2.4.3. 移植u-boot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source_analysis/index.html#id6">2.2.4.4. u-boot命令总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="legacy-fit_img.html">2.3. Legacy-uImage &amp; FIT-uImage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="legacy-fit_img.html#legacy-uimage">2.3.1. Legacy-uImage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="legacy-fit_img.html#fit-uimage">2.3.2. FIT-uImage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="legacy-fit_img.html#image-source-file">2.3.3. image source file语法</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="parsing_uimage.html">2.4. uboot解析uImage的kernel信息</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="parsing_uimage.html#kernel">2.4.1. kernel信息的存放位置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsing_uimage.html#legacy-uimagekernel">2.4.2. legacy-uImage中kernel信息的解析代码流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsing_uimage.html#fit-uimagekernel">2.4.3. FIT-uImage中kernel信息的解析</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bootm.html">2.5. bootm原理</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bootm.html#id1">2.5.1. 基础知识</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bootm.html#id2">2.5.2. bootm实现</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="transfer_param.html">2.6. uboot向kernel的传参机制–bootm与tags</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="transfer_param.html#struct-tag">2.6.1. struct tag传递参数</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="transfer_param.html#id1">2.6.1.1. 主要数据结构介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="transfer_param.html#global-data">2.6.1.2. global data介绍及背后的思考</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="transfer_param.html#id2">2.6.2. 设备树传参</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="uboot_memory.html">2.7. uboot-kernel地址空间</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="uboot_memory.html#uboot">2.7.1. uboot地址空间</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="uboot_memory.html#ubootddr">2.7.1.1. uboot在DDR中的地址空间</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uboot_memory.html#system-boot-sequence">2.7.1.2. system boot sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uboot_memory.html#emmc-flash-env">2.7.1.3. emmc flash env</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="uboot_memory.html#kernel">2.7.2. kernel地址空间</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="uboot_memory.html#arm64">2.7.2.1. arm64 物理地址与虚拟地址空间</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multi_core_startup.html">2.8. 多核异构平台系统启动分析</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multi_core_startup.html#ipl">2.8.1. IPL启动系统流程</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="multi_core_startup.html#load-image">2.8.1.1. load image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_core_startup.html#id2">2.8.1.2. 完整性检查</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_core_startup.html#ipl-flow">2.8.1.3. IPL flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multi_core_startup.html#memory-layout">2.8.2. memory layout</a></li>
+</ul>
+</li>
+</ul>
 </div>
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="source_analysis/index.html" class="btn btn-neutral float-right" title="1.1. source analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to ywg_dev_doc’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../optee/optee/trustzone.html" class="btn btn-neutral float-left" title="1.2.2. TrustZone和ATF功能概述" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="compile.html" class="btn btn-neutral float-right" title="2.1. uboot编译流程分析" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; 版权所有 2020, yinwg
-
-    </p>
+    <p>&#169; 版权所有 2019, yinwg。</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

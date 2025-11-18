@@ -1,0 +1,168 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2.7. uboot-kernel地址空间 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="2.8. 多核异构平台系统启动分析" href="multi_core_startup.html" />
+    <link rel="prev" title="2.6. uboot向kernel的传参机制–bootm与tags" href="transfer_param.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../optee/index.html">1. tee</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. u-boot dev note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compile.html">2.1. uboot编译流程分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html">2.2. source analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="legacy-fit_img.html">2.3. Legacy-uImage &amp; FIT-uImage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsing_uimage.html">2.4. uboot解析uImage的kernel信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bootm.html">2.5. bootm原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transfer_param.html">2.6. uboot向kernel的传参机制–bootm与tags</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.7. uboot-kernel地址空间</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#uboot">2.7.1. uboot地址空间</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ubootddr">2.7.1.1. uboot在DDR中的地址空间</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#system-boot-sequence">2.7.1.2. system boot sequence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#emmc-flash-env">2.7.1.3. emmc flash env</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#kernel">2.7.2. kernel地址空间</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#arm64">2.7.2.1. arm64 物理地址与虚拟地址空间</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multi_core_startup.html">2.8. 多核异构平台系统启动分析</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>u-boot dev note</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2.7. </span>uboot-kernel地址空间</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/u-boot/uboot_memory.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="uboot-kernel">
+<h1><span class="section-number">2.7. </span>uboot-kernel地址空间<a class="headerlink" href="#uboot-kernel" title="此标题的永久链接"></a></h1>
+<section id="uboot">
+<h2><span class="section-number">2.7.1. </span>uboot地址空间<a class="headerlink" href="#uboot" title="此标题的永久链接"></a></h2>
+<p>U-Boot image copy to LPDDR4-SDRAM from QSPI Flash by IPL</p>
+<section id="ubootddr">
+<h3><span class="section-number">2.7.1.1. </span>uboot在DDR中的地址空间<a class="headerlink" href="#ubootddr" title="此标题的永久链接"></a></h3>
+<img alt="../_images/uboot_memory_area.png" src="../_images/uboot_memory_area.png" />
+</section>
+<section id="system-boot-sequence">
+<h3><span class="section-number">2.7.1.2. </span>system boot sequence<a class="headerlink" href="#system-boot-sequence" title="此标题的永久链接"></a></h3>
+<img alt="../_images/system_run_step.png" src="../_images/system_run_step.png" />
+</section>
+<section id="emmc-flash-env">
+<h3><span class="section-number">2.7.1.3. </span>emmc flash env<a class="headerlink" href="#emmc-flash-env" title="此标题的永久链接"></a></h3>
+<img alt="../_images/emmc_env.png" src="../_images/emmc_env.png" />
+<img alt="../_images/flash_env.png" src="../_images/flash_env.png" />
+</section>
+</section>
+<section id="kernel">
+<h2><span class="section-number">2.7.2. </span>kernel地址空间<a class="headerlink" href="#kernel" title="此标题的永久链接"></a></h2>
+<section id="arm64">
+<h3><span class="section-number">2.7.2.1. </span>arm64 物理地址与虚拟地址空间<a class="headerlink" href="#arm64" title="此标题的永久链接"></a></h3>
+<img alt="../_images/kernel_phy_vma.png" src="../_images/kernel_phy_vma.png" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="transfer_param.html" class="btn btn-neutral float-left" title="2.6. uboot向kernel的传参机制–bootm与tags" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="multi_core_startup.html" class="btn btn-neutral float-right" title="2.8. 多核异构平台系统启动分析" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

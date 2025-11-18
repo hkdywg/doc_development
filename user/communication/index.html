@@ -1,0 +1,289 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.4. 通信中间件 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="6.4.1. opendds" href="opendds/index.html" />
+    <link rel="prev" title="6.3.1. 芯片级功能安全设计" href="../function_safety/chip_safety/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6.4. 通信中间件</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="opendds/index.html">6.4.1. opendds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="some_ip/index.html">6.4.2. SOME/IP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqtt/index.html">6.4.3. mqtt协议</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6. </span>application development node</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.4. </span>通信中间件</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user/communication/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">6.4. </span>通信中间件<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="opendds/index.html">6.4.1. opendds</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="opendds/summary.html">6.4.1.1. opendds 简介</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="opendds/summary.html#id1">6.4.1.1.1. 基本概念</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="opendds/summary.html#dds">6.4.1.1.1.1. dds通信的基本要素</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/summary.html#id2">6.4.1.1.1.2. 内置主题</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/summary.html#qos">6.4.1.1.1.3. QoS策略</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/summary.html#listener">6.4.1.1.1.4. Listener</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/summary.html#id3">6.4.1.1.1.5. 条件</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="opendds/summary.html#id4">6.4.1.1.2. OpenDDS架构</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="opendds/summary.html#id5">6.4.1.1.2.1. 可扩展传输框架</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/summary.html#id6">6.4.1.1.2.2. dds发现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opendds/simple_example.html">6.4.1.2. opendds简单示例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="opendds/simple_example.html#dcps">6.4.1.2.1. 使用DCPS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="opendds/simple_example.html#id1">6.4.1.2.1.1. 定义数据类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/simple_example.html#idl">6.4.1.2.1.2. 处理IDL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/simple_example.html#publisher">6.4.1.2.1.3. publisher</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/simple_example.html#subscriber">6.4.1.2.1.4. subscriber</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/simple_example.html#id2">6.4.1.2.1.5. 运行</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opendds/condition_listener.html">6.4.1.3. condition和listener</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="opendds/condition_listener.html#id1">6.4.1.3.1. 通信状态</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="opendds/condition_listener.html#id2">6.4.1.3.1.1. 主题状态类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/condition_listener.html#id3">6.4.1.3.1.2. 订阅者状态类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/condition_listener.html#id4">6.4.1.3.1.3. 数据读取器状态类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/condition_listener.html#id5">6.4.1.3.1.4. 数据写入器状态类型</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="opendds/condition_listener.html#listener">6.4.1.3.2. listener</a></li>
+<li class="toctree-l3"><a class="reference internal" href="opendds/condition_listener.html#condition">6.4.1.3.3. condition</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="opendds/configure.html">6.4.1.4. opendds配置选项</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="opendds/configure.html#global-setting">6.4.1.4.1. Global Setting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#common">6.4.1.4.1.1. [common]</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="opendds/configure.html#discovery">6.4.1.4.2. Discovery</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#domain">6.4.1.4.2.1. [domain/*]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#repository">6.4.1.4.2.2. [repository/*]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#rtps-discovery">6.4.1.4.2.3. [rtps_discovery/*]</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="opendds/configure.html#static-discovery">6.4.1.4.3. Static Discovery</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#endpoint">6.4.1.4.3.1. [endpoint/*]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#topic">6.4.1.4.3.2. [topic/*]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#datawriterqos">6.4.1.4.3.3. [datawriterqos/*]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#datareaderqos">6.4.1.4.3.4. [datareaderqos/*]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#publisherqos">6.4.1.4.3.5. [publisherqos/*]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#subscriberqos">6.4.1.4.3.6. [subscriberqos/*]</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="opendds/configure.html#transport">6.4.1.4.4. [Transport/*]</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#common-transport-configuration-options">6.4.1.4.4.1. [Common Transport Configuration Options]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#tcp-ip-configuration-options">6.4.1.4.4.2. [TCP/IP Configuration Options]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#udp-ip-configuration-options">6.4.1.4.4.3. [UDP/IP Configuration Options]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#ip-multicast-configuration-options">6.4.1.4.4.4. [IP Multicast Configuration Options]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#rtps-udp-configuration-options">6.4.1.4.4.5. [RTPS_UDP Configuration Options]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#shared-memory-transport-configuration-options">6.4.1.4.4.6. [Shared-Memory Transport Configuration Options]</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#config">6.4.1.4.4.7. config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="opendds/configure.html#id1">6.4.1.4.4.8. transport</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="some_ip/index.html">6.4.2. SOME/IP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="some_ip/summary.html">6.4.2.1. SOME/IP 简述</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="some_ip/summary.html#id1">6.4.2.1.1. SOME/IP 消息格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="some_ip/summary.html#id2">6.4.2.1.2. 通信模式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mqtt/index.html">6.4.3. mqtt协议</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mqtt/mqtt_note.html">6.4.3.1. mqtt协议基础</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqtt/mqtt_note.html#id1">6.4.3.1.1. MQTT基础原理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_note.html#id2">6.4.3.1.1.1. MQTT客户端连接</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_note.html#id3">6.4.3.1.1.2. 发布/订阅/取消订阅</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mqtt/mqtt_note.html#id4">6.4.3.1.2. MQTT主题</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqtt/mqtt_note.html#qos">6.4.3.1.3. QoS服务质量等级</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_note.html#id5">6.4.3.1.3.1. 设置QoS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mqtt/mqtt_note.html#id6">6.4.3.1.4. 保留消息</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqtt/mqtt_note.html#id7">6.4.3.1.5. 心跳机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqtt/mqtt_note.html#id8">6.4.3.1.6. MQTT遗嘱</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqtt/mqtt_note.html#id9">6.4.3.1.7. MQTT用户密码认证</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mqtt/mqtt_flow.html">6.4.3.2. MQTT流程图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mqtt/mqtt_packet.html">6.4.3.3. MQTT报文</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqtt/mqtt_packet.html#id1">6.4.3.3.1. MQTT控制报文格式</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#id2">6.4.3.3.1.1. 固定报头</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#variable-header">6.4.3.3.1.2. 可变报头(Variable Header)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#payload">6.4.3.3.1.3. Payload</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mqtt/mqtt_packet.html#id3">6.4.3.3.2. MQTT控制报文</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#connect">6.4.3.3.2.1. CONNECT - 客户端请求连接服务器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#connack">6.4.3.3.2.2. CONNACK - 确认收到连接请求</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#publish">6.4.3.3.2.3. PUBLISH - 发布消息</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#puback">6.4.3.3.2.4. PUBACK - 发布确认</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#pubrec">6.4.3.3.2.5. PUBREC - 发布收到</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#pubrel-publish-release">6.4.3.3.2.6. PUBREL - Publish release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#pubcomp">6.4.3.3.2.7. PUBCOMP - 发布完成</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#subscribe">6.4.3.3.2.8. SUBSCRIBE - 订阅主题</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#suback">6.4.3.3.2.9. SUBACK - 订阅确认</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#unsubscribe">6.4.3.3.2.10. UNSUBSCRIBE - 退订主题</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#unsuback">6.4.3.3.2.11. UNSUBACK - 退订确认</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#pingreq-ping">6.4.3.3.2.12. PINGREQ - PING请求</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#pingresp-ping">6.4.3.3.2.13. PINGRESP - PING响应</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_packet.html#disconnect">6.4.3.3.2.14. DISCONNECT - 断开连接通知</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mqtt/mqtt_usermenu.html">6.4.3.4. MQTT应用示例</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mqtt/mqtt_usermenu.html#mqtt-client">6.4.3.4.1. MQTT Client库编译安装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mqtt/mqtt_usermenu.html#paho-library">6.4.3.4.2. Paho library应用示例</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_usermenu.html#publish">6.4.3.4.2.1. publish</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_usermenu.html#subscribe">6.4.3.4.2.2. subscribe</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mqtt/mqtt_usermenu.html#id1">6.4.3.4.3. MQTT服务端(代理)编译</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_usermenu.html#emq">6.4.3.4.3.1. EMQ依赖项安装</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt/mqtt_usermenu.html#id2">6.4.3.4.3.2. EMQ编译</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../function_safety/chip_safety/index.html" class="btn btn-neutral float-left" title="6.3.1. 芯片级功能安全设计" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="opendds/index.html" class="btn btn-neutral float-right" title="6.4.1. opendds" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

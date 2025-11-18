@@ -1,0 +1,160 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.2.2. TrustZone和ATF功能概述 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="2. u-boot dev note" href="../../u-boot/index.html" />
+    <link rel="prev" title="1.2.1. optee概述" href="optee_summary.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">1. tee</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../atf/index.html">1.1. atf笔记</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">1.2. optee笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="optee_summary.html">1.2.1. optee概述</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">1.2.2. TrustZone和ATF功能概述</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#armv8tz">1.2.2.1. ARMv8的TZ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#arm">1.2.2.2. ARM安全扩展组件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">1. </span>tee</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">1.2. </span>optee笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">1.2.2. </span>TrustZone和ATF功能概述</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/optee/optee/trustzone.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="trustzoneatf">
+<h1><span class="section-number">1.2.2. </span>TrustZone和ATF功能概述<a class="headerlink" href="#trustzoneatf" title="此标题的永久链接"></a></h1>
+<p>TrustZone对系统实现了硬件隔离，将系统资源分成安全和非安全两种类型，同时在系统总线上增加安全读写信号位，通过读取安全读写信号位
+电平来确定当前处理器的工作状态，从而判断是否具有该资源的访问权限．因此，TrustZone从硬件级别实现了对系统资源的保护．</p>
+<img alt="../../_images/Trust_Zone_Struct.png" src="../../_images/Trust_Zone_Struct.png" />
+<p>ARM可信任固件(ARM Trustedd Firmware, ATF)是由ARM官方提供的底层固件，该固件统一了ARM底层接口标准，如电源状态控制接口(Power Status Control Interface, PCSI)，
+安全启动需求(Trusted Board Boot Requirements, TBBR)，安全世界状态(SWS)和正常世界状态(NWS)切换的安全监控模式调用(secure monitor call, smc)操作等．ATF旨在
+将ARM底层的操作统一使代码能够重用和便于移植．</p>
+<section id="armv8tz">
+<h2><span class="section-number">1.2.2.1. </span>ARMv8的TZ<a class="headerlink" href="#armv8tz" title="此标题的永久链接"></a></h2>
+<p>在ARMv8架构中使用执行等级(Execution Level, EL)EL0~EL3来定义ARM核的运行等级，其中EL0~EL2等级分为安全态和非安全态．</p>
+<p>ARMv8架构与ARMv7架构中ARM核运行权限的对应关系如下图所示</p>
+<img alt="../../_images/armv8_el_struct.png" src="../../_images/armv8_el_struct.png" />
+</section>
+<section id="arm">
+<h2><span class="section-number">1.2.2.2. </span>ARM安全扩展组件<a class="headerlink" href="#arm" title="此标题的永久链接"></a></h2>
+<p>TrustZone技术之所以能提高系统的安全性，是因为对外部资源和内存资源的硬件隔离．这些硬件隔离包括片内内存隔离(中断隔离，片上RAM和ROM的隔离，片外RAM和ROM的隔离),
+外围设备的硬件隔离，外部RAM和ROM的隔离等．实现硬件层面的各种隔离，需要对整个系统的硬件和处理器核作出相应的扩展．这些扩展包括:</p>
+<ul class="simple">
+<li><p>对处理器核的虚拟化，也就是将ARM处理器的运行状态分为安全态和非安全态．</p></li>
+<li><p>对总线的扩展，增加安全读写信号线</p></li>
+<li><p>对内存管理单元(MMU)的扩展，增加页表的安全位</p></li>
+<li><p>对缓存(Cache)的扩展，增加安全位</p></li>
+<li><p>对快表(TLB)的扩展，增加安全位</p></li>
+<li><p>对其他外围组件进行了相应的扩展，提供安全操作权限和安全操作信号</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="optee_summary.html" class="btn btn-neutral float-left" title="1.2.1. optee概述" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../u-boot/index.html" class="btn btn-neutral float-right" title="2. u-boot dev note" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

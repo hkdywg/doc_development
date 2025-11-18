@@ -1,0 +1,540 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.12.2. 输入核心层 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.12.3. 输入事件驱动层" href="input_event.html" />
+    <link rel="prev" title="4.12.1. 输入子系统框架" href="input_frame.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.12. 输入子系统</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="input_frame.html">4.12.1. 输入子系统框架</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.12.2. 输入核心层</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.12.2.1. 设备驱动层接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.12.2.2. 事件驱动层</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="input_event.html">4.12.3. 输入事件驱动层</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.12. </span>输入子系统</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.12.2. </span>输入核心层</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/input/input_core.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">4.12.2. </span>输入核心层<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<p>输入核心层，是input子系统实现的核心。对上(事件驱动层)提供事件注册接口等，对下(设备驱动层)提供设备注册接口，输入信息反馈接口</p>
+<section id="id2">
+<h2><span class="section-number">4.12.2.1. </span>设备驱动层接口<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<ol class="arabic simple">
+<li><p>申请设备描述符结构体变量，同时初始化一些通用性数据结构</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/**
+ * input_allocate_device - allocate memory for new input device
+ *
+ * Returns prepared struct input_dev or %NULL.
+ *
+ * NOTE: Use input_free_device() to free devices that have not been
+ * registered; input_unregister_device() should be used for already
+ * registered devices.
+ */
+struct input_dev *input_allocate_device(void)
+{
+    static atomic_t input_no = ATOMIC_INIT(-1);
+    struct input_dev *dev;
+
+    dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+    if (dev) {
+        dev-&gt;dev.type = &amp;input_dev_type;  //绑定设备信息
+        dev-&gt;dev.class = &amp;input_class;       //绑定在sysfs所属的类
+        device_initialize(&amp;dev-&gt;dev);        //设备初始化
+        mutex_init(&amp;dev-&gt;mutex);
+        spin_lock_init(&amp;dev-&gt;event_lock);
+        timer_setup(&amp;dev-&gt;timer, NULL, 0);    //内核定时器初始化
+        INIT_LIST_HEAD(&amp;dev-&gt;h_list);
+        INIT_LIST_HEAD(&amp;dev-&gt;node);
+
+        dev_set_name(&amp;dev-&gt;dev, &quot;input%lu&quot;,
+                 (unsigned long)atomic_inc_return(&amp;input_no));
+
+        __module_get(THIS_MODULE);
+    }
+
+    return dev;
+}
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>设置dev设备的能力，只有注册前设置它的能力，将来设备注册后，发送的信息才能上报。注:该函数每次只能设置一个能力</p></li>
+</ol>
+<p>根据type类型设置code到相应的typebit</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> /**
+   * input_set_capability - mark device as capable of a certain event
+   * @dev: device that is capable of emitting or accepting event
+   * @type: type of the event (EV_KEY, EV_REL, etc...)
+   * @code: event code
+   *
+   * In addition to setting up corresponding bit in appropriate capability
+   * bitmap the function also adjusts dev-&gt;evbit.
+   */
+  void input_set_capability(struct input_dev *dev, unsigned int type, unsigned int code)
+  {
+      switch (type) {
+      case EV_KEY:
+          __set_bit(code, dev-&gt;keybit);
+          break;
+
+      case EV_REL:
+          __set_bit(code, dev-&gt;relbit);
+          break;
+
+      case EV_ABS:
+          input_alloc_absinfo(dev);
+          if (!dev-&gt;absinfo)
+              return;
+
+          __set_bit(code, dev-&gt;absbit);
+          break;
+
+      case EV_MSC:
+          __set_bit(code, dev-&gt;mscbit);
+          break;
+
+      case EV_SW:
+          __set_bit(code, dev-&gt;swbit);
+          break;
+
+      case EV_LED:
+          __set_bit(code, dev-&gt;ledbit);
+          break;
+
+      case EV_SND:
+          __set_bit(code, dev-&gt;sndbit);
+          break;
+
+      case EV_FF:
+          __set_bit(code, dev-&gt;ffbit);
+          break;
+
+      case EV_PWR:
+          /* do nothing */
+          break;
+
+
+          default:
+      pr_err(&quot;%s: unknown type %u (code %u)\n&quot;, __func__, type, code);
+      dump_stack();
+      return;
+  }
+
+  __set_bit(type, dev-&gt;evbit);
+}
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>具体设备注册(需要前两步申请空间和填充能力才能注册)</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int input_register_device(struct input_dev *dev)
+{
+    struct input_devres *devres = NULL;
+    struct input_handler *handler;
+    unsigned int packet_size;
+    const char *path;
+    int error;
+
+    if (test_bit(EV_ABS, dev-&gt;evbit) &amp;&amp; !dev-&gt;absinfo) {
+        dev_err(&amp;dev-&gt;dev,
+            &quot;Absolute device without dev-&gt;absinfo, refusing to register\n&quot;);
+        return -EINVAL;
+    }
+
+    if (dev-&gt;devres_managed) {
+        devres = devres_alloc(devm_input_device_unregister,
+                      sizeof(*devres), GFP_KERNEL);
+        if (!devres)
+            return -ENOMEM;
+
+        devres-&gt;input = dev;
+    }
+
+    /* Every input device generates EV_SYN/SYN_REPORT events. */
+    __set_bit(EV_SYN, dev-&gt;evbit);  //通用的同步包
+
+    /* KEY_RESERVED is not supposed to be transmitted to userspace. */
+    __clear_bit(KEY_RESERVED, dev-&gt;keybit);
+
+    /* Make sure that bitmasks not mentioned in dev-&gt;evbit are clean. */
+    input_cleanse_bitmasks(dev);
+
+    packet_size = input_estimate_events_per_packet(dev);
+    if (dev-&gt;hint_events_per_packet &lt; packet_size)
+        dev-&gt;hint_events_per_packet = packet_size;
+
+    dev-&gt;max_vals = dev-&gt;hint_events_per_packet + 2;
+    dev-&gt;vals = kcalloc(dev-&gt;max_vals, sizeof(*dev-&gt;vals), GFP_KERNEL);
+    if (!dev-&gt;vals) {
+        error = -ENOMEM;
+        goto err_devres_free;
+    }
+
+    /*
+     * If delay and period are pre-set by the driver, then autorepeating
+     * is handled by the driver itself and we don&#39;t do it in input.c.
+     */
+    if (!dev-&gt;rep[REP_DELAY] &amp;&amp; !dev-&gt;rep[REP_PERIOD])
+        input_enable_softrepeat(dev, 250, 33);
+
+    if (!dev-&gt;getkeycode)
+        dev-&gt;getkeycode = input_default_getkeycode;
+
+    if (!dev-&gt;setkeycode)
+        dev-&gt;setkeycode = input_default_setkeycode;
+
+    if (dev-&gt;poller)
+        input_dev_poller_finalize(dev-&gt;poller);
+
+    error = device_add(&amp;dev-&gt;dev);
+    if (error)
+        goto err_free_vals;
+
+    path = kobject_get_path(&amp;dev-&gt;dev.kobj, GFP_KERNEL);
+    pr_info(&quot;%s as %s\n&quot;,
+        dev-&gt;name ? dev-&gt;name : &quot;Unspecified device&quot;,
+        path ? path : &quot;N/A&quot;);
+    kfree(path);
+
+    error = mutex_lock_interruptible(&amp;input_mutex);
+    if (error)
+        goto err_device_del;
+
+    list_add_tail(&amp;dev-&gt;node, &amp;input_dev_list);
+
+    list_for_each_entry(handler, &amp;input_handler_list, node)
+        input_attach_handler(dev, handler);
+
+    input_wakeup_procfs_readers();
+
+    mutex_unlock(&amp;input_mutex);
+
+    if (dev-&gt;devres_managed) {
+        dev_dbg(dev-&gt;dev.parent, &quot;%s: registering %s with devres.\n&quot;,
+            __func__, dev_name(&amp;dev-&gt;dev));
+        devres_add(dev-&gt;dev.parent, devres);
+    }
+    return 0;
+
+err_device_del:
+    device_del(&amp;dev-&gt;dev);
+err_free_vals:
+    kfree(dev-&gt;vals);
+    dev-&gt;vals = NULL;
+err_devres_free:
+    devres_free(devres);
+    return error;
+}
+EXPORT_SYMBOL(input_register_device);
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>handler和dev做匹配，如果匹配上则把两者绑定</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static int input_attach_handler(struct input_dev *dev, struct input_handler *handler)
+{
+    const struct input_device_id *id;
+    int error;
+
+    id = input_match_device(handler, dev);    /* 匹配handler和dev */
+    if (!id)
+        return -ENODEV;
+
+    error = handler-&gt;connect(handler, dev, id);    /* 做具体的绑定handler和dev工作，由具体的事驱动层实现 */
+    if (error &amp;&amp; error != -ENODEV)
+        printk(KERN_ERR
+            &quot;input: failed to attach handler %s to device %s, &quot;
+            &quot;error: %d\n&quot;,
+            handler-&gt;name, kobject_name(&amp;dev-&gt;dev.kobj), error);
+
+    return error;
+}
+</pre></div>
+</div>
+<p>此函数在注册dev和handler的时候都会调用</p>
+<ol class="arabic simple" start="5">
+<li><p>匹配handler和dev</p></li>
+</ol>
+<p>每一个事件驱动层在实现的时候都要实现一个struct input_device_id的表，用来表示该事件驱动可以支持的设备</p>
+<p>struct input_device_id数据结构如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">input_device_id</span> <span class="p">{</span>
+
+    <span class="n">kernel_ulong_t</span> <span class="n">flags</span><span class="p">;</span> <span class="o">//</span><span class="n">flag表明下面四个要不要匹配</span>
+
+    <span class="n">__u16</span> <span class="n">bustype</span><span class="p">;</span>
+    <span class="n">__u16</span> <span class="n">vendor</span><span class="p">;</span>
+    <span class="n">__u16</span> <span class="n">product</span><span class="p">;</span>
+    <span class="n">__u16</span> <span class="n">version</span><span class="p">;</span>
+
+    <span class="n">kernel_ulong_t</span> <span class="n">evbit</span><span class="p">[</span><span class="n">INPUT_DEVICE_ID_EV_MAX</span> <span class="o">/</span> <span class="n">BITS_PER_LONG</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+    <span class="n">kernel_ulong_t</span> <span class="n">keybit</span><span class="p">[</span><span class="n">INPUT_DEVICE_ID_KEY_MAX</span> <span class="o">/</span> <span class="n">BITS_PER_LONG</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+    <span class="n">kernel_ulong_t</span> <span class="n">relbit</span><span class="p">[</span><span class="n">INPUT_DEVICE_ID_REL_MAX</span> <span class="o">/</span> <span class="n">BITS_PER_LONG</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+    <span class="n">kernel_ulong_t</span> <span class="n">absbit</span><span class="p">[</span><span class="n">INPUT_DEVICE_ID_ABS_MAX</span> <span class="o">/</span> <span class="n">BITS_PER_LONG</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+    <span class="n">kernel_ulong_t</span> <span class="n">mscbit</span><span class="p">[</span><span class="n">INPUT_DEVICE_ID_MSC_MAX</span> <span class="o">/</span> <span class="n">BITS_PER_LONG</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+    <span class="n">kernel_ulong_t</span> <span class="n">ledbit</span><span class="p">[</span><span class="n">INPUT_DEVICE_ID_LED_MAX</span> <span class="o">/</span> <span class="n">BITS_PER_LONG</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+    <span class="n">kernel_ulong_t</span> <span class="n">sndbit</span><span class="p">[</span><span class="n">INPUT_DEVICE_ID_SND_MAX</span> <span class="o">/</span> <span class="n">BITS_PER_LONG</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+    <span class="n">kernel_ulong_t</span> <span class="n">ffbit</span><span class="p">[</span><span class="n">INPUT_DEVICE_ID_FF_MAX</span> <span class="o">/</span> <span class="n">BITS_PER_LONG</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+    <span class="n">kernel_ulong_t</span> <span class="n">swbit</span><span class="p">[</span><span class="n">INPUT_DEVICE_ID_SW_MAX</span> <span class="o">/</span> <span class="n">BITS_PER_LONG</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+    <span class="n">kernel_ulong_t</span> <span class="n">propbit</span><span class="p">[</span><span class="n">INPUT_DEVICE_ID_PROP_MAX</span> <span class="o">/</span> <span class="n">BITS_PER_LONG</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+
+    <span class="n">kernel_ulong_t</span> <span class="n">driver_info</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static const struct input_device_id *input_match_device(struct input_handler *handler,
+                        struct input_dev *dev)
+{
+    const struct input_device_id *id;
+
+    for (id = handler-&gt;id_table; id-&gt;flags || id-&gt;driver_info; id++) {
+        if (input_match_device_id(dev, id) &amp;&amp;
+            (!handler-&gt;match || handler-&gt;match(handler, dev))) {
+            return id;
+        }
+    }
+
+    return NULL;
+}
+
+bool input_match_device_id(const struct input_dev *dev,
+           const struct input_device_id *id)
+{
+    if (id-&gt;flags &amp; INPUT_DEVICE_ID_MATCH_BUS)
+        if (id-&gt;bustype != dev-&gt;id.bustype)
+            return false;
+
+    if (id-&gt;flags &amp; INPUT_DEVICE_ID_MATCH_VENDOR)
+        if (id-&gt;vendor != dev-&gt;id.vendor)
+            return false;
+
+    if (id-&gt;flags &amp; INPUT_DEVICE_ID_MATCH_PRODUCT)
+        if (id-&gt;product != dev-&gt;id.product)
+            return false;
+
+    if (id-&gt;flags &amp; INPUT_DEVICE_ID_MATCH_VERSION)
+        if (id-&gt;version != dev-&gt;id.version)
+            return false;
+
+    if (!bitmap_subset(id-&gt;evbit, dev-&gt;evbit, EV_MAX) ||
+        !bitmap_subset(id-&gt;keybit, dev-&gt;keybit, KEY_MAX) ||
+        !bitmap_subset(id-&gt;relbit, dev-&gt;relbit, REL_MAX) ||
+        !bitmap_subset(id-&gt;absbit, dev-&gt;absbit, ABS_MAX) ||
+        !bitmap_subset(id-&gt;mscbit, dev-&gt;mscbit, MSC_MAX) ||
+        !bitmap_subset(id-&gt;ledbit, dev-&gt;ledbit, LED_MAX) ||
+        !bitmap_subset(id-&gt;sndbit, dev-&gt;sndbit, SND_MAX) ||
+        !bitmap_subset(id-&gt;ffbit, dev-&gt;ffbit, FF_MAX) ||
+        !bitmap_subset(id-&gt;swbit, dev-&gt;swbit, SW_MAX) ||
+        !bitmap_subset(id-&gt;propbit, dev-&gt;propbit, INPUT_PROP_MAX)) {
+        return false;
+    }
+
+    return true;
+}
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2><span class="section-number">4.12.2.2. </span>事件驱动层<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<ol class="arabic simple">
+<li><p>handler注册</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">input_register_handler</span><span class="p">(</span><span class="n">struct</span> <span class="n">input_handler</span> <span class="o">*</span><span class="n">handler</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">input_dev</span> <span class="o">*</span><span class="n">dev</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">error</span><span class="p">;</span>
+
+    <span class="n">error</span> <span class="o">=</span> <span class="n">mutex_lock_interruptible</span><span class="p">(</span><span class="o">&amp;</span><span class="n">input_mutex</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">error</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">;</span>
+
+    <span class="n">INIT_LIST_HEAD</span><span class="p">(</span><span class="o">&amp;</span><span class="n">handler</span><span class="o">-&gt;</span><span class="n">h_list</span><span class="p">);</span> <span class="o">//</span><span class="n">初始化链表</span>
+
+    <span class="n">list_add_tail</span><span class="p">(</span><span class="o">&amp;</span><span class="n">handler</span><span class="o">-&gt;</span><span class="n">node</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">input_handler_list</span><span class="p">);</span> <span class="o">//</span><span class="n">加入到input_handler_list链表中</span>
+
+    <span class="n">list_for_each_entry</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">input_dev_list</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+        <span class="n">input_attach_handler</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">handler</span><span class="p">);</span>           <span class="o">//</span><span class="n">dev与handler匹配</span>
+
+    <span class="n">input_wakeup_procfs_readers</span><span class="p">();</span>    <span class="o">//</span><span class="n">更新proc系统</span>
+
+    <span class="n">mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">input_mutex</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">EXPORT_SYMBOL</span><span class="p">(</span><span class="n">input_register_handler</span><span class="p">);</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>handle的注册(其实就是把handler和dev的链表加入到handle的数据中)</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">input_register_handle</span><span class="p">(</span><span class="n">struct</span> <span class="n">input_handle</span> <span class="o">*</span><span class="n">handle</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">input_handler</span> <span class="o">*</span><span class="n">handler</span> <span class="o">=</span> <span class="n">handle</span><span class="o">-&gt;</span><span class="n">handler</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">input_dev</span> <span class="o">*</span><span class="n">dev</span> <span class="o">=</span> <span class="n">handle</span><span class="o">-&gt;</span><span class="n">dev</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">error</span><span class="p">;</span>
+
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">We</span> <span class="n">take</span> <span class="n">dev</span><span class="o">-&gt;</span><span class="n">mutex</span> <span class="n">here</span> <span class="n">to</span> <span class="n">prevent</span> <span class="n">race</span> <span class="k">with</span>
+     <span class="o">*</span> <span class="n">input_release_device</span><span class="p">()</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">mutex_lock_interruptible</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">error</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">;</span>
+
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">Filters</span> <span class="n">go</span> <span class="n">to</span> <span class="n">the</span> <span class="n">head</span> <span class="n">of</span> <span class="n">the</span> <span class="nb">list</span><span class="p">,</span> <span class="n">normal</span> <span class="n">handlers</span>
+     <span class="o">*</span> <span class="n">to</span> <span class="n">the</span> <span class="n">tail</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">handler</span><span class="o">-&gt;</span><span class="nb">filter</span><span class="p">)</span>
+        <span class="n">list_add_rcu</span><span class="p">(</span><span class="o">&amp;</span><span class="n">handle</span><span class="o">-&gt;</span><span class="n">d_node</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">h_list</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">list_add_tail_rcu</span><span class="p">(</span><span class="o">&amp;</span><span class="n">handle</span><span class="o">-&gt;</span><span class="n">d_node</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">h_list</span><span class="p">);</span>
+
+    <span class="n">mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">mutex</span><span class="p">);</span>
+
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">Since</span> <span class="n">we</span> <span class="n">are</span> <span class="n">supposed</span> <span class="n">to</span> <span class="n">be</span> <span class="n">called</span> <span class="kn">from</span> <span class="o">-&gt;</span><span class="n">connect</span><span class="p">()</span>
+     <span class="o">*</span> <span class="n">which</span> <span class="ow">is</span> <span class="n">mutually</span> <span class="n">exclusive</span> <span class="k">with</span> <span class="o">-&gt;</span><span class="n">disconnect</span><span class="p">()</span>
+     <span class="o">*</span> <span class="n">we</span> <span class="n">can</span><span class="s1">&#39;t be racing with input_unregister_handle()</span>
+     <span class="o">*</span> <span class="ow">and</span> <span class="n">so</span> <span class="n">separate</span> <span class="n">lock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">needed</span> <span class="n">here</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">list_add_tail_rcu</span><span class="p">(</span><span class="o">&amp;</span><span class="n">handle</span><span class="o">-&gt;</span><span class="n">h_node</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">handler</span><span class="o">-&gt;</span><span class="n">h_list</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">handler</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">)</span>
+        <span class="n">handler</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">(</span><span class="n">handle</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="input_frame.html" class="btn btn-neutral float-left" title="4.12.1. 输入子系统框架" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="input_event.html" class="btn btn-neutral float-right" title="4.12.3. 输入事件驱动层" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

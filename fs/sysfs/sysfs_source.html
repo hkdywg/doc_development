@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.3.2. sysfs源码分析 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="6. application development node" href="../../user/index.html" />
+    <link rel="prev" title="5.3.1. sysfs 文件系统简介" href="sysfs.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. file system note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../vfs/index.html">5.1. linux 虚拟文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ext4/index.html">5.2. ext4文件系统</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.3. linux文件系统之sysfs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="sysfs.html">5.3.1. sysfs 文件系统简介</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.3.2. sysfs源码分析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">5.3.2.1. sysfs的初始化和挂载</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">5.3.2.2. 在sysfs文件系统中创建目录</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">5.3.2.3. 在sysfs文件系统中创建一般属性文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">5.3.2.4. 在sysfs文件系统中创建二进制文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">5.3.2.5. sysfs文件系统中的链接文件</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>file system note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.3. </span>linux文件系统之sysfs</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5.3.2. </span>sysfs源码分析</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/fs/sysfs/sysfs_source.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sysfs">
+<h1><span class="section-number">5.3.2. </span>sysfs源码分析<a class="headerlink" href="#sysfs" title="此标题的永久链接"></a></h1>
+<p>源码文件 fs/sysfs</p>
+<section id="id1">
+<h2><span class="section-number">5.3.2.1. </span>sysfs的初始化和挂载<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>sysfs文件系统的初始化是在sysfs_init中完成的</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">struct</span> <span class="n">file_system_type</span> <span class="n">sysfs_fs_type</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">name</span>                   <span class="o">=</span> <span class="s2">&quot;sysfs&quot;</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">init_fs_context</span>        <span class="o">=</span> <span class="n">sysfs_init_fs_context</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">kill_sb</span>                <span class="o">=</span> <span class="n">sysfs_kill_sb</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">fs_flags</span>               <span class="o">=</span> <span class="n">FS_USERNS_MOUNT</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="nb">int</span> <span class="n">__init</span> <span class="n">sysfs_init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">err</span><span class="p">;</span>
+
+    <span class="n">sysfs_root</span> <span class="o">=</span> <span class="n">kernfs_create_root</span><span class="p">(</span><span class="n">NULL</span><span class="p">,</span> <span class="n">KERNFS_ROOT_EXTRA_OPEN_PERM_CHECK</span><span class="p">,</span>
+                    <span class="n">NULL</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">IS_ERR</span><span class="p">(</span><span class="n">sysfs_root</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">PTR_ERR</span><span class="p">(</span><span class="n">sysfs_root</span><span class="p">);</span>
+
+    <span class="n">sysfs_root_kn</span> <span class="o">=</span> <span class="n">sysfs_root</span><span class="o">-&gt;</span><span class="n">kn</span><span class="p">;</span>
+    <span class="o">//</span><span class="n">注册sysfs文件系统</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">register_filesystem</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sysfs_fs_type</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">kernfs_destroy_root</span><span class="p">(</span><span class="n">sysfs_root</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">5.3.2.2. </span>在sysfs文件系统中创建目录<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>在linux设备模型中，每注册一个kobjcet就会为之创建一个目录，创建目录的接口为 <code class="docutils literal notranslate"><span class="pre">sysfs_create_dir_ns</span></code> ,代码如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/**
+ * sysfs_create_dir_ns - create a directory for an object with a namespace tag
+ * @kobj: object we&#39;re creating directory for
+ * @ns: the namespace tag to use
+ */
+int sysfs_create_dir_ns(struct kobject *kobj, const void *ns)
+{
+    struct kernfs_node *parent, *kn;
+    kuid_t uid;
+    kgid_t gid;
+
+    if (WARN_ON(!kobj))
+        return -EINVAL;
+    //如果kobject没有指定父节点，则将其父节点指定为sysfs的根目录
+    if (kobj-&gt;parent)
+        parent = kobj-&gt;parent-&gt;sd;
+    else
+        parent = sysfs_root_kn;
+
+    if (!parent)
+        return -ENOENT;
+
+    kobject_get_ownership(kobj, &amp;uid, &amp;gid);
+    //创建目录
+    kn = kernfs_create_dir_ns(parent, kobject_name(kobj),
+                  S_IRWXU | S_IRUGO | S_IXUGO, uid, gid,
+                  kobj, ns);
+    if (IS_ERR(kn)) {
+        if (PTR_ERR(kn) == -EEXIST)
+            sysfs_warn_dup(parent, kobject_name(kobj));
+        return PTR_ERR(kn);
+    }
+
+    kobj-&gt;sd = kn;
+    return 0;
+}
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2><span class="section-number">5.3.2.3. </span>在sysfs文件系统中创建一般属性文件<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>kobject的每一项属性都对应在sysfs文件系统中的一个文件，文件名称与属性名称相同。 创建一般属性的接口为 <code class="docutils literal notranslate"><span class="pre">sysfs_create_file_ns</span></code> ,代码如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/**
+ * sysfs_create_file_ns - create an attribute file for an object with custom ns
+ * @kobj: object we&#39;re creating for
+ * @attr: attribute descriptor
+ * @ns: namespace the new file should belong to
+ */
+int sysfs_create_file_ns(struct kobject *kobj, const struct attribute *attr,
+             const void *ns)
+{
+    kuid_t uid;
+    kgid_t gid;
+
+    if (WARN_ON(!kobj || !kobj-&gt;sd || !attr))
+        return -EINVAL;
+
+    kobject_get_ownership(kobj, &amp;uid, &amp;gid);
+    return sysfs_add_file_mode_ns(kobj-&gt;sd, attr, false, attr-&gt;mode,
+                      uid, gid, ns);
+
+}
+EXPORT_SYMBOL_GPL(sysfs_create_file_ns);
+
+int sysfs_add_file_mode_ns(struct kernfs_node *parent,
+               const struct attribute *attr, bool is_bin,
+               umode_t mode, kuid_t uid, kgid_t gid, const void *ns)
+{
+    struct lock_class_key *key = NULL;
+    const struct kernfs_ops *ops;
+    struct kernfs_node *kn;
+    loff_t size;
+
+    if (!is_bin) {
+        struct kobject *kobj = parent-&gt;priv;
+        const struct sysfs_ops *sysfs_ops = kobj-&gt;ktype-&gt;sysfs_ops;
+
+        /* every kobject with an attribute needs a ktype assigned */
+        if (WARN(!sysfs_ops, KERN_ERR
+             &quot;missing sysfs attribute operations for kobject: %s\n&quot;,
+             kobject_name(kobj)))
+            return -EINVAL;
+
+        if (sysfs_ops-&gt;show &amp;&amp; sysfs_ops-&gt;store) {
+            if (mode &amp; SYSFS_PREALLOC)
+                ops = &amp;sysfs_prealloc_kfops_rw;
+            else
+                ops = &amp;sysfs_file_kfops_rw;
+        } else if (sysfs_ops-&gt;show) {
+            if (mode &amp; SYSFS_PREALLOC)
+                ops = &amp;sysfs_prealloc_kfops_ro;
+            else
+                ops = &amp;sysfs_file_kfops_ro;
+        } else if (sysfs_ops-&gt;store) {
+            if (mode &amp; SYSFS_PREALLOC)
+                ops = &amp;sysfs_prealloc_kfops_wo;
+            else
+                ops = &amp;sysfs_file_kfops_wo;
+        } else
+            ops = &amp;sysfs_file_kfops_empty;
+
+        size = PAGE_SIZE;
+    } else {
+        struct bin_attribute *battr = (void *)attr;
+
+        if (battr-&gt;mmap)
+            ops = &amp;sysfs_bin_kfops_mmap;
+        else if (battr-&gt;read &amp;&amp; battr-&gt;write)
+            ops = &amp;sysfs_bin_kfops_rw;
+        else if (battr-&gt;read)
+            ops = &amp;sysfs_bin_kfops_ro;
+        else if (battr-&gt;write)
+            ops = &amp;sysfs_bin_kfops_wo;
+        else
+            ops = &amp;sysfs_file_kfops_empty;
+
+        size = battr-&gt;size;
+    }
+
+#ifdef CONFIG_DEBUG_LOCK_ALLOC
+    if (!attr-&gt;ignore_lockdep)
+        key = attr-&gt;key ?: (struct lock_class_key *)&amp;attr-&gt;skey;
+#endif
+
+    kn = __kernfs_create_file(parent, attr-&gt;name, mode &amp; 0777, uid, gid,
+                  size, ops, (void *)attr, ns, key);
+    if (IS_ERR(kn)) {
+        if (PTR_ERR(kn) == -EEXIST)
+            sysfs_warn_dup(parent, attr-&gt;name);
+        return PTR_ERR(kn);
+    }
+    return 0;
+}
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2><span class="section-number">5.3.2.4. </span>在sysfs文件系统中创建二进制文件<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+</section>
+<section id="id5">
+<h2><span class="section-number">5.3.2.5. </span>sysfs文件系统中的链接文件<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="sysfs.html" class="btn btn-neutral float-left" title="5.3.1. sysfs 文件系统简介" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../user/index.html" class="btn btn-neutral float-right" title="6. application development node" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

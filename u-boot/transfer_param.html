@@ -1,0 +1,581 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2.6. uboot向kernel的传参机制–bootm与tags &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="2.7. uboot-kernel地址空间" href="uboot_memory.html" />
+    <link rel="prev" title="2.5. bootm原理" href="bootm.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../optee/index.html">1. tee</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. u-boot dev note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compile.html">2.1. uboot编译流程分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_analysis/index.html">2.2. source analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="legacy-fit_img.html">2.3. Legacy-uImage &amp; FIT-uImage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parsing_uimage.html">2.4. uboot解析uImage的kernel信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bootm.html">2.5. bootm原理</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.6. uboot向kernel的传参机制–bootm与tags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#struct-tag">2.6.1. struct tag传递参数</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">2.6.1.1. 主要数据结构介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#global-data">2.6.1.2. global data介绍及背后的思考</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.6.2. 设备树传参</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="uboot_memory.html">2.7. uboot-kernel地址空间</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_core_startup.html">2.8. 多核异构平台系统启动分析</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">2. </span>u-boot dev note</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2.6. </span>uboot向kernel的传参机制–bootm与tags</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/u-boot/transfer_param.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ubootkernel-bootmtags">
+<h1><span class="section-number">2.6. </span>uboot向kernel的传参机制–bootm与tags<a class="headerlink" href="#ubootkernel-bootmtags" title="此标题的永久链接"></a></h1>
+<p>u-boot在启动内核时，会向内核传递一些参数，可以通过两种方式传递参数给内核，一种是通过参数链表(ttagged list)方式，一种是通过设备树方式。这些参数主要包括
+系统的根设备标志，页面大小，内存的起始地址和大小等参数。</p>
+<section id="struct-tag">
+<h2><span class="section-number">2.6.1. </span>struct tag传递参数<a class="headerlink" href="#struct-tag" title="此标题的永久链接"></a></h2>
+<p>u-boot把要传递给kernel的参数保存在struct tag数据结构中，启动内核时，把这个结构体的物理地址传递给kernel，kernel会通过这个地址分析出u-boot传递的参数</p>
+<section id="id1">
+<h3><span class="section-number">2.6.1.1. </span>主要数据结构介绍<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<p>首先看一下两个比较重要的数据结构 <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">global_data</span></code> 和 <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">tag</span></code></p>
+<p><strong>struct global_data</strong></p>
+<p>该数据结构定义在  <cite>include/asm-generic/global_data.h</cite> 中,其中包含了体系相关的数据结构 <cite>struct arch_global_data arch</cite></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>typedef struct global_data {
+    bd_t *bd;
+    unsigned long flags;
+    unsigned int baudrate;
+    unsigned long cpu_clk;          /* CPU clock in Hz!             */
+    unsigned long bus_clk;
+    /* We cannot bracket this with CONFIG_PCI due to mpc5xxx */
+    unsigned long pci_clk;
+    unsigned long mem_clk;
+#if defined(CONFIG_LCD) || defined(CONFIG_VIDEO)
+    unsigned long fb_base;          /* Base address of framebuffer mem */
+#endif
+#if defined(CONFIG_POST)
+    unsigned long post_log_word;    /* Record POST activities */
+    unsigned long post_log_res;     /* success of POST test */
+    unsigned long post_init_f_time; /* When post_init_f started */
+#endif
+#ifdef CONFIG_BOARD_TYPES
+    unsigned long board_type;
+#endif
+    unsigned long have_console;     /* serial_init() was called */
+#if CONFIG_IS_ENABLED(PRE_CONSOLE_BUFFER)
+    unsigned long precon_buf_idx;   /* Pre-Console buffer index */
+#endif
+    unsigned long env_addr;         /* Address  of Environment struct */
+    unsigned long env_valid;        /* Environment valid? enum env_valid */
+    unsigned long env_has_init;     /* Bitmask of boolean of struct env_location offsets */
+    int env_load_prio;              /* Priority of the loaded environment */
+
+    unsigned long ram_base;         /* Base address of RAM used by U-Boot */
+    unsigned long ram_top;          /* Top address of RAM used by U-Boot */
+    unsigned long relocaddr;        /* Start address of U-Boot in RAM */
+    phys_size_t ram_size;           /* RAM size */
+    unsigned long mon_len;          /* monitor len */
+    unsigned long irq_sp;           /* irq stack pointer */
+    unsigned long start_addr_sp;    /* start_addr_stackpointer */
+    unsigned long reloc_off;
+    struct global_data *new_gd;     /* relocated global data */
+
+#ifdef CONFIG_DM
+    struct udevice  *dm_root;       /* Root instance for Driver Model */
+    struct udevice  *dm_root_f;     /* Pre-relocation root instance */
+    struct list_head uclass_root;   /* Head of core tree */
+#endif
+#ifdef CONFIG_TIMER
+    struct udevice  *timer;         /* Timer instance for Driver Model */
+#endif
+
+    const void *fdt_blob;           /* Our device tree, NULL if none */
+    void *new_fdt;                  /* Relocated FDT */
+    unsigned long fdt_size;         /* Space reserved for relocated FDT */
+#ifdef CONFIG_OF_LIVE
+    struct device_node *of_root;
+#endif
+    struct jt_funcs *jt;            /* jump table */
+    char env_buf[32];               /* buffer for env_get() before reloc. */
+#ifdef CONFIG_TRACE
+    void            *trace_buff;    /* The trace buffer */
+#endif
+#if defined(CONFIG_SYS_I2C)
+    int             cur_i2c_bus;    /* current used i2c bus */
+#endif
+#ifdef CONFIG_SYS_I2C_MXC
+    void *srdata[10];
+#endif
+    unsigned int timebase_h;
+    unsigned int timebase_l;
+#if CONFIG_VAL(SYS_MALLOC_F_LEN)
+    unsigned long malloc_base;      /* base address of early malloc() */
+    unsigned long malloc_limit;     /* limit address */
+    unsigned long malloc_ptr;       /* current address */
+#endif
+#ifdef CONFIG_PCI
+    struct pci_controller *hose;    /* PCI hose for early use */
+    phys_addr_t pci_ram_top;        /* top of region accessible to PCI */
+#endif
+#ifdef CONFIG_PCI_BOOTDELAY
+    int pcidelay_done;
+#endif
+    struct udevice *cur_serial_dev; /* current serial device */
+    struct arch_global_data arch;   /* architecture-specific data */
+#ifdef CONFIG_CONSOLE_RECORD
+    struct membuff console_out;     /* console output */
+    struct membuff console_in;      /* console input */
+#endif
+#ifdef CONFIG_DM_VIDEO
+    ulong video_top;                /* Top of video frame buffer area */
+    ulong video_bottom;             /* Bottom of video frame buffer area */
+#endif
+#ifdef CONFIG_BOOTSTAGE
+    struct bootstage_data *bootstage;       /* Bootstage information */
+    struct bootstage_data *new_bootstage;   /* Relocated bootstage info */
+#endif
+#ifdef CONFIG_LOG
+    int log_drop_count;             /* Number of dropped log messages */
+    int default_log_level;          /* For devices with no filters */
+    struct list_head log_head;      /* List of struct log_device */
+    int log_fmt;                    /* Mask containing log format info */
+#endif
+} gd_t;
+</pre></div>
+</div>
+<p>在 <cite>arch/arm/include/asm/global_data.h</cite></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#ifdef CONFIG_ARM64</span>
+<span class="c1">#define DECLARE_GLOBAL_DATA_PTR     register volatile gd_t *gd asm (&quot;x18&quot;)</span>
+<span class="c1">#else</span>
+<span class="c1">#define DECLARE_GLOBAL_DATA_PTR     register volatile gd_t *gd asm (&quot;r9&quot;)</span>
+<span class="c1">#endif</span>
+<span class="c1">#endif</span>
+</pre></div>
+</div>
+<p>在需要使用gd指针的时候,只需要加入DECLARE_GLOBAL_DATA_PTR这句话就可以了,可以知道gd指针始终是放在r9或者x18中的</p>
+<p>其中的第一个变量,bd_t结构体，定义在 <cite>include/asm-generic/u-boot.h</cite> 中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">typedef</span> <span class="n">struct</span> <span class="n">bd_info</span> <span class="p">{</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_memstart</span><span class="p">;</span>    <span class="o">/*</span> <span class="n">start</span> <span class="n">of</span> <span class="n">DRAM</span> <span class="n">memory</span> <span class="o">*/</span>
+        <span class="n">phys_size_t</span>     <span class="n">bi_memsize</span><span class="p">;</span>     <span class="o">/*</span> <span class="n">size</span>  <span class="n">of</span> <span class="n">DRAM</span> <span class="n">memory</span> <span class="ow">in</span> <span class="nb">bytes</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_flashstart</span><span class="p">;</span>  <span class="o">/*</span> <span class="n">start</span> <span class="n">of</span> <span class="n">FLASH</span> <span class="n">memory</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_flashsize</span><span class="p">;</span>   <span class="o">/*</span> <span class="n">size</span>  <span class="n">of</span> <span class="n">FLASH</span> <span class="n">memory</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_flashoffset</span><span class="p">;</span> <span class="o">/*</span> <span class="n">reserved</span> <span class="n">area</span> <span class="k">for</span> <span class="n">startup</span> <span class="n">monitor</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_sramstart</span><span class="p">;</span>   <span class="o">/*</span> <span class="n">start</span> <span class="n">of</span> <span class="n">SRAM</span> <span class="n">memory</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_sramsize</span><span class="p">;</span>    <span class="o">/*</span> <span class="n">size</span>  <span class="n">of</span> <span class="n">SRAM</span> <span class="n">memory</span> <span class="o">*/</span>
+<span class="c1">#ifdef CONFIG_ARM</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_arm_freq</span><span class="p">;</span> <span class="o">/*</span> <span class="n">arm</span> <span class="n">frequency</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_dsp_freq</span><span class="p">;</span> <span class="o">/*</span> <span class="n">dsp</span> <span class="n">core</span> <span class="n">frequency</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_ddr_freq</span><span class="p">;</span> <span class="o">/*</span> <span class="n">ddr</span> <span class="n">frequency</span> <span class="o">*/</span>
+<span class="c1">#endif</span>
+<span class="c1">#if defined(CONFIG_MPC8xx) || defined(CONFIG_E500) || defined(CONFIG_MPC86xx)</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_immr_base</span><span class="p">;</span>   <span class="o">/*</span> <span class="n">base</span> <span class="n">of</span> <span class="n">IMMR</span> <span class="n">register</span> <span class="o">*/</span>
+<span class="c1">#endif</span>
+<span class="c1">#if defined(CONFIG_M68K)</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_mbar_base</span><span class="p">;</span>   <span class="o">/*</span> <span class="n">base</span> <span class="n">of</span> <span class="n">internal</span> <span class="n">registers</span> <span class="o">*/</span>
+<span class="c1">#endif</span>
+<span class="c1">#if defined(CONFIG_MPC83xx)</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_immrbar</span><span class="p">;</span>
+<span class="c1">#endif</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_bootflags</span><span class="p">;</span>   <span class="o">/*</span> <span class="n">boot</span> <span class="o">/</span> <span class="n">reboot</span> <span class="n">flag</span> <span class="p">(</span><span class="n">Unused</span><span class="p">)</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_ip_addr</span><span class="p">;</span>     <span class="o">/*</span> <span class="n">IP</span> <span class="n">Address</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">char</span>   <span class="n">bi_enetaddr</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span> <span class="o">/*</span> <span class="n">OLD</span><span class="p">:</span> <span class="n">see</span> <span class="n">README</span><span class="o">.</span><span class="n">enetaddr</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">short</span>  <span class="n">bi_ethspeed</span><span class="p">;</span>    <span class="o">/*</span> <span class="n">Ethernet</span> <span class="n">speed</span> <span class="ow">in</span> <span class="n">Mbps</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_intfreq</span><span class="p">;</span>     <span class="o">/*</span> <span class="n">Internal</span> <span class="n">Freq</span><span class="p">,</span> <span class="ow">in</span> <span class="n">MHz</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_busfreq</span><span class="p">;</span>     <span class="o">/*</span> <span class="n">Bus</span> <span class="n">Freq</span><span class="p">,</span> <span class="ow">in</span> <span class="n">MHz</span> <span class="o">*/</span>
+<span class="c1">#if defined(CONFIG_CPM2)</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_cpmfreq</span><span class="p">;</span>     <span class="o">/*</span> <span class="n">CPM_CLK</span> <span class="n">Freq</span><span class="p">,</span> <span class="ow">in</span> <span class="n">MHz</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_brgfreq</span><span class="p">;</span>     <span class="o">/*</span> <span class="n">BRG_CLK</span> <span class="n">Freq</span><span class="p">,</span> <span class="ow">in</span> <span class="n">MHz</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_sccfreq</span><span class="p">;</span>     <span class="o">/*</span> <span class="n">SCC_CLK</span> <span class="n">Freq</span><span class="p">,</span> <span class="ow">in</span> <span class="n">MHz</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_vco</span><span class="p">;</span>         <span class="o">/*</span> <span class="n">VCO</span> <span class="n">Out</span> <span class="kn">from</span> <span class="nn">PLL</span><span class="p">,</span> <span class="ow">in</span> <span class="n">MHz</span> <span class="o">*/</span>
+<span class="c1">#endif</span>
+<span class="c1">#if defined(CONFIG_M68K)</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_ipbfreq</span><span class="p">;</span>     <span class="o">/*</span> <span class="n">IPB</span> <span class="n">Bus</span> <span class="n">Freq</span><span class="p">,</span> <span class="ow">in</span> <span class="n">MHz</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span>   <span class="n">bi_pcifreq</span><span class="p">;</span>     <span class="o">/*</span> <span class="n">PCI</span> <span class="n">Bus</span> <span class="n">Freq</span><span class="p">,</span> <span class="ow">in</span> <span class="n">MHz</span> <span class="o">*/</span>
+<span class="c1">#endif</span>
+<span class="c1">#if defined(CONFIG_EXTRA_CLOCK)</span>
+        <span class="n">unsigned</span> <span class="n">long</span> <span class="n">bi_inpfreq</span><span class="p">;</span>       <span class="o">/*</span> <span class="nb">input</span> <span class="n">Freq</span> <span class="ow">in</span> <span class="n">MHz</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span> <span class="n">bi_vcofreq</span><span class="p">;</span>       <span class="o">/*</span> <span class="n">vco</span> <span class="n">Freq</span> <span class="ow">in</span> <span class="n">MHz</span> <span class="o">*/</span>
+        <span class="n">unsigned</span> <span class="n">long</span> <span class="n">bi_flbfreq</span><span class="p">;</span>       <span class="o">/*</span> <span class="n">Flexbus</span> <span class="n">Freq</span> <span class="ow">in</span> <span class="n">MHz</span> <span class="o">*/</span>
+<span class="c1">#endif</span>
+
+<span class="c1">#ifdef CONFIG_HAS_ETH1</span>
+        <span class="n">unsigned</span> <span class="n">char</span>   <span class="n">bi_enet1addr</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>        <span class="o">/*</span> <span class="n">OLD</span><span class="p">:</span> <span class="n">see</span> <span class="n">README</span><span class="o">.</span><span class="n">enetaddr</span> <span class="o">*/</span>
+<span class="c1">#endif</span>
+<span class="c1">#ifdef CONFIG_HAS_ETH2</span>
+        <span class="n">unsigned</span> <span class="n">char</span>   <span class="n">bi_enet2addr</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>        <span class="o">/*</span> <span class="n">OLD</span><span class="p">:</span> <span class="n">see</span> <span class="n">README</span><span class="o">.</span><span class="n">enetaddr</span> <span class="o">*/</span>
+<span class="c1">#endif</span>
+<span class="c1">#ifdef CONFIG_HAS_ETH3</span>
+        <span class="n">unsigned</span> <span class="n">char</span>   <span class="n">bi_enet3addr</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>        <span class="o">/*</span> <span class="n">OLD</span><span class="p">:</span> <span class="n">see</span> <span class="n">README</span><span class="o">.</span><span class="n">enetaddr</span> <span class="o">*/</span>
+<span class="c1">#endif</span>
+<span class="c1">#ifdef CONFIG_HAS_ETH4</span>
+        <span class="n">unsigned</span> <span class="n">char</span>   <span class="n">bi_enet4addr</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>        <span class="o">/*</span> <span class="n">OLD</span><span class="p">:</span> <span class="n">see</span> <span class="n">README</span><span class="o">.</span><span class="n">enetaddr</span> <span class="o">*/</span>
+<span class="c1">#endif</span>
+<span class="c1">#ifdef CONFIG_HAS_ETH5</span>
+        <span class="n">unsigned</span> <span class="n">char</span>   <span class="n">bi_enet5addr</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>        <span class="o">/*</span> <span class="n">OLD</span><span class="p">:</span> <span class="n">see</span> <span class="n">README</span><span class="o">.</span><span class="n">enetaddr</span> <span class="o">*/</span>
+<span class="c1">#endif</span>
+
+        <span class="n">ulong</span>           <span class="n">bi_arch_number</span><span class="p">;</span> <span class="o">/*</span> <span class="n">unique</span> <span class="nb">id</span> <span class="k">for</span> <span class="n">this</span> <span class="n">board</span> <span class="o">*/</span>
+        <span class="n">ulong</span>           <span class="n">bi_boot_params</span><span class="p">;</span> <span class="o">/*</span> <span class="n">where</span> <span class="n">this</span> <span class="n">board</span> <span class="n">expects</span> <span class="n">params</span> <span class="o">*/</span>
+<span class="c1">#ifdef CONFIG_NR_DRAM_BANKS</span>
+        <span class="n">struct</span> <span class="p">{</span>                        <span class="o">/*</span> <span class="n">RAM</span> <span class="n">configuration</span> <span class="o">*/</span>
+                <span class="n">phys_addr_t</span> <span class="n">start</span><span class="p">;</span>
+                <span class="n">phys_size_t</span> <span class="n">size</span><span class="p">;</span>
+        <span class="p">}</span> <span class="n">bi_dram</span><span class="p">[</span><span class="n">CONFIG_NR_DRAM_BANKS</span><span class="p">];</span>
+<span class="c1">#endif /* CONFIG_NR_DRAM_BANKS */</span>
+<span class="p">}</span> <span class="n">bd_t</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>bd_t中的变量 <cite>bi_boot_params</cite> 表示传递给内核的参数的位置，u-boot中命令bdinfo也是查看该结构体的值</p>
+</section>
+<section id="global-data">
+<h3><span class="section-number">2.6.1.2. </span>global data介绍及背后的思考<a class="headerlink" href="#global-data" title="此标题的永久链接"></a></h3>
+<p>要理解global data的意义，需要理解以下的事实:</p>
+<p>u-boot是一个bootloader，有些情况下他可能位于系统的只读存储器(rom或者flash)中，并从那里开始执行。因此，这种情况下，在uboot执行的前期(在将自己copy到可读写的存储器之前)它所在
+的存储空间是不可写的，这会有两个问题:</p>
+<ul class="simple">
+<li><p>堆栈无法使用，无法执行函数调用，也就是说C环境不可用</p></li>
+<li><p>没有data段(或正确初始化的data段)可用,不同函数或者代码之间，无法通过全局变量的形式共享数据</p></li>
+</ul>
+<p>针对问题一，通常的解决方案是：</p>
+<p>u-boot运行起来之后，在那些不需要执行任何初始化动作即可使用的、可读写的存储区域开辟一段堆栈(stack)空间。一般来说，大部分的平台都有自己的sram可用作堆栈空间，如果实在不行，也可借用
+CPU的data cache方法</p>
+<p>针对问题二,解决方案要稍微复杂一些</p>
+<p>首先对于开发者而言，在u-boot被拷贝到可读写的ram(这个动作被称作relacation)之前，永远不要使用全局变量，其次在relocation之前不同模块之间确实有通过全局变量传递数据的需求怎么办，这就是
+global data需要解决的事情。。</p>
+<p>为了在relocation之前通过全局变量的形式传递数据，u-boot设计了一个巧妙的方法:在堆栈配置好之后，在堆栈开始的位置，为struct global_data预留空间，并将开始地址(就是一个struct global_data指针)保存在
+一个寄存器中，后续的传递，都是通过保存在寄存器中的指针实现。对于arm64平台而言,该指针保存在了X18寄存器中</p>
+<p>在 <cite>arch/arm/lib/crt0_64.S</cite> 中有如下实现</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">bl</span> <span class="n">board_init_f_alloc_reserve</span>   <span class="o">//</span><span class="n">board_init_f_alloc_reserve的返回值</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span><span class="n">就是global</span> <span class="n">data的指针</span>
+    <span class="n">mov</span> <span class="n">sp</span><span class="p">,</span><span class="n">x0</span>
+    <span class="o">/*</span> <span class="nb">set</span> <span class="n">up</span> <span class="n">gd</span> <span class="n">here</span><span class="p">,</span> <span class="n">outside</span> <span class="nb">any</span> <span class="n">C</span> <span class="n">code</span> <span class="o">*/</span>
+    <span class="n">mv</span> <span class="n">x18</span><span class="p">,</span><span class="n">x0</span>
+<span class="n">bl</span> <span class="n">board_init_init_reserve</span>
+</pre></div>
+</div>
+<p>内核参数链表的格式和说明可以从内核源码目录 <cite>arch/arm/include/asm/setup.h</cite> 中找到，链表必须以ATAG_CORE开始，以ATAG_NONE结束</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">tag</span> <span class="p">{</span>
+        <span class="n">struct</span> <span class="n">tag_header</span> <span class="n">hdr</span><span class="p">;</span>
+        <span class="n">union</span> <span class="p">{</span>
+                <span class="n">struct</span> <span class="n">tag_core</span>         <span class="n">core</span><span class="p">;</span>
+                <span class="n">struct</span> <span class="n">tag_mem32</span>        <span class="n">mem</span><span class="p">;</span>
+                <span class="n">struct</span> <span class="n">tag_videotext</span>    <span class="n">videotext</span><span class="p">;</span>
+                <span class="n">struct</span> <span class="n">tag_ramdisk</span>      <span class="n">ramdisk</span><span class="p">;</span>
+                <span class="n">struct</span> <span class="n">tag_initrd</span>       <span class="n">initrd</span><span class="p">;</span>
+                <span class="n">struct</span> <span class="n">tag_serialnr</span>     <span class="n">serialnr</span><span class="p">;</span>
+                <span class="n">struct</span> <span class="n">tag_revision</span>     <span class="n">revision</span><span class="p">;</span>
+                <span class="n">struct</span> <span class="n">tag_videolfb</span>     <span class="n">videolfb</span><span class="p">;</span>
+                <span class="n">struct</span> <span class="n">tag_cmdline</span>      <span class="n">cmdline</span><span class="p">;</span>
+
+                <span class="o">/*</span>
+                 <span class="o">*</span> <span class="n">Acorn</span> <span class="n">specific</span>
+                 <span class="o">*/</span>
+                <span class="n">struct</span> <span class="n">tag_acorn</span>        <span class="n">acorn</span><span class="p">;</span>
+
+                <span class="o">/*</span>
+                 <span class="o">*</span> <span class="n">DC21285</span> <span class="n">specific</span>
+                 <span class="o">*/</span>
+                <span class="n">struct</span> <span class="n">tag_memclk</span>       <span class="n">memclk</span><span class="p">;</span>
+        <span class="p">}</span> <span class="n">u</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">tag_ramdisk</span> <span class="p">{</span>
+        <span class="n">u32</span> <span class="n">flags</span><span class="p">;</span>      <span class="o">/*</span> <span class="n">bit</span> <span class="mi">0</span> <span class="o">=</span> <span class="n">load</span><span class="p">,</span> <span class="n">bit</span> <span class="mi">1</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">*/</span>
+        <span class="n">u32</span> <span class="n">size</span><span class="p">;</span>       <span class="o">/*</span> <span class="n">decompressed</span> <span class="n">ramdisk</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">_kilo_</span> <span class="nb">bytes</span> <span class="o">*/</span>
+        <span class="n">u32</span> <span class="n">start</span><span class="p">;</span>      <span class="o">/*</span> <span class="n">starting</span> <span class="n">block</span> <span class="n">of</span> <span class="n">floppy</span><span class="o">-</span><span class="n">based</span> <span class="n">RAM</span> <span class="n">disk</span> <span class="n">image</span> <span class="o">*/</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">tag_cmdline</span> <span class="p">{</span>
+        <span class="n">char</span>    <span class="n">cmdline</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>     <span class="o">/*</span> <span class="n">this</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">minimum</span> <span class="n">size</span> <span class="o">*/</span>
+<span class="p">};</span>
+
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>参数结构包括两个部分，一个是tag_header, 一个是u联合体</p>
+<p>tag_header结构体定义如下，</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct tag_header {
+        u32 size;       //表示整个tag结构体的大小，用字的个数表示而不是字节，等于tag_header加上u联合体的大小
+        u32 tag;        //整个tag结构体的标记，如ATAG_CORE
+};
+</pre></div>
+</div>
+<p>现在来分析boot_prep_linux函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">Subcommand</span><span class="p">:</span> <span class="n">PREP</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">boot_prep_linux</span><span class="p">(</span><span class="n">bootm_headers_t</span> <span class="o">*</span><span class="n">images</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">char</span> <span class="o">*</span><span class="n">commandline</span> <span class="o">=</span> <span class="n">env_get</span><span class="p">(</span><span class="s2">&quot;bootargs&quot;</span><span class="p">);</span>    <span class="o">//</span><span class="n">获取环境变量bootargs</span><span class="p">,</span><span class="n">这就是要传递给kernel的参数</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">IMAGE_ENABLE_OF_LIBFDT</span> <span class="o">&amp;&amp;</span> <span class="n">images</span><span class="o">-&gt;</span><span class="n">ft_len</span><span class="p">)</span> <span class="p">{</span>
+<span class="c1">#ifdef CONFIG_OF_LIBFDT</span>
+        <span class="n">debug</span><span class="p">(</span><span class="s2">&quot;using: FDT</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">image_setup_linux</span><span class="p">(</span><span class="n">images</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;FDT creation failed! hanging...&quot;</span><span class="p">);</span>
+            <span class="n">hang</span><span class="p">();</span>
+        <span class="p">}</span>
+<span class="c1">#endif</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">BOOTM_ENABLE_TAGS</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">debug</span><span class="p">(</span><span class="s2">&quot;using: ATAGS</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+        <span class="n">setup_start_tag</span><span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">);</span>    <span class="o">//</span><span class="n">通过bd结构体中的参数在内存中的存放位置gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_boot_params来构建初始化tag结构</span><span class="p">,</span>
+                                                                            <span class="o">//</span><span class="n">表明参数结构的开始</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">BOOTM_ENABLE_SERIAL_TAG</span><span class="p">)</span>
+            <span class="n">setup_serial_tag</span><span class="p">(</span><span class="o">&amp;</span><span class="n">params</span><span class="p">);</span>      <span class="o">//</span><span class="n">构建串口参数的tag结构</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">BOOTM_ENABLE_CMDLINE_TAG</span><span class="p">)</span>
+            <span class="n">setup_commandline_tag</span><span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">,</span> <span class="n">commandline</span><span class="p">);</span>     <span class="o">//</span><span class="n">构建命令行参数的tag结构</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">BOOTM_ENABLE_REVISION_TAG</span><span class="p">)</span>
+            <span class="n">setup_revision_tag</span><span class="p">(</span><span class="o">&amp;</span><span class="n">params</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">BOOTM_ENABLE_MEMORY_TAGS</span><span class="p">)</span>
+            <span class="n">setup_memory_tags</span><span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">BOOTM_ENABLE_INITRD_TAG</span><span class="p">)</span> <span class="p">{</span>
+            <span class="o">/*</span>
+             <span class="o">*</span> <span class="n">In</span> <span class="n">boot_ramdisk_high</span><span class="p">(),</span> <span class="n">it</span> <span class="n">may</span> <span class="n">relocate</span> <span class="n">ramdisk</span> <span class="n">to</span>
+             <span class="o">*</span> <span class="n">a</span> <span class="n">specified</span> <span class="n">location</span><span class="o">.</span> <span class="n">And</span> <span class="nb">set</span> <span class="n">images</span><span class="o">-&gt;</span><span class="n">initrd_start</span> <span class="o">&amp;</span>
+             <span class="o">*</span> <span class="n">images</span><span class="o">-&gt;</span><span class="n">initrd_end</span> <span class="n">to</span> <span class="n">relocated</span> <span class="n">ramdisk</span><span class="s1">&#39;s start/end</span>
+             <span class="o">*</span> <span class="n">addresses</span><span class="o">.</span> <span class="n">So</span> <span class="n">use</span> <span class="n">them</span> <span class="n">instead</span> <span class="n">of</span> <span class="n">images</span><span class="o">-&gt;</span><span class="n">rd_start</span> <span class="o">&amp;</span>
+             <span class="o">*</span> <span class="n">images</span><span class="o">-&gt;</span><span class="n">rd_end</span> <span class="n">when</span> <span class="n">possible</span><span class="o">.</span>
+             <span class="o">*/</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">images</span><span class="o">-&gt;</span><span class="n">initrd_start</span> <span class="o">&amp;&amp;</span> <span class="n">images</span><span class="o">-&gt;</span><span class="n">initrd_end</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">setup_initrd_tag</span><span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">,</span> <span class="n">images</span><span class="o">-&gt;</span><span class="n">initrd_start</span><span class="p">,</span>
+                         <span class="n">images</span><span class="o">-&gt;</span><span class="n">initrd_end</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">images</span><span class="o">-&gt;</span><span class="n">rd_start</span> <span class="o">&amp;&amp;</span> <span class="n">images</span><span class="o">-&gt;</span><span class="n">rd_end</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">setup_initrd_tag</span><span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">,</span> <span class="n">images</span><span class="o">-&gt;</span><span class="n">rd_start</span><span class="p">,</span>
+                         <span class="n">images</span><span class="o">-&gt;</span><span class="n">rd_end</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">setup_board_tags</span><span class="p">(</span><span class="o">&amp;</span><span class="n">params</span><span class="p">);</span>
+        <span class="n">setup_end_tag</span><span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;FDT and ATAGS support not compiled in - hanging</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+        <span class="n">hang</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>setup_start_tag</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span> <span class="n">setup_start_tag</span> <span class="p">(</span><span class="n">bd_t</span> <span class="o">*</span><span class="n">bd</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">tag</span> <span class="o">*</span><span class="p">)</span><span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_boot_params</span><span class="p">;</span>      <span class="o">//</span><span class="n">获取struct</span> <span class="n">tag指针</span>
+
+        <span class="n">params</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">ATAG_CORE</span><span class="p">;</span>    <span class="o">//</span><span class="n">设置参数链表开始标签</span>
+        <span class="n">params</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">tag_size</span> <span class="p">(</span><span class="n">tag_core</span><span class="p">);</span>
+
+        <span class="n">params</span><span class="o">-&gt;</span><span class="n">u</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">params</span><span class="o">-&gt;</span><span class="n">u</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">pagesize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">params</span><span class="o">-&gt;</span><span class="n">u</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">rootdev</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="n">tag_next</span> <span class="p">(</span><span class="n">params</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">#define tag_next(t)     ((struct tag *)((u32 *)(t) + (t)-&gt;hdr.size))</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>setup_commandline_tag</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static void setup_commandline_tag(bd_t *bd, char *commandline)
+{
+        char *p;
+printf(&quot;set cmd line ...\n&quot;);
+        if (!commandline)
+                return;
+
+        /* eat leading white space */
+        for (p = commandline; *p == &#39; &#39;; p++);
+
+        /* skip non-existent command lines so the kernel will still
+         * use its default command line.
+         */
+        if (*p == &#39;\0&#39;)
+                return;
+
+        params-&gt;hdr.tag = ATAG_CMDLINE;
+        params-&gt;hdr.size =
+                (sizeof (struct tag_header) + strlen (p) + 1 + 4) &gt;&gt; 2;
+
+        strcpy (params-&gt;u.cmdline.cmdline, p);
+
+        params = tag_next (params);
+}
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id2">
+<h2><span class="section-number">2.6.2. </span>设备树传参<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>新版本的linux内核都采用设备树的方式进行板级设备信息描述，uboot在启动内核的时候需要将设备树的地址传递给kernel。跟以前的方式不同，采用设备树时
+不再使用struct tag进行参数传递，设备数中本身有对需要传递参数的描述，uboot中将设备树进行解析并设置对应参数。kernel直接解析uboot传递的设备树并从中
+找到要传递参数</p>
+<p>boot_prep_linux函数中有两个主分支，定义设备树时运行分支一,没有定义时采用struct tag进行参数传递</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">image_setup_linux</span><span class="p">(</span><span class="n">bootm_headers_t</span> <span class="o">*</span><span class="n">images</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ulong</span> <span class="n">of_size</span> <span class="o">=</span> <span class="n">images</span><span class="o">-&gt;</span><span class="n">ft_len</span><span class="p">;</span>
+    <span class="n">char</span> <span class="o">**</span><span class="n">of_flat_tree</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">images</span><span class="o">-&gt;</span><span class="n">ft_addr</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">lmb</span> <span class="o">*</span><span class="n">lmb</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">images</span><span class="o">-&gt;</span><span class="n">lmb</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">IMAGE_ENABLE_OF_LIBFDT</span><span class="p">)</span>
+        <span class="n">boot_fdt_add_mem_rsv_regions</span><span class="p">(</span><span class="n">lmb</span><span class="p">,</span> <span class="o">*</span><span class="n">of_flat_tree</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">IMAGE_BOOT_GET_CMDLINE</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">boot_get_cmdline</span><span class="p">(</span><span class="n">lmb</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">images</span><span class="o">-&gt;</span><span class="n">cmdline_start</span><span class="p">,</span>
+                <span class="o">&amp;</span><span class="n">images</span><span class="o">-&gt;</span><span class="n">cmdline_end</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">puts</span><span class="p">(</span><span class="s2">&quot;ERROR with allocation of cmdline</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">IMAGE_ENABLE_OF_LIBFDT</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">boot_relocate_fdt</span><span class="p">(</span><span class="n">lmb</span><span class="p">,</span> <span class="n">of_flat_tree</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">of_size</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">IMAGE_ENABLE_OF_LIBFDT</span> <span class="o">&amp;&amp;</span> <span class="n">of_size</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">image_setup_libfdt</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="o">*</span><span class="n">of_flat_tree</span><span class="p">,</span> <span class="n">of_size</span><span class="p">,</span> <span class="n">lmb</span><span class="p">);</span>  <span class="o">//</span><span class="n">此函数中会调用fdt_chosen进行参数传递</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">fdt_chosen</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">fdt</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span>   <span class="n">nodeoffset</span><span class="p">;</span>
+    <span class="nb">int</span>   <span class="n">err</span><span class="p">;</span>
+    <span class="n">char</span>  <span class="o">*</span><span class="nb">str</span><span class="p">;</span>             <span class="o">/*</span> <span class="n">used</span> <span class="n">to</span> <span class="nb">set</span> <span class="n">string</span> <span class="n">properties</span> <span class="o">*/</span>
+
+    <span class="n">err</span> <span class="o">=</span> <span class="n">fdt_check_header</span><span class="p">(</span><span class="n">fdt</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;fdt_chosen: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fdt_strerror</span><span class="p">(</span><span class="n">err</span><span class="p">));</span>
+        <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">/*</span> <span class="n">find</span> <span class="ow">or</span> <span class="n">create</span> <span class="s2">&quot;/chosen&quot;</span> <span class="n">node</span><span class="o">.</span> <span class="o">*/</span>
+    <span class="n">nodeoffset</span> <span class="o">=</span> <span class="n">fdt_find_or_add_subnode</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;chosen&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">nodeoffset</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">nodeoffset</span><span class="p">;</span>
+    <span class="nb">str</span> <span class="o">=</span> <span class="n">env_get</span><span class="p">(</span><span class="s2">&quot;bootargs&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="n">fdt_setprop</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span> <span class="n">nodeoffset</span><span class="p">,</span> <span class="s2">&quot;bootargs&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span>
+                  <span class="n">strlen</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;WARNING: could not set bootargs </span><span class="si">%s</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                   <span class="n">fdt_strerror</span><span class="p">(</span><span class="n">err</span><span class="p">));</span>
+            <span class="k">return</span> <span class="n">err</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">fdt_fixup_stdout</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span> <span class="n">nodeoffset</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="bootm.html" class="btn btn-neutral float-left" title="2.5. bootm原理" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="uboot_memory.html" class="btn btn-neutral float-right" title="2.7. uboot-kernel地址空间" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

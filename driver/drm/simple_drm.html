@@ -1,0 +1,619 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.14.6. VKMS示例 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.15. linux V4L2视频框架" href="../v4l2/index.html" />
+    <link rel="prev" title="4.14.5. plane代码分析" href="plane.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.14. DRM框架分析</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="drm_frame.html">4.14.1. DRM框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="connector.html">4.14.2. connector代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="encoder.html">4.14.3. encoder代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crtc.html">4.14.4. crtc代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plane.html">4.14.5. plane代码分析</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.14.6. VKMS示例</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.14.6.1. 最简单的VKMS驱动</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vkmsfops">4.14.6.2. VKMS驱动添加fops操作接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#drm-mode-objects">4.14.6.3. 添加drm mode objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fbgem">4.14.6.4. 添加FB和GEM支持</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#callback-funcslegacy-modeset">4.14.6.5. 实现callback funcs并添加Legacy Modeset支持</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.14. </span>DRM框架分析</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.14.6. </span>VKMS示例</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/drm/simple_drm.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="vkms">
+<h1><span class="section-number">4.14.6. </span>VKMS示例<a class="headerlink" href="#vkms" title="此标题的永久链接"></a></h1>
+<p>VKMS是”Virtual Kernel Mode Setting”的缩写，之所以称他为Virtual KMS, 是因为该驱动不需要真实的硬件，他完全是一个软件
+虚拟的”显示设备”，甚至连显示都算不上，因为当它运行时，你看不到任何显示内容。它唯一能提供的就是一个由高精度timer模拟
+的VSYNC中断信号。</p>
+<p>该驱动存在的真实目的，主要是为了DRM框架自测试。虽然看不到VKMS的显示效果，但是在驱动流程上，它实现了modesetting该有
+的基本操作(Modesetting是指在显示器上渲染图像的过程中，调整显示器的分辨率、刷新率、像素格式等参数)</p>
+<p>代码存放在drivers/gpu/drm/vkms/目录下</p>
+<p>目前VKMS驱动已经集成了如下功能</p>
+<ul class="simple">
+<li><p>Atomic Modeset</p></li>
+<li><p>VBlank</p></li>
+<li><p>Dumb Buffer</p></li>
+<li><p>Cursor &amp; Primary Plane</p></li>
+<li><p>Framebuffer CRC校验</p></li>
+<li><p>Plane Composition</p></li>
+<li><p>GEM Prime Import</p></li>
+</ul>
+<section id="id1">
+<h2><span class="section-number">4.14.6.1. </span>最简单的VKMS驱动<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;drm/drmP.h&gt;</span>
+
+<span class="n">static</span> <span class="n">struct</span> <span class="n">drm_device</span> <span class="n">drm</span><span class="p">;</span>   <span class="o">//</span><span class="n">用于抽象一个完整的DRM设备</span>
+
+<span class="n">static</span> <span class="n">struct</span> <span class="n">drm_driver</span> <span class="n">vkms_driver</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;vkms&quot;</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;virtual kernel mode setting&quot;</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="s2">&quot;2022-8-9&quot;</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">major</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">minor</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="n">static</span> <span class="nb">int</span> <span class="n">__init</span> <span class="n">vkms_init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">drm_dev_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">drm</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">vkms_driver</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+    <span class="n">drm_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">drm</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">module_init</span><span class="p">(</span><span class="n">vkms_init</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>当次驱动注册进内核后，内核会做一下事情</p>
+<ul class="simple">
+<li><p>创建设备节点: /dev/dri/card0</p></li>
+<li><p>创建sysfs节点: /sys/class/drm/card0</p></li>
+<li><p>创建debugfs节点: /sys/kernel/debug/dri/0</p></li>
+</ul>
+<p>但该驱动目前什么事情也做不了，唯一能做的就是查看该驱动的名字</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="n">dri</span><span class="o">/</span><span class="mi">0</span><span class="o">/</span><span class="n">name</span>
+<span class="n">vkms</span> <span class="n">unique</span><span class="o">=</span><span class="n">vkms</span>
+</pre></div>
+</div>
+</section>
+<section id="vkmsfops">
+<h2><span class="section-number">4.14.6.2. </span>VKMS驱动添加fops操作接口<a class="headerlink" href="#vkmsfops" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;drm/drmP.h&gt;</span>
+
+<span class="n">static</span> <span class="n">struct</span> <span class="n">drm_device</span> <span class="n">drm</span><span class="p">;</span>   <span class="o">//</span><span class="n">用于抽象一个完整的DRM设备</span>
+
+<span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">file_operations</span> <span class="n">vkms_fops</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">THIS_MODULE</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">open</span> <span class="o">=</span> <span class="n">drm_open</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">release</span> <span class="o">=</span> <span class="n">drm_release</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">unlocked_ioctl</span> <span class="o">=</span> <span class="n">drm_ioctl</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">poll</span> <span class="o">=</span> <span class="n">drm_poll</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">read</span> <span class="o">=</span> <span class="n">drm_read</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="n">static</span> <span class="n">struct</span> <span class="n">drm_driver</span> <span class="n">vkms_driver</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="o">.</span><span class="n">fops</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">vkms_fops</span><span class="p">,</span>     <span class="o">//</span><span class="n">增加fops操作接口</span>
+
+    <span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;vkms&quot;</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;virtual kernel mode setting&quot;</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="s2">&quot;2022-8-9&quot;</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">major</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="o">.</span><span class="n">minor</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="n">static</span> <span class="nb">int</span> <span class="n">__init</span> <span class="n">vkms_init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">drm_dev_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">drm</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">vkms_driver</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+    <span class="n">drm_register</span><span class="p">(</span><span class="o">&amp;</span><span class="n">drm</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">module_init</span><span class="p">(</span><span class="n">vkms_init</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>有了fops,我们就可以对card0进行open/read操作了。同时可以进行一些ioctl操作了，但是只限于drm相关的只读操作且不需要调用
+相关回调函数的操作。</p>
+<p>到目前为止，凡是和Modesetting相关的操作，还是操作不了</p>
+</section>
+<section id="drm-mode-objects">
+<h2><span class="section-number">4.14.6.3. </span>添加drm mode objects<a class="headerlink" href="#drm-mode-objects" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;drm/drmP.h&gt;
+
+static struct drm_device drm;   //用于抽象一个完整的DRM设备
+
+//增加drm mode object
+static struct drm_plane primary;
+static struct drm_crtc crtc;
+static struct drm_encoder encoder;
+static struct drm_connector connector;
+
+//增加drm mode object对应的回调函数结构体
+static const struct drm_plane_funcs vkms_plane_funcs;
+static const struct drm_crtc_funcs vkms_crtc_funcs;
+static const struct drm_encoder_funcs vkms_encoder_funcs;
+static const struct drm_connector_funcs vkms_connector_funs;
+
+static const u32 vkms_formats[] = {
+    DRM_FORMAT_XRGS8888,
+};
+
+static void vkms_modeset_init(void)
+{
+    drm_mode_config_init(&amp;drm); //初始化KMS框架,本质上是初始化drm_device中mode_config结构体
+
+    //最后初始化drm_device中包含的drm_connector， drm_crtc等对象
+    drm_universal_plane_init(&amp;drm, &amp;primary, 0, &amp;vkms_plane_funcs, vkms_formats, ARRAY_SIZE(vkms_formats),
+                        NULL, DRM_PLANE_TYPE_PRIMARY, NULL);
+
+    drm_crtc_init_with_planes(&amp;drm, &amp;crtc, &amp;primary, NULL, &amp;vkms_crtc_funcs, NULL);
+
+    drm_encoder_init(&amp;drm, &amp;encoder, &amp;vkms_encoder_funcs, DRM_MODE_ENCODER_VIRTUAL, NULL);
+
+    drm_connector_init(&amp;drm, &amp;connector, &amp;vkms_connector_funcs, DRM_MODE_CONNECTOR_VIRTUAL);
+}
+
+static const struct file_operations vkms_fops = {
+    .owner = THIS_MODULE,
+    .open = drm_open,
+    .release = drm_release,
+    .unlocked_ioctl = drm_ioctl,
+    .poll = drm_poll,
+    .read = drm_read,
+};
+
+static struct drm_driver vkms_driver = {
+    .driver_features = DRIVER_MODESET,      //添加DRIVER_MODESET标志位，告诉DRM Core当前驱动支持modesetting操作
+
+    .fops = &amp;vkms_fops,     //增加fops操作接口
+
+    .name = &quot;vkms&quot;,
+    .desc = &quot;virtual kernel mode setting&quot;,
+    .date = &quot;2022-8-9&quot;,
+    .major = 1,
+    .minor = 0,
+};
+
+static int __init vkms_init(void)
+{
+    drm_dev_init(&amp;drm, &amp;vkms_driver, NULL);
+
+    vkms_modeset_init();
+
+    drm_register(&amp;drm, 0);
+
+    return 0;
+}
+
+module_init(vkms_init);
+</pre></div>
+</div>
+<p>由于上面4个object在创建时，他们的callback funcs没有赋初值，所以真正的modeset操作目前还无法正常运行，不过至少可以使用一些
+只读的modeset ioctl了(不需要调用DRM相关回调函数的操作)</p>
+</section>
+<section id="fbgem">
+<h2><span class="section-number">4.14.6.4. </span>添加FB和GEM支持<a class="headerlink" href="#fbgem" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;drm/drmP.h&gt;
+#include &lt;drm/drm_encoder.h&gt;
+#include &lt;drm/drm_fb_cma_helper.h&gt;
+#include &lt;drm/drm_gem_cma_helper.h&gt;
+
+static struct drm_device drm;   //用于抽象一个完整的DRM设备
+
+//增加drm mode object
+static struct drm_plane primary;
+static struct drm_crtc crtc;
+static struct drm_encoder encoder;
+static struct drm_connector connector;
+
+//增加drm mode object对应的回调函数结构体
+static const struct drm_plane_funcs vkms_plane_funcs;
+static const struct drm_crtc_funcs vkms_crtc_funcs;
+static const struct drm_encoder_funcs vkms_encoder_funcs;
+static const struct drm_connector_funcs vkms_connector_funs;
+
+static const u32 vkms_formats[] = {
+    DRM_FORMAT_XRGS8888,
+};
+
+//定义了一些函数指针，用于管理驱动程序中的显示模式配置
+//这些函数指针包括添加和删除连接器、CRTC和编解码器，以及更新显示模式等功能
+//这些函数在驱动程序中被调用以进行显示模式的管理和配置
+static const struct drm_mode_config_funcs vkms_mode_funcs = {
+    .fb_create = drm_fb_cma_create,     //根据给定的帧缓冲参数，创建一个新的帧缓冲设备，并返回其句柄
+};
+
+static void vkms_modeset_init(void)
+{
+    drm_mode_config_init(&amp;drm); //初始化KMS框架,本质上是初始化drm_device中mode_config结构体
+
+    //填充mode_config中min_width, max_width, max_height,这些值是framebuffer大小限制
+    drm.mode_config.max_width = 8192;
+    drm.mode_config.max_height = 8192;
+    //设置mode_config-&gt;func指针，本质上是一组由驱动程序实现的回调函数，涵盖KMS中一些相当基本的操作
+    drm.mode_config.funcs = &amp;vkms_mode_funcs;
+
+    //最后初始化drm_device中包含的drm_connector， drm_crtc等对象
+    drm_universal_plane_init(&amp;drm, &amp;primary, 0, &amp;vkms_plane_funcs, vkms_formats, ARRAY_SIZE(vkms_formats),
+                        NULL, DRM_PLANE_TYPE_PRIMARY, NULL);
+
+    drm_crtc_init_with_planes(&amp;drm, &amp;crtc, &amp;primary, NULL, &amp;vkms_crtc_funcs, NULL);
+
+    drm_encoder_init(&amp;drm, &amp;encoder, &amp;vkms_encoder_funcs, DRM_MODE_ENCODER_VIRTUAL, NULL);
+
+    drm_connector_init(&amp;drm, &amp;connector, &amp;vkms_connector_funcs, DRM_MODE_CONNECTOR_VIRTUAL);
+}
+
+static const struct file_operations vkms_fops = {
+    .owner = THIS_MODULE,
+    .open = drm_open,
+    .release = drm_release,
+    .unlocked_ioctl = drm_ioctl,
+    .poll = drm_poll,
+    .read = drm_read,
+
+    //DRM的GEM对象映射到用户空间，以便用于空间使用
+    .mmap = drm_gem_cma_mmap,
+};
+
+static struct drm_driver vkms_driver = {
+    .driver_features = DRIVER_MODESET,      //添加DRIVER_MODESET标志位，告诉DRM Core当前驱动支持modesetting操作
+
+    .fops = &amp;vkms_fops,     //增加fops操作接口
+
+    //增加fb相关操作
+    .dumb_create = drm_gem_cma_dumb_create,     //用于创建dumb buffer,也就是一个简单的、未映射的内存区域。
+                                                //通常用于测试或者临时存储
+    .gem_vm_ops = &amp;drm_gem_cma_vm_ops,          //用于实现GEM内存管理机制的各种功能
+                                                //用户空间程序请求显存时被调用，用于控制显存的访问权限、分配显存
+    .gem_free_object_unlocked = drm_gem_cma_free_object,
+
+    .name = &quot;vkms&quot;,
+    .desc = &quot;virtual kernel mode setting&quot;,
+    .date = &quot;2022-8-9&quot;,
+    .major = 1,
+    .minor = 0,
+};
+
+static int __init vkms_init(void)
+{
+    drm_dev_init(&amp;drm, &amp;vkms_driver, NULL);
+
+    vkms_modeset_init();
+
+    drm_register(&amp;drm, 0);
+
+    return 0;
+}
+
+module_init(vkms_init);
+</pre></div>
+</div>
+<p>现在可以使用ioctl进行一些标准的GEM和FB操作了</p>
+<p>在drm_mode_config结构体中存在一个类型为drm_mode_config_func的回调函数指针结构体，用于驱动程序向内核注册显示器模式
+配置。这些函数指针包含添加和删除连接器，CRTC和编码器，以及更新显示模式等功能。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>drm_mode_config_funcs结构体中fb_create创建一个新的帧缓冲对象，但并不是分配内存，frambuffer不涉及内存的分配与
+释放。framebuffer通过访问GEM对象来获取内存区域的物理地址信息。</p>
+</div>
+</section>
+<section id="callback-funcslegacy-modeset">
+<h2><span class="section-number">4.14.6.5. </span>实现callback funcs并添加Legacy Modeset支持<a class="headerlink" href="#callback-funcslegacy-modeset" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;drm/drmP.h&gt;
+#include &lt;drm/drm_encoder.h&gt;
+#include &lt;drm/drm_fb_cma_helper.h&gt;
+#include &lt;drm/drm_gem_cma_helper.h&gt;
+
+static struct drm_device drm;   //用于抽象一个完整的DRM设备
+
+//增加drm mode object
+static struct drm_plane primary;
+static struct drm_crtc crtc;
+static struct drm_encoder encoder;
+static struct drm_connector connector;
+
+    static void vkms_crtc_dpms(struct drm_crtc *crtc, int mode)
+    {
+
+    }
+
+    static int vkms_crtc_mode_set(struct drm_crtc *crtc,
+                                    struct drm_display_mode *mode,
+                                    struct drm_display_mode *adjusted_mode,
+                                    int x, int y, struct drm_framebuffer *old_fb)
+    {
+            return 0;
+    }
+
+    static void vkms_crtc_prepare(struct drm_crtc *crtc)
+    {
+    }
+
+    static void vkms_crtc_commit(struct drm_crtc *crtc)
+    {
+
+    }
+
+    static const struct drm_crtc_helper_funcs vkms_crtc_helper_funcs = {
+            .dpms = vkms_crtc_dpms,
+            .mode_set = vkms_crtc_mode_set,
+            .prepare = vkms_crtc_prepare,
+            .commit = vkms_crtc_commit,
+    };
+
+static int vkms_crtc_page_flip(struct drm_crtc *crtc,
+                                struct drm_framebuffer *fb,
+                                struct drm_pending_vblank_event *event,
+                                uint32_t page_flip_flags,
+                                struct drm_modeset_acquire_ctx *ctx)
+{
+    unsigned long flags;
+
+    crtc-&gt;primary-&gt;fb = fb;
+    if(event) {
+        spin_lock_irqsave(&amp;crtc-&gt;dev-&gt;event_lock, flags);
+        drm_crtc_send_vblank_event(crtc, event);
+        spin_unlock_irqsave(&amp;crtc-&gt;dev-&gt;event_lock, flags);
+    }
+
+    return 0;
+}
+
+//增加drm mode object对应的回调函数结构体
+static const struct drm_plane_funcs vkms_plane_funcs = {
+    .update_plane = drm_primary_helper_update,
+    .disable_plane = drm_primary_helper_disable,
+    .destroy = drm_plane_cleanup,
+};
+
+static const struct drm_crtc_funcs vkms_crtc_funcs = {
+    .set_config = drm_crtc_helper_set_config,
+    .page_flip = vkms_cetc_page_flip,
+    .destroy = drm_crtc_cleanup,
+};
+static const struct drm_encoder_funcs vkms_encoder_funcs;
+static const struct drm_connector_funcs vkms_connector_funs;
+
+static const u32 vkms_formats[] = {
+    DRM_FORMAT_XRGS8888,
+};
+
+    static int vkms_connector_get_modes(struct drm_connector *connector)
+    {
+            int count;
+
+            count = drm_add_modes_noedid(connector, 8192, 8192);
+            drm_set_preferred_mode(connector, 1024, 768);
+
+            return count;
+    }
+
+    static struct drm_encode *vkms_connector_best_encoder(struct drm_connector *connector)
+    {
+            return &amp;encoder;
+    }
+
+    static const struct drm_connector_helper_funcs vkms_conn_helper_funcs = {
+            .get_modes = vkms_connector_get_modes,
+            .best_encoder = vkms_connector_best_encoder,
+    };
+
+    static const struct drm_connector_funcs vkms_connector_funcs = {
+            .dpms = drm_helper_connector_dpms,
+            .fill_modes = drm_helper_probe_single_connector_modes,
+            .destroy = drm_connector_cleanup,
+    };
+
+    static const struct encoder_funcs vkms_encoder_funcs = {
+            .destroy = drm_encoder_cleanup,
+    };
+
+
+//定义了一些函数指针，用于管理驱动程序中的显示模式配置
+//这些函数指针包括添加和删除连接器、CRTC和编解码器，以及更新显示模式等功能
+//这些函数在驱动程序中被调用以进行显示模式的管理和配置
+static const struct drm_mode_config_funcs vkms_mode_funcs = {
+    .fb_create = drm_fb_cma_create,     //根据给定的帧缓冲参数，创建一个新的帧缓冲设备，并返回其句柄
+};
+
+static void vkms_modeset_init(void)
+{
+    drm_mode_config_init(&amp;drm); //初始化KMS框架,本质上是初始化drm_device中mode_config结构体
+
+    //填充mode_config中min_width, max_width, max_height,这些值是framebuffer大小限制
+    drm.mode_config.max_width = 8192;
+    drm.mode_config.max_height = 8192;
+    //设置mode_config-&gt;func指针，本质上是一组由驱动程序实现的回调函数，涵盖KMS中一些相当基本的操作
+    drm.mode_config.funcs = &amp;vkms_mode_funcs;
+
+    //最后初始化drm_device中包含的drm_connector， drm_crtc等对象
+    drm_universal_plane_init(&amp;drm, &amp;primary, 0, &amp;vkms_plane_funcs, vkms_formats, ARRAY_SIZE(vkms_formats),
+                        NULL, DRM_PLANE_TYPE_PRIMARY, NULL);
+
+    drm_crtc_init_with_planes(&amp;drm, &amp;crtc, &amp;primary, NULL, &amp;vkms_crtc_funcs, NULL);
+            drm_crtc_helper_add(&amp;crtc, &amp;vkms_crtc_helper_funcs);
+
+    drm_encoder_init(&amp;drm, &amp;encoder, &amp;vkms_encoder_funcs, DRM_MODE_ENCODER_VIRTUAL, NULL);
+    drm_connector_init(&amp;drm, &amp;connector, &amp;vkms_connector_funcs, DRM_MODE_CONNECTOR_VIRTUAL);
+            drm_connector_helper_add(&amp;connector, &amp;vkms_conn_helper_funcs);
+            drm_mode_connector_attach_encoder(&amp;connector, &amp;encoder);
+}
+
+static const struct file_operations vkms_fops = {
+    .owner = THIS_MODULE,
+    .open = drm_open,
+    .release = drm_release,
+    .unlocked_ioctl = drm_ioctl,
+    .poll = drm_poll,
+    .read = drm_read,
+
+    //DRM的GEM对象映射到用户空间，以便用于空间使用
+    .mmap = drm_gem_cma_mmap,
+};
+
+static struct drm_driver vkms_driver = {
+    .driver_features = DRIVER_MODESET,      //添加DRIVER_MODESET标志位，告诉DRM Core当前驱动支持modesetting操作
+
+    .fops = &amp;vkms_fops,     //增加fops操作接口
+
+    //增加fb相关操作
+    .dumb_create = drm_gem_cma_dumb_create,     //用于创建dumb buffer,也就是一个简单的、未映射的内存区域。
+                                                //通常用于测试或者临时存储
+    .gem_vm_ops = &amp;drm_gem_cma_vm_ops,          //用于实现GEM内存管理机制的各种功能
+                                                //用户空间程序请求显存时被调用，用于控制显存的访问权限、分配显存
+    .gem_free_object_unlocked = drm_gem_cma_free_object,
+
+    .name = &quot;vkms&quot;,
+    .desc = &quot;virtual kernel mode setting&quot;,
+    .date = &quot;2022-8-9&quot;,
+    .major = 1,
+    .minor = 0,
+};
+
+static int __init vkms_init(void)
+{
+    drm_dev_init(&amp;drm, &amp;vkms_driver, NULL);
+
+    vkms_modeset_init();
+
+    drm_register(&amp;drm, 0);
+
+    return 0;
+}
+
+module_init(vkms_init);
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="plane.html" class="btn btn-neutral float-left" title="4.14.5. plane代码分析" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../v4l2/index.html" class="btn btn-neutral float-right" title="4.15. linux V4L2视频框架" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

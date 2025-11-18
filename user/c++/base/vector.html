@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.2.1.2. vector容器 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="6.2.1.3. 继承与派生" href="inheritance_derivation.html" />
+    <link rel="prev" title="6.2.1.1. C++指针" href="pointer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">6.2. C++应用笔记</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">6.2.1. C++基础语法</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pointer.html">6.2.1.1. C++指针</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">6.2.1.2. vector容器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="inheritance_derivation.html">6.2.1.3. 继承与派生</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../design_pattern/index.html">6.2.2. C++设计模式</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../communication/index.html">6.4. 通信中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6.2. </span>C++应用笔记</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.2.1. </span>C++基础语法</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.2.1.2. </span>vector容器</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user/c++/base/vector.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="vector">
+<h1><span class="section-number">6.2.1.2. </span>vector容器<a class="headerlink" href="#vector" title="此标题的永久链接"></a></h1>
+<p><strong>序列式容器</strong></p>
+<p>1.常用的数据结构(容器)及分类:数组,链表,树,栈,队列.容器可以分为 <code class="docutils literal notranslate"><span class="pre">序列式</span></code> 和 <code class="docutils literal notranslate"><span class="pre">关联式</span></code> 两种</p>
+<p>2.序列式容器:序列式容器的元素排列的顺序与元素本身无关,其先后顺序由元素添加到容器中的顺序决定</p>
+<p>3.常用的序列式容器:C++的STL(标准模板库),包括vector  list  queue  dequeue(双向队列) stack priority_queue(优先队列)</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>vector和数组的区别:
+1.数组是静态的,长度不可改变,而vector可以动态扩展,增加长度
+2.数组通常存储在栈区或者bss段,而vector中的数据则存储在堆上</p>
+</div>
+<p>vector容器以类模板vector&lt;T&gt; (T表示存储元素的类型)的形式定义在&lt;vector&gt;头文件中</p>
+<section id="id1">
+<h2><span class="section-number">6.2.1.2.1. </span>创建vector容器<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;vector&gt;</span>
+
+<span class="o">//</span><span class="n">此时这是一个空的vector容器</span><span class="p">,</span><span class="n">容器中没有元素</span><span class="p">,</span><span class="n">所以也没有分配空间</span><span class="o">.</span><span class="n">当添加一个元素</span><span class="p">(</span><span class="n">如push_back函数</span><span class="p">),</span><span class="n">vector会自动分配内存</span>
+<span class="n">std</span><span class="p">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="nb">float</span><span class="o">&gt;</span> <span class="n">value</span><span class="p">;</span>
+<span class="o">//</span><span class="n">reserve函数可以增加容器的容量</span>
+<span class="n">value</span><span class="o">.</span><span class="n">reserve</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+<span class="o">//</span><span class="n">创建容器并赋初始值</span>
+<span class="n">std</span><span class="p">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">primes</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">};</span>
+<span class="o">//</span><span class="n">创建时指定个数</span><span class="p">,</span> <span class="p">()</span><span class="n">和</span><span class="p">{}</span> <span class="n">是有区别的</span><span class="p">,()</span><span class="n">指定数量</span><span class="p">,{}</span><span class="n">指定值</span>
+<span class="n">std</span><span class="p">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">values</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+<span class="o">//</span><span class="n">创建容器</span><span class="p">,</span><span class="n">并全部赋值为1</span><span class="mf">.5</span>
+<span class="n">std</span><span class="p">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="nb">float</span><span class="o">&gt;</span> <span class="n">values</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">6.2.1.2.2. </span>vector成员函数<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>函数成员</p></td>
+<td><p>函数功能</p></td>
+</tr>
+<tr class="row-even"><td><p>begine()</p></td>
+<td><p>返回指向容器中第一个元素的迭代器</p></td>
+</tr>
+<tr class="row-odd"><td><p>end()</p></td>
+<td><p>返回容器最后一个元素后面一个位置的迭代器</p></td>
+</tr>
+<tr class="row-even"><td><p>rbegin()</p></td>
+<td><p>返回指向最后一个元素的迭代器</p></td>
+</tr>
+<tr class="row-odd"><td><p>rend()</p></td>
+<td><p>返回指向第一个元素前面一个位置的迭代器</p></td>
+</tr>
+<tr class="row-even"><td><p>cbegin()</p></td>
+<td><p>相比begin()增加const属性,不能用于修改元素</p></td>
+</tr>
+<tr class="row-odd"><td><p>cend()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>crbegin()</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>crend()</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>size()</p></td>
+<td><p>返回实际元素个数</p></td>
+</tr>
+<tr class="row-odd"><td><p>max_size()</p></td>
+<td><p>返回元素个数的最大值,这通常是一个很大的值,如2^32-1</p></td>
+</tr>
+<tr class="row-even"><td><p>resize()</p></td>
+<td><p>改变实际元素的个数</p></td>
+</tr>
+<tr class="row-odd"><td><p>capacity()</p></td>
+<td><p>返回当前容量(内存)</p></td>
+</tr>
+<tr class="row-even"><td><p>empty()</p></td>
+<td><p>判断容器中是否有元素,若无元素,返回true</p></td>
+</tr>
+<tr class="row-odd"><td><p>reserve()</p></td>
+<td><p>增加容器的容量</p></td>
+</tr>
+<tr class="row-even"><td><p>shrink_to_fit()</p></td>
+<td><p>将内存减少到等于当前元素实际使用的大小</p></td>
+</tr>
+<tr class="row-odd"><td><p>operator[]</p></td>
+<td><p>重载了[]运算符,可以向访问数组中元素那样,通过下表访问vector中的值</p></td>
+</tr>
+<tr class="row-even"><td><p>at()</p></td>
+<td><p>使用经过边界检查的索引反问元素</p></td>
+</tr>
+<tr class="row-odd"><td><p>front()</p></td>
+<td><p>返回第一个元素的引用</p></td>
+</tr>
+<tr class="row-even"><td><p>back()</p></td>
+<td><p>返回最后一个元素的引用</p></td>
+</tr>
+<tr class="row-odd"><td><p>data()</p></td>
+<td><p>返回指向容器中第一个元素的指针</p></td>
+</tr>
+<tr class="row-even"><td><p>assign()</p></td>
+<td><p>用新元素替换原有内容</p></td>
+</tr>
+<tr class="row-odd"><td><p>push_back()</p></td>
+<td><p>在序列的尾部添加一个元素</p></td>
+</tr>
+<tr class="row-even"><td><p>pop_back()</p></td>
+<td><p>移除序列尾部的元素</p></td>
+</tr>
+<tr class="row-odd"><td><p>insert()</p></td>
+<td><p>在指定的位置插入一个或多个元素</p></td>
+</tr>
+<tr class="row-even"><td><p>erase()</p></td>
+<td><p>移除一个或一段元素</p></td>
+</tr>
+<tr class="row-odd"><td><p>clear()</p></td>
+<td><p>移除所有元素,容器大小变为0</p></td>
+</tr>
+<tr class="row-even"><td><p>swap()</p></td>
+<td><p>交换两个容器的所有元素</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="pointer.html" class="btn btn-neutral float-left" title="6.2.1.1. C++指针" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="inheritance_derivation.html" class="btn btn-neutral float-right" title="6.2.1.3. 继承与派生" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

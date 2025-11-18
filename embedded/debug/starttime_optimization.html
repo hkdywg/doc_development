@@ -1,0 +1,209 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.2.1. 嵌入式linux启动时间优化 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.3. gpt分区表" href="../gpt/index.html" />
+    <link rel="prev" title="8.2. 嵌入式linux 调试总结" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.2. 嵌入式linux 调试总结</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.2.1. 嵌入式linux启动时间优化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">8.2.1.1. 启动时间的测量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">8.2.1.2. 启动时间优化技巧</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">8.8. 视频相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.2. </span>嵌入式linux 调试总结</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.2.1. </span>嵌入式linux启动时间优化</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/debug/starttime_optimization.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux">
+<h1><span class="section-number">8.2.1. </span>嵌入式linux启动时间优化<a class="headerlink" href="#linux" title="此标题的永久链接"></a></h1>
+<p>在linux系统中执行 <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">boot</span></code> 可以看到有以下几个部分</p>
+<ol class="arabic simple">
+<li><p>hardware</p></li>
+<li><p>operating system (OS) loader</p></li>
+<li><p>kernel</p></li>
+<li><p>root user-space process (init and inittab)</p></li>
+<li><p>boot scripts</p></li>
+</ol>
+<p>对系统启动时间优化，即对这些步骤进行优化</p>
+<section id="id1">
+<h2><span class="section-number">8.2.1.1. </span>启动时间的测量<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>linux中可以有多种方式获取系统的启动时间</p>
+<ul class="simple">
+<li><p>printk times : 用于显示每个printk的执行时间</p></li>
+<li><p>内核函数跟踪(Ftrace) : 用于报告内核中每个函数的调用时间</p></li>
+<li><p>linux跟踪工具箱(LTT) ： 用于报告确切的内核和进程事件的时间数据</p></li>
+<li><p>perf : 通用的linux分析器(profile)</p></li>
+<li><p>Bootchart : 用于linux 启动过程的性能分析和数据显示，收集启动过程中的用户空间部分的资源使用情况和进程信息，然后渲染成PNG,SVG或者EPS格式的图表</p></li>
+<li><p>Bootprobe : 一组用于分析系统启动过程的system tap脚本</p></li>
+<li><p>cat /proc/uptime : 统计系统已经运行的时间</p></li>
+<li><p>grabserial : 用于记录控制台输出并打上时间戳</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2><span class="section-number">8.2.1.2. </span>启动时间优化技巧<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<section id="bootloader">
+<h3><span class="section-number">8.2.1.2.1. </span>bootloader加速<a class="headerlink" href="#bootloader" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>就地执行(XIP)内核： 允许内核在ROM或者FLASH上就地执行</p></li>
+<li><p>在启动时通过DMA拷贝内核镜像 : 使用DMA从闪存中拷贝内核到内存</p></li>
+<li><p>采用未压缩的内核</p></li>
+<li><p>快速内核解压</p></li>
+<li><p>关闭不需要的功能 ：比如关闭引导程序输出 ，关闭延迟启动, 删除网络加载</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3><span class="section-number">8.2.1.2.2. </span>内核加速<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>关闭控制台 : 避免启动过程中的控制台输出开销</p></li>
+<li><p>关闭调试接口和printk : 避免调试接口和printk带来的开销，缺点是丢失大量调试信息</p></li>
+<li><p>不同步RTC : 避免在启动时延迟用RTC时钟边沿同步系统时间</p></li>
+<li><p>异步函数调用 : 允许probe函数或者其他函数并行处理</p></li>
+<li><p>重新排序驱动初始化过程</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3><span class="section-number">8.2.1.2.3. </span>文件系统方面的问题<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>对于同样的数据集，不同的文件系统拥有不同的初始化(即挂载，mounting)时间，这取决于元数据(meta-data)是否必须从存储器读到内存并且在挂载过程中使用哪种算法</p>
+<p>如果挂载一个文件系统耗费太久，那么可以考虑把一个文件系统拆分成几个部分，一部分带有在启动时或者启动后立即需要的信息，另外一些部分则可以延迟挂载</p>
+</section>
+<section id="id5">
+<h3><span class="section-number">8.2.1.2.4. </span>用户空间和应用程序加速<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>优化RC脚本 ：减少执行RC脚本的开销</p></li>
+<li><p>并行执行RC脚本</p></li>
+<li><p>预链接 ：避免在首次加载程序时进行链接</p></li>
+<li><p>静态链接应用程序 : 这样可以避免运行时链接，如果应用程序少的话这种方式是可行的</p></li>
+<li><p>应用程序优化</p></li>
+<li><p>把驱动模块编译到内核镜像中</p></li>
+<li><p>避免使用udev : 因为它花费一些时间来构建/dev目录，在嵌入式系统中通常会事先知道需要哪些设备，所以我们可以采取静态预先创建设备节点</p></li>
+<li><p>如果有设备连接网络，最好使用静态IP，通过DHCP获取地址会增加时间</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="8.2. 嵌入式linux 调试总结" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../gpt/index.html" class="btn btn-neutral float-right" title="8.3. gpt分区表" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

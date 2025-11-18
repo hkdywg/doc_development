@@ -1,183 +1,116 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN" >
+<html class="writer-html5" lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>1.1. source analysis &mdash; ywg_dev_doc 0.1 文档</title>
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2.2. source analysis &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
-        <script src="../../_static/translations.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="2. kernel note" href="../../kernel/index.html" />
-    <link rel="prev" title="1. u-boot dev note" href="../index.html" /> 
+    <link rel="next" title="2.3. Legacy-uImage &amp; FIT-uImage" href="../legacy-fit_img.html" />
+    <link rel="prev" title="2.1. uboot编译流程分析" href="../compile.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
           
-
-          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">1. u-boot dev note</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">1.1. source analysis</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">1.1.1. 目录结构</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">1.1.2. 重要文件</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">1.1.3. 生成文件</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#u-boot">1.1.4. u-boot启动流程</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#spl">1.1.4.1. SPL启动流程分析</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id4">1.1.4.2. u-boot 启动流程分析</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id5">1.1.4.3. 移植u-boot</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id6">1.1.4.4. u-boot命令总结</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">2. u-boot dev note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../compile.html">2.1. uboot编译流程分析</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2.2. source analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">2.2.1. 目录结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2.2.2. 重要文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2.2.3. 生成文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#u-boot">2.2.4. u-boot启动流程</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#spl">2.2.4.1. SPL启动流程分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">2.2.4.2. u-boot 启动流程分析</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">2.2.4.3. 移植u-boot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">2.2.4.4. u-boot命令总结</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../legacy-fit_img.html">2.3. Legacy-uImage &amp; FIT-uImage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../parsing_uimage.html">2.4. uboot解析uImage的kernel信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bootm.html">2.5. bootm原理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transfer_param.html">2.6. uboot向kernel的传参机制–bootm与tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../uboot_memory.html">2.7. uboot-kernel地址空间</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../multi_core_startup.html">2.8. 多核异构平台系统启动分析</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">2. kernel note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">3. linux driver modules note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">4. file system note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">5. application development node</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../issues/index.html">8. Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">ywg_dev_doc</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../index.html"><span class="section-number">1. </span>u-boot dev note</a> &raquo;</li>
-        
-      <li><span class="section-number">1.1. </span>source analysis</li>
-    
-    
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">2. </span>u-boot dev note</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2.2. </span>source analysis</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../../_sources/u-boot/source_analysis/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
+            <a href="../../_sources/u-boot/source_analysis/index.rst.txt" rel="nofollow"> 查看页面源码</a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="source-analysis">
-<h1><span class="section-number">1.1. </span>source analysis<a class="headerlink" href="#source-analysis" title="永久链接至标题">¶</a></h1>
-<div class="section" id="id1">
-<h2><span class="section-number">1.1.1. </span>目录结构<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+             
+  <section id="source-analysis">
+<h1><span class="section-number">2.2. </span>source analysis<a class="headerlink" href="#source-analysis" title="此标题的永久链接"></a></h1>
+<p><a class="reference download internal" download="" href="../../_downloads/c2682f34a23b64cc602b859df3450dde/uboot-world.pdf"><code class="xref download docutils literal notranslate"><span class="pre">res/uboot-world.pdf</span></code></a></p>
+<section id="id1">
+<h2><span class="section-number">2.2.1. </span>目录结构<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>board:      开发板相关目录，平台依赖
 arch:       CPU相关目录，平台依赖
 include:    头文件目录，开发板的配置文件也在其中，configs存放开发板配置文件
@@ -197,9 +130,9 @@ script:     脚本
 <li><p>通用函数或者驱动程序</p></li>
 <li><p>u-boot应用程序、工具或者文档</p></li>
 </ol>
-</div>
-<div class="section" id="id2">
-<h2><span class="section-number">1.1.2. </span>重要文件<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="id2">
+<h2><span class="section-number">2.2.2. </span>重要文件<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <ul class="simple">
 <li><p>include/configs/holo_ark_v3.h</p></li>
 </ul>
@@ -233,9 +166,9 @@ script:     脚本
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_start</span><span class="o">-----&gt;</span><span class="n">start_armboot</span><span class="o">--------&gt;</span><span class="n">main_loop</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="id3">
-<h2><span class="section-number">1.1.3. </span>生成文件<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="id3">
+<h2><span class="section-number">2.2.3. </span>生成文件<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>System.map:     uboot映像符号表，它包含了uboot全局变量和函数的地址信息。可供用户查看或由外部程序调试使用
 uboot.bin:      uboot映像原始二进制文件。
 uboot：         uboot映像elf格式文件。
@@ -244,9 +177,9 @@ uboot.srec:     uboot映像的s_record格式。
 tool/mkimge可转换为其他格式印象
 </pre></div>
 </div>
-</div>
-<div class="section" id="u-boot">
-<h2><span class="section-number">1.1.4. </span>u-boot启动流程<a class="headerlink" href="#u-boot" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="u-boot">
+<h2><span class="section-number">2.2.4. </span>u-boot启动流程<a class="headerlink" href="#u-boot" title="此标题的永久链接"></a></h2>
 <p>嵌入式系统启动的基本流程是这样的：</p>
 <p>RoomBoot—&gt;SPL—&gt;u-boot—&gt;linux kernel—&gt;file system——&gt;start application</p>
 <ol class="arabic simple">
@@ -259,8 +192,8 @@ tool/mkimge可转换为其他格式印象
 <p>位置无关码究其原因，主要是编译生成的汇编代码都是相对地址。</p>
 <p>启动流程图如下，不同平台之间略有差别</p>
 <img alt="../../_images/uboot.jpg" src="../../_images/uboot.jpg" />
-<div class="section" id="spl">
-<h3><span class="section-number">1.1.4.1. </span>SPL启动流程分析<a class="headerlink" href="#spl" title="永久链接至标题">¶</a></h3>
+<section id="spl">
+<h3><span class="section-number">2.2.4.1. </span>SPL启动流程分析<a class="headerlink" href="#spl" title="此标题的永久链接"></a></h3>
 <p>spl的入口代码是在arch/arm/lib/vector.S中的 <code class="docutils literal notranslate"><span class="pre">_start</span></code> 函数</p>
 <ul class="simple">
 <li><p>_start</p></li>
@@ -292,7 +225,10 @@ tool/mkimge可转换为其他格式印象
 <li><p>_start中直接执行reset</p></li>
 <li><p>ldr pc, _xx定义的是中断的处理方式，类似中断向量表</p></li>
 </ol>
-<p>注：spl阶段是不允许中断的，u-boot可以</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>spl阶段是不允许中断的，u-boot可以</p>
+</div>
 <ul class="simple">
 <li><p>reset</p></li>
 </ul>
@@ -718,14 +654,14 @@ ENDPROC(_main)
 <li><p>spl_init 包括fdt log等前期初始化工作</p></li>
 <li><p>timer_init  定时器初始化</p></li>
 <li><p>spl_board_init 根据配置选项完成相应的spl阶段外设初始化，包括console i2c misc watchdog</p></li>
+<li><p>boot_from_devices 设置从哪个外部设备启动(NAND  SDCARD NOR)</p></li>
+<li><p>将image从外部设备load到ram中</p></li>
+<li><p>判断image类型，如果是uboot则break，去运行u-boot。如果是linux则启动linux(说明：spl可以直接启动linux)</p></li>
 </ol>
-<p>5)  boot_from_devices 设置从哪个外部设备启动(NAND  SDCARD NOR)
-6） 将image从外部设备load到ram中
-7)  判断image类型，如果是uboot则break，去运行u-boot。如果是linux则启动linux(说明：spl可以直接启动linux)</p>
 <p>至此，SPL结束它的生命，控制权交给uboot或者linux</p>
-</div>
-<div class="section" id="id4">
-<h3><span class="section-number">1.1.4.2. </span>u-boot 启动流程分析<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+</section>
+<section id="id4">
+<h3><span class="section-number">2.2.4.2. </span>u-boot 启动流程分析<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
 <p>从编译系统可知，u-boo.bin的入口代码是arch/arm/lib/vectors.S中的_start函数</p>
 <ul class="simple">
 <li><p>_start</p></li>
@@ -1116,9 +1052,9 @@ jump到这个地址运行。</p>
 从环境变量bootcmd中获取对应的命令然后执行</p></li>
 </ol>
 <p>至此u-boot结束它的生命周期，控制权交由kernel</p>
-</div>
-<div class="section" id="id5">
-<h3><span class="section-number">1.1.4.3. </span>移植u-boot<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+</section>
+<section id="id5">
+<h3><span class="section-number">2.2.4.3. </span>移植u-boot<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
 <ol class="arabic simple">
 <li><p>安装依赖库</p></li>
 </ol>
@@ -1150,7 +1086,31 @@ jump到这个地址运行。</p>
 <ol class="upperalpha simple" start="4">
 <li><p>修改目录下对应Kconfig</p></li>
 </ol>
+<p>例如:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">TARGET_X3</span>
+
+<span class="n">config</span> <span class="n">SYS_BOARD</span>        <span class="c1">##SYS_BOARD对应board目录下的板子类型</span>
+    <span class="n">default</span> <span class="s2">&quot;x3&quot;</span>
+
+<span class="n">config</span> <span class="n">SYS_VENDOR</span>       <span class="c1">##SYS_VENDOR代表board下的文件夹,例如holomatic，则在编译的时候会选择board/holomatic文件夹</span>
+    <span class="n">default</span> <span class="s2">&quot;holomatic&quot;</span>
+
+<span class="n">config</span> <span class="n">SYS_SOC</span>          <span class="c1">##SYS_SOC代表SOC类型</span>
+    <span class="n">default</span> <span class="s2">&quot;x3&quot;</span>
+
+<span class="n">config</span> <span class="n">SYS_CONFIG_NAME</span>  <span class="c1">##SYS_CONFIG_NAME代表include/configs目录下的头文件</span>
+    <span class="n">default</span> <span class="s2">&quot;holo_j3&quot;</span>
+
+<span class="n">endif</span>
+</pre></div>
+</div>
 <p>修改Kconfig可改变图形界面选项，以及对应的配置信息</p>
+<ol class="upperalpha simple" start="5">
+<li><p>修改arch/arm/Kconfig</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="s2">&quot;board/holomatic/x3/Kconfig&quot;</span>
+</pre></div>
+</div>
 <ol class="arabic simple" start="3">
 <li><p>移植配置文件</p></li>
 </ol>
@@ -1187,9 +1147,9 @@ jump到这个地址运行。</p>
 <span class="n">CONFIG_BOOTCOMMAND</span> <span class="n">在include</span><span class="o">/</span><span class="n">environment</span><span class="o">/</span><span class="n">ti</span><span class="o">/</span><span class="n">boot</span><span class="o">.</span><span class="n">h中定义</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="id6">
-<h3><span class="section-number">1.1.4.4. </span>u-boot命令总结<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+</section>
+<section id="id6">
+<h3><span class="section-number">2.2.4.4. </span>u-boot命令总结<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h3>
 <ul class="simple">
 <li><p>环境变量相关</p></li>
 </ul>
@@ -1212,17 +1172,17 @@ jump到这个地址运行。</p>
 <ul class="simple">
 <li><p>网络相关</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setenv</span> <span class="n">ipaddr</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.2</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setenv</span> <span class="n">ipaddr</span> <span class="mf">192.168.1.2</span>
 <span class="n">setenv</span> <span class="n">ethaddr</span> <span class="mi">20</span><span class="p">:</span><span class="mi">21</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">17</span><span class="p">:</span><span class="mi">33</span>
-<span class="n">setenv</span> <span class="n">gatewayip</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.1</span>
-<span class="n">setenv</span> <span class="n">netmask</span> <span class="mf">255.255</span><span class="o">.</span><span class="mf">255.0</span>
-<span class="n">setenv</span> <span class="n">serverip</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.11</span>
+<span class="n">setenv</span> <span class="n">gatewayip</span> <span class="mf">192.168.1.1</span>
+<span class="n">setenv</span> <span class="n">netmask</span> <span class="mf">255.255.255.0</span>
+<span class="n">setenv</span> <span class="n">serverip</span> <span class="mf">192.168.1.11</span>
 <span class="n">saveenv</span>
 
-<span class="n">ping</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.11</span>
+<span class="n">ping</span> <span class="mf">192.168.1.11</span>
 <span class="n">dhcp</span>
 <span class="n">nfs</span> <span class="p">[</span><span class="n">loadAddress</span><span class="p">]</span> <span class="p">[[</span><span class="n">hostIpaddr</span><span class="p">:]</span><span class="n">bootfilename</span><span class="p">]</span>
-<span class="n">nfs</span> <span class="mi">80800000</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.11</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">zImage</span>
+<span class="n">nfs</span> <span class="mi">80800000</span> <span class="mf">192.168.1.11</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">zImage</span>
 <span class="n">tftpboot</span> <span class="p">[</span><span class="n">loadAddress</span><span class="p">]</span> <span class="p">[[</span><span class="n">hostIpaddr</span><span class="p">:]</span><span class="n">bootfilename</span><span class="p">]</span>
 <span class="n">ftftp</span> <span class="mi">80800000</span> <span class="n">zImage</span>
 </pre></div>
@@ -1238,64 +1198,39 @@ jump到这个地址运行。</p>
 </pre></div>
 </div>
 <p>更详细的命令可以通过 <code class="docutils literal notranslate"><span class="pre">help</span></code> 查看</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../../kernel/index.html" class="btn btn-neutral float-right" title="2. kernel note" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../index.html" class="btn btn-neutral float-left" title="1. u-boot dev note" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../compile.html" class="btn btn-neutral float-left" title="2.1. uboot编译流程分析" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../legacy-fit_img.html" class="btn btn-neutral float-right" title="2.3. Legacy-uImage &amp; FIT-uImage" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; 版权所有 2020, yinwg
-
-    </p>
+    <p>&#169; 版权所有 2019, yinwg。</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.6.3. gcc编译选项总结 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="7.7. Cmake学习笔记" href="../cmake/index.html" />
+    <link rel="prev" title="7.6.2. Makefile函数总结" href="function.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.6. Makfile应用笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rule.html">7.6.1. Makefile规则介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="function.html">7.6.2. Makefile函数总结</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.6.3. gcc编译选项总结</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">7.6.3.1. 介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">7.6.3.2. 常用编译选项</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#toochain">7.6.3.3. toochain命名规则</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.9. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.6. </span>Makfile应用笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.6.3. </span>gcc编译选项总结</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/misc/makefile/gcc_compile.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gcc">
+<h1><span class="section-number">7.6.3. </span>gcc编译选项总结<a class="headerlink" href="#gcc" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">7.6.3.1. </span>介绍<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>gcc和g++分别是gnu的c以及c++编译器，gcc/g++在执行编译工作的时候，总共需要4步</p>
+<ol class="arabic simple">
+<li><p>预处理，生成.i的文件(由预处理器cpp完成)</p></li>
+<li><p>将预处理后的文件转换成汇编文件，生成.s文件(由编译器egcs完成)</p></li>
+<li><p>由汇编变为目标代码(机器代码)生成.o文件(由汇编器as完成)</p></li>
+<li><p>连接目标代码，生成可执行程序(由链接器ld完成)</p></li>
+</ol>
+<p>详细可参考gcc官方文档 <a class="reference external" href="https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html">https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html</a></p>
+</section>
+<section id="id2">
+<h2><span class="section-number">7.6.3.2. </span>常用编译选项<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>-c 只编译生成目标文件
+-E 只运行C预编译器
+-g 生成调试信息
+-IDIRECTORY 指定额外的头文件搜索路径DIRECTORY
+-LDIRECTORY 指定额外的函数库搜索路径
+-lLIBRARY 连接时搜索指定的函数库LIBRARY
+-o 生成指定的输出文件
+-O0 不进行优化处理
+-O 或 -O1 优化生成代码
+-O2 进一步优化
+-O3 比-O2更进一步优化，包括inline函数
+-shared 生成共享目标文件，通常用在建立共享库时
+-static 禁止使用共享连接
+-w 不生成任何警告信息
+-Wall 生成所有警告信息
+</pre></div>
+</div>
+<section id="id3">
+<h3><span class="section-number">7.6.3.2.1. </span>参数详解<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>-c</p></li>
+</ul>
+<p>只激活预处理，编译和汇编，生成obj文件</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gcc</span> <span class="o">-</span><span class="n">c</span> <span class="n">hello</span><span class="o">.</span><span class="n">c</span>
+<span class="n">只会生成hello</span><span class="o">.</span><span class="n">o文件</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>-S</p></li>
+</ul>
+<p>只激活预处理和编译，生成汇编代码.s</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gcc</span> <span class="o">-</span><span class="n">S</span> <span class="n">hello</span><span class="o">.</span><span class="n">c</span>
+<span class="n">生成hello</span><span class="o">.</span><span class="n">s文件</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>-E</p></li>
+</ul>
+<p>只激活预处理，这个不生成文件，你需要把它重定向到一个输出文件里面</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gcc</span> <span class="o">-</span><span class="n">E</span> <span class="n">hello</span><span class="o">.</span><span class="n">c</span> <span class="o">&gt;</span> <span class="n">log</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>-o</p></li>
+</ul>
+<p>指定目标文件名，缺省情况下gcc编译出来的文件是a.out</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gcc</span> <span class="o">-</span><span class="n">o</span> <span class="n">hello</span> <span class="n">hello</span><span class="o">.</span><span class="n">c</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>-include file</p></li>
+</ul>
+<p>包含某个文件，功能类似于在文件中使用#include &lt;filename&gt;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gcc</span> <span class="n">hello</span><span class="o">.</span><span class="n">c</span> <span class="o">-</span><span class="n">include</span> <span class="n">src</span><span class="o">/</span><span class="n">hello</span><span class="o">.</span><span class="n">h</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>-Dmacro</p></li>
+</ul>
+<p>相当于C语言中的 #define macro</p>
+<ul class="simple">
+<li><p>-Dmacro=defn</p></li>
+</ul>
+<p>相当于C语言中的#define macro defn</p>
+<ul class="simple">
+<li><p>-Umacro</p></li>
+</ul>
+<p>相当于C语言中的#undef macro</p>
+<ul class="simple">
+<li><p>-Idir</p></li>
+</ul>
+<p>在你用#include “filename”的时候，gcc会首先在当前目录查找你指定的头文件，如果没有找到，则会去缺省的头文件路径找，如果使用-I指定了目录，
+则会首先在指定的路径查找，如果找不到再去按顺序查找</p>
+<ul class="simple">
+<li><p>-Ldir</p></li>
+</ul>
+<p>指定编译的时候搜索库的路径</p>
+<ul class="simple">
+<li><p>-static</p></li>
+</ul>
+<p>禁止使用动态库，编译出来的东西比较大，但不要需要动态链接库就可以运行</p>
+<ul class="simple">
+<li><p>-share</p></li>
+</ul>
+<p>使用动态库，生成的文件比较小，一般由其他应用程序进行连接</p>
+<ul class="simple">
+<li><p>-fPIC</p></li>
+</ul>
+<p>产生位置无关的代码，当产生共享库的时候，应该创建位置无关的代码，这会让共享库使用任意的地址而不是固定的地址</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gccc</span> <span class="o">-</span><span class="n">shared</span> <span class="o">-</span><span class="n">fPIC</span> <span class="o">-</span><span class="n">o</span> <span class="n">hello</span><span class="o">.</span><span class="n">so</span> <span class="n">hello</span><span class="o">.</span><span class="n">c</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>-v</p></li>
+</ul>
+<p>参数-v提供详细信息，打印gcc编译一个文件的时候的所有步骤</p>
+<ul class="simple">
+<li><p>-Werror</p></li>
+</ul>
+<p>使用这个参数可以将所有的警告信息转换为错误</p>
+<ul class="simple">
+<li><p>-std</p></li>
+</ul>
+<p>指定支持的c/c++标准</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">7.6.3.2.2. </span>常见问题<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>多个库文件被链接时顺序问题导致编译失败</p></li>
+</ul>
+<p>解决办法:　增加以下编译选项</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">Wl</span><span class="p">,</span><span class="o">--</span><span class="n">start</span><span class="o">-</span><span class="n">group</span>
+<span class="o">...</span>  <span class="c1">##库文件</span>
+<span class="o">-</span><span class="n">Wl</span><span class="p">,</span><span class="o">--</span><span class="n">end</span><span class="o">-</span><span class="n">group</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="toochain">
+<h2><span class="section-number">7.6.3.3. </span>toochain命名规则<a class="headerlink" href="#toochain" title="此标题的永久链接"></a></h2>
+<p>命名规则为: arch[-vendor][-os][-(gnu)eabi]</p>
+<ul class="simple">
+<li><p>arch: 体系架构，如ARM, MIPS</p></li>
+<li><p>vendor: 工具链提供商(如果没有厂商名称常用的是none和unknown)</p></li>
+<li><p>os: 目标操作系统，如linux</p></li>
+<li><p>eabi: 嵌入式应用二进制接口</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="function.html" class="btn btn-neutral float-left" title="7.6.2. Makefile函数总结" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../cmake/index.html" class="btn btn-neutral float-right" title="7.7. Cmake学习笔记" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

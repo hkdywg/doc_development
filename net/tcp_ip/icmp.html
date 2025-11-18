@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>9.2.5. ICMP internet控制报文协议 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="9.2.6. IP选路" href="routing.html" />
+    <link rel="prev" title="9.2.4. ARP地址解析协议" href="arp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">9. net</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../overview/index.html">9.1. linux 网络概览</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">9.2. TCP/IP详解</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">9.2.1. 概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datalink_layer.html">9.2.2. 数据链路层</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ip_protocol.html">9.2.3. IP:网际协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="arp.html">9.2.4. ARP地址解析协议</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">9.2.5. ICMP internet控制报文协议</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#icmp">9.2.5.1. ICMP报文类型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">9.2.5.2. ICMP地址掩码请求与应答</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">9.2.5.3. ICMP时间戳请求与应答</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ping">9.2.5.4. ping</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="routing.html">9.2.6. IP选路</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tcp.html">9.2.7. TCP传输控制协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="udp.html">9.2.8. UDP用户数据报协议</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../AVB/index.html">9.3. AVB笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tc8/index.html">9.4. TC-8测试</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">9. </span>net</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">9.2. </span>TCP/IP详解</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">9.2.5. </span>ICMP internet控制报文协议</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/net/tcp_ip/icmp.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="icmp-internet">
+<h1><span class="section-number">9.2.5. </span>ICMP internet控制报文协议<a class="headerlink" href="#icmp-internet" title="此标题的永久链接"></a></h1>
+<p>ICMP经常被认为时IP的一个组成部分，它传递差错报文以及其他需要注意的信息。ICMP报文通常被IP层或更高层协议(TCP或UDP)使用。一些ICMP报文把差错报文返回给用户进程</p>
+<p>ICMP报文是在IP数据报内部被传输的</p>
+<img alt="../../_images/icmp_data.png" src="../../_images/icmp_data.png" />
+<p>ICMP报文结构如下</p>
+<img alt="../../_images/icmp_structure.png" src="../../_images/icmp_structure.png" />
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>字段</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>8位类型</p></td>
+<td><p>类型字段有15个不同的值，以描述特性类型的ICMP报文</p></td>
+</tr>
+<tr class="row-odd"><td><p>8位代码</p></td>
+<td><p>某些ICMP报文还使用代码字段来进一步描述不同的条件</p></td>
+</tr>
+<tr class="row-even"><td><p>16位校验和</p></td>
+<td><p>检验和字段覆盖整个ICMP报文</p></td>
+</tr>
+</tbody>
+</table>
+<section id="icmp">
+<h2><span class="section-number">9.2.5.1. </span>ICMP报文类型<a class="headerlink" href="#icmp" title="此标题的永久链接"></a></h2>
+<p>不同类型的ICMP报文由报文中的类型字段和代码字段共同决定</p>
+<img alt="../../_images/icmp_type.png" src="../../_images/icmp_type.png" />
+<p>以下情况不会导致产生ICMP差错报文</p>
+<ol class="arabic simple">
+<li><p>ICMP差错报文(但是ICMP查询报文可能会产生ICMP差错报文)</p></li>
+<li><p>目的地址是广播地址或者多播地址的IP数据报</p></li>
+<li><p>作为链路层广播的数据报</p></li>
+<li><p>不是IP分片的第一片</p></li>
+<li><p>源地址不是单个主机的数据报，这就是说源地址不能为0地址、环回地址、广播地址、多播地址</p></li>
+</ol>
+<p>这些规则是为了防止过去允许ICMP差错报文对广播分组响应所带来的广播风暴。</p>
+</section>
+<section id="id1">
+<h2><span class="section-number">9.2.5.2. </span>ICMP地址掩码请求与应答<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>ICMP地址掩码请求用于无盘系统在引导过程中获取自己的子网掩码，系统广播它的ICMP请求报文。无盘系统获取子网掩码的另一个方法是BOOTP协议</p>
+<img alt="../../_images/icmp_mask.png" src="../../_images/icmp_mask.png" />
+<p>ICMP报文中的标识符和序列号字段由发送端任意选择设定，这些值在应答中将被返回。这样发送端就可以把应答与请求进行匹配。</p>
+</section>
+<section id="id2">
+<h2><span class="section-number">9.2.5.3. </span>ICMP时间戳请求与应答<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>ICMP时间戳请求允许系统向另一个系统查询当前时间，返回值为协调的统一时间（Coordinated Universal Time,UTC）（早期的参考手册认为UTC是格林尼治时间）。这种ICMP报文的好处是它提供了
+毫秒级的分辨率，而利用其他方法从别的主机获取的时间只能提供秒级的分辨率。</p>
+<p>ICMP时间戳请求和应答报文如下</p>
+<img alt="../../_images/icmp_time.png" src="../../_images/icmp_time.png" />
+<p>请求端填写发起时间戳，然后发送报文。应答系统收到请求报文时填写接收时间戳，在发送应答时填写发送时间戳。但是，实际上，大多数的实现把后面两个字段都设成相同的值（提供三个字段的原因是可以让发送方分别计算发送请求的时间和发送应答的时间）。</p>
+</section>
+<section id="ping">
+<h2><span class="section-number">9.2.5.4. </span>ping<a class="headerlink" href="#ping" title="此标题的永久链接"></a></h2>
+<p>unix系统在实现ping程序时把ICMP报文中的标识字段设置成发送进程的ID号，这样即使在同一台主机上同时运行了多个ping程序，也可以识别出返回的信息。</p>
+<p>序列号从0开始，每发送一次新的回显请求就加1. ping程序打印返回的每个分组的序列号，允许我们查看是否由分组丢失、失序、或重复. ping程序通过在ICMP报文中存放发送请求的时间来计算往返时间。
+通常第一个往返时间值比较大，这是由于目的端的硬件地址不在ARP高速缓存中的缘故。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="arp.html" class="btn btn-neutral float-left" title="9.2.4. ARP地址解析协议" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="routing.html" class="btn btn-neutral float-right" title="9.2.6. IP选路" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

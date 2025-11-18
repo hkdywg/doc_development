@@ -1,263 +1,601 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN" >
+<html class="writer-html5" lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>7. misc &mdash; ywg_dev_doc 0.1 文档</title>
-  
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
-        <script src="../_static/translations.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../_static/doctools.js?v=888ff710"></script>
+      <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../_static/translations.js?v=beaddf03"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="7.1. git 使用笔记" href="git/index.html" />
-    <link rel="prev" title="6.1. hardware design" href="../work_space/hw/index.html" /> 
+    <link rel="next" title="7.1. linux参考网站" href="reference/index.html" />
+    <link rel="prev" title="6.12. 软件包汇总" href="../user/soft_package_list/index.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
           
-
-          
+          <a href="../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../u-boot/index.html">1. u-boot dev note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../kernel/index.html">2. kernel note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">3. linux driver modules note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../fs/index.html">4. file system note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../user/index.html">5. application development node</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/index.html">6. application development node</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">7. misc</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="git/index.html">7.1. git 使用笔记</a></li>
-<li class="toctree-l2"><a class="reference internal" href="shell/index.html">7.2. shell 使用笔记</a></li>
-<li class="toctree-l2"><a class="reference internal" href="program_debug/index.html">7.3. 调试手段</a></li>
-<li class="toctree-l2"><a class="reference internal" href="performance_optimzation/index.html">7.4. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datastruct_algo/index.html">7.9. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linux_commond/index.html">7.11. linux命令汇总</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../issues/index.html">8. Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arm64/index.html">12. arm64 arch</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">ywg_dev_doc</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-      <li><span class="section-number">7. </span>misc</li>
-    
-    
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7. </span>misc</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../_sources/misc/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
+            <a href="../_sources/misc/index.rst.txt" rel="nofollow"> 查看页面源码</a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="misc">
-<h1><span class="section-number">7. </span>misc<a class="headerlink" href="#misc" title="永久链接至标题">¶</a></h1>
+             
+  <section id="misc">
+<h1><span class="section-number">7. </span>misc<a class="headerlink" href="#misc" title="此标题的永久链接"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="git/index.html">7.1. git 使用笔记</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="git/index.html#id1">7.1.1. git常用命令</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="git/index.html#id2">7.1.1.1. 远程仓库相关命令</a></li>
-<li class="toctree-l3"><a class="reference internal" href="git/index.html#id3">7.1.1.2. 分支相关操作</a></li>
-<li class="toctree-l3"><a class="reference internal" href="git/index.html#tag">7.1.1.3. tag相关操作</a></li>
-<li class="toctree-l3"><a class="reference internal" href="git/index.html#id4">7.1.1.4. 子模块相关操作命令</a></li>
-<li class="toctree-l3"><a class="reference internal" href="git/index.html#id5">7.1.1.5. 忽略一些文件、文件夹不提交</a></li>
-<li class="toctree-l3"><a class="reference internal" href="git/index.html#id6">7.1.1.6. 常用操作</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">7.1. linux参考网站</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/index.html#os">7.1.1. OS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/index.html#id1">7.1.2. 实用库/框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/index.html#gui">7.1.3. GUI相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/index.html#id2">7.1.4. 物联网、智能家居</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/index.html#id3">7.1.5. 实例/项目/软硬结合</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/index.html#id4">7.1.6. 学习资料/资源/工具/网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/index.html#id5">7.1.7. 芯片原厂代码仓库</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="git/index.html">7.2. git 使用笔记</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="git/git_normal.html">7.2.1. git 操作</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="git/git_normal.html#id1">7.2.1.1. git常用命令</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="git/git_normal.html#id2">7.2.1.1.1. 远程仓库相关命令</a></li>
+<li class="toctree-l4"><a class="reference internal" href="git/git_normal.html#id3">7.2.1.1.2. 分支相关操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="git/git_normal.html#tag">7.2.1.1.3. tag相关操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="git/git_normal.html#id4">7.2.1.1.4. 子模块相关操作命令</a></li>
+<li class="toctree-l4"><a class="reference internal" href="git/git_normal.html#id5">7.2.1.1.5. 忽略一些文件、文件夹不提交</a></li>
+<li class="toctree-l4"><a class="reference internal" href="git/git_normal.html#id6">7.2.1.1.6. 常用操作</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="shell/index.html">7.2. shell 使用笔记</a></li>
-<li class="toctree-l1"><a class="reference internal" href="program_debug/index.html">7.3. 调试手段</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="program_debug/index.html#id2">7.3.1. 编译阶段</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="program_debug/index.html#nm">7.3.1.1. nm</a></li>
-<li class="toctree-l3"><a class="reference internal" href="program_debug/index.html#strings">7.3.1.2. strings</a></li>
-<li class="toctree-l3"><a class="reference internal" href="program_debug/index.html#strip">7.3.1.3. strip</a></li>
-<li class="toctree-l3"><a class="reference internal" href="program_debug/index.html#readelf">7.3.1.4. readelf</a></li>
-<li class="toctree-l3"><a class="reference internal" href="program_debug/index.html#objdump">7.3.1.5. objdump</a></li>
+<li class="toctree-l2"><a class="reference internal" href="git/branch_management.html">7.2.2. 分支/标签管理规范</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="git/branch_management.html#id2">7.2.2.1. 分支管理规范</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="git/branch_management.html#id3">7.2.2.1.1. 分支模型</a></li>
+<li class="toctree-l4"><a class="reference internal" href="git/branch_management.html#id4">7.2.2.1.2. 分支命名规范</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="program_debug/index.html#dmesg-addr2line">7.3.2. dmesg &amp;&amp; addr2line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="git/branch_management.html#id5">7.2.2.2. 标签管理规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="git/branch_management.html#id6">7.2.2.3. 提交管理规范</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="performance_optimzation/index.html">7.4. 性能优化</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="performance_optimzation/index.html#id2">7.4.1. 分析系统瓶颈</a></li>
-<li class="toctree-l2"><a class="reference internal" href="performance_optimzation/index.html#id3">7.4.2. 分析内存瓶颈</a></li>
-<li class="toctree-l2"><a class="reference internal" href="performance_optimzation/index.html#io">7.4.3. 分析IO瓶颈</a></li>
-<li class="toctree-l2"><a class="reference internal" href="performance_optimzation/index.html#id4">7.4.4. 分析系统调用</a></li>
-<li class="toctree-l2"><a class="reference internal" href="performance_optimzation/index.html#id5">7.4.5. 优化程序代码</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="shell/index.html">7.3. shell 使用笔记</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="shell/shell_rule.html">7.3.1. shell基本语法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="shell/shell_rule.html#id1">7.3.1.1. 变量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/shell_rule.html#id2">7.3.1.2. 基本运算符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/shell_rule.html#id3">7.3.1.3. shell流程控制</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_rule.html#if">7.3.1.3.1. if判断</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_rule.html#for">7.3.1.3.2. for循环</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_rule.html#while">7.3.1.3.3. while语句</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_rule.html#case-esac">7.3.1.3.4. case … esac语句</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="shell/shell_rule.html#id4">7.3.1.4. shell函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/shell_rule.html#id5">7.3.1.5. 输入输出重定向</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/shell_rule.html#id6">7.3.1.6. shell文件包含</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/shell_rule.html#id7">7.3.1.7. shell特殊变量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/shell_rule.html#id8">7.3.1.8. shell中括号用法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_rule.html#id9">7.3.1.8.1. 小括号、圆括号</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_rule.html#id10">7.3.1.8.2. 中括号</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_rule.html#id11">7.3.1.8.3. 大括号、花括号</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="shell/Makefile_shell/index.html">7.3.2. Makefile与shell的区别</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="shell/Makefile_shell/index.html#id1">7.3.2.1. 变量引用</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/Makefile_shell/index.html#id2">7.3.2.2. 通配符区别</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/Makefile_shell/index.html#id3">7.3.2.3. 打印输出</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/Makefile_shell/index.html#id4">7.3.2.4. 代码片段</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/Makefile_shell/index.html#makfile">7.3.2.5. makfile中的反引号``</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/Makefile_shell/index.html#makefile">7.3.2.6. makefile中嵌入脚本</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="shell/shell_advanced.html">7.3.3. shell三剑客grep sed awk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="shell/shell_advanced.html#grep">7.3.3.1. grep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="shell/shell_advanced.html#sed">7.3.3.2. sed</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_advanced.html#id1">7.3.3.2.1. sed命令解释</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_advanced.html#id2">7.3.3.2.2. sed用法演示</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_advanced.html#id3">7.3.3.2.3. sed高级编辑命令</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="shell/shell_advanced.html#awk">7.3.3.3. awk</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_advanced.html#id4">7.3.3.3.1. awk变量</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="shell/shell_advanced.html#id5">7.3.3.3.1.1. 内置变量</a></li>
+<li class="toctree-l5"><a class="reference internal" href="shell/shell_advanced.html#id6">7.3.3.3.1.2. 自定义变量</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_advanced.html#pintf">7.3.3.3.2. pintf命令</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_advanced.html#id7">7.3.3.3.3. 操作符</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_advanced.html#awk-pattern">7.3.3.3.4. awk pattern匹配部分</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_advanced.html#id8">7.3.3.3.5. awk高阶用法</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_advanced.html#id9">7.3.3.3.6. 字符串处理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shell/shell_advanced.html#id10">7.3.3.3.7. awk自定义函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="shell/regular_expression.html">7.3.4. 正则表达式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell/built-in_command.html">7.3.5. shell内建命令</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="program_debug/index.html">7.4. 程序调试</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="program_debug/perform_tools.html">7.4.1. linux性能工具</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_debug/perform_tools.html#id1">7.4.1.1. 性能工具图谱</a></li>
+<li class="toctree-l3"><a class="reference internal" href="program_debug/perform_tools.html#cpu">7.4.1.2. CPU性能工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="program_debug/perform_tools.html#id2">7.4.1.3. 内存性能工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="program_debug/perform_tools.html#i-o">7.4.1.4. 磁盘I/O性能工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="program_debug/perform_tools.html#id3">7.4.1.5. 网络性能工具</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="program_debug/debug_problem.html">7.4.2. debug问题汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vim/index.html">7.5. vim使用手册</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vim/index.html#id1">7.5.1. 基础</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="vim/index.html#id2">7.5.1.1. 在文件中移动</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vim/index.html#id3">7.5.1.2. 复制、剪切、粘贴</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vim/index.html#id4">7.5.1.3. 搜索</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vim/index.html#id5">7.5.1.4. 替换</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="makefile/index.html">7.6. Makfile应用笔记</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="makefile/rule.html">7.6.1. Makefile规则介绍</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="makefile/rule.html#id1">7.6.1.1. Makefile规则</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="makefile/rule.html#id2">7.6.1.1.1. 基本规则</a></li>
+<li class="toctree-l4"><a class="reference internal" href="makefile/rule.html#id3">7.6.1.1.2. 通配符</a></li>
+<li class="toctree-l4"><a class="reference internal" href="makefile/rule.html#id4">7.6.1.1.3. 路径搜索</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="makefile/rule.html#makfile">7.6.1.2. makfile变量</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="makefile/rule.html#make">7.6.1.2.1. make环境变量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="makefile/rule.html#shell">7.6.1.2.2. shell变量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="makefile/rule.html#id5">7.6.1.2.3. 自动变量</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="makefile/rule.html#id6">7.6.1.3. 其他常用功能</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="makefile/rule.html#id7">7.6.1.3.1. 定义命令包</a></li>
+<li class="toctree-l4"><a class="reference internal" href="makefile/rule.html#id8">7.6.1.3.2. make参数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="makefile/function.html">7.6.2. Makefile函数总结</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="makefile/function.html#id1">7.6.2.1. 字符串处理函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="makefile/function.html#id2">7.6.2.2. 文件名操作函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="makefile/function.html#foreach">7.6.2.3. foreach函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="makefile/function.html#if">7.6.2.4. if 函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="makefile/function.html#call">7.6.2.5. call函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="makefile/function.html#origin">7.6.2.6. origin函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="makefile/function.html#shell">7.6.2.7. shell函数</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="makefile/gcc_compile.html">7.6.3. gcc编译选项总结</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="makefile/gcc_compile.html#id1">7.6.3.1. 介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="makefile/gcc_compile.html#id2">7.6.3.2. 常用编译选项</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="makefile/gcc_compile.html#id3">7.6.3.2.1. 参数详解</a></li>
+<li class="toctree-l4"><a class="reference internal" href="makefile/gcc_compile.html#id4">7.6.3.2.2. 常见问题</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="makefile/gcc_compile.html#toochain">7.6.3.3. toochain命名规则</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cmake/index.html">7.7. Cmake学习笔记</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cmake/tutorial.html">7.7.1. CMake简明</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cmake/tutorial.html#id1">7.7.1.1. CMake简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cmake/tutorial.html#id2">7.7.1.2. 核心理念</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cmake/tutorial.html#id3">7.7.1.2.1. 目标</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/tutorial.html#id4">7.7.1.2.2. 源文件</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/tutorial.html#id5">7.7.1.2.3. 目录、生成器、测试、属性</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/tutorial.html#id6">7.7.1.2.4. 变量和缓存条目</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/tutorial.html#id7">7.7.1.2.5. 构建配置</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cmake/tutorial.html#cmakelists">7.7.1.3. 编写CMakeLists文件</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cmake/tutorial.html#id8">7.7.1.3.1. 基本命令</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/tutorial.html#id9">7.7.1.3.2. 流程控制命令</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cmake/tutorial.html#id10">7.7.1.4. 检查CMake版本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cmake/tutorial.html#id11">7.7.1.5. 使用模块</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cmake/tutorial.html#id12">7.7.1.6. 安装文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cmake/tutorial.html#id13">7.7.1.7. 系统探测</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cmake/tutorial.html#id14">7.7.1.7.1. 使用头文件和库</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/tutorial.html#id15">7.7.1.7.2. 查找包</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/tutorial.html#id16">7.7.1.7.3. 为编译传递参数</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cmake/tutorial.html#id17">7.7.1.8. 定制命令与目标</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cmake/tutorial.html#id18">7.7.1.8.1. 可移植性</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/tutorial.html#id19">7.7.1.8.2. 定制命令与目标</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cmake/tutorial.html#id20">7.7.1.9. CMake交叉编译</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cmake/base.html">7.7.2. Cmake基础知识</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cmake/base.html#id1">7.7.2.1. 变量与缓存</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cmake/base.html#id2">7.7.2.1.1. 本地变量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/base.html#id3">7.7.2.1.2. 缓存变量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/base.html#id4">7.7.2.1.3. 环境变量</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/base.html#id5">7.7.2.1.4. 缓存</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/base.html#id6">7.7.2.1.5. 属性</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cmake/base.html#id7">7.7.2.2. Cmake编程</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cmake/base.html#id8">7.7.2.2.1. 控制流程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/base.html#id9">7.7.2.2.2. 宏定义与函数</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cmake/base.html#id10">7.7.2.3. Cmake与代码交互</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cmake/base.html#id11">7.7.2.4. 项目组织</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cmake/base.html#id12">7.7.2.5. 在Cmake中运行其他程序</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cmake/base.html#id13">7.7.2.5.1. 配置时运行一条命令</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cmake/base.html#id14">7.7.2.5.2. 在构建时运行一条命令</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cmake/base.html#id15">7.7.2.6. 示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cmake/normal_cmd.html">7.7.3. CMake常见指令</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cmake/normal_cmd.html#id1">7.7.3.1. 常见指令语法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ld_scripts/index.html">7.8. 链接脚本</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ld_scripts/ld_scripts.html">7.8.1. GNU链接脚本</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ld_scripts/ld_scripts.html#id1">7.8.1.1. 链接脚本原理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ld_scripts/ld_scripts.html#id2">7.8.1.1.1. 基本概念</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ld_scripts/ld_scripts.html#id3">7.8.1.1.2. 链接脚本赋值语句</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ld_scripts/ld_scripts.html#id4">7.8.1.2. 链接脚本语法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ld_scripts/ld_scripts.html#id5">7.8.1.2.1. 脚本命令</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ld_scripts/ld_scripts.html#sections">7.8.1.2.2. SECTIONS命令</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ld_scripts/ld_command.html">7.8.2. 链接脚本实例之vmlinux.lds分析</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ld_scripts/ld_command.html#id1">7.8.2.1. 基础部分</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ld_scripts/ld_command.html#id2">7.8.2.1.1. 段说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ld_scripts/ld_command.html#id3">7.8.2.1.2. 各种地址说明</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ld_scripts/ld_command.html#id4">7.8.2.2. vmlinux.lds分析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ld_scripts/ld_command.html#id5">7.8.2.2.1. 一些有助于我们分析vmlinux.lds的内容</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ld_scripts/ld_command.html#id6">7.8.2.2.2. vmlinux.lds注解</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="datastruct_algo/index.html">7.9. 数据结构与算法</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="datastruct_algo/datastruct/index.html">7.9.1. 数据结构与算法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="datastruct_algo/datastruct/tree.html">7.9.1.1. 数据结构之树</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/datastruct/tree.html#id2">7.9.1.1.1. 树的概念</a></li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/datastruct/tree.html#id3">7.9.1.1.2. 二叉树</a></li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/datastruct/tree.html#id4">7.9.1.1.3. 二叉树的存储</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/datastruct/tree.html#id5">7.9.1.1.3.1. 树的创建</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/datastruct/tree.html#id6">7.9.1.1.4. 二叉树的遍历</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/datastruct/tree.html#id7">7.9.1.1.4.1. 先序遍历</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/datastruct/tree.html#id8">7.9.1.1.4.2. 中序遍历</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/datastruct/tree.html#id9">7.9.1.1.4.3. 后序遍历</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="datastruct_algo/datastruct/red_black.html">7.9.1.2. 红黑树</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/datastruct/red_black.html#id2">7.9.1.2.1. 二叉查找树</a></li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/datastruct/red_black.html#avl">7.9.1.2.2. AVL数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/datastruct/red_black.html#id3">7.9.1.2.3. 红黑树</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/datastruct/red_black.html#id4">7.9.1.2.3.1. 红黑树查找</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/datastruct/red_black.html#id5">7.9.1.2.3.2. 红黑树插入</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/datastruct/red_black.html#id6">7.9.1.2.3.3. 红黑树删除</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="datastruct_algo/sword_offer/index.html">7.9.2. 剑指offer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="datastruct_algo/sword_offer/array.html">7.9.2.1. 数组操作</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id2">7.9.2.1.1. 数组中重复的数字</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id3">7.9.2.1.1.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id4">7.9.2.1.1.2. 题目解析</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id5">7.9.2.1.1.3. 代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id6">7.9.2.1.2. 二维数组中的查找</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id7">7.9.2.1.2.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id8">7.9.2.1.2.2. 题目解析</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id9">7.9.2.1.2.3. 代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id10">7.9.2.1.3. 调整数组顺序使奇数位于偶数前面</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id11">7.9.2.1.3.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id12">7.9.2.1.3.2. 解题思路</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id13">7.9.2.1.3.3. 代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id14">7.9.2.1.4. 旋转数组的最小数字</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id15">7.9.2.1.4.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id16">7.9.2.1.4.2. 题目解析</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id17">7.9.2.1.4.3. 代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id18">7.9.2.1.5. 连续子数组的最大和</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id19">7.9.2.1.5.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id20">7.9.2.1.5.2. 题目解析</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id21">7.9.2.1.5.3. 代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id22">7.9.2.1.6. 把数组排成最小的数</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id23">7.9.2.1.6.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/array.html#id24">7.9.2.1.6.2. 题目解析</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="datastruct_algo/sword_offer/list.html">7.9.2.2. 链表操作</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id2">7.9.2.2.1. 从尾到头打印链表</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id3">7.9.2.2.1.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id4">7.9.2.2.1.2. 解题思路</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id5">7.9.2.2.1.3. 代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id6">7.9.2.2.2. 删除链表的节点</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id7">7.9.2.2.2.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id8">7.9.2.2.2.2. 题目解析</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id9">7.9.2.2.2.3. 代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#k">7.9.2.2.3. 链表中倒数第 K 个节点</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id10">7.9.2.2.3.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id11">7.9.2.2.3.2. 解析思路</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id12">7.9.2.2.3.3. 代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id13">7.9.2.2.4. 反转链表</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id14">7.9.2.2.4.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id15">7.9.2.2.4.2. 题目解析</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id16">7.9.2.2.4.3. 代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id17">7.9.2.2.5. 复杂链表的复制</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id18">7.9.2.2.5.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id19">7.9.2.2.5.2. 题目解析</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id20">7.9.2.2.5.3. 代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id21">7.9.2.2.6. 两个链表的第一个公共结点</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id22">7.9.2.2.6.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id23">7.9.2.2.6.2. 题目解析</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/list.html#id24">7.9.2.2.6.3. 代码</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html">7.9.2.3. 栈和队列操作</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id2">7.9.2.3.1. 用两个栈实现队列</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id3">7.9.2.3.1.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id4">7.9.2.3.1.2. 解题思路</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id5">7.9.2.3.1.3. 代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#min">7.9.2.3.2. 包含min函数的栈</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id6">7.9.2.3.2.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id7">7.9.2.3.2.2. 题目解析</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id8">7.9.2.3.2.3. 代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id9">7.9.2.3.3. 队列的最大值</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id10">7.9.2.3.3.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id11">7.9.2.3.3.2. 题目解析</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id12">7.9.2.3.3.3. 代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id13">7.9.2.3.4. 滑动窗口的最大值</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id14">7.9.2.3.4.1. 题目描述</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id15">7.9.2.3.4.2. 题目解析</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/sword_offer/stack_queue.html#id16">7.9.2.3.4.3. 代码</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="datastruct_algo/algorithm/index.html">7.9.3. 算法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html">7.9.3.1. 十大经典排序算法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id2">7.9.3.1.1. 冒泡排序</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id3">7.9.3.1.1.1. 算法步骤</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id4">7.9.3.1.1.2. 动画演示</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id5">7.9.3.1.1.3. 参考代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id6">7.9.3.1.2. 选择排序</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id7">7.9.3.1.2.1. 算法步骤</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id8">7.9.3.1.2.2. 动画演示</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id9">7.9.3.1.2.3. 参考代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id10">7.9.3.1.3. 插入排序</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id11">7.9.3.1.3.1. 算法步骤</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id12">7.9.3.1.3.2. 动画演示</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id13">7.9.3.1.3.3. 参考代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id14">7.9.3.1.4. 希尔排序</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id15">7.9.3.1.4.1. 算法步骤</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id16">7.9.3.1.4.2. 动画演示</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id17">7.9.3.1.4.3. 参考代码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id18">7.9.3.1.5. 归并排序</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id19">7.9.3.1.5.1. 算法步骤</a></li>
+<li class="toctree-l5"><a class="reference internal" href="datastruct_algo/algorithm/sort_10.html#id20">7.9.3.1.5.2. 动画演示</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="markdown/index.html">7.10. markdown笔记</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="markdown/markdown_grammar.html">7.10.1. markdown 语法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="markdown/markdown_grammar.html#id1">7.10.1.1. 标题</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markdown/markdown_grammar.html#id2">7.10.1.2. 段落</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markdown/markdown_grammar.html#id3">7.10.1.3. 换行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markdown/markdown_grammar.html#id4">7.10.1.4. 强调</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="markdown/markdown_grammar.html#id5">7.10.1.4.1. 粗体</a></li>
+<li class="toctree-l4"><a class="reference internal" href="markdown/markdown_grammar.html#id6">7.10.1.4.2. 斜体</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="markdown/markdown_grammar.html#id7">7.10.1.5. 引用</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markdown/markdown_grammar.html#id8">7.10.1.6. 列表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markdown/markdown_grammar.html#id9">7.10.1.7. 代码</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markdown/markdown_grammar.html#id10">7.10.1.8. 分割线</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markdown/markdown_grammar.html#id15">7.10.1.9. 链接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markdown/markdown_grammar.html#id16">7.10.1.10. 图片</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markdown/markdown_grammar.html#id17">7.10.1.11. 转义字符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="markdown/markdown_grammar.html#html">7.10.1.12. 内嵌HTML标签</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="linux_commond/index.html">7.11. linux命令汇总</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="linux_commond/net_tools.html">7.11.1. 网络调试工具</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="linux_commond/net_tools.html#bmon">7.11.1.1. bmon 强大的网络带宽监视和调试工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linux_commond/net_tools.html#iperf">7.11.1.2. iperf 命令</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linux_commond/net_tools.html#netstat">7.11.1.3. netstat 命令</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linux_commond/net_tools.html#tcpdump">7.11.1.4. tcpdump</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="linux_commond/net_tools.html#id2">7.11.1.4.1. tcpdump输出内容</a></li>
+<li class="toctree-l4"><a class="reference internal" href="linux_commond/net_tools.html#id3">7.11.1.4.2. 常规过滤规则</a></li>
+<li class="toctree-l4"><a class="reference internal" href="linux_commond/net_tools.html#id4">7.11.1.4.3. 可选参数解析</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="git/index.html" class="btn btn-neutral float-right" title="7.1. git 使用笔记" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../work_space/hw/index.html" class="btn btn-neutral float-left" title="6.1. hardware design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../user/soft_package_list/index.html" class="btn btn-neutral float-left" title="6.12. 软件包汇总" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="reference/index.html" class="btn btn-neutral float-right" title="7.1. linux参考网站" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; 版权所有 2020, yinwg
-
-    </p>
+    <p>&#169; 版权所有 2019, yinwg。</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

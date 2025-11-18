@@ -1,0 +1,191 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.6.4. Linux内核API之进程调度 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.6.5. Linux内核API之中断机制" href="../interrupt/index.html" />
+    <link rel="prev" title="3.6.3. Linux内核API之进程管理" href="../thread_management/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.6. linux 内核函数</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../summary/kernel_function.html">3.6.1. 内核函数汇总</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../module/index.html">3.6.2. Linux内核API之模块机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thread_management/index.html">3.6.3. Linux内核API之进程管理</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.6.4. Linux内核API之进程调度</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">3.6.4.1. 数据结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">3.6.4.2. 函数接口</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../interrupt/index.html">3.6.5. Linux内核API之中断机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../memory/index.html">3.6.6. Linux内核API之内存管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../timer/index.html">3.6.7. Linux内核API之定时机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sync/index.html">3.6.8. Linux内核API之同步机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filesystem/index.html">3.6.9. Linux内核API之文件系统</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../device/index.html">3.6.10. Linux内核API之设备管理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.6. </span>linux 内核函数</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.6.4. </span>Linux内核API之进程调度</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/kernel_function/thread_schedule/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linuxapi">
+<h1><span class="section-number">3.6.4. </span>Linux内核API之进程调度<a class="headerlink" href="#linuxapi" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">3.6.4.1. </span>数据结构<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+</section>
+<section id="id2">
+<h2><span class="section-number">3.6.4.2. </span>函数接口<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>complete</p></li>
+</ul>
+<p>complete函数主要用于唤醒等待队列中的睡眠进程，并能记录等待队列被唤醒的次数，唤醒次数保存在参数的done字段中．此函数通过调用函数__wake_up_locked()唤醒等待队列中
+的进程，传递的参数的只能是TASK_INTERRUPTIBLE或者TASK_UNINTERRUPTIBLE状态，并且唤醒进程不是同步的，只能按等待队列中的进程的顺序一个一个的唤醒．</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;linux/completion.h&gt;</span>
+<span class="n">struct</span> <span class="n">completion</span> <span class="p">{</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">done</span><span class="p">;</span>      <span class="o">//</span><span class="n">保存等待队列的唤醒的次数</span>
+    <span class="n">wait_queue_head_t</span> <span class="n">wait</span><span class="p">;</span> <span class="o">//</span><span class="n">等待队列的头元素</span>
+<span class="p">};</span>
+
+<span class="o">//</span><span class="n">struct</span> <span class="n">completion</span><span class="o">*</span><span class="n">为输出参数</span>
+<span class="n">void</span> <span class="n">complete</span><span class="p">(</span><span class="n">struct</span> <span class="n">completion</span> <span class="o">*</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>测试代码</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">struct</span> <span class="n">completion</span> <span class="n">comple</span><span class="p">;</span>
+<span class="n">static</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">old_thread</span><span class="p">;</span>
+
+<span class="n">static</span> <span class="nb">int</span> <span class="n">__init</span> <span class="n">complete_test_func</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">result</span><span class="p">;</span>
+    <span class="n">wait_queue_t</span> <span class="n">data</span><span class="p">;</span>
+    <span class="n">old_thread</span> <span class="o">=</span> <span class="n">current</span><span class="p">;</span>
+    <span class="n">kthread_create_on_node</span><span class="p">(</span><span class="n">thread_test</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span> <span class="o">//</span><span class="n">创建新的进程</span>
+    <span class="n">wake_up_process</span><span class="p">(</span><span class="n">result</span><span class="p">);</span>
+    <span class="n">init_completion</span><span class="p">(</span><span class="o">&amp;</span><span class="n">comple</span><span class="p">);</span>   <span class="o">//</span><span class="n">初始化全局变量</span>
+    <span class="n">init_waitqueue_entry</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span> <span class="n">current</span><span class="p">);</span> <span class="o">//</span><span class="n">用当前进程初始化等待队列元素</span>
+    <span class="n">add_wait_queue</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">comple</span><span class="o">.</span><span class="n">wait</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">data</span><span class="p">);</span> <span class="o">//</span><span class="n">将当前进程加入等待队列中</span>
+    <span class="n">schedule_timeout_uninterruptible</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span> <span class="o">//</span><span class="n">使等待队列进程不可中断的等待状态</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../thread_management/index.html" class="btn btn-neutral float-left" title="3.6.3. Linux内核API之进程管理" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../interrupt/index.html" class="btn btn-neutral float-right" title="3.6.5. Linux内核API之中断机制" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1458 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.6.1.151. __map_init_section &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.6.1.191. nextprop" href="N_function.html" />
+    <link rel="prev" title="3.6.1.146. list_add_tail" href="L_function.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.6. linux 内核函数</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="kernel_function.html">3.6.1. 内核函数汇总</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="A_function.html">3.6.1.1. add_static_vm_early</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#adjust-lowmem-bounds">3.6.1.2. adjust_lowmem_bounds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#alloc-init-pmd">3.6.1.3. alloc_init_pmd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#alloc-init-pud">3.6.1.4. alloc_init_pud</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#alloc-node-mem-map">3.6.1.5. alloc_node_mem_map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#array-size">3.6.1.6. ARRAY_SIZE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arch-get-next-mach">3.6.1.7. arch_get_next_mach</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arch-local-irq-disable">3.6.1.8. arch_local_irq_disable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-adjust-dma-zone">3.6.1.9. arm_adjust_dma_zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-initrd-init">3.6.1.10. arm_initrd_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-pte-alloc">3.6.1.11. arm_pte_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-memblock-init">3.6.1.12. arm_memblock_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-mm-memblock-reserve">3.6.1.13. arm_mm_memblock_reserve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="B_function.html">3.6.1.14. boot_cpu_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="B_function.html#build-mem-type-table">3.6.1.15. build_mem_type_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html">3.6.1.16. cacheid_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cache-is-vipt">3.6.1.17. cache_is_vipt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cache-is-vipt-aliasing">3.6.1.18. cache_is_vipt_aliasing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cache-is-vipt-nonaliasing">3.6.1.19. cache_is_vipt_nonaliasing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cache-is-vivt-asid-tagged">3.6.1.20. cache_is_vivt_asid_tagged</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cahceid">3.6.1.21. cahceid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cachepolicy">3.6.1.22. cachepolicy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#calc-memmap-size">3.6.1.23. calc_memmap_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#calculatode-totalpage">3.6.1.24. calculatode_totalpage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#check-block">3.6.1.25. check_block</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#check-off">3.6.1.26. check_off</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#choose-memblock-flags">3.6.1.27. choose_memblock_flags</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#clamp">3.6.1.28. clamp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-activate-area">3.6.1.29. cma_activate_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-alloc">3.6.1.30. cma_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-bitmap-aligned-mask">3.6.1.31. cma_bitmap_aligned_mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-bitmap-cligned-offset">3.6.1.32. cma_bitmap_cligned_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-bitmap-maxno">3.6.1.33. cma_bitmap_maxno</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-bitmap-pages-to-bits">3.6.1.34. cma_bitmap_pages_to_bits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-clear-bitmap">3.6.1.35. cma_clear_bitmap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-declare-contiguous">3.6.1.36. cma_declare_contiguous</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-early-percent-memory">3.6.1.37. cma_early_percent_memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-for-each-area">3.6.1.38. cma_for_each_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-get-base">3.6.1.39. cma_get_base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-get-name">3.6.1.40. cma_get_name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-get-size">3.6.1.41. cma_get_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-init-reserved-areas">3.6.1.42. cma_init_reserved_areas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-init-reserved-mem">3.6.1.43. cma_init_reserved_mem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-release">3.6.1.44. cma_release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-active-mask">3.6.1.45. __cpu_active_mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-has-aliasing-icache">3.6.1.46. cpu_has_aliasing_icache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-init">3.6.1.47. cpu_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-logical-map">3.6.1.48. cpu_logical_map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-max-bits-warn">3.6.1.49. cpu_max_bits_warn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-proc-init">3.6.1.50. cpu_proc_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-to-fdt32">3.6.1.51. CPU_TO_FDT32</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpuid-init-hwcaps">3.6.1.52. cpuid_init_hwcaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#create-mapping">3.6.1.53. create_mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#id1">3.6.1.54. __create_mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#current-stack-pointer">3.6.1.55. current_stack_pointer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#current-thread-info">3.6.1.56. current_thread_info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html">3.6.1.57. dev_get_cma_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dev-set-cma-area">3.6.1.58. dev_set_cma_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#devicemaps-init">3.6.1.59. devicemaps_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-alloc-from-contiguous">3.6.1.60. dma_alloc_from_contiguous</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-contiguous-early-fixup">3.6.1.61. dma_contiguous_early_fixup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-contiguous-remap">3.6.1.62. dma_contiguous_remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-contiguous-reserve">3.6.1.63. dma_contiguous_reserve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-contiguous-set-default">3.6.1.64. dma_contiguous_set_default</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-release-from-contiguous">3.6.1.65. dma_release_from_contiguous</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#do-early-param">3.6.1.66. do_early_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dt-mem-next-cell">3.6.1.67. dt_mem_next_cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dump-stack-set-arch-desc">3.6.1.68. dump_stack_set_arch_desc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html">3.6.1.69. early_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-alloc-aligned">3.6.1.70. early_alloc_aligned</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-cma">3.6.1.71. early_cma</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-fixmap-shutdown">3.6.1.72. early_fixmap_shutdown</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-ioremap-init">3.6.1.73. early_ioremap_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-ioremap-setup">3.6.1.74. early_ioremap_setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-add-memory-arch">3.6.1.75. early_init_dt_add_memory_arch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-alloc-reserved-memory-arch">3.6.1.76. early_init_dt_alloc_reserved_memory_arch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-check-for-initrd">3.6.1.77. early_init_dt_check_for_initrd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-declare-initrd">3.6.1.78. __early_init_dt_declare_initrd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-reserve-memory-arch">3.6.1.79. early_init_dt_reserve_memory_arch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-scan-chosen">3.6.1.80. early_init_dt_scan_chosen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-scan-memory">3.6.1.81. early_init_dt_scan_memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-sacn-nodes">3.6.1.82. early_init_dt_sacn_nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-scan-root">3.6.1.83. early_init_dt_scan_root</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-verify">3.6.1.84. early_init_dt_verify</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-fdt-reserve-self">3.6.1.85. early_init_fdt_reserve_self</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-fdt-scan-reserved-mem">3.6.1.86. early_init_fdt_scan_reserved_mem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-mm-init">3.6.1.87. early_mm_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-pte-alloc">3.6.1.88. early_pte_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-trap-init">3.6.1.89. early_trap_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#elf-hwcap-fixup">3.6.1.90. elf_hwcap_fixup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#end-of-stack">3.6.1.91. end_of_stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html">3.6.1.92. FD_ALIGN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-boot-cpuid-phys">3.6.1.93. fdt_boot_cpuid_phys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-check-header">3.6.1.94. fdt_check_header</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-check-node-offset">3.6.1.95. fdt_check_node_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-check-prop-offset">3.6.1.96. fdt_check_prop_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-first-property-offset">3.6.1.97. fdt_first_property_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-get-property-by-offset">3.6.1.98. fdt_get_property_by_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-header-size">3.6.1.99. fdt_header_size_</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#id1">3.6.1.100. fdt_header_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-init-reserved-mem">3.6.1.101. fdt_init_reserved_mem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-get-header">3.6.1.102. fdt_get_header</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-get-mem-rsv">3.6.1.103. fdt_get_mem_rsv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-get-name">3.6.1.104. fdt_get_name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-get-property-namelen">3.6.1.105. fdt_get_property_namelen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-get-string">3.6.1.106. fdt_get_string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-getprop">3.6.1.107. fdt_getprop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-getprop-namelen">3.6.1.108. fdt_getprop_namelen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-last-comp-version">3.6.1.109. fdt_last_comp_version</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-magic">3.6.1.110. fdt_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-mem-rsv">3.6.1.111. fdt_mem_rsv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-next-node">3.6.1.112. fdt_next_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-next-tag">3.6.1.113. fdt_next_tag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-off-dt-strings">3.6.1.114. fdt_off_dt_strings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-offset-ptr">3.6.1.115. fdt_offset_ptr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#id2">3.6.1.116. fdt_offset_ptr_</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-reserved-mem-save-node">3.6.1.117. fdt_reserved_mem_save_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-ro-probe">3.6.1.118. FDT_RO_PROBE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#id3">3.6.1.119. fdt_ro_probe_</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-scan-reserved-mem">3.6.1.120. __fdt_scan_reserved_mem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-size-dt-strings">3.6.1.121. fdt_size_dt_strings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-size-dt-struct">3.6.1.122. fdt_size_dt_struct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-string-eq">3.6.1.123. fdt_string_eq</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-totalsize">3.6.1.124. fdt_totalsize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fill-pmd-pags">3.6.1.125. fill_pmd_pags</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#find-limits">3.6.1.126. find_limits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fix-to-virt">3.6.1.127. fix_to_virt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fixmap-pmd">3.6.1.128. fixmap_pmd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#flush-pmd-entry">3.6.1.129. flush_pmd_entry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="G_function.html">3.6.1.130. get_cr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="G_function.html#get-cpu-architecture">3.6.1.131. __get_cpu_architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html">3.6.1.132. icache_is_pipt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#icache-is-vipt-aliasing">3.6.1.133. icache_is_vipt_aliasing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#icache-is-vivt-asid-tagged">3.6.1.134. icache_is_vivt_asid_tagged</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#iotable-init">3.6.1.135. iotable_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#init-default-cache-policy">3.6.1.136. init_default_cache_policy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#init-utsname">3.6.1.137. init_utsname</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#initial-pmd-value">3.6.1.138. initial_pmd_value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#isspace">3.6.1.139. isspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#is-highmem-idx">3.6.1.140. is_highmem_idx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#is-smp">3.6.1.141. is_smp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="K_function.html">3.6.1.142. KERNEL_END</a></li>
+<li class="toctree-l4"><a class="reference internal" href="K_function.html#kernel-start">3.6.1.143. KERNEL_START</a></li>
+<li class="toctree-l4"><a class="reference internal" href="K_function.html#kmap-init">3.6.1.144. kmap_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="K_function.html#kuser-init">3.6.1.145. kuser_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html">3.6.1.146. list_add_tail</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html#list-for-each-entry">3.6.1.147. list_for_each_entry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html#local-irq-disable">3.6.1.148. local_irq_disable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html#lookup-processor">3.6.1.149. lookup_processor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html#lookup-processor-type">3.6.1.150. lookup_processor_type</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.6.1.151. __map_init_section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#map-lowmem">3.6.1.152. map_lowmem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-add">3.6.1.153. memblock_add</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-add-range">3.6.1.154. memblock_add_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-addrs-overlap">3.6.1.155. memblock_addrs_overlap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-alloc-base">3.6.1.156. memblock_alloc_base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-alloc-base-nid">3.6.1.157. memblock_alloc_base_nid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-alloc-internal">3.6.1.158. memblock_alloc_internal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-alloc-node-nopanic">3.6.1.159. memblock_alloc_node_nopanic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-alloc-range">3.6.1.160. memblock_alloc_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-alloc-range-nid">3.6.1.161. memblock_alloc_range_nid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-allow-resize">3.6.1.162. memblock_allow_resize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-bottom-up">3.6.1.163. memblock_bottom_up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-cap-size">3.6.1.164. memblock_cap_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-double-array">3.6.1.165. memblock_double_array</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-end-of-dram">3.6.1.166. memblock_end_of_DRAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-find-in-range">3.6.1.167. memblock_find_in_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-find-in-range-node">3.6.1.168. memblock_find_in_range_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-find-range-bottom-up">3.6.1.169. __memblock_find_range_bottom_up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-find-range-top-down">3.6.1.170. __memblock_find_range_top_down</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-free">3.6.1.171. memblock_free</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-insert-region">3.6.1.172. memblock_insert_region</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-is-hotpluggable">3.6.1.173. memblock_is_hotpluggable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-is-mirror">3.6.1.174. memblock_is_mirror</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-is-nomap">3.6.1.175. memblock_is_nomap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-is-region-memory">3.6.1.176. memblock_is_region_memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-is-region-reserved">3.6.1.177. memblock_is_region_reserved</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-isolate-range">3.6.1.178. memblock_isolate_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-merge-regions">3.6.1.179. memblock_merge_regions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-overlaps-region">3.6.1.180. memblock_overlaps_region</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-phys-alloc">3.6.1.181. memblock_phys_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-resion-memory-base-pfn">3.6.1.182. memblock_resion_memory_base_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-region-memory-end-pfn">3.6.1.183. memblock_region_memory_end_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-remove-range">3.6.1.184. memblock_remove_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-remove">3.6.1.185. memblock_remove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-remove-region">3.6.1.186. memblock_remove_region</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-reserve">3.6.1.187. memblock_reserve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-search">3.6.1.188. memblock_search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memblock-start-of-dram">3.6.1.189. memblock_start_of_DRAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#movable-node-is-enabled">3.6.1.190. movable_node_is_enabled</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html">3.6.1.191. nextprop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html#next-arg">3.6.1.192. next_arg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html#next-mem-range">3.6.1.193. __next_mem_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html#next-mem-range-rev">3.6.1.194. __next_mem_range_rev</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html#nr-cpumask-bits">3.6.1.195. nr_cpumask_bits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html">3.6.1.196. of_compat_cmp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-declare">3.6.1.197. _OF_DECLARE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-fdt-device-is-available">3.6.1.198. of_fdt_device_is_available</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-fdt-is-compatible">3.6.1.199. of_fdt_is_compatible</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-flat-dt-is-compatible">3.6.1.200. of_flat_dt_is_compatible</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-flat-dt-match-machine">3.6.1.201. of_flat_dt_match_machine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-get-flat-dt-prop">3.6.1.202. of_get_flat_dt_prop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-get-flat-dt-root">3.6.1.203. of_get_flat_dt_root</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-scan-flat-dt">3.6.1.204. of_scan_flat_dt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html">3.6.1.205. page_address_htable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#page-address-init">3.6.1.206. page_address_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#page-offset">3.6.1.207. PAGE_OFFSET</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#page-to-pfn">3.6.1.208. __page_to_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#parameq">3.6.1.209. parameq</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#parse-args">3.6.1.210. parse_args</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#parse-early-options">3.6.1.211. parse_early_options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#parse-early-param">3.6.1.212. parse_early_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#parse-one">3.6.1.213. parse_one</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#per-cpu-offset">3.6.1.214. __per_cpu_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#id1">3.6.1.215. per_cpu_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pfn-down">3.6.1.216. PFN_DOWN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pfn-phys">3.6.1.217. PFN_PHYS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pfn-pte">3.6.1.218. pfn_pte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pfn-up">3.6.1.219. PFN_UP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#phys-offset">3.6.1.220. PHYS_OFFSET</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#phys-pfn">3.6.1.221. PHYS_PFN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#phys-to-pfn">3.6.1.222. __phys_to_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#phys-to-virt">3.6.1.223. __phys_to_virt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#id2">3.6.1.224. phys_to_virt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgd-addr-end">3.6.1.225. pgd_addr_end</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgd-index">3.6.1.226. pgd_index</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgd-offset">3.6.1.227. pgd_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgd-offset-k">3.6.1.228. pgd_offset_k</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgdat-end-pfn">3.6.1.229. pgdat_end_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgprot">3.6.1.230. __pgprot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgrot-val">3.6.1.231. pgrot_val</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-addr-end">3.6.1.232. pmd_addr_end</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-bad">3.6.1.233. pmd_bad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-clear">3.6.1.234. pmd_clear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-empty-section-gap">3.6.1.235. pmd_empty_section_gap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-none">3.6.1.236. pmd_none</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-off-k">3.6.1.237. pmd_off_k</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-offset">3.6.1.238. pmd_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-page-vaddr">3.6.1.239. pmd_page_vaddr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-populate">3.6.1.240. __pmd_populate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-populate-kernel">3.6.1.241. pmd_populate_kernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-val">3.6.1.242. pmd_val</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#populate-zone">3.6.1.243. populate_zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#prepare-page-table">3.6.1.244. prepare_page_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html">3.6.1.245. raw_local_irq_disable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#raw-smp-processor-id">3.6.1.246. raw_smp_processor_id</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-cma-device-init">3.6.1.247. rmem_cma_device_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-cma-device-release">3.6.1.248. rmem_cma_device_release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-cma-setup">3.6.1.249. rmem_cma_setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-dma-setup">3.6.1.250. rmem_dma_setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#reservedmem-of-declare">3.6.1.251. RESERVEDMEM_OF_DECLARE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#reserved-mem-alloc-size">3.6.1.252. __reserved_mem_alloc_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#reserved-mem-check-root">3.6.1.253. __reserved_mem_check_root</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#reserved-mem-init-node">3.6.1.254. __reserved_mem_init_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-check-for-overlap">3.6.1.255. __rmem_check_for_overlap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#round-mask">3.6.1.256. __round_mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html">3.6.1.257. set_cpu_active</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#set-cpu-online">3.6.1.258. set_cpu_online</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#set-task-stack-end-magic">3.6.1.259. set_task_stack_end_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#setup-dma-zone">3.6.1.260. setup_dma_zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#setup-machine-fdt">3.6.1.261. setup_machine_fdt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#setup-processor">3.6.1.262. setup_processor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#skip-spaces">3.6.1.263. skip_spaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#smp-setup-processor-id">3.6.1.264. smp_setup_processor_id</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#start-kernel">3.6.1.265. start_kernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="T_function.html">3.6.1.266. TASKE_SIZE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="T_function.html#task-thread-info">3.6.1.267. task_thread_info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html">3.6.1.268. __va</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vectors-base">3.6.1.269. vectors_base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vectors-high">3.6.1.270. vectors_high</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vm-area-add-early">3.6.1.271. vm_area_add_early</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vm-reseve-area-early">3.6.1.272. vm_reseve_area_early</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vmalloc-min">3.6.1.273. vmalloc_min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html">3.6.1.274. zone_absent_pages_in_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html#zone-init-internals">3.6.1.275. zone_init_internals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html#zone-movable-is-highmem">3.6.1.276. zone_movable_is_highmem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html#zone-pcp-init">3.6.1.277. zone_pcp_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html#zone-spanned-pages-in-node">3.6.1.278. zone_spanned_pages_in_node</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../module/index.html">3.6.2. Linux内核API之模块机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thread_management/index.html">3.6.3. Linux内核API之进程管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thread_schedule/index.html">3.6.4. Linux内核API之进程调度</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interrupt/index.html">3.6.5. Linux内核API之中断机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../memory/index.html">3.6.6. Linux内核API之内存管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../timer/index.html">3.6.7. Linux内核API之定时机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sync/index.html">3.6.8. Linux内核API之同步机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filesystem/index.html">3.6.9. Linux内核API之文件系统</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../device/index.html">3.6.10. Linux内核API之设备管理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.6. </span>linux 内核函数</a></li>
+          <li class="breadcrumb-item"><a href="kernel_function.html"><span class="section-number">3.6.1. </span>内核函数汇总</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.6.1.151. </span>__map_init_section</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/kernel_function/summary/M_function.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="map-init-section">
+<h1><span class="section-number">3.6.1.151. </span>__map_init_section<a class="headerlink" href="#map-init-section" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static void __init __map_init_section(pmd_t *pmd, unsigned long addr,
+            unsigned long end, phys_addr_t phys, const struct mem_type *type, bool ng)
+{
+    pmd_t *p = pmd;
+#ifndef CONFIG_ARM_LPAE
+    if(addr &amp; SECTION_SIZE)
+        pmd++;
+#endif
+    do {
+        *pmd = __pmd(phys | type-&gt;prot_sect | (ng ? PMD_SECT_nG : 0));
+        phys += SECTION_SIZE;
+    } while(pmd++, addr += SECTION_SIZE, addr != end);
+
+    flush_pmd_entry(p);
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">__map_init_section</span></code> 用于建立一个section一级页表</p>
+</section>
+<section id="map-lowmem">
+<h1><span class="section-number">3.6.1.152. </span>map_lowmem<a class="headerlink" href="#map-lowmem" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static void __init map_lowmem(void)
+{
+    struct memblock_region *reg;
+    //计算内核镜像的起始物理地址和终止物理地址
+    phys_addr_t kernel_x_start = round_down(__pa(KERNEL_START), SECTION_SIZE);
+    phys_addr_t kernel_x_end = round_up(__pa(__init_end), SECTION_SIZE);
+
+    //遍历系统中所有的可用物理内存
+    for_each_memblock(memory, reg) {
+        phys_addr_t start = reg-&gt;base;
+        phys_addr_t end = start + reg-&gt;size;
+        struct map_desc map;
+
+        //判断这段物理内存块是否建立页表
+        if(memblock_is_nomap(reg))
+            continue;
+
+        //如果物理内存的终止地址大于低端物理内存，则end设置为arm_lowmem_limit
+        if(end &gt; arm_lowmem_limit)
+            end = arm_lowmem_limit;
+        if(start &gt;= end)
+            break;
+
+        if(end &lt; kernel_x_start) {
+            map.pfn = __phys_to_pfn(start);
+            map.virtual = __phys_to_pfn(start);
+            map.length = end - start;
+            map.type = MT_MEMORY_RWX;
+            create_mapping(&amp;map);
+        } else if(start &gt;= kernel_x_end) {
+            map.pfn = __phys_to_pfn(start);
+            map.virtual = __phys_to_pfn(start);
+            map.length = end - start;
+            map.type =  MT_MEMORY_RW;
+            create_mapping(&amp;map);
+        } else {
+            if(start &lt; kernel_x_start) {
+                map.pfn = __phys_to_pfn(start);
+                map.virtual = __phys_to_virt(start);
+                map.length = kernel_x_start - start;
+                map.type = MT_MEMORY_RW;
+
+                create_mapping(&amp;map);
+            }
+
+            map.pfn = __phys_to_pfn(kernel_x_start);
+            map.virtual = __phys_to_virt(kernel_x_start);
+            map.length = end - kernel_x_end;
+            map.type = MT_MEMORY_RW;
+
+            create_mapping(&amp;map);
+        }
+
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">map_lowmem</span></code> 用于映射低端物理内存，低端物理内存的起始地址为DRM，低端物理内存的结束地址是arm_lowmem_limit.</p>
+</section>
+<section id="memblock-add">
+<h1><span class="section-number">3.6.1.153. </span>memblock_add<a class="headerlink" href="#memblock-add" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">__init_memblock</span> <span class="n">memblock_add</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">base</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">phys_addr_t</span> <span class="n">end</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">memblock_add_range</span><span class="p">(</span><span class="o">&amp;</span><span class="n">memblock</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">MAX_NUMNODES</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_add</span></code> 用于将一块可用物理内存加入到memblock.memory内存区</p>
+</section>
+<section id="memblock-add-range">
+<h1><span class="section-number">3.6.1.154. </span>memblock_add_range<a class="headerlink" href="#memblock-add-range" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//type: 指向内存区
+//base: 需要加入的内存块的基地址
+//size: 需要加入内存块的长度
+//nid: NUMA节点
+//flags: 新加入内存块对应的flags
+int __init_memblock memblock_add_range(struct memblock_type *type, phys_addr_t base,
+                phys_addr_t size, int nid, enum memblock_flags flags)
+{
+    bool insert = false;
+    phys_addr_t obase = base;
+    phys_addr_t end = base + memblock_cap_size(base, &amp;size);
+    int idx, nr_new;
+    struct memblock_region *rgn;
+
+    //如果size为0，则返回
+    if(!size)
+        return 0;
+
+    //检查参数type-&gt;regions[0].size以此判断内存区是不是不包含其他内存区块
+    //由于内存区内的所有内存区块都是按其首地址从低到高排列,如果第一个内存区块的长度为0
+    //那么认为这个内存区可能为空，但不能确认
+    if(type-&gt;regions[0].size == 0) {
+        //继续检查内存区的cnt变量，这个变量统计内存区内存块的数量
+        //如果内存区的cnt为1表示内存区内不包含内存块的数量
+        //如果内存区的total_size不为零，那么内存区含有内存区块,内核报错
+        WARN_ON(type-&gt;cnt != 1 || type-&gt;total_size);
+        type-&gt;regions[0].base = base;
+        type-&gt;regions[0].size = size;
+        type-&gt;regions[0].flags = flags;
+        memblock_set_region_node(&amp;type-&gt;regions[0], nid);
+        type-&gt;total_size = size;
+        return 0;
+    }
+
+repeat:
+    base = obase;
+    nr_new = 0;
+
+    //遍历内存区内的所有内存区块
+    for_earch_memblock_type(idx, type, rgn) {
+        phys_addr_t rbase = rgn-&gt;base;
+        phys_addr_t rend = rbase + rgn-&gt;size;
+
+        if(rbase &gt;= end)
+            break;
+        if(rend &lt;= base)
+            continue;
+
+        if(rbase &gt; base) {
+            nr_new++;
+            if(insert)
+                memblock_insert_region(type, idx++, base, rbase - base, nid, flags);
+        }
+
+        base = min(rend, end);
+    }
+
+    if(base &lt; end) {
+        nr_new++;
+        if(insert)
+            memblock_insert_region(type, idex, base, end - base, nid, flags);
+    }
+
+    if(!nr_new)
+        return 0;
+
+    if(!insert) {
+        while(type-&gt;cnt + nr_new &gt; type_max)
+            if(memblock_double_array(type, obase, size) &lt; 0)
+                return -ENOMEM;
+        insert = true;
+        goto repeat;
+    } else {
+        memblock_merge_regions(type);
+        return 0;
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_add_range</span></code> 用于将一块物理内存插入到内存区里面，内存区可以是物理内存区，也可以是预留区</p>
+<p><strong>遍历到的内存区块的起始地址大于或等于新内存区块的结束地址，新的内存区块位于遍历到内存区块的前端</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>1） rbase &gt; end
+
+ base                    end        rbase               rend
+ +-----------------------+          +-------------------+
+ |                       |          |                   |
+ | New region            |          | Exist regions     |
+ |                       |          |                   |
+ +-----------------------+          +-------------------+
+
+2）rbase == endi
+
+                         rbase                      rend
+                        | &lt;----------------------&gt; |
+ +----------------------+--------------------------+
+ |                      |                          |
+ | New region           | Exist regions            |
+ |                      |                          |
+ +----------------------+--------------------------+
+ | &lt;------------------&gt; |
+ base                   end
+</pre></div>
+</div>
+<p><strong>遍历到的内存区块的终止地址小于或等于新内存区块的起始地址，新的内存区块位于遍历到内存区块的后面</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>1） base &gt; rend
+ rbase                rend         base                  end
+ +--------------------+            +---------------------+
+ |                    |            |                     |
+ |   Exist regions    |            |      new region     |
+ |                    |            |                     |
+ +--------------------+            +---------------------+
+
+2) base == rend
+                      base
+ rbase                rend                     end
+ +--------------------+------------------------+
+ |                    |                        |
+ |   Exist regions    |       new region       |
+ |                    |                        |
+ +--------------------+------------------------+
+</pre></div>
+</div>
+<p><strong>其他情况,两个内存区块存在重叠部分</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                 <span class="n">rbase</span>     <span class="n">Exist</span> <span class="n">regions</span>        <span class="n">rend</span>
+                 <span class="o">|</span> <span class="o">&lt;--------------------------&gt;</span> <span class="o">|</span>
+ <span class="o">+---------------+--------+---------------------+</span>
+ <span class="o">|</span>               <span class="o">|</span>        <span class="o">|</span>                     <span class="o">|</span>
+ <span class="o">|</span>               <span class="o">|</span>        <span class="o">|</span>                     <span class="o">|</span>
+ <span class="o">|</span>               <span class="o">|</span>        <span class="o">|</span>                     <span class="o">|</span>
+ <span class="o">+---------------+--------+---------------------+</span>
+ <span class="o">|</span> <span class="o">&lt;--------------------&gt;</span> <span class="o">|</span>
+ <span class="n">base</span>   <span class="n">New</span> <span class="n">region</span>        <span class="n">end</span>
+
+
+   <span class="o">*</span> <span class="n">rbase</span>                     <span class="n">rend</span>
+<span class="o">|</span> <span class="o">&lt;---------------------&gt;</span> <span class="o">|</span>
+<span class="o">+----------------+--------+----------------------+</span>
+<span class="o">|</span>                <span class="o">|</span>        <span class="o">|</span>                      <span class="o">|</span>
+<span class="o">|</span> <span class="n">Exist</span> <span class="n">regions</span>  <span class="o">|</span>        <span class="o">|</span>                      <span class="o">|</span>
+<span class="o">|</span>                <span class="o">|</span>        <span class="o">|</span>                      <span class="o">|</span>
+<span class="o">+----------------+--------+----------------------+</span>
+                 <span class="o">|</span> <span class="o">&lt;---------------------------&gt;</span> <span class="o">|</span>
+                 <span class="n">base</span>      <span class="n">new</span> <span class="n">region</span>            <span class="n">end</span>
+</pre></div>
+</div>
+</section>
+<section id="memblock-addrs-overlap">
+<h1><span class="section-number">3.6.1.155. </span>memblock_addrs_overlap<a class="headerlink" href="#memblock-addrs-overlap" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">__init_memblock</span> <span class="n">memblock_addrs_overlap</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">base1</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">size1</span><span class="p">,</span>
+                                <span class="n">phys_addr_t</span> <span class="n">base2</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">size2</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">base1</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">base2</span> <span class="o">+</span> <span class="n">size2</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">base2</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">base1</span> <span class="o">+</span> <span class="n">size1</span><span class="p">)));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_addrs_overlap</span></code> 用于确认两块内存区块是否存在重叠</p>
+</section>
+<section id="memblock-alloc-base">
+<h1><span class="section-number">3.6.1.156. </span>memblock_alloc_base<a class="headerlink" href="#memblock-alloc-base" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phys_addr_t</span> <span class="n">__init</span> <span class="n">memblock_alloc_base</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">align</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">max_addr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">phys_addr_t</span> <span class="n">alloc</span><span class="p">;</span>
+
+    <span class="n">alloc</span> <span class="o">=</span> <span class="n">__memblock_alloc_base</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">max_addr</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">alloc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">panic</span><span class="p">(</span><span class="s2">&quot;ERROR: Failed to allocate %pa bytes below %pa.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">max_addr</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">alloc</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">phys_addr_t</span> <span class="n">__init</span> <span class="n">__memblock_alloc_base</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">align</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">max_addr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">memblock_alloc_base_nid</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">max_addr</span><span class="p">,</span> <span class="n">NUMA_NO_NODE</span><span class="p">,</span> <span class="n">MEMBLOCK_NONE</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_alloc_base</span></code> 用于获得指定长度的物理内存</p>
+</section>
+<section id="memblock-alloc-base-nid">
+<h1><span class="section-number">3.6.1.157. </span>memblock_alloc_base_nid<a class="headerlink" href="#memblock-alloc-base-nid" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phys_addr_t</span> <span class="n">__init</span> <span class="n">memblock_alloc_base_nid</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">align</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">max_addr</span><span class="p">,</span>
+                                            <span class="nb">int</span> <span class="n">nid</span><span class="p">,</span> <span class="n">enum</span> <span class="n">memblock_flags</span> <span class="n">flags</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">memblock_alloc_range_nid</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">max_addr</span><span class="p">,</span> <span class="n">nid</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_alloc_base_nid</span></code> 用于从指定NUMA节点上分配物理内存</p>
+</section>
+<section id="memblock-alloc-internal">
+<h1><span class="section-number">3.6.1.158. </span>memblock_alloc_internal<a class="headerlink" href="#memblock-alloc-internal" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static void * __init memblock_alloc_internal(phys_addr_t size, phys_addr_t  align,
+        phys_addr_t min_addr, phys_addr_t max_addr, int nid)
+{
+    phys_addr_t alloc;
+    void *ptr;
+    enum memblock_flags flags = choose_memblock_flags();
+
+    if(WARN_ONCE(nid == MAX_NUMNODES, &quot;Usage of MAX_NUMNODES is deprecated. Use NUMA_NO_NODE instead\n&quot;))
+        nid = NUMA_NO_NODE;
+
+    //判断slab内存分配器是否启用
+    //如果启用直接调用kzalloc_node分配内存,并返回
+    if(WARN_ON_ONCE(slab_is_available()))
+        return kzalloc_node(size, GFP_NOWAIT, nid);
+
+    //如果align参数为0，那么打印堆栈信息，并将align设置为SMP_CACHE_BYTES
+    if(!align) {
+        dump_stack();
+        align = SMP_CACHE_BYTES;
+    }
+
+    //如果max_addr大于MEMBLOCK内存分配器最大设置current_limit,则将其设置为MEMBLOCK最大限制
+    if(max_addr &gt; memblock.current_limit)
+        max_addr = memblock.current_limit;
+
+again:
+    //从MEMBLOCK分配器中获得指定物理内存
+    alloc = memblock_find_in_range_node(size, align, min_addr, max_addr, nid, flags);
+
+    //分配成功后，将其加入到预留区
+    if(alloc &amp;&amp; !memblock_reserve(alloc, size))
+        goto done;
+
+    //如果nid不是NUMA_NO_NODE，那么重新从NUMA_NO_NODE中分配内存，并将该区域加入到系统预留区
+    if(nid != NUMA_NO_NODE) {
+        alloc memblock_find_in_range_node(size, align, min_addr, max_addr, NUMA_NO_NODE, flags);
+
+        if(alloc &amp;&amp; !memblock_reserve(alloc, size))
+            goto done;
+    }
+
+    if(min_addr) {
+        min_addr = 0;
+        goto again;
+    }
+
+    if(flags &amp; MEMBLOCK_MIRROR) {
+        flags &amp;= ~MMEBLOCK_MIRROR;
+        goto again;
+    }
+
+    return NULL;
+
+done:
+    //如果内存分配成功，那么函数调用phys_to_virt获得物理地址对应的虚拟地址
+    ptr = phys_to_virt(alloc);
+    if(max_addr != MEMBLOCK_ALLOC_KASAN)
+        kmemleak_alloc(ptr, size, 0, 0);
+
+    return ptr;
+}
+
+static inline void *phys_to_virt(phys_addr_t x)
+{
+    return (void *)__phys_to_virt(x);
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">membock_alloc_internal</span></code> 用于从MEMBLOCK内存分配器中获得指定大小的物理内存</p>
+</section>
+<section id="memblock-alloc-node-nopanic">
+<h1><span class="section-number">3.6.1.159. </span>memblock_alloc_node_nopanic<a class="headerlink" href="#memblock-alloc-node-nopanic" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="o">*</span> <span class="n">__init</span> <span class="n">memblock_alloc_try_nid_nopanic</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">align</span><span class="p">,</span>
+                <span class="n">phys_addr_t</span> <span class="n">min_addr</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">max_addr</span><span class="p">,</span> <span class="nb">int</span> <span class="n">nid</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+
+    <span class="n">ptr</span> <span class="o">=</span> <span class="n">memblock_alloc_internal</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">min_addr</span><span class="p">,</span> <span class="n">max_addr</span><span class="p">,</span> <span class="n">nid</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span>
+        <span class="n">memset</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">ptr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="o">*</span> <span class="n">__init</span> <span class="n">memblock_alloc_node_nopanic</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span> <span class="n">nid</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">memblock_alloc_try_nid_nopanic</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">SMP_CACHE_BYTES</span><span class="p">,</span> <span class="n">MEMBLOCK_LOW_LIMIT</span><span class="p">,</span> <span class="n">MEMBLOCK_ALLOC_ACCESSIBLE</span><span class="p">,</span> <span class="n">nid</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_alloc_node_nopanic</span></code> 用于从指定的NUMA中分配物理内存</p>
+</section>
+<section id="memblock-alloc-range">
+<h1><span class="section-number">3.6.1.160. </span>memblock_alloc_range<a class="headerlink" href="#memblock-alloc-range" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phys_addr_t</span> <span class="n">__init</span> <span class="n">memblock_alloc_range</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">align</span><span class="p">,</span>
+        <span class="n">phys_addr_t</span> <span class="n">start</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">end</span><span class="p">,</span> <span class="n">enum</span> <span class="n">memblock_flags</span>  <span class="n">flags</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">memblock_alloc_range_nid</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">NUMA_NO_NODE</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_alloc_range</span></code> 用于从MEMBLOCK可用物理内存指定范围内分配物理内存．</p>
+</section>
+<section id="memblock-alloc-range-nid">
+<h1><span class="section-number">3.6.1.161. </span>memblock_alloc_range_nid<a class="headerlink" href="#memblock-alloc-range-nid" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size, phys_addr_t align,
+            phys_addr_t start, phys_addr_t end, int nid, enum memblock_flags flags)
+{
+    phy_addr_t found;
+
+    if(!align) {
+        dump_stack();
+        align = SMP_CACHE_BYTES;
+    }
+
+    found = memblock_find_in_range_node(size, align, start, end, nid, flags);
+
+    if(found &amp;&amp; !memblock_reserve(found, size)) {
+        kmemleak_alloc_phy(found, size, 0, 0);
+        return found;
+    }
+
+    return 0;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_alloc_range_nid</span></code> 用于从指定NUMA上分配物理内存</p>
+</section>
+<section id="memblock-allow-resize">
+<h1><span class="section-number">3.6.1.162. </span>memblock_allow_resize<a class="headerlink" href="#memblock-allow-resize" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">__init</span> <span class="n">memblock_allow_reize</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">memblock_can_resize</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_allow_resize</span></code> 用于设置MEMBLOCK内存分配器的memblock_can_resize变量</p>
+</section>
+<section id="memblock-bottom-up">
+<h1><span class="section-number">3.6.1.163. </span>memblock_bottom_up<a class="headerlink" href="#memblock-bottom-up" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="nb">bool</span> <span class="n">memblock_bottom_up</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">memblock</span><span class="o">.</span><span class="n">bottom_up</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_bottom_up</span></code> 用于获得当前MEMBLOCK分配的方向，如果为true那么MEMBLOCK从低地址向高地址分配，反之则高地址向低地址分配</p>
+</section>
+<section id="memblock-cap-size">
+<h1><span class="section-number">3.6.1.164. </span>memblock_cap_size<a class="headerlink" href="#memblock-cap-size" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">phys_addr_t</span> <span class="n">memblock_cap_size</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">base</span><span class="p">,</span>  <span class="n">phys_addr_t</span> <span class="o">*</span><span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">*</span><span class="n">size</span> <span class="o">=</span>  <span class="nb">min</span><span class="p">(</span><span class="o">*</span><span class="n">size</span><span class="p">,</span> <span class="n">PHYS_ADDR_MAX</span> <span class="o">-</span> <span class="n">base</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_cap_size</span></code> 用于获得一个有效的长度值，函数确保size不会超出系统支持的物理内存</p>
+</section>
+<section id="memblock-double-array">
+<h1><span class="section-number">3.6.1.165. </span>memblock_double_array<a class="headerlink" href="#memblock-double-array" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//type: 需要扩编的memblock_type
+//new_area_start: 新物理内存区的起始物理地址
+//new_area_size: 新物理内存区的长度
+static int __init_memblock memblock_double_array(struct memblock_type *type,
+        phys_addr_t new_area_start, phys_addr_t new_area_size)
+{
+    struct memblock_region *new_array, *old_array;
+    phys_addr_t old_alloc_size, new_alloc_size;
+    phys_addr_t old_size, new_size, addr, new_end;
+    //获取当前slab内存分配器是否可用
+    int use_slab = slab_is_available();
+    int *in_slab;
+
+    if(!memblock_can_resize)
+        return -1;
+    //计算原先memblock_type支持的最大物理内存数
+    old_size = type-&gt;max * sizeof(struct memblock_region);
+    new_size = old_size &lt;&lt; 1;
+
+    //进行页对齐
+    old_alloc_size = PAGE_ALIGN(old_size);
+    new_alloc_size = PAGE_ALIGN(new_size);
+    //如果type对应的类型是可用物理内存区，那么读取memblock_memory_in_slab的值到in_slab中
+    if(type == &amp;memblock.memory)
+        in_slab = &amp;memblock_memory_in_slab;
+    else
+        in_slab = &amp;memblock_reserved_in_slab;
+
+    //如果此时slab内存分配器已经可以使用，使用kmalloc分配内存
+    if(use_slab) {
+        new_array = kmalloc(new_size, GFP_KERNEL);
+        addr = new_array ? __pa(new_array) : 0;
+    } else {
+        if(type != &amp;memblock.reserved)
+            new_area_start = new_area_size = 0;
+        //查找一块空闲的物理内存
+        addr = memblock_find_in_range(new_area_start + new_area_size,
+                    memblock.current_limit, new_alloc_size, PAGE_SIZE);
+
+        //如果没有找到，那么函数从0地址重新查找物理内存
+        if(!addr &amp;&amp; new_area_size)
+            addr = mmeblock_find_in_range(0, min(new_area_start, memblock.current_limit),
+                            new_alloc_size, PAGE_SIZE);
+
+        new_array = addr ? __va(addr) : NULL;
+    }
+
+    if(!addr) {
+        pr_err(&quot;memblock: Failed to double %s array from %ld to %ld enties!\n&quot;,
+                type-&gt;name, type-&gt;max, type-&gt;max * 2);
+        return -1;
+    }
+
+    new_end = addr + new_size - 1;
+
+    //将原始regions信息拷贝到新分配的物理内存上，然后清零new_array+type-&gt;max之后的物理内存
+    memcpy(new_array, type-&gt;regions, old_size);
+    memset(new_array + type-&gt;max, 0, old_size);
+    old_array = type-&gt;regions;
+    type-&gt;regions = new_array;
+    type-&gt;max &lt;&lt;= 1;
+
+    if(*in_slab)
+        kfree(old_array);
+    else if(old_array != memblock_memory_init_regions &amp;&amp;
+            old_array != memblock_reserved_init_regions)
+        memblock_free(__pa(old_array), old_alloc_size);
+
+    if(!use_slab)
+        BUG_ON(memblock_reserve(addr, new_alloc_size));
+
+    *in_slab = use_slab;
+
+    return 0;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_double_array</span></code> 将memblock_type支持的regions数扩大两倍</p>
+</section>
+<section id="memblock-end-of-dram">
+<h1><span class="section-number">3.6.1.166. </span>memblock_end_of_DRAM<a class="headerlink" href="#memblock-end-of-dram" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phys_addr_t</span> <span class="n">__init_memblock</span> <span class="n">memblock_end_of_DRAM</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">memblock</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">cnt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">memblock</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">base</span> <span class="o">+</span> <span class="n">memblock</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_end_of_DRAM</span></code> 用于获得MEMBLOCK内存分配器memory区域的最大物理地址．</p>
+</section>
+<section id="memblock-find-in-range">
+<h1><span class="section-number">3.6.1.167. </span>memblock_find_in_range<a class="headerlink" href="#memblock-find-in-range" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>phys_addr_t __init_memblock memblock_find_in_range(phys_addr_t start, phys_addr_t end,
+                        phys_addr_t size, phys_addr_t align)
+{
+    phys_addr_t ret;
+    enum memblock_flags flags = choose_memblock_flags();
+
+again:
+    ret = memblock_find_in_range_node(size, align, start, end, NUMA_NO_NODE, flags);
+
+    if(!ret &amp;&amp; (flags &amp; MEMBLOCK_MIRROR)) {
+        flags &amp;= ~MEMBLOCK_MIRROR;
+        goto again;
+    }
+
+    return ret;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_find_in_range</span></code> 在指定区间内查找一块可用的物理内存</p>
+</section>
+<section id="memblock-find-in-range-node">
+<h1><span class="section-number">3.6.1.168. </span>memblock_find_in_range_node<a class="headerlink" href="#memblock-find-in-range-node" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">size</span><span class="p">:</span> <span class="n">需要查找内存的大小</span>
+<span class="o">//</span><span class="n">align</span><span class="p">:</span> <span class="n">对齐方式</span>
+<span class="o">//</span><span class="n">start</span><span class="p">:</span> <span class="n">需要查找内存区域的起始地址</span>
+<span class="o">//</span><span class="n">end</span><span class="p">:</span> <span class="n">需要查找内存区域的终止地址</span>
+<span class="o">//</span><span class="n">nid</span><span class="p">:</span> <span class="n">代表NUMA节点信息</span>
+<span class="o">//</span><span class="n">flags</span><span class="p">:</span> <span class="n">代表内存区的标志</span>
+<span class="n">phys_addr_t</span> <span class="n">__init_memblock</span> <span class="n">memblock_find_in_range_node</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">align</span><span class="p">,</span>
+                    <span class="n">phys_addr_t</span> <span class="n">start</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">end</span><span class="p">,</span> <span class="nb">int</span> <span class="n">nid</span><span class="p">,</span> <span class="n">enum</span> <span class="n">memblock_flags</span> <span class="n">flags</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">phys_addr_t</span> <span class="n">kernel_end</span><span class="p">,</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="o">//</span><span class="n">对end参数进行检测</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">end</span> <span class="o">==</span> <span class="n">MEMBLOCK_ALLOC_ACCESSIBLE</span> <span class="o">||</span> <span class="n">end</span> <span class="o">==</span> <span class="n">MEMBLOCK_ALLOC_KASAN</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">memblock</span><span class="o">.</span><span class="n">current_current_limit</span><span class="p">;</span>
+
+    <span class="o">//</span><span class="n">对start和end进行处理</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">max_t</span><span class="p">(</span><span class="n">phys_addr_t</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">PAGE_SIZE</span><span class="p">);</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+    <span class="o">//</span><span class="n">获得kernel镜像的终止物理地址</span>
+    <span class="n">kernel_end</span> <span class="o">=</span> <span class="n">__pa_symbol</span><span class="p">(</span><span class="n">_end</span><span class="p">);</span>
+
+    <span class="o">//</span><span class="n">如果MEMBLOCK支持从低向上分配以及查找的终止地址大于内核的终止物理地址</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">memblock_bottom_up</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="n">kernel_end</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">phys_addr_t</span> <span class="n">bottom_up_start</span><span class="p">;</span>
+
+        <span class="n">bottom_up_start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">kernel_end</span><span class="p">);</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">__memblock_find_range_bottom_up</span><span class="p">(</span><span class="n">bottom_up_start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">nid</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+
+        <span class="n">WARN_ONCE</span><span class="p">(</span><span class="n">IS_ENABLED</span><span class="p">(</span><span class="n">CONFIG_MEMORY_HOTREMOVE</span><span class="p">),</span>
+                <span class="s2">&quot;memblock: bottom-up allocaton failed, memory hotremove may be affected</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">__memblock_find_range_top_down</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">nid</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_find_in_range_node</span></code> 在指定的节点区间内查找一块可用的物理内存</p>
+</section>
+<section id="memblock-find-range-bottom-up">
+<h1><span class="section-number">3.6.1.169. </span>__memblock_find_range_bottom_up<a class="headerlink" href="#memblock-find-range-bottom-up" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">phys_addr_t</span> <span class="n">__init_memblock</span> <span class="n">__memblock_find_range_bottom_up</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">start</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">end</span><span class="p">,</span>
+    <span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">align</span><span class="p">,</span> <span class="nb">int</span> <span class="n">nid</span><span class="p">,</span> <span class="n">enum</span> <span class="n">memblock_flags</span> <span class="n">flags</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">phys_addr_t</span> <span class="n">this_start</span><span class="p">,</span> <span class="n">this_end</span><span class="p">,</span> <span class="n">cand</span><span class="p">;</span>
+    <span class="n">u64</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="o">//</span><span class="n">遍历所有可用的物理内存region</span>
+    <span class="n">for_each_free_mem_range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">nid</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">this_start</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">this_end</span><span class="p">,</span> <span class="n">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="o">//</span><span class="n">使用clamp找到符合要求的范围</span>
+        <span class="n">this_start</span> <span class="o">=</span> <span class="n">clamp</span><span class="p">(</span><span class="n">this_start</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+        <span class="n">this_end</span> <span class="o">=</span> <span class="n">clamp</span><span class="p">(</span><span class="n">this_end</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+
+        <span class="o">//</span><span class="n">对this_start进行对齐</span>
+        <span class="n">cand</span> <span class="o">=</span> <span class="n">round_up</span><span class="p">(</span><span class="n">this_start</span><span class="p">,</span> <span class="n">align</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cand</span> <span class="o">&lt;</span> <span class="n">this_end</span> <span class="o">&amp;&amp;</span> <span class="n">this_end</span> <span class="o">-</span> <span class="n">cand</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">cand</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">__memblock_find_range_bottom_up</span></code> 用于从MEMBLOCK的底部开始，查找一块可用的物理内存region.</p>
+</section>
+<section id="memblock-find-range-top-down">
+<h1><span class="section-number">3.6.1.170. </span>__memblock_find_range_top_down<a class="headerlink" href="#memblock-find-range-top-down" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">phys_addr_t</span> <span class="n">__init_memblock</span> <span class="n">__memblock_find_range_top_down</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">start</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">end</span><span class="p">,</span>
+        <span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">align</span><span class="p">,</span> <span class="nb">int</span> <span class="n">nid</span><span class="p">,</span> <span class="n">enum</span> <span class="n">memblock_flags</span> <span class="n">flags</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">phys_addr_t</span> <span class="n">this_start</span><span class="p">,</span> <span class="n">this_end</span><span class="p">,</span> <span class="n">cand</span><span class="p">;</span>
+    <span class="n">u64</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="o">//</span><span class="n">倒序遍历所有的空闲物理区块</span>
+    <span class="n">for_each_free_mem_range_reverse</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">nid</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">this_start</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">this_end</span><span class="p">,</span> <span class="n">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="o">//</span><span class="n">找到符合要求的起始物理地址和终止物理地址</span>
+        <span class="n">this_start</span> <span class="o">=</span> <span class="n">clamp</span><span class="p">(</span><span class="n">this_start</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+        <span class="n">this_end</span> <span class="o">=</span> <span class="n">clamp</span><span class="p">(</span><span class="n">this_end</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">);</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">this_end</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+
+        <span class="n">cand</span> <span class="o">=</span> <span class="n">round_down</span><span class="p">(</span><span class="n">this_end</span> <span class="o">-</span> <span class="n">size</span><span class="p">,</span> <span class="n">align</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cand</span> <span class="o">&gt;=</span> <span class="n">this_start</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">cand</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">__memblock_find_rage_top_down</span></code> 作用是从顶端往低端，查找满足需求的空闲物理块</p>
+</section>
+<section id="memblock-free">
+<h1><span class="section-number">3.6.1.171. </span>memblock_free<a class="headerlink" href="#memblock-free" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">__init_memblock</span> <span class="n">memblock_free</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">base</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">phys_addr_t</span> <span class="n">end</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="n">kmemleak_free_part_phys</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">memblock_remove_range</span><span class="p">(</span><span class="o">&amp;</span><span class="n">memblock</span><span class="o">.</span><span class="n">reserved</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_free</span></code> 作用是释放物理内存区块</p>
+</section>
+<section id="memblock-insert-region">
+<h1><span class="section-number">3.6.1.172. </span>memblock_insert_region<a class="headerlink" href="#memblock-insert-region" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span> <span class="n">__init_memblock</span> <span class="n">memblock_insert_region</span><span class="p">(</span><span class="n">struct</span> <span class="n">memblock_type</span> <span class="o">*</span><span class="nb">type</span><span class="p">,</span>
+        <span class="nb">int</span> <span class="n">idx</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">base</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="nb">int</span> <span class="n">nid</span><span class="p">,</span> <span class="n">enum</span> <span class="n">memblock_flags</span> <span class="n">flags</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">memblock_region</span> <span class="o">*</span><span class="n">rgn</span> <span class="o">==</span> <span class="o">&amp;</span><span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="n">idx</span><span class="p">];</span>
+
+    <span class="n">BUG_ON</span><span class="p">(</span><span class="nb">type</span><span class="o">-&gt;</span><span class="n">cnt</span> <span class="o">&gt;=</span> <span class="nb">type</span><span class="o">-&gt;</span><span class="nb">max</span><span class="p">);</span>
+
+    <span class="n">memmove</span><span class="p">(</span><span class="n">rgn</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rgn</span><span class="p">,</span> <span class="p">(</span><span class="nb">type</span><span class="o">-&gt;</span><span class="n">cnt</span> <span class="o">-</span> <span class="n">idx</span><span class="p">)</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">rgn</span><span class="p">));</span>
+    <span class="n">rgn</span><span class="o">-&gt;</span><span class="n">base</span> <span class="o">=</span> <span class="n">base</span><span class="p">;</span>
+    <span class="n">rgn</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span><span class="p">;</span>
+    <span class="n">rgn</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">=</span> <span class="n">flags</span><span class="p">;</span>
+    <span class="n">memblock_set_region_node</span><span class="p">(</span><span class="n">rgn</span><span class="p">,</span> <span class="n">nid</span><span class="p">);</span>
+    <span class="nb">type</span><span class="o">-&gt;</span><span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+    <span class="nb">type</span><span class="o">-&gt;</span><span class="n">total_size</span> <span class="o">+=</span> <span class="n">size</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_insert_region</span></code> 用于将一个新的memblock_region插入到MEMBLOCK指定类型里．</p>
+</section>
+<section id="memblock-is-hotpluggable">
+<h1><span class="section-number">3.6.1.173. </span>memblock_is_hotpluggable<a class="headerlink" href="#memblock-is-hotpluggable" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="nb">bool</span> <span class="n">memblock_is_hotpluggable</span><span class="p">(</span><span class="n">struct</span> <span class="n">memblock_region</span> <span class="o">*</span><span class="n">m</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">MEMBLOCK_HOTPLUG</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_is_hotpluggable</span></code> 判断当前region是否具有热插拔属性．</p>
+</section>
+<section id="memblock-is-mirror">
+<h1><span class="section-number">3.6.1.174. </span>memblock_is_mirror<a class="headerlink" href="#memblock-is-mirror" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="nb">bool</span> <span class="n">memblock_is_mirror</span><span class="p">(</span><span class="n">struct</span> <span class="n">memblock_region</span> <span class="o">*</span><span class="n">m</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">MEMBLOCK_MIRROR</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_is_mirror</span></code> 用于判断当前regions是否是MIRROR</p>
+</section>
+<section id="memblock-is-nomap">
+<h1><span class="section-number">3.6.1.175. </span>memblock_is_nomap<a class="headerlink" href="#memblock-is-nomap" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="nb">bool</span> <span class="n">memblock_is_nomap</span><span class="p">(</span><span class="n">struct</span> <span class="n">memblock_region</span> <span class="o">*</span><span class="n">m</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">m</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">MEMBLOCK_NOMAP</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_is_nomap</span></code> 判断当前region是否不需要映射页表</p>
+</section>
+<section id="memblock-is-region-memory">
+<h1><span class="section-number">3.6.1.176. </span>memblock_is_region_memory<a class="headerlink" href="#memblock-is-region-memory" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bool</span> <span class="n">__init_memblock</span> <span class="n">memblock_is_region_memory</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">base</span><span class="p">,</span> <span class="n">phys_ddr_t</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="o">//</span><span class="n">查找base参数在memory</span> <span class="n">regions的索引</span>
+    <span class="nb">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">memblock_search</span><span class="p">(</span><span class="o">&amp;</span><span class="n">memblock</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">base</span><span class="p">);</span>
+    <span class="n">phys_addr_t</span> <span class="n">end</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="n">memblock_cap_size</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">false</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">memblock</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">base</span> <span class="o">+</span> <span class="n">memblock</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">static</span> <span class="nb">int</span> <span class="n">__init_memblock</span> <span class="n">memblock_search</span><span class="p">(</span><span class="n">struct</span> <span class="n">memblock_type</span> <span class="o">*</span><span class="nb">type</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">addr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="nb">type</span><span class="o">-&gt;</span><span class="n">cnt</span><span class="p">;</span>
+
+    <span class="n">do</span> <span class="p">{</span>
+        <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="n">left</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">addr</span> <span class="o">&lt;</span> <span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">mid</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">addr</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">.</span><span class="n">base</span> <span class="o">+</span> <span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+            <span class="n">lef</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="k">return</span> <span class="n">mid</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_is_region_memory</span></code> 用于确认内存区块是否在MEMBLOCK内存分配器memory regions里</p>
+</section>
+<section id="memblock-is-region-reserved">
+<h1><span class="section-number">3.6.1.177. </span>memblock_is_region_reserved<a class="headerlink" href="#memblock-is-region-reserved" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bool</span> <span class="n">__init_memblock</span> <span class="n">memblock_is_region_reserved</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">base</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="o">//</span><span class="n">得到查找区域的安全长度</span>
+    <span class="n">memblock_cap_size</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">size</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">memblock_overlaps_region</span><span class="p">(</span><span class="o">&amp;</span><span class="n">memblock</span><span class="o">.</span><span class="n">reserved</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_is_region_reserved</span></code> 检查参数对应的内存区块是否在MEMBLOCK内存分配器的预留区内</p>
+</section>
+<section id="memblock-isolate-range">
+<h1><span class="section-number">3.6.1.178. </span>memblock_isolate_range<a class="headerlink" href="#memblock-isolate-range" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//type: 指向特定的memblock_type
+//base: 孤立物理内存块的起始物理地址
+//size: 孤立物理内存块的长度
+static int __init_memblock memblock_isolate_range(struct memblock_type *type, phys_addr_t base,
+            phys_addr_t size, int *start_rgn, int *end_rgn)
+{
+    //计算孤立物理块的终止物理地址
+    phys_addr_t end = base + memblock_cap_size(base, &amp;size);
+    int idx;
+    struct memblock_region *rgn;
+
+    *start_rgn = *end_rgn = 0;
+
+    if(!size)
+        return 0;
+
+    while(type-&gt;cnt + 2 &gt; type-&gt;max)
+        if(memblock_double_array(type, base, size) &lt; 0)
+            return -ENOMEM;
+
+    //遍历type对应的所有物理内存region
+    for_each_memblock_type(idx, type, rgn) {
+        phys_addr_t rbase = rgn-&gt;base;
+        phys_addr_t rend = rbase + rgn-&gt;size;
+
+        //找到符合要求的region
+        if(rbase &gt;= end)
+            break;
+        if(rend &lt;= base)
+            continue;
+
+        //如果rbase小于base那么需要孤立的内存区块可能可遍历到的region存在重叠的情况
+        //首先将重叠的部分从原先的region中移除，并将剩余的region插入到memblock_type的regions里
+        if(rbase &lt; base) {
+            rgn-&gt;base = base;
+            rgn-&gt;size -= base - rbase;
+            type-&gt;total_size -= base - rbase;
+            memblock_insert_region(type, idx, rbase, base - rbase,
+                    memblock_get_region_node(rgn), rgn-&gt;flags);
+        } else if(rend &gt; end) {
+            rgn-&gt;base = end;
+            rgn-&gt;size -= end - rbase;
+            type-&gt;total_size = end - rbase;
+            memblock_insert_region(type, idx--, rbase, end - rbase,
+                memblock_get_region_node(rgn), rgn-&gt;flags);
+        } else {
+            if(!*end_rgn)
+                *start_rgn = idx;
+            *end_rgn = idx + 1;
+        }
+    }
+    return 0;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_isolate_range</span></code> 用于将指定范围的物理内存从内存区块孤立出来</p>
+</section>
+<section id="memblock-merge-regions">
+<h1><span class="section-number">3.6.1.179. </span>memblock_merge_regions<a class="headerlink" href="#memblock-merge-regions" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static void __init_memblock memblock_merge_regions(struct memblock_type *type)
+{
+    int i = 0;
+
+    //遍历所有region
+    while(i &lt; type-&gt;cnt - 1)
+    {
+        struct memblock_region *this = &amp;type-&gt;regions[i];
+        struct memblock_region *next = &amp;type-&gt;regions[i + 1];
+
+        if(this-&gt;base + this-&gt;size != next-&gt;base ||
+            memblock_get_region_node(this) != memblock_get_region_node(next) ||
+            this-&gt;flags != next-&gt;flags){
+            BUG_ON(this-&gt;base + this-&gt;size &gt; next-&gt;base);
+            i++;
+            continue;
+        }
+
+        //如果两个region正好相连，并且flags和numa都相同，则将两个region合并成一个region
+        this-&gt;size += next-&gt;size;
+        memmove(next, next + 1, (type-&gt;cnt - (i + 2)) * sizeof(*next));
+        //type的cnt减一，进入下一次循环
+        type-&gt;cnt--;
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_merge_regions</span></code> 用于合并特定memblock_type内的regions</p>
+</section>
+<section id="memblock-overlaps-region">
+<h1><span class="section-number">3.6.1.180. </span>memblock_overlaps_region<a class="headerlink" href="#memblock-overlaps-region" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bool</span> <span class="n">__init_memblock</span> <span class="n">memblock_overlaps_region</span><span class="p">(</span><span class="n">struct</span> <span class="n">memblock_type</span> <span class="o">*</span><span class="nb">type</span><span class="p">,</span>
+                        <span class="n">phys_addr_t</span> <span class="n">base</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">i</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">type</span><span class="o">-&gt;</span><span class="n">cnt</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">memblock_addrs_overlap</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+            <span class="k">break</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">type</span><span class="o">-&gt;</span><span class="n">cnt</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_overlaps_region</span></code> 用于判断内存区块在MEMBLOCK内存分配器指定type的regions内是否存在重叠部分</p>
+</section>
+<section id="memblock-phys-alloc">
+<h1><span class="section-number">3.6.1.181. </span>memblock_phys_alloc<a class="headerlink" href="#memblock-phys-alloc" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phys_addr_t</span> <span class="n">__init</span> <span class="n">memblock_phys_alloc</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">align</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">memblock_alloc_base</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">MEMBLOCK_ALLOC_ACCESSIBLE</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">phys_addr_t</span> <span class="n">__init</span> <span class="n">memblock_alloc_base</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">align</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">max_addr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">phys_addr_t</span> <span class="n">alloc</span><span class="p">;</span>
+
+    <span class="n">alloc</span> <span class="o">=</span> <span class="n">__memblock_alloc_base</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">max_addr</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">alloc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">panic</span><span class="p">(</span><span class="s2">&quot;ERROR: Failed to allocate %pa bytes below %pa.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">alloc</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">phys_addr_t</span> <span class="n">__init</span> <span class="n">__memblock_alloc_base</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">align</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">max_addr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">memblock_alloc_base_nid</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">max_addr</span><span class="p">,</span> <span class="n">NUMA_NO_NODE</span><span class="p">,</span> <span class="n">MEMBLOCK_NONE</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_phys_alloc</span></code> 用于获得指定长度的物理内存</p>
+</section>
+<section id="memblock-resion-memory-base-pfn">
+<h1><span class="section-number">3.6.1.182. </span>memblock_resion_memory_base_pfn<a class="headerlink" href="#memblock-resion-memory-base-pfn" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">memblock_region_memory_base_pfn</span><span class="p">(</span><span class="n">const</span> <span class="n">struct</span> <span class="n">memblock_region</span> <span class="o">*</span><span class="n">reg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">PFN_UP</span><span class="p">(</span><span class="n">reg</span><span class="o">-&gt;</span><span class="n">base</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_region_memory_base_pfn</span></code> 用于获得memblock_region起始物理地址对应的页帧</p>
+</section>
+<section id="memblock-region-memory-end-pfn">
+<h1><span class="section-number">3.6.1.183. </span>memblock_region_memory_end_pfn<a class="headerlink" href="#memblock-region-memory-end-pfn" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">memblock_region_memory_end_pfn</span><span class="p">(</span><span class="n">const</span> <span class="n">struct</span> <span class="n">memblock_region</span> <span class="o">*</span><span class="n">reg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">PFN_DOWN</span><span class="p">(</span><span class="n">reg</span><span class="o">-&gt;</span><span class="n">base</span> <span class="o">+</span> <span class="n">reg</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_region_memory_end_pfn</span></code> 用于获得memblock_region终止物理地址对应的页帧号</p>
+</section>
+<section id="memblock-remove-range">
+<h1><span class="section-number">3.6.1.184. </span>memblock_remove_range<a class="headerlink" href="#memblock-remove-range" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">__init_memblock</span> <span class="n">memblock_remove_range</span><span class="p">(</span><span class="n">struct</span> <span class="n">memblock_type</span> <span class="o">*</span><span class="nb">type</span><span class="p">,</span>
+                <span class="n">phys_addr_t</span> <span class="n">base</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">start_rgn</span><span class="p">,</span> <span class="n">end_rgn</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">memblock_isolate_range</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">start_rgn</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">end_rgn</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">end_rgn</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">start_rgn</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span>
+        <span class="n">memblock_remove_region</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_remove_range</span></code> 从指定的memblock_type中移除一定范围的内存区块</p>
+</section>
+<section id="memblock-remove">
+<h1><span class="section-number">3.6.1.185. </span>memblock_remove<a class="headerlink" href="#memblock-remove" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">__init_memblock</span> <span class="n">memblock_remove</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">base</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">phys_addr_t</span> <span class="n">end</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">memblock_remove_range</span><span class="p">(</span><span class="o">&amp;</span><span class="n">memblock</span><span class="o">.</span><span class="n">memory</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="memblock-remove-region">
+<h1><span class="section-number">3.6.1.186. </span>memblock_remove_region<a class="headerlink" href="#memblock-remove-region" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span> <span class="n">__init_memblock</span> <span class="n">memblock_remove_region</span><span class="p">(</span><span class="n">struct</span> <span class="n">memblock_type</span> <span class="o">*</span><span class="nb">type</span><span class="p">,</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">r</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">type</span><span class="o">-&gt;</span><span class="n">total_size</span> <span class="o">-=</span> <span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="n">r</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">;</span>
+    <span class="n">memmove</span><span class="p">(</span><span class="o">&amp;</span><span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="n">r</span><span class="p">],</span> <span class="o">&amp;</span><span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="p">(</span><span class="nb">type</span><span class="o">-&gt;</span><span class="n">cnt</span> <span class="o">-</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="n">r</span><span class="p">]));</span>
+    <span class="nb">type</span><span class="o">-&gt;</span><span class="n">cnt</span><span class="o">--</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nb">type</span><span class="o">-&gt;</span><span class="n">cnt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">WARN_ON</span><span class="p">(</span><span class="nb">type</span><span class="o">-&gt;</span><span class="n">total_size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="nb">type</span><span class="o">-&gt;</span><span class="n">cnt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">memblock_set_region_node</span><span class="p">(</span><span class="o">&amp;</span><span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">MAX_NUMNODES</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_remove_region</span></code> 用于从memblock_type region中移除指定的region</p>
+</section>
+<section id="memblock-reserve">
+<h1><span class="section-number">3.6.1.187. </span>memblock_reserve<a class="headerlink" href="#memblock-reserve" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">__init_memblock</span> <span class="n">memblock_reserve</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">base</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">phys_addr_t</span> <span class="n">end</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">memblock_add_range</span><span class="p">(</span><span class="o">&amp;</span><span class="n">memblock</span><span class="o">.</span><span class="n">reserved</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">MAX_NUMNODES</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">memblock_reserve</span></code> 将内存区块加入到MEMBLOCK的保留区</p>
+</section>
+<section id="memblock-search">
+<h1><span class="section-number">3.6.1.188. </span>memblock_search<a class="headerlink" href="#memblock-search" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">__init_memblock</span> <span class="n">memblock_search</span><span class="p">(</span><span class="n">struct</span> <span class="n">memblock_type</span> <span class="o">*</span><span class="nb">type</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">addr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="nb">type</span><span class="o">-&gt;</span><span class="n">cnt</span><span class="p">;</span>
+
+    <span class="n">do</span> <span class="p">{</span>
+        <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">right</span> <span class="o">+</span> <span class="n">left</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">addr</span> <span class="o">&lt;</span> <span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">mid</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">addr</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">.</span><span class="n">base</span> <span class="o">+</span> <span class="nb">type</span><span class="o">-&gt;</span><span class="n">regions</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="k">return</span> <span class="n">mid</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="memblock-start-of-dram">
+<h1><span class="section-number">3.6.1.189. </span>memblock_start_of_DRAM<a class="headerlink" href="#memblock-start-of-dram" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phys_addr_t</span> <span class="n">__init_memblock</span> <span class="n">memblock_start_of_DRAM</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">memblock</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">base</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="movable-node-is-enabled">
+<h1><span class="section-number">3.6.1.190. </span>movable_node_is_enabled<a class="headerlink" href="#movable-node-is-enabled" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="nb">bool</span> <span class="n">movable_node_is_enabled</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">movable_node_enabled</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="L_function.html" class="btn btn-neutral float-left" title="3.6.1.146. list_add_tail" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="N_function.html" class="btn btn-neutral float-right" title="3.6.1.191. nextprop" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.2.1. git 操作 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="7.2.2. 分支/标签管理规范" href="branch_management.html" />
+    <link rel="prev" title="7.2. git 使用笔记" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.2. git 使用笔记</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.2.1. git 操作</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">7.2.1.1. git常用命令</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="branch_management.html">7.2.2. 分支/标签管理规范</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.9. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.2. </span>git 使用笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.2.1. </span>git 操作</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/misc/git/git_normal.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="git">
+<h1><span class="section-number">7.2.1. </span>git 操作<a class="headerlink" href="#git" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">7.2.1.1. </span>git常用命令<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<section id="id2">
+<h3><span class="section-number">7.2.1.1.1. </span>远程仓库相关命令<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>检出仓库</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone git://github.com/hkdywg/test.git
+</pre></div>
+</div>
+<p>查看远程仓库</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git remote -v
+</pre></div>
+</div>
+<p>添加远程仓库</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git remote add [name] [url]
+例
+$ git remote add origin git://github.com/hkdywg/test.git
+</pre></div>
+</div>
+<p>删除远程仓库</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git remote rm [name]
+例
+$ git remote rm origin
+</pre></div>
+</div>
+<p>修改远程仓库</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git remote set-url --push [name] [newurl]
+</pre></div>
+</div>
+<p>拉取远程仓库</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git pull [remotename] [localbranchname]
+</pre></div>
+</div>
+<p>推送远程仓库</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git push [remotename] [localbranchname]
+例
+$ git push origin master
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3><span class="section-number">7.2.1.1.2. </span>分支相关操作<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>查看本地分支</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git branch
+</pre></div>
+</div>
+<p>查看远程分支</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git branch -r
+</pre></div>
+</div>
+<p>创建本地分支</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git branch [name]
+注: 新分支创建后不会自动切换为当前分支
+</pre></div>
+</div>
+<p>切换分支</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git checkout [name]
+创建分支并立即切换到新分支
+$ git checkout -b [name]
+</pre></div>
+</div>
+<p>删除分支</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git branch -d [name]
+d选项只能删除已经参与了合并的分支，对于未合并的分支是无法删除的。如果想强制
+删除一个分支，可以使用—D选项
+</pre></div>
+</div>
+<p>合并分支</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git merge [name]
+将名称为[name]的分支与当前分支合并
+</pre></div>
+</div>
+<p>创建远程分支（本地分支push到远程）：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git push origin [name]
+</pre></div>
+</div>
+<p>删除远程分支</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git push origin :heads/[name]
+</pre></div>
+</div>
+<p>如果想把本地的某个分支test提交到远程仓库，并作为远程仓库的master分支，或者作为另外一个
+名为test的分支，那可以按以下操作进行</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git push origin test:master
+提交本地test分支作为远程的master分支
+$ git push origin test:test
+提交本地test分支作为远程的test分支
+</pre></div>
+</div>
+<p>如果想删除远程分支，类似以上操作，如果：左边的分支为空那么将删除：右边的远程分支</p>
+</section>
+<section id="tag">
+<h3><span class="section-number">7.2.1.1.3. </span>tag相关操作<a class="headerlink" href="#tag" title="此标题的永久链接"></a></h3>
+<p>查看版本</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git tag
+</pre></div>
+</div>
+<p>创建版本</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git tag [name]
+</pre></div>
+</div>
+<p>删除版本</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git tag -d [name]
+</pre></div>
+</div>
+<p>查看远程版本</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git tag -r
+</pre></div>
+</div>
+<p>创建远程版本（本地版本push到远程）</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git push origin [name]
+</pre></div>
+</div>
+<p>删除远程版本</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git push origin :ref/tags/[name]
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3><span class="section-number">7.2.1.1.4. </span>子模块相关操作命令<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>添加子模块</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git submodule add [url] [path]
+例
+$ git submodule add git://github.com/hkdywg/test.git src/main/sub
+</pre></div>
+</div>
+<p>初始化子模块</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git submodule init
+只在首次检出仓库时运行一次就行
+</pre></div>
+</div>
+<p>更新子模块</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git submodule update
+每次更新或切换分支都需要运行一下
+</pre></div>
+</div>
+<p>删除子模块</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git rm --cached [path]
+编辑 .gitmodules 文件。将子模块的相关配置节点删除
+编辑 .git/config 文件。将子模块的相关配置节点删除
+手动删除子模块残留的目录
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3><span class="section-number">7.2.1.1.5. </span>忽略一些文件、文件夹不提交<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>在仓库根目录下创建名为 .gitignore 的文件，写入不需要提交的文件或者文件夹，每个元素占
+一行即可，如</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">target</span>
+<span class="nb">bin</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h3><span class="section-number">7.2.1.1.6. </span>常用操作<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">local</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span> <span class="s2">&quot;hkdywg@163.com&quot;</span>
+<span class="n">git</span> <span class="n">config</span> <span class="o">--</span><span class="n">local</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="s2">&quot;hkdywg&quot;</span>
+
+<span class="n">git</span> <span class="n">push</span> <span class="o">--</span><span class="nb">set</span><span class="o">-</span><span class="n">upstream</span> <span class="n">origin</span> <span class="n">wg</span><span class="o">/</span><span class="n">feature</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>git 命令思维导图</p></li>
+</ul>
+<img alt="../../_images/git-map.png" src="../../_images/git-map.png" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="7.2. git 使用笔记" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="branch_management.html" class="btn btn-neutral float-right" title="7.2.2. 分支/标签管理规范" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

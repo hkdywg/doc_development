@@ -1,0 +1,393 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>11.1.1. android编译命令 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="11.1.2. android编译系统" href="compile_system.html" />
+    <link rel="prev" title="11.1. android编译系统" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">11. android</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">11.1. android编译系统</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">11.1.1. android编译命令</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">11.1.1.1. 编译命令</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">11.1.1.2. 编译系统</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="compile_system.html">11.1.2. android编译系统</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../init/index.html">11.2. android init启动</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">11. </span>android</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">11.1. </span>android编译系统</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">11.1.1. </span>android编译命令</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/android/compile/compile_command.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="android">
+<h1><span class="section-number">11.1.1. </span>android编译命令<a class="headerlink" href="#android" title="此标题的永久链接"></a></h1>
+<p>android系统源码编译</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#!/bin/bash
+
+CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+
+sudo apt-get install -y uuid uuid-dev
+                        zlib1g-dev liblz-dev liblzo2-2 liblzo2-dev lzop git-core curl
+                        u-boot-tools mtd-utils android-tools-fsutils
+sudo apt install bc bison ccache build-essential curl flex g++-multilib gcc-multilib git gnupg gperf libxml2 lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libwxgtk3.0-gtk3-dev imagemagick git lunzip lzop schedtool squashfs-tools xsltproc zip zlib1g-dev openjdk-8-jdk python2 perl  xmlstarlet virtualenv xz-utils rr jq libncurses5 pngcrush lib32ncurses-dev git-lfs libxml2 openjdk-11-jdk-headless
+
+
+##更换为国内源
+export REPO_URL=&#39;https://mirrors.tuna.tsinghua.edu.cn/git/git-repo/&#39;
+curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ./repo
+chmod a+x ./repo
+#./repo init -u https://android.googlesource.com/platform/manifest -b android-11.0.0_r22
+./repo init -u https://aosp.tuna.tsinghua.edu.cn/platform/manifest -b android-11.0.0_r22
+./repo sync -c j${CPU_NUM}
+source build/setenv.sh
+lunch aosp_car_arm64-userdebug
+make -j8
+</pre></div>
+</div>
+<section id="id1">
+<h2><span class="section-number">11.1.1.1. </span>编译命令<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<section id="id2">
+<h3><span class="section-number">11.1.1.1.1. </span>代码编译<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#初始化编译环境，包括后面的lunch及make指令</span>
+<span class="n">source</span> <span class="n">build</span><span class="o">/</span><span class="n">setenv</span><span class="o">.</span><span class="n">sh</span>
+<span class="c1">#指定此次编译的目标设备及编译类型</span>
+<span class="n">lunch</span> <span class="n">aosp_car_arm64</span><span class="o">-</span><span class="n">userdebug</span>
+<span class="n">make</span> <span class="o">-</span><span class="n">j8</span>
+</pre></div>
+</div>
+<p>所有的编译命令都可以在 <code class="docutils literal notranslate"><span class="pre">setenv.sh</span></code> 中找到对应的function，如lunch, make命令</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>编译指令</p></td>
+<td><p>解释</p></td>
+</tr>
+<tr class="row-even"><td><p>m</p></td>
+<td><p>在源码树的根目录执行编译</p></td>
+</tr>
+<tr class="row-odd"><td><p>mm</p></td>
+<td><p>编译当前路径下所有模块，但不包含依赖</p></td>
+</tr>
+<tr class="row-even"><td><p>mmm [module_path]</p></td>
+<td><p>编译指定路径下的所有模块，但不包含依赖</p></td>
+</tr>
+<tr class="row-odd"><td><p>mma</p></td>
+<td><p>编译当前路径下的所有模块，且包含依赖</p></td>
+</tr>
+<tr class="row-even"><td><p>mmma [module_path]</p></td>
+<td><p>编译指定路径下的所有模块，且包含依赖</p></td>
+</tr>
+<tr class="row-odd"><td><p>make [module_path]</p></td>
+<td><p>无参数，则表示编译整个android源码</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>编译指令使用实例</strong></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>模块</p></td>
+<td><p>make 命令</p></td>
+<td><p>mmm命令</p></td>
+</tr>
+<tr class="row-even"><td><p>init</p></td>
+<td><p>make init</p></td>
+<td><p>mmm system/core/init</p></td>
+</tr>
+<tr class="row-odd"><td><p>zygote</p></td>
+<td><p>make app_process</p></td>
+<td><p>mmm frameworks/base/cmds/app_process</p></td>
+</tr>
+<tr class="row-even"><td><p>system_server</p></td>
+<td><p>make services</p></td>
+<td><p>mmm frameworks/base/services</p></td>
+</tr>
+<tr class="row-odd"><td><p>java framework</p></td>
+<td><p>make framework</p></td>
+<td><p>mmm frameworks/base</p></td>
+</tr>
+<tr class="row-even"><td><p>framework资源</p></td>
+<td><p>make framework-res</p></td>
+<td><p>mmm frameworks/base/core/res</p></td>
+</tr>
+<tr class="row-odd"><td><p>jni framework</p></td>
+<td><p>make libandroid_runtime</p></td>
+<td><p>mmm frameworks/base/core/jni</p></td>
+</tr>
+<tr class="row-even"><td><p>binder</p></td>
+<td><p>make libbinder</p></td>
+<td><p>mmm frameworks/native/libs/binder</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>编译系统采用增量编译，只会编译发生变化的目标文件，当需要重新编译所有的相关模块，则需要编译命令后增加参数-B</p>
+</div>
+</section>
+<section id="id3">
+<h3><span class="section-number">11.1.1.1.2. </span>代码搜索<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>搜索指令</p></td>
+<td><p>解释</p></td>
+</tr>
+<tr class="row-even"><td><p>cgrep</p></td>
+<td><p>所有的C/C++文件执行搜索操作</p></td>
+</tr>
+<tr class="row-odd"><td><p>jgrep</p></td>
+<td><p>所有的java文件执行搜索操作</p></td>
+</tr>
+<tr class="row-even"><td><p>ggrep</p></td>
+<td><p>所有的Gradle文件执行搜索操作</p></td>
+</tr>
+<tr class="row-odd"><td><p>mangrep [keyword]</p></td>
+<td><p>所有AndroidMainfest.xml文件进行搜索操作</p></td>
+</tr>
+<tr class="row-even"><td><p>mgrep [keyword]</p></td>
+<td><p>所有Android.mk文件执行搜索操作</p></td>
+</tr>
+<tr class="row-odd"><td><p>sepgrep [keyword]</p></td>
+<td><p>所有sepolicy文件执行搜索操作</p></td>
+</tr>
+<tr class="row-even"><td><p>resgrep [keyword]</p></td>
+<td><p>所有本地res/*.xml文件执行搜索操作</p></td>
+</tr>
+<tr class="row-odd"><td><p>sgrep [keyword]</p></td>
+<td><p>所有资源文件执行搜索操作</p></td>
+</tr>
+</tbody>
+</table>
+<p>以上所有指令用法的最终实现都是基于grep命令</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">11.1.1.1.3. </span>导航指令<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>导航指令</p></td>
+<td><p>解释</p></td>
+</tr>
+<tr class="row-even"><td><p>croot</p></td>
+<td><p>切换到Android根目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>cproj</p></td>
+<td><p>切换到工程的根目录</p></td>
+</tr>
+<tr class="row-even"><td><p>godir [filename]</p></td>
+<td><p>跳转到包含某个文件的目录</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id5">
+<h3><span class="section-number">11.1.1.1.4. </span>信号查询<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>查询指令</p></td>
+<td><p>解释</p></td>
+</tr>
+<tr class="row-even"><td><p>hmm</p></td>
+<td><p>查询所有指令的help信息</p></td>
+</tr>
+<tr class="row-odd"><td><p>findmakefile</p></td>
+<td><p>查询当前目录所在工程的Android.mk文件路径</p></td>
+</tr>
+<tr class="row-even"><td><p>print_lunch_menu</p></td>
+<td><p>查询lunch可选的product</p></td>
+</tr>
+<tr class="row-odd"><td><p>printconfig</p></td>
+<td><p>查询各项编译变量值</p></td>
+</tr>
+<tr class="row-even"><td><p>gettop</p></td>
+<td><p>查询Android源码的根目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>gettargetarch</p></td>
+<td><p>获取TARGET_ARCH值</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">11.1.1.2. </span>编译系统<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p><strong>Makefile分类</strong></p>
+<p>Android编译系统是Android源码的一部分，用于编译Android系统，Android SDK及相关文档．该编译系统由Make文件，
+shell以及Python脚本共同组成</p>
+<p>整个Build系统的Make文件分为三大类</p>
+<ul class="simple">
+<li><p>系统核心的Make文件: 定义了Build系统的架构，文件全部位于路径build/core，其他Make文件都是基于该框架编写的</p></li>
+<li><p>针对产品的Make文件: 定义了具体某个手机的Make文件，文件路径位于device</p></li>
+<li><p>针对模块的Make文件: 整个系统分为各个独立的模块，每个模块都有一个专门的Make文件，名称统一为”Android.mk”，该文件定义了当前模块的编译方式</p></li>
+</ul>
+<p><strong>编译产物</strong></p>
+<p>经过make编译后的产物，都位于out目录，主要关注以下几个目录</p>
+<ul class="simple">
+<li><p>out/host: Android开发工具的产物，包含SDK各种工具，比如adb, dex2oat, aapt等</p></li>
+<li><p>out/target/common: 通用的一些编译产物，包含java应用代码和JAVA库</p></li>
+<li><p>out/targer/product/[product_name]: 针对特定设备的编译产物以及平台相关C/C++代码和二进制文件</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>system.img: 挂载为根分区，主要包含Android OS的系统文件</p></li>
+<li><p>ramdisk.img: 主要包含init.rc文件和配置文件</p></li>
+<li><p>userdata.img: 被挂载在/data,主要包含用户及应用程序相关的数据</p></li>
+</ul>
+</div>
+<p><strong>Android.mk解析</strong></p>
+<p>在源码树中每一个模块的所有文件通常都相应有一个自己的文件夹，在该模块的目录下有一个名称为 <code class="docutils literal notranslate"><span class="pre">Android.mk</span></code> 的文件．编译系统正是以模块为单位进行编译，
+每个模块都有唯一的模块名，一个模块可以有依赖多个其他模块，模块间的依赖关系就是通过模块名来引用的．也就是说当模块需要依赖一个jar包或者apk时，必须
+先将jar包或apk定义为一个模块，然后再依赖相应的模块</p>
+<p>对于Android.mk文件，通常包含下面两行</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>LOCAL_PATH := $(call my-dir)    #设置编译路径为当前文件夹所在路径
+include $(CLEAR_VARS)           #清空编译环境的变量
+</pre></div>
+</div>
+<p>为了方便编译模块，编译系统设置了很多的编译环境变量</p>
+<ul class="simple">
+<li><p>LOCAL_SRC_FILES: 当前模块包含的所有源码文件</p></li>
+<li><p>LOCAL_MODULE: 当前模块的名称(具有唯一性)</p></li>
+<li><p>LOCAL_PACKAGE_NAME: 当前APK应用的名称(具有唯一性)</p></li>
+<li><p>LOCAL_C_INCLUDES: C/C++所需的头文件路径</p></li>
+<li><p>LOCAL_STATIC_LIBRARIES: 当前模块在静态连接时需要的库名</p></li>
+<li><p>LOCAL_SHARED_LIBRARIES: 当前模块在运行时依赖的动态库名</p></li>
+<li><p>LOCAL_STATIC_JAVA_LIBRARIES: 当前模块依赖的java静态库</p></li>
+<li><p>LOCAL_CERTIFICATE: 签署当前应用的证书名号层，比如platform</p></li>
+<li><p>LOCAL_MODULE_TAGS: 当前模块所包含的标签，可以包含多标签，可能值为eng,user,development;w</p></li>
+</ul>
+<p>编译系统还定义了一些便捷函数</p>
+<ul class="simple">
+<li><p>$(call my-dir): 获取当前文件夹路径</p></li>
+<li><p>$(call all-java-files-under,): 获取指定目录下的所有java文件</p></li>
+<li><p>$(call all-c-files-under,): 获取指定目录下的所有C文件</p></li>
+<li><p>$(call all-laidl-files-under,): 获取指定目录下的所有AIDL文件</p></li>
+<li><p>$(call all-makefiles-under,): 获取指定目录下的所有Make文件</p></li>
+</ul>
+<p>示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>LOCAL_PATH := $(call my-dir)
+include $(CLEAR_VARS)
+
+#获取所有子目录中的java文件
+LOCAL_SRC_FILES := $(call all-subdir-java-files)
+
+# 当前模块依赖的动态java库名称
+LOCAL_JAVA_LIBRARIES := com.gityuan.lib
+
+# 当前模块的名称
+LOCAL_MODULE := demo
+
+# 将当前模块编译成一个静态的Java库
+include $(BUILD_STATIC_JAVA_LIBRARY)
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="11.1. android编译系统" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="compile_system.html" class="btn btn-neutral float-right" title="11.1.2. android编译系统" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

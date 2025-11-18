@@ -1,0 +1,797 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.14.2. connector代码分析 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.14.3. encoder代码分析" href="encoder.html" />
+    <link rel="prev" title="4.14.1. DRM框架" href="drm_frame.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.14. DRM框架分析</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="drm_frame.html">4.14.1. DRM框架</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.14.2. connector代码分析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#drm-connector">4.14.2.1. drm_connector结构体</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.14.2.2. 用户态操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.14.2.3. connector初始化</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="encoder.html">4.14.3. encoder代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crtc.html">4.14.4. crtc代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plane.html">4.14.5. plane代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_drm.html">4.14.6. VKMS示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.14. </span>DRM框架分析</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.14.2. </span>connector代码分析</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/drm/connector.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="connector">
+<h1><span class="section-number">4.14.2. </span>connector代码分析<a class="headerlink" href="#connector" title="此标题的永久链接"></a></h1>
+<section id="drm-connector">
+<h2><span class="section-number">4.14.2.1. </span>drm_connector结构体<a class="headerlink" href="#drm-connector" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct drm_connector {
+    /** @dev: parent DRM device */
+    struct drm_device *dev;
+    /** @kdev: kernel device for sysfs attributes */
+    struct device *kdev;
+    /** @attr: sysfs attributes */
+    struct device_attribute *attr;
+
+    /**
+     * @head:
+     *
+     * List of all connectors on a @dev, linked from
+     * &amp;drm_mode_config.connector_list. Protected by
+     * &amp;drm_mode_config.connector_list_lock, but please only use
+     * &amp;drm_connector_list_iter to walk this list.
+     */
+    struct list_head head;
+
+    /** @base: base KMS object */
+    struct drm_mode_object base;
+
+    /** @name: human readable name, can be overwritten by the driver */
+    char *name;
+
+    /**
+     * @mutex: Lock for general connector state, but currently only protects
+     * @registered. Most of the connector state is still protected by
+     * &amp;drm_mode_config.mutex.
+     */
+    struct mutex mutex;
+
+    /**
+     * @index: Compacted connector index, which matches the position inside
+     * the mode_config.list for drivers not supporting hot-add/removing. Can
+     * be used as an array index. It is invariant over the lifetime of the
+     * connector.
+     */
+    unsigned index;
+
+    /**
+     * @connector_type:
+     * one of the DRM_MODE_CONNECTOR_&lt;foo&gt; types from drm_mode.h
+     */
+    int connector_type;
+    /** @connector_type_id: index into connector type enum */
+    int connector_type_id;
+    /**
+     * @interlace_allowed:
+     * Can this connector handle interlaced modes? Only used by
+     * drm_helper_probe_single_connector_modes() for mode filtering.
+     */
+    bool interlace_allowed;
+    /**
+     * @doublescan_allowed:
+     * Can this connector handle doublescan? Only used by
+     * drm_helper_probe_single_connector_modes() for mode filtering.
+     */
+    bool doublescan_allowed;
+    /**
+     * @stereo_allowed:
+     * Can this connector handle stereo modes? Only used by
+     * drm_helper_probe_single_connector_modes() for mode filtering.
+     */
+    bool stereo_allowed;
+
+    /**
+     * @ycbcr_420_allowed : This bool indicates if this connector is
+     * capable of handling YCBCR 420 output. While parsing the EDID
+     * blocks it&#39;s very helpful to know if the source is capable of
+     * handling YCBCR 420 outputs.
+     */
+    bool ycbcr_420_allowed;
+
+    /**
+     * @registration_state: Is this connector initializing, exposed
+     * (registered) with userspace, or unregistered?
+     *
+     * Protected by @mutex.
+     */
+    enum drm_connector_registration_state registration_state;
+
+    /**
+     * @modes:
+     * Modes available on this connector (from fill_modes() + user).
+     * Protected by &amp;drm_mode_config.mutex.
+     */
+    struct list_head modes;
+
+    /**
+     * @status:
+     * One of the drm_connector_status enums (connected, not, or unknown).
+     * Protected by &amp;drm_mode_config.mutex.
+     */
+    enum drm_connector_status status;
+
+    /**
+     * @probed_modes:
+     * These are modes added by probing with DDC or the BIOS, before
+     * filtering is applied. Used by the probe helpers. Protected by
+     * &amp;drm_mode_config.mutex.
+     */
+    struct list_head probed_modes;
+
+    /**
+     * @display_info: Display information is filled from EDID information
+     * when a display is detected. For non hot-pluggable displays such as
+     * flat panels in embedded systems, the driver should initialize the
+     * &amp;drm_display_info.width_mm and &amp;drm_display_info.height_mm fields
+     * with the physical size of the display.
+     *
+     * Protected by &amp;drm_mode_config.mutex.
+     */
+    struct drm_display_info display_info;
+
+    /** @funcs: connector control functions */
+    const struct drm_connector_funcs *funcs;
+
+    /**
+     * @edid_blob_ptr: DRM property containing EDID if present. Protected by
+     * &amp;drm_mode_config.mutex. This should be updated only by calling
+     * drm_connector_update_edid_property().
+     */
+    struct drm_property_blob *edid_blob_ptr;
+
+    /** @properties: property tracking for this connector */
+    struct drm_object_properties properties;
+
+    /**
+     * @scaling_mode_property: Optional atomic property to control the
+     * upscaling. See drm_connector_attach_content_protection_property().
+     */
+    struct drm_property *scaling_mode_property;
+
+    /**
+     * @vrr_capable_property: Optional property to help userspace
+     * query hardware support for variable refresh rate on a connector.
+     * connector. Drivers can add the property to a connector by
+     * calling drm_connector_attach_vrr_capable_property().
+     *
+     * This should be updated only by calling
+     * drm_connector_set_vrr_capable_property().
+     */
+    struct drm_property *vrr_capable_property;
+
+    /**
+     * @colorspace_property: Connector property to set the suitable
+     * colorspace supported by the sink.
+     */
+    struct drm_property *colorspace_property;
+
+    /**
+     * @path_blob_ptr:
+     *
+     * DRM blob property data for the DP MST path property. This should only
+     * be updated by calling drm_connector_set_path_property().
+     */
+    struct drm_property_blob *path_blob_ptr;
+
+    /**
+     * @max_bpc_property: Default connector property for the max bpc to be
+     * driven out of the connector.
+     */
+    struct drm_property *max_bpc_property;
+
+#define DRM_CONNECTOR_POLL_HPD (1 &lt;&lt; 0)
+#define DRM_CONNECTOR_POLL_CONNECT (1 &lt;&lt; 1)
+#define DRM_CONNECTOR_POLL_DISCONNECT (1 &lt;&lt; 2)
+
+    /**
+     * @polled:
+     *
+     * Connector polling mode, a combination of
+     *
+     * DRM_CONNECTOR_POLL_HPD
+     *     The connector generates hotplug events and doesn&#39;t need to be
+     *     periodically polled. The CONNECT and DISCONNECT flags must not
+     *     be set together with the HPD flag.
+     *
+     * DRM_CONNECTOR_POLL_CONNECT
+     *     Periodically poll the connector for connection.
+     *
+     * DRM_CONNECTOR_POLL_DISCONNECT
+     *     Periodically poll the connector for disconnection, without
+     *     causing flickering even when the connector is in use. DACs should
+     *     rarely do this without a lot of testing.
+     *
+     * Set to 0 for connectors that don&#39;t support connection status
+     * discovery.
+     */
+    uint8_t polled;
+
+    /**
+     * @dpms: Current dpms state. For legacy drivers the
+     * &amp;drm_connector_funcs.dpms callback must update this. For atomic
+     * drivers, this is handled by the core atomic code, and drivers must
+     * only take &amp;drm_crtc_state.active into account.
+     */
+    int dpms;
+
+    /** @helper_private: mid-layer private data */
+    const struct drm_connector_helper_funcs *helper_private;
+
+    /** @cmdline_mode: mode line parsed from the kernel cmdline for this connector */
+    struct drm_cmdline_mode cmdline_mode;
+    /** @force: a DRM_FORCE_&lt;foo&gt; state for forced mode sets */
+    enum drm_connector_force force;
+    /** @override_edid: has the EDID been overwritten through debugfs for testing? */
+    bool override_edid;
+
+#define DRM_CONNECTOR_MAX_ENCODER 3
+    /**
+     * @encoder_ids: Valid encoders for this connector. Please only use
+     * drm_connector_for_each_possible_encoder() to enumerate these.
+     */
+    uint32_t encoder_ids[DRM_CONNECTOR_MAX_ENCODER];
+
+    /**
+     * @encoder: Currently bound encoder driving this connector, if any.
+     * Only really meaningful for non-atomic drivers. Atomic drivers should
+     * instead look at &amp;drm_connector_state.best_encoder, and in case they
+     * need the CRTC driving this output, &amp;drm_connector_state.crtc.
+     */
+    struct drm_encoder *encoder;
+
+#define MAX_ELD_BYTES       128
+    /** @eld: EDID-like data, if present */
+    uint8_t eld[MAX_ELD_BYTES];
+    /** @latency_present: AV delay info from ELD, if found */
+    bool latency_present[2];
+    /**
+     * @video_latency: Video latency info from ELD, if found.
+     * [0]: progressive, [1]: interlaced
+     */
+    int video_latency[2];
+    /**
+     * @audio_latency: audio latency info from ELD, if found
+     * [0]: progressive, [1]: interlaced
+     */
+    int audio_latency[2];
+
+    /**
+     * @ddc: associated ddc adapter.
+     * A connector usually has its associated ddc adapter. If a driver uses
+     * this field, then an appropriate symbolic link is created in connector
+     * sysfs directory to make it easy for the user to tell which i2c
+     * adapter is for a particular display.
+     *
+     * The field should be set by calling drm_connector_init_with_ddc().
+     */
+    struct i2c_adapter *ddc;
+
+    /**
+     * @null_edid_counter: track sinks that give us all zeros for the EDID.
+     * Needed to workaround some HW bugs where we get all 0s
+     */
+    int null_edid_counter;
+
+    /** @bad_edid_counter: track sinks that give us an EDID with invalid checksum */
+    unsigned bad_edid_counter;
+
+    /**
+     * @edid_corrupt: Indicates whether the last read EDID was corrupt. Used
+     * in Displayport compliance testing - Displayport Link CTS Core 1.2
+     * rev1.1 4.2.2.6
+     */
+    bool edid_corrupt;
+
+    /** @debugfs_entry: debugfs directory for this connector */
+    struct dentry *debugfs_entry;
+
+    /**
+     * @state:
+     *
+     * Current atomic state for this connector.
+     *
+     * This is protected by &amp;drm_mode_config.connection_mutex. Note that
+     * nonblocking atomic commits access the current connector state without
+     * taking locks. Either by going through the &amp;struct drm_atomic_state
+     * pointers, see for_each_oldnew_connector_in_state(),
+     * for_each_old_connector_in_state() and
+     * for_each_new_connector_in_state(). Or through careful ordering of
+     * atomic commit operations as implemented in the atomic helpers, see
+     * &amp;struct drm_crtc_commit.
+     */
+    struct drm_connector_state *state;
+
+    /* DisplayID bits. FIXME: Extract into a substruct? */
+
+    /**
+     * @tile_blob_ptr:
+     *
+     * DRM blob property data for the tile property (used mostly by DP MST).
+     * This is meant for screens which are driven through separate display
+     * pipelines represented by &amp;drm_crtc, which might not be running with
+     * genlocked clocks. For tiled panels which are genlocked, like
+     * dual-link LVDS or dual-link DSI, the driver should try to not expose
+     * the tiling and virtualize both &amp;drm_crtc and &amp;drm_plane if needed.
+     *
+     * This should only be updated by calling
+     * drm_connector_set_tile_property().
+     */
+    struct drm_property_blob *tile_blob_ptr;
+
+    /** @has_tile: is this connector connected to a tiled monitor */
+    bool has_tile;
+    /** @tile_group: tile group for the connected monitor */
+    struct drm_tile_group *tile_group;
+    /** @tile_is_single_monitor: whether the tile is one monitor housing */
+    bool tile_is_single_monitor;
+
+    /** @num_h_tile: number of horizontal tiles in the tile group */
+    /** @num_v_tile: number of vertical tiles in the tile group */
+    uint8_t num_h_tile, num_v_tile;
+    /** @tile_h_loc: horizontal location of this tile */
+    /** @tile_v_loc: vertical location of this tile */
+    uint8_t tile_h_loc, tile_v_loc;
+    /** @tile_h_size: horizontal size of this tile. */
+    /** @tile_v_size: vertical size of this tile. */
+    uint16_t tile_h_size, tile_v_size;
+
+    /**
+     * @free_node:
+     *
+     * List used only by &amp;drm_connector_list_iter to be able to clean up a
+     * connector from any context, in conjunction with
+     * &amp;drm_mode_config.connector_free_work.
+     */
+    struct llist_node free_node;
+
+    /** @hdr_sink_metadata: HDR Metadata Information read from sink */
+    struct hdr_sink_metadata hdr_sink_metadata;
+};
+</pre></div>
+</div>
+<p>drm_connector的主要初始化接口为 <code class="docutils literal notranslate"><span class="pre">drm_connector_init</span></code></p>
+<ul class="simple">
+<li><p>drm_connector_init</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int drm_connector_init(struct drm_device *dev,
+               struct drm_connector *connector,
+               const struct drm_connector_funcs *funcs,
+               int connector_type)
+{
+    //获取drm_mode_config结构体，一个drm设备只有一个struct drm_mode_config结构体
+    //里面配置了一些参数
+    struct drm_mode_config *config = &amp;dev-&gt;mode_config;
+    int ret;
+    //获取connector_ida，后面会分配
+    struct ida *connector_ida =
+        &amp;drm_connector_enum_list[connector_type].ida;
+
+    WARN_ON(drm_drv_uses_atomic_modeset(dev) &amp;&amp;
+        (!funcs-&gt;atomic_destroy_state ||
+         !funcs-&gt;atomic_duplicate_state));
+
+    //生成类型为DRM_MODE_OBJECT_CONNECTOR的struct drm_mode_object结构体
+    //connector-&gt;base.id会在用户态接口drmModeGetResources调用时，作为connector_id返回用户态
+    //后续用户态可以通过connector_id，调用drmModeGetConnector找到drm_connector，并获取相关参数
+    ret = __drm_mode_object_add(dev, &amp;connector-&gt;base,
+                    DRM_MODE_OBJECT_CONNECTOR,
+                    false, drm_connector_free);
+    if (ret)
+        return ret;
+
+    //得到properties
+    connector-&gt;base.properties = &amp;connector-&gt;properties;
+    connector-&gt;dev = dev;
+    connector-&gt;funcs = funcs;
+
+    //生成drm_mode_config的connector_ida并作为该connector的index索引
+    /* connector index is used with 32bit bitmasks */
+    ret = ida_simple_get(&amp;config-&gt;connector_ida, 0, 32, GFP_KERNEL);
+    if (ret &lt; 0) {
+        DRM_DEBUG_KMS(&quot;Failed to allocate %s connector index: %d\n&quot;,
+                  drm_connector_enum_list[connector_type].name,
+                  ret);
+        goto out_put;
+    }
+    connector-&gt;index = ret;
+    ret = 0;
+
+    //生成该connector的type的connector_ida
+    connector-&gt;connector_type = connector_type;
+    connector-&gt;connector_type_id =
+        ida_simple_get(connector_ida, 1, 0, GFP_KERNEL);
+    if (connector-&gt;connector_type_id &lt; 0) {
+        ret = connector-&gt;connector_type_id;
+        goto out_put_id;
+    }
+    //初始化connector名称及链表，mutex等
+    connector-&gt;name =
+        kasprintf(GFP_KERNEL, &quot;%s-%d&quot;,
+              drm_connector_enum_list[connector_type].name,
+              connector-&gt;connector_type_id);
+    if (!connector-&gt;name) {
+        ret = -ENOMEM;
+        goto out_put_type_id;
+    }
+
+    INIT_LIST_HEAD(&amp;connector-&gt;probed_modes);
+    INIT_LIST_HEAD(&amp;connector-&gt;modes);
+    mutex_init(&amp;connector-&gt;mutex);
+    connector-&gt;edid_blob_ptr = NULL;
+    connector-&gt;tile_blob_ptr = NULL;
+    connector-&gt;status = connector_status_unknown;
+    connector-&gt;display_info.panel_orientation =
+        DRM_MODE_PANEL_ORIENTATION_UNKNOWN;
+
+    drm_connector_get_cmdline_mode(connector);
+
+    /* We should add connectors at the end to avoid upsetting the connector
+     * index too much. */
+    spin_lock_irq(&amp;config-&gt;connector_list_lock);
+    list_add_tail(&amp;connector-&gt;head, &amp;config-&gt;connector_list);
+    config-&gt;num_connector++;
+    spin_unlock_irq(&amp;config-&gt;connector_list_lock);
+
+    if (connector_type != DRM_MODE_CONNECTOR_VIRTUAL &amp;&amp;
+        connector_type != DRM_MODE_CONNECTOR_WRITEBACK)
+        drm_connector_attach_edid_property(connector);
+
+    drm_object_attach_property(&amp;connector-&gt;base,
+                      config-&gt;dpms_property, 0);
+
+    drm_object_attach_property(&amp;connector-&gt;base,
+                   config-&gt;link_status_property,
+                   0);
+
+    drm_object_attach_property(&amp;connector-&gt;base,
+                   config-&gt;non_desktop_property,
+                   0);
+    drm_object_attach_property(&amp;connector-&gt;base,
+                   config-&gt;tile_property,
+                   0);
+
+    if (drm_core_check_feature(dev, DRIVER_ATOMIC)) {
+        drm_object_attach_property(&amp;connector-&gt;base, config-&gt;prop_crtc_id, 0);
+    }
+
+    connector-&gt;debugfs_entry = NULL;
+out_put_type_id:
+    if (ret)
+        ida_simple_remove(connector_ida, connector-&gt;connector_type_id);
+out_put_id:
+    if (ret)
+        ida_simple_remove(&amp;config-&gt;connector_ida, connector-&gt;index);
+out_put:
+    if (ret)
+        drm_mode_object_unregister(dev, &amp;connector-&gt;base);
+
+    return ret;
+}
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h2><span class="section-number">4.14.2.2. </span>用户态操作<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>用户态获取connector_id逻辑</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">用户态</span>
+<span class="n">drmModeGetResources</span>
+    <span class="n">drmIoctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">DRM_IOCTL_MODE_GETRESOURCES</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">res</span><span class="p">)</span>
+    <span class="o">//</span><span class="n">res</span><span class="o">.</span><span class="n">crtc_id_ptr指向设备的所有crtc_id</span>
+
+<span class="o">//</span><span class="n">内核态</span>
+<span class="n">DRM_IOCTL_DEF</span><span class="p">(</span><span class="n">DRM_IOCTL_MODE_GETRESOURCES</span><span class="p">,</span> <span class="n">drm_mode_getresources</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">drm_mode_getresources</span>
+        <span class="n">drm_connector_list_iter_begin</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">conn_iter</span><span class="p">)</span>
+            <span class="n">drm_for_each_connector_iter</span><span class="p">(</span><span class="n">connector</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">conn_iter</span><span class="p">)</span>  <span class="o">//</span><span class="n">遍历connector</span>
+                <span class="n">put_user</span><span class="p">(</span><span class="n">connector</span><span class="o">-&gt;</span><span class="n">base</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">connector_id</span> <span class="o">+</span> <span class="n">count</span><span class="p">)</span>  <span class="o">//</span><span class="n">拷贝id到用户态</span>
+        <span class="n">drm_connector_list_iter_end</span><span class="p">(</span><span class="o">&amp;</span><span class="n">conn_iter</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>用户态根据connector_id获取drm_connector</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">用户态</span>
+<span class="n">drmModeGetConnector</span><span class="p">()</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">connector_id</span> <span class="o">=</span> <span class="n">connector_id</span>
+    <span class="n">drmIoctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">DRM_IOCTL_MODE_GETCONNECTOR</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">conn</span><span class="p">)</span>
+
+<span class="o">//</span><span class="n">内核态</span>
+<span class="n">DRM_IOCTL_DEF</span><span class="p">(</span><span class="n">DRM_IOCTL_MODE_GETCONNECTOR</span><span class="p">,</span> <span class="n">drm_mode_getconnector</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">drm_mode_getconnector</span>
+        <span class="n">connector</span> <span class="o">=</span> <span class="n">drm_connector_lookup</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">file_priv</span><span class="p">,</span> <span class="n">out_resp</span><span class="o">-&gt;</span><span class="n">connector_id</span><span class="p">)</span>
+        <span class="o">//</span><span class="n">根据用户态传进来的id和type</span>
+        <span class="n">mo</span> <span class="o">=</span> <span class="n">drm_mode_object_find</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">file_priv</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">DRM_MODE_OBJECT_CONNECTOR</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj_to_connector</span><span class="p">(</span><span class="n">mo</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>base.properties</p></li>
+</ul>
+<p>记录connector的属性(如CRTC_ID/EDID/等),这些属性首先在drm_mode_create_standard_properties创建初始化并保存在
+dev-&gt;mode_config中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">以CRTC_ID属性为例</span>
+<span class="n">drm_mode_config_init</span>
+    <span class="n">drmm_mode_config_init</span>
+        <span class="n">drm_mode_create_standard_properties</span>
+            <span class="o">//</span><span class="n">创建名称为DRTC_ID的属性</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="n">drm_property_create_object</span><span class="p">(</span><span class="n">dev</span><span class="p">,</span> <span class="n">DRM_MODE_PROP_ATOMIC</span><span class="p">,</span> <span class="s2">&quot;CRTC_ID&quot;</span><span class="p">,</span> <span class="n">DRM_MDOE_OBJECT_CRTC</span><span class="p">)</span>
+                <span class="o">//</span><span class="n">创建属性</span>
+                <span class="n">drm_property_create</span>
+                    <span class="o">//</span><span class="n">将该property保存在mode_config的property_list链表</span>
+                    <span class="n">list_add_tail</span><span class="p">(</span><span class="o">&amp;</span><span class="nb">property</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dev</span><span class="o">-&gt;</span><span class="n">mode_config</span><span class="o">.</span><span class="n">property_list</span><span class="p">)</span>
+            <span class="o">//</span><span class="n">保存到mode_config</span><span class="o">.</span><span class="n">prop_crtc_id中</span>
+            <span class="n">dev</span><span class="o">-&gt;</span><span class="n">mode_config</span><span class="o">.</span><span class="n">prop_crtc_id</span> <span class="o">=</span> <span class="n">prop</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>properties的获取</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//用户态
+drmModeObjectGetProperties
+    //通过connector_id以及DRM_MODE_OBJECT_CONNECTOR获取其属性
+    drmIoctl(fd, DRM_IOCTL_MODE_OBJ_GETPROPERTIES, &amp;properties)
+
+//内核态
+DRM_IOCTL_DEF(DRM_IOCTL_MODE_OBJ_GETPROPERTIES, drm_mode_obj_get_properties_ioctl, 0)
+    //根据obj_id(connector_id)和obj_type(DRM_MODE_OBJECT_CONNECTOR)获取connector的drm_mode_object实例obj
+    obj = drm_mode_object_find(dev, file_priv, arg-&gt;obj_id, arg-&gt;obj_type)
+    //遍历connector-&gt;base.properties并拷贝到用户态
+    //这里仅拷贝了properties的id和value，并没有拷贝名称
+    drm_mode_object_get_properties(obj, file_priv-&gt;atomic, arg-&gt;props_ptr, arg-&gt;prop_values_ptr, ...)
+
+
+//上述获取的是connector的所有属性id, value, 如果要获取特定名称的属性，还需如下操作
+//用户态
+drmModeGetProperty
+    drmIoctl(fd, DRM_IOCTL_MODE_GETPROPERTY, &amp;prop)
+//内核态
+DRM_IOCTL_DEF(DRM_IOCTL_MODE_GETPROPERTY, drm_mode_getproperty_ioctl, 0)
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">4.14.2.3. </span>connector初始化<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>以下代码基于renesas rcar平台分析</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//rcar-du/rcar_lvds.c
+
+static int rcar_lvds_attach(struct drm_bridge *bridge)
+{
+    struct rcar_lvds *lvds = bridge_to_rcar_lvds(bridge);
+    struct drm_connector *connector = &amp;lvds-&gt;connector;
+    struct drm_encoder *encoder = bridge-&gt;encoder;
+    int ret;
+
+    /* If we have a next bridge just attach it. */
+    if (lvds-&gt;next_bridge)
+        return drm_bridge_attach(bridge-&gt;encoder, lvds-&gt;next_bridge,
+                     bridge);
+
+    /* Otherwise if we have a panel, create a connector. */
+    if (!lvds-&gt;panel)
+        return 0;
+
+    ret = drm_connector_init(bridge-&gt;dev, connector, &amp;rcar_lvds_conn_funcs,
+                 DRM_MODE_CONNECTOR_LVDS);
+    if (ret &lt; 0)
+        return ret;
+
+    drm_connector_helper_add(connector, &amp;rcar_lvds_conn_helper_funcs);
+
+    ret = drm_connector_attach_encoder(connector, encoder);
+    if (ret &lt; 0)
+        return ret;
+
+    return drm_panel_attach(lvds-&gt;panel, connector);
+}
+
+
+static const struct drm_bridge_funcs rcar_lvds_bridge_ops = {
+    .attach = rcar_lvds_attach,
+    .detach = rcar_lvds_detach,
+    .enable = rcar_lvds_enable,
+    .disable = rcar_lvds_disable,
+    .mode_fixup = rcar_lvds_mode_fixup,
+    .mode_set = rcar_lvds_mode_set,
+};
+
+
+static int rcar_lvds_probe(struct platform_device *pdev)
+{
+    const struct soc_device_attribute *attr;
+    struct rcar_lvds *lvds;
+    struct resource *mem;
+    int ret;
+
+    lvds = devm_kzalloc(&amp;pdev-&gt;dev, sizeof(*lvds), GFP_KERNEL);
+    if (lvds == NULL)
+        return -ENOMEM;
+
+    platform_set_drvdata(pdev, lvds);
+
+    lvds-&gt;dev = &amp;pdev-&gt;dev;
+    lvds-&gt;info = of_device_get_match_data(&amp;pdev-&gt;dev);
+
+    attr = soc_device_match(lvds_quirk_matches);
+    if (attr)
+        lvds-&gt;info = attr-&gt;data;
+
+    ret = rcar_lvds_parse_dt(lvds);
+    if (ret &lt; 0)
+        return ret;
+
+    lvds-&gt;bridge.driver_private = lvds;
+    lvds-&gt;bridge.funcs = &amp;rcar_lvds_bridge_ops;
+    lvds-&gt;bridge.of_node = pdev-&gt;dev.of_node;
+
+    mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+    lvds-&gt;mmio = devm_ioremap_resource(&amp;pdev-&gt;dev, mem);
+    if (IS_ERR(lvds-&gt;mmio))
+        return PTR_ERR(lvds-&gt;mmio);
+
+    ret = rcar_lvds_get_clocks(lvds);
+    if (ret &lt; 0)
+        return ret;
+
+    lvds-&gt;rstc = devm_reset_control_get(&amp;pdev-&gt;dev, NULL);
+    if (IS_ERR(lvds-&gt;rstc)) {
+        dev_err(&amp;pdev-&gt;dev, &quot;failed to get cpg reset\n&quot;);
+        return PTR_ERR(lvds-&gt;rstc);
+    }
+
+    drm_bridge_add(&amp;lvds-&gt;bridge);
+
+    return 0;
+}
+
+static struct platform_driver rcar_lvds_platform_driver = {
+    .probe          = rcar_lvds_probe,
+    .remove         = rcar_lvds_remove,
+    .driver         = {
+        .name       = &quot;rcar-lvds&quot;,
+        .of_match_table = rcar_lvds_of_table,
+    },
+};
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="drm_frame.html" class="btn btn-neutral float-left" title="4.14.1. DRM框架" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="encoder.html" class="btn btn-neutral float-right" title="4.14.3. encoder代码分析" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

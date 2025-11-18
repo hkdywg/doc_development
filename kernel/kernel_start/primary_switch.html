@@ -1,0 +1,304 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.8.3. primary_switch &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="3.9. linux并发与同步" href="../concurrenty_contrl/index.html" />
+    <link rel="prev" title="3.8.2. __create_page_tables" href="create_page_table.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">3.8. kernel 启动流程</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="kernel_start_overview.html">3.8.1. kernel 启动概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="create_page_table.html">3.8.2. __create_page_tables</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.8.3. primary_switch</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.8. </span>kernel 启动流程</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.8.3. </span>primary_switch</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/kernel/kernel_start/primary_switch.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="primary-switch">
+<h1><span class="section-number">3.8.3. </span>primary_switch<a class="headerlink" href="#primary-switch" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>__primary_switch:
+#ifdef CONFIG_RANDOMIZE_BASE
+    mov     x19, x0                             //上一步__cpu_setup中，x0保存了SCTLR_EL1_SET,
+                                //此处将x0中的值保存到x19中
+    mrs     x20, sctlr_el1                  //将sctlr_el1保存到x20中
+#endif
+
+
+
+    adrp    x1, init_pg_dir     //将kernel image映射的页表地址保存到x1中
+    bl      __enable_mmu            //打开MMU
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">__enable_mmu</span></code> 定义如下</p>
+<p>主要完成以下任务</p>
+<ul class="simple">
+<li><p>将idmap_pg_dir的物理地址映射到TTBR0;</p></li>
+<li><p>将init_pg_dir的物理地址设置到TTBR1</p></li>
+<li><p>用SCTLR_EL1_SET来设置sctlr_el1来开启MMU</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Enable</span> <span class="n">the</span> <span class="n">MMU</span><span class="o">.</span>
+ <span class="o">*</span>
+ <span class="o">*</span>  <span class="n">x0</span>  <span class="o">=</span> <span class="n">SCTLR_EL1</span> <span class="n">value</span> <span class="k">for</span> <span class="n">turning</span> <span class="n">on</span> <span class="n">the</span> <span class="n">MMU</span><span class="o">.</span>
+ <span class="o">*</span>  <span class="n">x1</span>  <span class="o">=</span> <span class="n">TTBR1_EL1</span> <span class="n">value</span>
+ <span class="o">*</span>
+ <span class="o">*</span> <span class="n">Returns</span> <span class="n">to</span> <span class="n">the</span> <span class="n">caller</span> <span class="n">via</span> <span class="n">x30</span><span class="o">/</span><span class="n">lr</span><span class="o">.</span> <span class="n">This</span> <span class="n">requires</span> <span class="n">the</span> <span class="n">caller</span> <span class="n">to</span> <span class="n">be</span> <span class="n">covered</span>
+ <span class="o">*</span> <span class="n">by</span> <span class="n">the</span> <span class="o">.</span><span class="n">idmap</span><span class="o">.</span><span class="n">text</span> <span class="n">section</span><span class="o">.</span>
+ <span class="o">*</span>
+ <span class="o">*</span> <span class="n">Checks</span> <span class="k">if</span> <span class="n">the</span> <span class="n">selected</span> <span class="n">granule</span> <span class="n">size</span> <span class="ow">is</span> <span class="n">supported</span> <span class="n">by</span> <span class="n">the</span> <span class="n">CPU</span><span class="o">.</span>
+ <span class="o">*</span> <span class="n">If</span> <span class="n">it</span> <span class="n">isn</span><span class="s1">&#39;t, park the CPU</span>
+ <span class="o">*/</span>
+<span class="n">SYM_FUNC_START</span><span class="p">(</span><span class="n">__enable_mmu</span><span class="p">)</span>
+        <span class="n">mrs</span>     <span class="n">x2</span><span class="p">,</span> <span class="n">ID_AA64MMFR0_EL1</span>
+        <span class="n">ubfx</span>    <span class="n">x2</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="c1">#ID_AA64MMFR0_TGRAN_SHIFT, 4</span>
+        <span class="n">cmp</span>     <span class="n">x2</span><span class="p">,</span> <span class="c1">#ID_AA64MMFR0_TGRAN_SUPPORTED</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">ne</span>    <span class="n">__no_granule_support</span>
+        <span class="n">update_early_cpu_boot_status</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span>
+        <span class="n">adrp</span>    <span class="n">x2</span><span class="p">,</span> <span class="n">idmap_pg_dir</span>
+        <span class="n">phys_to_ttbr</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x1</span>
+        <span class="n">phys_to_ttbr</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x2</span>
+        <span class="n">msr</span>     <span class="n">ttbr0_el1</span><span class="p">,</span> <span class="n">x2</span>                   <span class="o">//</span> <span class="n">load</span> <span class="n">TTBR0</span>
+        <span class="n">offset_ttbr1</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x3</span>
+        <span class="n">msr</span>     <span class="n">ttbr1_el1</span><span class="p">,</span> <span class="n">x1</span>                   <span class="o">//</span> <span class="n">load</span> <span class="n">TTBR1</span>
+        <span class="n">isb</span>
+        <span class="n">msr</span>     <span class="n">sctlr_el1</span><span class="p">,</span> <span class="n">x0</span>
+        <span class="n">isb</span>
+        <span class="o">/*</span>
+         <span class="o">*</span> <span class="n">Invalidate</span> <span class="n">the</span> <span class="n">local</span> <span class="n">I</span><span class="o">-</span><span class="n">cache</span> <span class="n">so</span> <span class="n">that</span> <span class="nb">any</span> <span class="n">instructions</span> <span class="n">fetched</span>
+         <span class="o">*</span> <span class="n">speculatively</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">PoC</span> <span class="n">are</span> <span class="n">discarded</span><span class="p">,</span> <span class="n">since</span> <span class="n">they</span> <span class="n">may</span> <span class="n">have</span>
+         <span class="o">*</span> <span class="n">been</span> <span class="n">dynamically</span> <span class="n">patched</span> <span class="n">at</span> <span class="n">the</span> <span class="n">PoU</span><span class="o">.</span>
+         <span class="o">*/</span>
+        <span class="n">ic</span>      <span class="n">iallu</span>
+        <span class="n">dsb</span>     <span class="n">nsh</span>
+        <span class="n">isb</span>
+        <span class="n">ret</span>
+<span class="n">SYM_FUNC_END</span><span class="p">(</span><span class="n">__enable_mmu</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>重定位kernel</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#ifdef CONFIG_RELOCATABLE</span>
+    <span class="n">bl</span>      <span class="n">__relocate_kernel</span>
+<span class="c1">#endif</span>
+</pre></div>
+</div>
+<p><strong>__relocate_kernel片段1</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Iterate</span> <span class="n">over</span> <span class="n">each</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">relocation</span> <span class="n">table</span><span class="p">,</span> <span class="ow">and</span> <span class="n">apply</span> <span class="n">the</span>
+ <span class="o">*</span> <span class="n">relocations</span> <span class="ow">in</span> <span class="n">place</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">ldr</span>     <span class="n">w9</span><span class="p">,</span> <span class="o">=</span><span class="n">__rela_offset</span>              <span class="o">//</span> <span class="n">offset</span> <span class="n">to</span> <span class="n">reloc</span> <span class="n">table</span>
+<span class="n">ldr</span>     <span class="n">w10</span><span class="p">,</span> <span class="o">=</span><span class="n">__rela_size</span>               <span class="o">//</span> <span class="n">size</span> <span class="n">of</span> <span class="n">reloc</span> <span class="n">table</span>
+
+<span class="c1">#arch/arm64/kernel/vmlinux.lds.S中定义</span>
+<span class="o">.</span><span class="n">rela</span><span class="o">.</span><span class="n">dyn</span> <span class="p">:</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+        <span class="o">*</span><span class="p">(</span><span class="o">.</span><span class="n">rela</span> <span class="o">.</span><span class="n">rela</span><span class="o">*</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">__rela_offset</span>   <span class="o">=</span> <span class="n">ABSOLUTE</span><span class="p">(</span><span class="n">ADDR</span><span class="p">(</span><span class="o">.</span><span class="n">rela</span><span class="o">.</span><span class="n">dyn</span><span class="p">)</span> <span class="o">-</span> <span class="n">KIMAGE_VADDR</span><span class="p">);</span>
+<span class="n">__rela_size</span>     <span class="o">=</span> <span class="n">SIZEOF</span><span class="p">(</span><span class="o">.</span><span class="n">rela</span><span class="o">.</span><span class="n">dyn</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>.rela.dyn区域的起始地址相对kernel image的偏移以及大小w9, w10中</p>
+<p><strong>__relocate_kernel片段2</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mov_q   x11, KIMAGE_VADDR               //x11保存了KIMAGE_VADDR(__text链接地址)，是Kernel Image的起始虚拟地址
+add     x11, x11, x23                   //通过与之计算的x23(保存了__text 2M对齐的偏移量，一般为0)，进行2M对齐
+
+add     x9, x9, x11                     //x9保存了.rela.dyn区域的链接地址
+add     x10, x9, x10                    //x10保存了.rela.dyn的结束地址
+</pre></div>
+</div>
+<p><strong>__relocate_kernel片段3</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>0:      cmp     x9, x10
+        b.hs    1f
+        ldp     x12, x13, [x9], #24             //获取entry的link addr和link flag
+        ldr     x14, [x9, #-8]                  //获取entry的link value
+        cmp     w13, #R_AARCH64_RELATIVE        //判断link flag, 获取重定位类型
+        b.ne    0b
+        add     x14, x14, x23                // relocate
+        str     x14, [x12, x23]             //执行重定位，用link value 修改link addr中的值
+        b       0b                          //通过循环将所有的动态链接符号执行重定位
+
+1:
+        ret
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>重定位是连接符号引用与符号定义的过程。例如，程序调用函数时，关联的调用指令必须在执行时将控制权转移到正确的目标地址。</p></li>
+</ul>
+<p>可重定位文件必须包含说明如何修改其节内容的信息。通过此信息，可执行文件和共享目标文件可包含进程的程序映像的正确信息。重定位项即这些数据.</p>
+<ul class="simple">
+<li><p>什么是.rela.dyn段？该节保存的是重定位信息，数据内容是包含带有显示加数的重定位条目，每个条目固定大小(24个字节). .rela.dyn在动态链接
+的目标文件中保存的是需要被重定位的变量数据</p></li>
+</ul>
+</div>
+<ul class="simple">
+<li><p>.rela.dyn中包含很多entry, 每个entry有24个字节，用于描述一个可重定位符号</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>typedef struct {
+    Elf64_Addr r_offset;  // 需要修改的地址（偏移量）
+    Elf64_Xword r_info;   // 符号信息和重定位类型
+    Elf64_Sxword r_addend; // 添加的常量值（如果有的话）
+} Elf64_Rela;
+
+
++----------------+-----------------------------------+-----------------
+|     64 bit     |      64 bit     |      64 bit     |     ...
++----------------+-----------------------------------+-----------------
+| sym0 link addr | sym0 reloc flag | sym0 link value | sym1 link ...
++----------------+-----------------------------------+-----------------
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>对于ARM64架构，常见的重定位类型包括</p>
+<ul class="simple">
+<li><p>R_AARCH64_ABS64: 64位绝对地址</p></li>
+<li><p>R_AARCH64_GLOB_DAT: 全局数据符号</p></li>
+<li><p>R_AARCH64_JUMP_SLOT: 跳转插槽，通常用于函数指针</p></li>
+<li><p>R_AARCH64_RELATIVE: 与程序基地址相关的重定位</p></li>
+</ul>
+</div>
+<p>通过反编译vmlinux，可以看到.rela.dyn段的内容</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">4485578</span> <span class="n">ffff800011280e20</span> <span class="o">&lt;.</span><span class="n">rela</span><span class="o">.</span><span class="n">dyn</span><span class="o">&gt;</span><span class="p">:</span>
+<span class="mi">4485579</span> <span class="n">ffff800011280e20</span><span class="p">:</span>       <span class="mi">10044768</span>        <span class="o">.</span><span class="n">word</span>   <span class="mh">0x10044768</span>     <span class="o">//</span><span class="n">link</span> <span class="n">addr</span>
+<span class="mi">4485580</span> <span class="n">ffff800011280e24</span><span class="p">:</span>       <span class="n">ffff8000</span>        <span class="o">.</span><span class="n">word</span>   <span class="mh">0xffff8000</span>
+<span class="mi">4485581</span> <span class="n">ffff800011280e28</span><span class="p">:</span>       <span class="mi">00000403</span>        <span class="o">.</span><span class="n">word</span>   <span class="mh">0x00000403</span>     <span class="o">//</span><span class="n">reloc</span> <span class="n">flag</span>
+<span class="mi">4485582</span> <span class="n">ffff800011280e2c</span><span class="p">:</span>       <span class="mi">00000000</span>        <span class="o">.</span><span class="n">word</span>   <span class="mh">0x00000000</span>
+<span class="mi">4485583</span> <span class="n">ffff800011280e30</span><span class="p">:</span>       <span class="mi">10047</span><span class="n">dd8</span>        <span class="o">.</span><span class="n">word</span>   <span class="mh">0x10047dd8</span>     <span class="o">//</span><span class="n">link</span> <span class="n">value</span>
+<span class="mi">4485584</span> <span class="n">ffff800011280e34</span><span class="p">:</span>       <span class="n">ffff8000</span>        <span class="o">.</span><span class="n">word</span>   <span class="mh">0xffff8000</span>
+<span class="mi">4485585</span> <span class="n">ffff800011280e38</span><span class="p">:</span>       <span class="mi">10044770</span>        <span class="o">.</span><span class="n">word</span>   <span class="mh">0x10044770</span>
+<span class="mi">4485586</span> <span class="n">ffff800011280e3c</span><span class="p">:</span>       <span class="n">ffff8000</span>        <span class="o">.</span><span class="n">word</span>   <span class="mh">0xffff8000</span>
+<span class="mi">4485587</span> <span class="n">ffff800011280e40</span><span class="p">:</span>       <span class="mi">00000403</span>        <span class="o">.</span><span class="n">word</span>   <span class="mh">0x00000403</span>
+<span class="o">.......</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">ldr</span>     <span class="n">x8</span><span class="p">,</span> <span class="o">=</span><span class="n">__primary_switched</span>
+    <span class="n">adrp</span>    <span class="n">x0</span><span class="p">,</span> <span class="n">__PHYS_OFFSET</span>
+    <span class="n">br</span>      <span class="n">x8</span>
+<span class="n">ENDPROC</span><span class="p">(</span><span class="n">__primary_switch</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="create_page_table.html" class="btn btn-neutral float-left" title="3.8.2. __create_page_tables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../concurrenty_contrl/index.html" class="btn btn-neutral float-right" title="3.9. linux并发与同步" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

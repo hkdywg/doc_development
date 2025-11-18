@@ -1,0 +1,1044 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.3.2.5. do_fork &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../../search.html" />
+    <link rel="next" title="3.3.3. 进程运行" href="../../process_run/index.html" />
+    <link rel="prev" title="3.3.2.4. kthreadd" href="../kthreadadd/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">3.3. 进程管理与调度</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../process_overview/index.html">3.3.1. 进程描述</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">3.3.2. 进程创建</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../category/index.html">3.3.2.1. 进程类别</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../init_task/index.html">3.3.2.2. init_task</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../kernel_init/index.html">3.3.2.3. kernel_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../kthreadadd/index.html">3.3.2.4. kthreadd</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.3.2.5. do_fork</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../process_run/index.html">3.3.3. 进程运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../process_schedule/index.html">3.3.4. 进程调度</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../process_cfs/index.html">3.3.5. 调度普通进程-完全公平调度器CFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../thread_info/index.html">3.3.6. thread_info与内核栈stack的关系</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3.3. </span>进程管理与调度</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.3.2. </span>进程创建</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.3.2.5. </span>do_fork</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/kernel/process/process_create/do_fork/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="do-fork">
+<h1><span class="section-number">3.3.2.5. </span>do_fork<a class="headerlink" href="#do-fork" title="此标题的永久链接"></a></h1>
+<p>linux中进程创建的函数有三个,分别为 <code class="docutils literal notranslate"><span class="pre">fork</span></code> <code class="docutils literal notranslate"><span class="pre">vfork</span></code> <code class="docutils literal notranslate"><span class="pre">clone</span></code> ,确切的说vfork创建出来的时轻量级进程,也叫线程,是共享资源的而进程</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>系统调用</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>fork</p></td>
+<td><p>fork创建的子进程是父进程的完整副本,复制了父进程的资源</p></td>
+</tr>
+<tr class="row-odd"><td><p>vfork</p></td>
+<td><p>vfork创建的与父进程共享数据段,而且vfork创建的子进程将优于父进程运行</p></td>
+</tr>
+<tr class="row-even"><td><p>clone</p></td>
+<td><p>linux创建线程一般使用的是pthread库，实际上Linux也提供了创建线程的系统调用clone</p></td>
+</tr>
+</tbody>
+</table>
+<p>fork、vfork、clone的系统调用的入口地址分别是sys_fork,sys_vfork和sys_clone，而他们的定义是依赖于体系结构的,因为在用户空间和内核空间之间
+传递参数的方法因体系结构而异</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>系统调用的实现和C库不同，普通C函数通过将参数的值压入到进程的栈中进行参数的传递,由于系统调用是通过中断进程从用户态到内核的一种特殊的函数调用,
+没有用户态或者内核态的堆栈可以被用来在调用函数和被调函数之间进行参数传递.系统调用通过CPU寄存器来进行参数传递,在进行系统调用之前,内核将CPU寄存器
+的内容拷贝到内核堆栈中,实现参数的传递.不同的体系结构采用不同的方式或者不同寄存器来传递参数.</p>
+</div>
+<section id="fork-vfork-clone">
+<h2><span class="section-number">3.3.2.5.1. </span>fork,vfork,clone系统调用的实现<a class="headerlink" href="#fork-vfork-clone" title="此标题的永久链接"></a></h2>
+<p>do_fork和_fo_fork代码都位于 kernel/fork.c文件中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#ifndef CONFIG_HAVE_COPY_THREAD_TLS
+/* For compatibility with architectures that call do_fork directly rather than
+ * using the syscall entry points below. */
+long do_fork(unsigned long clone_flags,
+          unsigned long stack_start,
+          unsigned long stack_size,
+          int __user *parent_tidptr,
+          int __user *child_tidptr)
+{
+    struct kernel_clone_args args = {
+        .flags              = (clone_flags &amp; ~CSIGNAL),
+        .pidfd              = parent_tidptr,
+        .child_tid  = child_tidptr,
+        .parent_tid = parent_tidptr,
+        .exit_signal        = (clone_flags &amp; CSIGNAL),
+        .stack              = stack_start,
+        .stack_size = stack_size,
+    };
+
+    if (!legacy_clone_args_valid(&amp;args))
+        return -EINVAL;
+
+    return _do_fork(&amp;args);
+}
+#endif
+
+/*
+ * Create a kernel thread.
+ */
+pid_t kernel_thread(int (*fn)(void *), void *arg, unsigned long flags)
+{
+    struct kernel_clone_args args = {
+        .flags              = ((flags | CLONE_VM | CLONE_UNTRACED) &amp; ~CSIGNAL),
+        .exit_signal        = (flags &amp; CSIGNAL),
+        .stack              = (unsigned long)fn,
+        .stack_size = (unsigned long)arg,
+    };
+
+    return _do_fork(&amp;args);
+}
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>参数</p></th>
+<th class="head"><p>描述</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>clone_flags</p></td>
+<td><p>进程复制的属性信息,即从父进程继承哪些资源.该标志为4字节,最低一个字节为子进程结束时发送给父进程的信号代码,通常为SIGCHLD</p></td>
+</tr>
+<tr class="row-odd"><td><p>stack_start</p></td>
+<td><p>子进程用户堆栈的地址</p></td>
+</tr>
+<tr class="row-even"><td><p>stack_size</p></td>
+<td><p>用户态下栈的大小,该参数通常是不必要的,总被设置为0</p></td>
+</tr>
+<tr class="row-odd"><td><p>parent_tidptr</p></td>
+<td><p>父进程在用户态下Pid的地址,该参数在CLONE_PARENT_SETTID标志被设定时有意义</p></td>
+</tr>
+<tr class="row-even"><td><p>child_tidptr</p></td>
+<td><p>父进程在用户态下Pid的地址,该参数在CLONE_PARENT_SETTID标志被设定时有意义</p></td>
+</tr>
+</tbody>
+</table>
+<p>其中clone_flags标志如下所示</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>标志名称</p></th>
+<th class="head"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CLONE_VM</p></td>
+<td><p>共享内存描述符和所有的页表</p></td>
+</tr>
+<tr class="row-odd"><td><p>CLONE_FS</p></td>
+<td><p>共享根目录和当前工作目录所在的表,以及文件Umask</p></td>
+</tr>
+<tr class="row-even"><td><p>CLONE_PTRACE</p></td>
+<td><p>如果父进程被跟踪，那么子进程也被跟踪</p></td>
+</tr>
+<tr class="row-odd"><td><p>CLONE_VFORK</p></td>
+<td><p>在发出vfork系统调用时设置</p></td>
+</tr>
+<tr class="row-even"><td><p>CLONE_STOPPED</p></td>
+<td><p>强迫子进程开始于TASK_STOPPED状态</p></td>
+</tr>
+<tr class="row-odd"><td><p>CLONE_SIGHAND</p></td>
+<td><p>共享父进程信号处理表,阻塞信号表和挂起信号表,如果设置此标识就必须同时设置CLONE_VM标志</p></td>
+</tr>
+<tr class="row-even"><td><p>CLONE_THREAD</p></td>
+<td><p>把子进程插入到父进程所在的线程组中,并迫使子进程共享父进程的信号描述符</p></td>
+</tr>
+</tbody>
+</table>
+<section id="id1">
+<h3><span class="section-number">3.3.2.5.1.1. </span>fork vfork clone系统调用的实现<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#ifdef __ARCH_WANT_SYS_FORK
+SYSCALL_DEFINE0(fork)
+{
+#ifdef CONFIG_MMU
+    struct kernel_clone_args args = {
+        .exit_signal = SIGCHLD,
+    };
+
+    return _do_fork(&amp;args);
+#else
+    /* can not support in nommu mode */
+    return -EINVAL;
+#endif
+}
+#endif
+
+#ifdef __ARCH_WANT_SYS_VFORK
+SYSCALL_DEFINE0(vfork)
+{
+    struct kernel_clone_args args = {
+        .flags              = CLONE_VFORK | CLONE_VM,
+        .exit_signal        = SIGCHLD,
+    };
+
+    return _do_fork(&amp;args);
+}
+#endif
+
+#ifdef __ARCH_WANT_SYS_CLONE
+#ifdef CONFIG_CLONE_BACKWARDS
+SYSCALL_DEFINE5(clone, unsigned long, clone_flags, unsigned long, newsp,
+         int __user *, parent_tidptr,
+         unsigned long, tls,
+         int __user *, child_tidptr)
+#elif defined(CONFIG_CLONE_BACKWARDS2)
+SYSCALL_DEFINE5(clone, unsigned long, newsp, unsigned long, clone_flags,
+         int __user *, parent_tidptr,
+         int __user *, child_tidptr,
+         unsigned long, tls)
+#elif defined(CONFIG_CLONE_BACKWARDS3)
+SYSCALL_DEFINE6(clone, unsigned long, clone_flags, unsigned long, newsp,
+        int, stack_size,
+        int __user *, parent_tidptr,
+        int __user *, child_tidptr,
+        unsigned long, tls)
+#else
+SYSCALL_DEFINE5(clone, unsigned long, clone_flags, unsigned long, newsp,
+         int __user *, parent_tidptr,
+         int __user *, child_tidptr,
+         unsigned long, tls)
+#endif
+{
+    struct kernel_clone_args args = {
+        .flags              = (clone_flags &amp; ~CSIGNAL),
+        .pidfd              = parent_tidptr,
+        .child_tid  = child_tidptr,
+        .parent_tid = parent_tidptr,
+        .exit_signal        = (clone_flags &amp; CSIGNAL),
+        .stack              = newsp,
+        .tls                = tls,
+    };
+
+    if (!legacy_clone_args_valid(&amp;args))
+        return -EINVAL;
+
+    return _do_fork(&amp;args);
+}
+#endif
+</pre></div>
+</div>
+<p>clone可以由用户进行配置父进程的哪些资源，也可以指定新的栈地址,另外还可以设置用户空间的两个指针(parent_tidptr和child_tidptr)用于与线程库通信</p>
+<p>所有进程复制(创建)的fork机制最终都调用了 <code class="docutils literal notranslate"><span class="pre">kernel/fork.c</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">_do_fork</span></code> 函数(一个与体系结构无关的函数)</p>
+<p>_do_fork以调用copy_process开始,后者执行生成新的进程的实际工作,并根据指定的标志复制父进程的数据.在子进程生成后,内核必须执行下列收尾操作</p>
+<ol class="arabic simple">
+<li><p>调用copy_process为子进程复制出一份进程信息</p></li>
+<li><p>如果时vfork(设置了CLONE_VFORK和ptrace标志) 初始化完成处理信息</p></li>
+<li><p>调用wake_up_new_task 将子进程加入调度器,为之分配CPU</p></li>
+<li><p>如果是vfork父进程等待子进程完成exec替换自己的地址空间</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+ *  Ok, this is the main fork-routine.
+ *
+ * It copies the process, and if successful kick-starts
+ * it and waits for it to finish using the VM if required.
+ *
+ * args-&gt;exit_signal is expected to be checked for sanity by the caller.
+ */
+long _do_fork(struct kernel_clone_args *args)
+{
+    u64 clone_flags = args-&gt;flags;
+    struct completion vfork;
+    struct pid *pid;
+    struct task_struct *p;
+    int trace = 0;
+    long nr;
+
+    /*
+     * Determine whether and which event to report to ptracer.  When
+     * called from kernel_thread or CLONE_UNTRACED is explicitly
+     * requested, no event is reported; otherwise, report if the event
+     * for the type of forking is enabled.
+     */
+    if (!(clone_flags &amp; CLONE_UNTRACED)) {
+        if (clone_flags &amp; CLONE_VFORK)
+            trace = PTRACE_EVENT_VFORK;
+        else if (args-&gt;exit_signal != SIGCHLD)
+            trace = PTRACE_EVENT_CLONE;
+        else
+            trace = PTRACE_EVENT_FORK;
+
+        if (likely(!ptrace_event_enabled(current, trace)))
+            trace = 0;
+    }
+    //复制进程描述符,copy_process的返回值是一个task_struct指针
+    p = copy_process(NULL, trace, NUMA_NO_NODE, args);
+    add_latent_entropy();
+
+    if (IS_ERR(p))
+        return PTR_ERR(p);
+
+    /*
+     * Do this prior waking up the new thread - the thread pointer
+     * might get invalid after that point, if the thread exits quickly.
+     */
+    trace_sched_process_fork(current, p);
+    //得到新创建的进程pid信息
+    pid = get_task_pid(p, PIDTYPE_PID);
+    nr = pid_vnr(pid);
+
+    if (clone_flags &amp; CLONE_PARENT_SETTID)
+        put_user(nr, args-&gt;parent_tid);
+
+    if (clone_flags &amp; CLONE_VFORK) {
+        p-&gt;vfork_done = &amp;vfork;
+        init_completion(&amp;vfork);
+        get_task_struct(p);
+    }
+    //将子进程加入到调度器中,为其分配CPU，准备执行
+    wake_up_new_task(p);
+
+    /* forking complete and child started to run, tell ptracer */
+    if (unlikely(trace))
+        ptrace_event_pid(trace, pid);
+    //如果是vfork,将父进程加入到等待队列，等待子进程完成
+    if (clone_flags &amp; CLONE_VFORK) {
+        if (!wait_for_vfork_done(p, &amp;vfork))
+            ptrace_event_pid(PTRACE_EVENT_VFORK_DONE, pid);
+    }
+
+    put_pid(pid);
+    return nr;
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>copy_process流程</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>调用dup_task_struct复制当前的task_struc</p></li>
+<li><p>检查进程数是否超限</p></li>
+<li><p>初始化自旋锁,挂起信号,cpu定时器</p></li>
+<li><p>调用sched_fork初始化进程数据结构,并把进程状态设置为TASK_RUNNING</p></li>
+<li><p>复制进程信息,包括文件系统,信号处理函数,内存管理等</p></li>
+<li><p>调用copy_thread_tls初始化子进程内核栈</p></li>
+<li><p>为新进程分配新的pid</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+ * This creates a new process as a copy of the old one,
+ * but does not actually start it yet.
+ *
+ * It copies the registers, and all the appropriate
+ * parts of the process environment (as per the clone
+ * flags). The actual kick-off is left to the caller.
+ */
+static __latent_entropy struct task_struct *copy_process(
+                    struct pid *pid,
+                    int trace,
+                    int node,
+                    struct kernel_clone_args *args)
+{
+    int pidfd = -1, retval;
+    struct task_struct *p;
+    struct multiprocess_signals delayed;
+    struct file *pidfile = NULL;
+    u64 clone_flags = args-&gt;flags;
+
+    ...
+    //这里省略掉一些参数检测
+
+    //将当前进程复制一份给新的进程p
+    retval = -ENOMEM;
+    p = dup_task_struct(current, node);
+    if (!p)
+        goto fork_out;
+
+    /*
+     * This _must_ happen before we call free_task(), i.e. before we jump
+     * to any of the bad_fork_* labels. This is to avoid freeing
+     * p-&gt;set_child_tid which is (ab)used as a kthread&#39;s data pointer for
+     * kernel threads (PF_KTHREAD).
+     */
+    p-&gt;set_child_tid = (clone_flags &amp; CLONE_CHILD_SETTID) ? args-&gt;child_tid : NULL;
+    /*
+     * Clear TID on mm_release()?
+     */
+    p-&gt;clear_child_tid = (clone_flags &amp; CLONE_CHILD_CLEARTID) ? args-&gt;child_tid : NULL;
+
+    ftrace_graph_init_task(p);
+
+    rt_mutex_init_task(p);
+
+#ifdef CONFIG_PROVE_LOCKING
+    DEBUG_LOCKS_WARN_ON(!p-&gt;hardirqs_enabled);
+    DEBUG_LOCKS_WARN_ON(!p-&gt;softirqs_enabled);
+#endif
+    retval = -EAGAIN;
+    if (atomic_read(&amp;p-&gt;real_cred-&gt;user-&gt;processes) &gt;=
+            task_rlimit(p, RLIMIT_NPROC)) {
+        if (p-&gt;real_cred-&gt;user != INIT_USER &amp;&amp;
+            !capable(CAP_SYS_RESOURCE) &amp;&amp; !capable(CAP_SYS_ADMIN))
+            goto bad_fork_free;
+    }
+    current-&gt;flags &amp;= ~PF_NPROC_EXCEEDED;
+    //复制信用凭证
+    retval = copy_creds(p, clone_flags);
+    if (retval &lt; 0)
+        goto bad_fork_free;
+
+    /*
+     * If multiple threads are within copy_process(), then this check
+     * triggers too late. This doesn&#39;t hurt, the check is only there
+     * to stop root fork bombs.
+     */
+     //超过最大进程数,则返回
+    retval = -EAGAIN;
+    if (nr_threads &gt;= max_threads)
+        goto bad_fork_cleanup_count;
+
+    delayacct_tsk_init(p);  /* Must remain after dup_task_struct() */
+    p-&gt;flags &amp;= ~(PF_SUPERPRIV | PF_WQ_WORKER | PF_IDLE);
+    p-&gt;flags |= PF_FORKNOEXEC;
+    INIT_LIST_HEAD(&amp;p-&gt;children);
+    INIT_LIST_HEAD(&amp;p-&gt;sibling);
+    rcu_copy_process(p);
+    p-&gt;vfork_done = NULL;
+    spin_lock_init(&amp;p-&gt;alloc_lock);
+    //初始化信号挂起Pendding
+    init_sigpending(&amp;p-&gt;pending);
+
+    ...
+    //这里省略初始化和时间相关的杂项
+
+    //初始化调度实体se,和调度器类
+    /* Perform scheduler related setup. Assign this task to a CPU. */
+    retval = sched_fork(clone_flags, p);
+    if (retval)
+        goto bad_fork_cleanup_policy;
+
+    //perf相关
+    retval = perf_event_init_task(p);
+    if (retval)
+        goto bad_fork_cleanup_policy;
+    retval = audit_alloc(p);
+    if (retval)
+        goto bad_fork_cleanup_perf;
+    //进程共享内存链表初始化
+    /* copy all the process information */
+    shm_init_task(p);
+    retval = security_task_alloc(p, clone_flags);
+    if (retval)
+        goto bad_fork_cleanup_audit;
+    retval = copy_semundo(clone_flags, p);
+    if (retval)
+        goto bad_fork_cleanup_security;
+    //将当前current进程打开的fd复制一份到新的进程
+    retval = copy_files(clone_flags, p);
+    if (retval)
+        goto bad_fork_cleanup_semundo;
+    //复制fs
+    retval = copy_fs(clone_flags, p);
+    if (retval)
+        goto bad_fork_cleanup_files;
+    retval = copy_sighand(clone_flags, p);
+    if (retval)
+        goto bad_fork_cleanup_fs;
+    retval = copy_signal(clone_flags, p);
+    if (retval)
+        goto bad_fork_cleanup_sighand;
+    retval = copy_mm(clone_flags, p);
+    if (retval)
+        goto bad_fork_cleanup_signal;
+    retval = copy_namespaces(clone_flags, p);
+    if (retval)
+        goto bad_fork_cleanup_mm;
+    retval = copy_io(clone_flags, p);
+    if (retval)
+        goto bad_fork_cleanup_namespaces;
+    //拷贝进程不同的部分
+    retval = copy_thread_tls(clone_flags, args-&gt;stack, args-&gt;stack_size, p,
+                 args-&gt;tls);
+    if (retval)
+        goto bad_fork_cleanup_io;
+
+    stackleak_task_init(p);
+
+    //申请新的pid
+    if (pid != &amp;init_struct_pid) {
+        pid = alloc_pid(p-&gt;nsproxy-&gt;pid_ns_for_children);
+        if (IS_ERR(pid)) {
+            retval = PTR_ERR(pid);
+            goto bad_fork_cleanup_thread;
+        }
+    }
+
+    /*
+     * This has to happen after we&#39;ve potentially unshared the file
+     * descriptor table (so that the pidfd doesn&#39;t leak into the child
+     * if the fd table isn&#39;t shared).
+     */
+    if (clone_flags &amp; CLONE_PIDFD) {
+        retval = get_unused_fd_flags(O_RDWR | O_CLOEXEC);
+        if (retval &lt; 0)
+            goto bad_fork_free_pid;
+
+        pidfd = retval;
+
+        pidfile = anon_inode_getfile(&quot;[pidfd]&quot;, &amp;pidfd_fops, pid,
+                          O_RDWR | O_CLOEXEC);
+        if (IS_ERR(pidfile)) {
+            put_unused_fd(pidfd);
+            retval = PTR_ERR(pidfile);
+            goto bad_fork_free_pid;
+        }
+        get_pid(pid);       /* held by pidfile now */
+
+        retval = put_user(pidfd, args-&gt;pidfd);
+        if (retval)
+            goto bad_fork_put_pidfd;
+    }
+
+#ifdef CONFIG_BLOCK
+    p-&gt;plug = NULL;
+#endif
+    futex_init_task(p);
+
+    /*
+     * sigaltstack should be cleared when sharing the same VM
+     */
+    if ((clone_flags &amp; (CLONE_VM|CLONE_VFORK)) == CLONE_VM)
+        sas_ss_reset(p);
+
+    /*
+     * Syscall tracing and stepping should be turned off in the
+     * child regardless of CLONE_PTRACE.
+     */
+    user_disable_single_step(p);
+    clear_tsk_thread_flag(p, TIF_SYSCALL_TRACE);
+#ifdef TIF_SYSCALL_EMU
+    clear_tsk_thread_flag(p, TIF_SYSCALL_EMU);
+#endif
+    clear_tsk_latency_tracing(p);
+
+    /* ok, now we should be set up.. */
+    p-&gt;pid = pid_nr(pid);
+    //如果是线程,则设置线程组组长为当前进程指向的组长,如果是进程则将组长设置为自己
+    if (clone_flags &amp; CLONE_THREAD) {
+        p-&gt;exit_signal = -1;
+        p-&gt;group_leader = current-&gt;group_leader;
+        p-&gt;tgid = current-&gt;tgid;
+        //进程的tgid才是真正的pid,即同一个线程组下的线程tgid相同,pid不同
+    } else {
+        if (clone_flags &amp; CLONE_PARENT)
+            p-&gt;exit_signal = current-&gt;group_leader-&gt;exit_signal;
+        else
+            p-&gt;exit_signal = args-&gt;exit_signal;
+        p-&gt;group_leader = p;
+        p-&gt;tgid = p-&gt;pid;
+    }
+
+    p-&gt;nr_dirtied = 0;
+    p-&gt;nr_dirtied_pause = 128 &gt;&gt; (PAGE_SHIFT - 10);
+    p-&gt;dirty_paused_when = 0;
+
+    p-&gt;pdeath_signal = 0;
+    INIT_LIST_HEAD(&amp;p-&gt;thread_group);
+    p-&gt;task_works = NULL;
+
+    cgroup_threadgroup_change_begin(current);
+    /*
+     * Ensure that the cgroup subsystem policies allow the new process to be
+     * forked. It should be noted the the new process&#39;s css_set can be changed
+     * between here and cgroup_post_fork() if an organisation operation is in
+     * progress.
+     */
+     //cgroup相关
+    retval = cgroup_can_fork(p);
+    if (retval)
+        goto bad_fork_cgroup_threadgroup_change_end;
+
+    /*
+     * From this point on we must avoid any synchronous user-space
+     * communication until we take the tasklist-lock. In particular, we do
+     * not want user-space to be able to predict the process start-time by
+     * stalling fork(2) after we recorded the start_time but before it is
+     * visible to the system.
+     */
+
+    p-&gt;start_time = ktime_get_ns();
+    p-&gt;real_start_time = ktime_get_boottime_ns();
+
+    /*
+     * Make it visible to the rest of the system, but dont wake it up yet.
+     * Need tasklist lock for parent etc handling!
+     */
+    write_lock_irq(&amp;tasklist_lock);
+
+  //设置父进程,如果是线程,父进程就是current的父进程,否则current就是新进程的父进程
+    /* CLONE_PARENT re-uses the old parent */
+    if (clone_flags &amp; (CLONE_PARENT|CLONE_THREAD)) {
+        p-&gt;real_parent = current-&gt;real_parent;
+        p-&gt;parent_exec_id = current-&gt;parent_exec_id;
+    } else {
+        p-&gt;real_parent = current;
+        p-&gt;parent_exec_id = current-&gt;self_exec_id;
+    }
+
+    klp_copy_process(p);
+
+    spin_lock(&amp;current-&gt;sighand-&gt;siglock);
+
+    /*
+     * Copy seccomp details explicitly here, in case they were changed
+     * before holding sighand lock.
+     */
+    copy_seccomp(p);
+
+    rseq_fork(p, clone_flags);
+
+    /* Don&#39;t start children in a dying pid namespace */
+    if (unlikely(!(ns_of_pid(pid)-&gt;pid_allocated &amp; PIDNS_ADDING))) {
+        retval = -ENOMEM;
+        goto bad_fork_cancel_cgroup;
+    }
+
+    /* Let kill terminate clone/fork in the middle */
+    if (fatal_signal_pending(current)) {
+        retval = -EINTR;
+        goto bad_fork_cancel_cgroup;
+    }
+
+    /* past the last point of failure */
+    if (pidfile)
+        fd_install(pidfd, pidfile);
+
+    init_task_pid_links(p);
+    if (likely(p-&gt;pid)) {
+        ptrace_init_task(p, (clone_flags &amp; CLONE_PTRACE) || trace);
+        //初始化pid结构
+        init_task_pid(p, PIDTYPE_PID, pid);
+        if (thread_group_leader(p)) { //如果新进程是线程组组长,同样意味着他是进程而不是线程
+            init_task_pid(p, PIDTYPE_TGID, pid); //将pid赋值给task-&gt;pid[PGID].pid
+            init_task_pid(p, PIDTYPE_PGID, task_pgrp(current));
+            init_task_pid(p, PIDTYPE_SID, task_session(current));
+
+            if (is_child_reaper(pid)) {
+                ns_of_pid(pid)-&gt;child_reaper = p;
+                p-&gt;signal-&gt;flags |= SIGNAL_UNKILLABLE;
+            }
+            p-&gt;signal-&gt;shared_pending.signal = delayed.signal;
+            p-&gt;signal-&gt;tty = tty_kref_get(current-&gt;signal-&gt;tty);
+            /*
+             * Inherit has_child_subreaper flag under the same
+             * tasklist_lock with adding child to the process tree
+             * for propagate_has_child_subreaper optimization.
+             */
+            p-&gt;signal-&gt;has_child_subreaper = p-&gt;real_parent-&gt;signal-&gt;has_child_subreaper ||
+                             p-&gt;real_parent-&gt;signal-&gt;is_child_subreaper;
+            list_add_tail(&amp;p-&gt;sibling, &amp;p-&gt;real_parent-&gt;children);
+            list_add_tail_rcu(&amp;p-&gt;tasks, &amp;init_task.tasks);
+            attach_pid(p, PIDTYPE_TGID);
+            attach_pid(p, PIDTYPE_PGID);
+            attach_pid(p, PIDTYPE_SID);
+            __this_cpu_inc(process_counts);
+        } else {
+            current-&gt;signal-&gt;nr_threads++;
+            atomic_inc(&amp;current-&gt;signal-&gt;live);
+            refcount_inc(&amp;current-&gt;signal-&gt;sigcnt);
+            task_join_group_stop(p);
+            list_add_tail_rcu(&amp;p-&gt;thread_group,
+                      &amp;p-&gt;group_leader-&gt;thread_group);
+            //将线程p挂到组长的thread_group链表下面
+            list_add_tail_rcu(&amp;p-&gt;thread_node,
+                      &amp;p-&gt;signal-&gt;thread_head);
+        }
+        //添加到pid空间,并增加线程数
+        attach_pid(p, PIDTYPE_PID);
+        nr_threads++;
+    }
+    total_forks++;
+    hlist_del_init(&amp;delayed.node);
+    spin_unlock(&amp;current-&gt;sighand-&gt;siglock);
+    syscall_tracepoint_update(p);
+    write_unlock_irq(&amp;tasklist_lock);
+
+    proc_fork_connector(p);
+    cgroup_post_fork(p);
+    cgroup_threadgroup_change_end(current);
+    perf_event_fork(p);
+
+    trace_task_newtask(p, clone_flags);
+    uprobe_copy_process(p, clone_flags);
+    //返回新线程task_struct
+    return p;
+
+bad_fork_cancel_cgroup:
+    spin_unlock(&amp;current-&gt;sighand-&gt;siglock);
+    write_unlock_irq(&amp;tasklist_lock);
+    cgroup_cancel_fork(p);
+bad_fork_cgroup_threadgroup_change_end:
+    cgroup_threadgroup_change_end(current);
+bad_fork_put_pidfd:
+    if (clone_flags &amp; CLONE_PIDFD) {
+        fput(pidfile);
+        put_unused_fd(pidfd);
+    }
+bad_fork_free_pid:
+    if (pid != &amp;init_struct_pid)
+        free_pid(pid);
+bad_fork_cleanup_thread:
+    exit_thread(p);
+bad_fork_cleanup_io:
+    if (p-&gt;io_context)
+        exit_io_context(p);
+bad_fork_cleanup_namespaces:
+    exit_task_namespaces(p);
+bad_fork_cleanup_mm:
+    if (p-&gt;mm) {
+        mm_clear_owner(p-&gt;mm, p);
+        mmput(p-&gt;mm);
+    }
+bad_fork_cleanup_signal:
+    if (!(clone_flags &amp; CLONE_THREAD))
+        free_signal_struct(p-&gt;signal);
+bad_fork_cleanup_sighand:
+    __cleanup_sighand(p-&gt;sighand);
+bad_fork_cleanup_fs:
+    exit_fs(p); /* blocking */
+bad_fork_cleanup_files:
+    exit_files(p); /* blocking */
+bad_fork_cleanup_semundo:
+    exit_sem(p);
+bad_fork_cleanup_security:
+    security_task_free(p);
+bad_fork_cleanup_audit:
+    audit_free(p);
+bad_fork_cleanup_perf:
+    perf_event_free_task(p);
+bad_fork_cleanup_policy:
+    lockdep_free_task(p);
+#ifdef CONFIG_NUMA
+    mpol_put(p-&gt;mempolicy);
+bad_fork_cleanup_threadgroup_lock:
+#endif
+    delayacct_tsk_free(p);
+bad_fork_cleanup_count:
+    atomic_dec(&amp;p-&gt;cred-&gt;user-&gt;processes);
+    exit_creds(p);
+bad_fork_free:
+    p-&gt;state = TASK_DEAD;
+    put_task_stack(p);
+    delayed_free_task(p);
+fork_out:
+    spin_lock_irq(&amp;current-&gt;sighand-&gt;siglock);
+    hlist_del_init(&amp;delayed.node);
+    spin_unlock_irq(&amp;current-&gt;sighand-&gt;siglock);
+    return ERR_PTR(retval);
+}
+</pre></div>
+</div>
+<p>在copy_process函数中dup_task_struct函数实现如下,该函数用于从当前进程current的task_struct结构中,复制一份一模一样的给新进程</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
+{
+    struct task_struct *tsk;
+    unsigned long *stack;
+    struct vm_struct *stack_vm_area __maybe_unused;
+    int err;
+
+    //如果从传入的参数是NUMA_NO_NODE,表示申请内存的时候,从当前进程所在内存结点申请
+    if (node == NUMA_NO_NODE)
+        node = tsk_fork_get_node(orig);
+    //从内存Node结点盛情一段内存作为新进程tsk结构
+    tsk = alloc_task_struct_node(node);
+    if (!tsk)
+        return NULL;
+    //分配线程栈
+    stack = alloc_thread_stack_node(tsk, node);
+    if (!stack)
+        goto free_tsk;
+
+    if (memcg_charge_kernel_stack(tsk))
+        goto free_stack;
+
+    stack_vm_area = task_stack_vm_area(tsk);
+    //这个函数其实就是tsk = orig,即将current进程memcpy到tsk
+    err = arch_dup_task_struct(tsk, orig);
+
+    /*
+     * arch_dup_task_struct() clobbers the stack-related fields.  Make
+     * sure they&#39;re properly initialized before using any stack-related
+     * functions again.
+     */
+     //将stack地址设置到tsk的记录栈地址的位置,替换掉从current拷贝来的栈(这个是内核栈,每个应用程序有两个栈,一个是内核栈一个是应用栈,内核线程只有内核栈)
+    tsk-&gt;stack = stack;
+#ifdef CONFIG_VMAP_STACK
+    tsk-&gt;stack_vm_area = stack_vm_area;
+#endif
+#ifdef CONFIG_THREAD_INFO_IN_TASK
+    refcount_set(&amp;tsk-&gt;stack_refcount, 1);
+#endif
+
+    if (err)
+        goto free_stack;
+
+#ifdef CONFIG_SECCOMP
+    /*
+     * We must handle setting up seccomp filters once we&#39;re under
+     * the sighand lock in case orig has changed between now and
+     * then. Until then, filter must be NULL to avoid messing up
+     * the usage counts on the error path calling free_task.
+     */
+    tsk-&gt;seccomp.filter = NULL;
+#endif
+
+    //将current的thread_info结构拷贝一份到tsk
+    setup_thread_stack(tsk, orig);
+    clear_user_return_notifier(tsk);
+    clear_tsk_need_resched(tsk);
+    //设置栈的结束位置,用于检测栈溢出
+    set_task_stack_end_magic(tsk);
+
+#ifdef CONFIG_STACKPROTECTOR
+    tsk-&gt;stack_canary = get_random_canary();
+#endif
+    if (orig-&gt;cpus_ptr == &amp;orig-&gt;cpus_mask)
+        tsk-&gt;cpus_ptr = &amp;tsk-&gt;cpus_mask;
+
+    /*
+     * One for the user space visible state that goes away when reaped.
+     * One for the scheduler.
+     */
+    refcount_set(&amp;tsk-&gt;rcu_users, 2);
+    /* One for the rcu users */
+    refcount_set(&amp;tsk-&gt;usage, 1);
+#ifdef CONFIG_BLK_DEV_IO_TRACE
+    tsk-&gt;btrace_seq = 0;
+#endif
+    tsk-&gt;splice_pipe = NULL;
+    tsk-&gt;task_frag.page = NULL;
+    tsk-&gt;wake_q.next = NULL;
+
+    account_kernel_stack(tsk, 1);
+
+    kcov_task_init(tsk);
+
+#ifdef CONFIG_FAULT_INJECTION
+    tsk-&gt;fail_nth = 0;
+#endif
+
+#ifdef CONFIG_BLK_CGROUP
+    tsk-&gt;throttle_queue = NULL;
+    tsk-&gt;use_memdelay = 0;
+#endif
+
+#ifdef CONFIG_MEMCG
+    tsk-&gt;active_memcg = NULL;
+#endif
+    return tsk;
+
+free_stack:
+    free_thread_stack(tsk);
+free_tsk:
+    free_task_struct(tsk);
+    return NULL;
+}
+</pre></div>
+</div>
+<p>在申请新的进程task_struct结束后,这里有必要解释一下 <code class="docutils literal notranslate"><span class="pre">thread_info</span></code> 结构，thread_info结构是存放到内核的SP栈中的,原本linux是直接将task_struct存放到sp当中,
+但是后来随着task_struct越来越大,因此,添加了一个thread_info结构作为中间代理结构,达到通过sp能够获取到对应进程task_struct结构的目的.thread_info在栈的位置如图</p>
+<img alt="../../../../_images/sp_thread_info.png" src="../../../../_images/sp_thread_info.png" />
+<p>通常内核栈大小为2个page，即8K，并且内核栈严格按照8K对齐.因此当获取到SP指针的时候(sp current),只需要与上一个8K取反的值(sp &amp; (~8k))就可以得到thread_info结构。
+thread_info-&gt;task就指向该进程的task_struct结构.由于内核栈是向下增长，因此如果栈越界,首先破坏的是自己的thread_info结构,然后奔溃.</p>
+<p>内核中current其实就是一个宏,利用当前sp和thread_info反向找到自己的task_struct结构</p>
+<p>copy_thread_tls是一个非常重要的函数,其主要是设置新进程的运行地址和寄存器值,实现如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int copy_thread_tls(unsigned long clone_flags, unsigned long stack_start,
+        unsigned long stk_sz, struct task_struct *p, unsigned long tls)
+{
+    struct pt_regs *childregs = task_pt_regs(p);
+
+    memset(&amp;p-&gt;thread.cpu_context, 0, sizeof(struct cpu_context));
+
+    /*
+     * In case p was allocated the same task_struct pointer as some
+     * other recently-exited task, make sure p is disassociated from
+     * any cpu that may have run that now-exited task recently.
+     * Otherwise we could erroneously skip reloading the FPSIMD
+     * registers for p.
+     */
+    fpsimd_flush_task_state(p);
+
+    if (likely(!(p-&gt;flags &amp; PF_KTHREAD))) {
+        *childregs = *current_pt_regs();
+        childregs-&gt;regs[0] = 0;
+
+        /*
+         * Read the current TLS pointer from tpidr_el0 as it may be
+         * out-of-sync with the saved value.
+         */
+        *task_user_tls(p) = read_sysreg(tpidr_el0);
+
+        if (stack_start) {
+            if (is_compat_thread(task_thread_info(p)))
+                childregs-&gt;compat_sp = stack_start;
+            else
+                childregs-&gt;sp = stack_start;
+        }
+
+        /*
+         * If a TLS pointer was passed to clone, use it for the new
+         * thread.
+         */
+        if (clone_flags &amp; CLONE_SETTLS)
+            p-&gt;thread.uw.tp_value = tls;
+    } else {
+        memset(childregs, 0, sizeof(struct pt_regs));
+        childregs-&gt;pstate = PSR_MODE_EL1h;
+        if (IS_ENABLED(CONFIG_ARM64_UAO) &amp;&amp;
+            cpus_have_const_cap(ARM64_HAS_UAO))
+            childregs-&gt;pstate |= PSR_UAO_BIT;
+
+        if (arm64_get_ssbd_state() == ARM64_SSBD_FORCE_DISABLE)
+            set_ssbs_bit(childregs);
+
+        if (system_uses_irq_prio_masking())
+            childregs-&gt;pmr_save = GIC_PRIO_IRQON;
+
+        p-&gt;thread.cpu_context.x19 = stack_start;
+        p-&gt;thread.cpu_context.x20 = stk_sz;
+    }
+    p-&gt;thread.cpu_context.pc = (unsigned long)ret_from_fork;
+    p-&gt;thread.cpu_context.sp = (unsigned long)childregs;
+
+    ptrace_hw_copy_thread(p);
+
+    return 0;
+}
+</pre></div>
+</div>
+<p>经过copy_thread_tls函数之后,新进程的运行环境就已经准备就绪,最后只需要将新进程的task_struct结构加入到run queue调度队列里面即可(wake_up_new_task函数).一旦
+调度到新的进程,新进程就从ret_from_fork函数开始运行,</p>
+<p>应用程序fork调用栈如下</p>
+<img alt="../../../../_images/call_stack.png" src="../../../../_images/call_stack.png" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../kthreadadd/index.html" class="btn btn-neutral float-left" title="3.3.2.4. kthreadd" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../process_run/index.html" class="btn btn-neutral float-right" title="3.3.3. 进程运行" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.4.3. ARM64中断初始化 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.4.4. linux 中断框架" href="irq_frame.html" />
+    <link rel="prev" title="4.4.2. linux中断初始化和基本调用流程" href="irq_init_call.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.4. linux 中断</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="abnormal_process.html">4.4.1. linux异常处理流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_init_call.html">4.4.2. linux中断初始化和基本调用流程</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.4.3. ARM64中断初始化</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#init-irq">4.4.3.1. init_IRQ</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#of-irq-init">4.4.3.2. of_irq_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gic-of-init">4.4.3.3. gic_of_init</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="irq_frame.html">4.4.4. linux 中断框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_soft_hard.html">4.4.5. 创建软硬中断号映射</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_process.html">4.4.6. linux中断处理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_soft.html">4.4.7. 软中断</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tasklet.html">4.4.8. tasklet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.4. </span>linux 中断</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.4.3. </span>ARM64中断初始化</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/irq/irq_init_arm64.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="arm64">
+<h1><span class="section-number">4.4.3. </span>ARM64中断初始化<a class="headerlink" href="#arm64" title="此标题的永久链接"></a></h1>
+<section id="init-irq">
+<h2><span class="section-number">4.4.3.1. </span>init_IRQ<a class="headerlink" href="#init-irq" title="此标题的永久链接"></a></h2>
+<p>ARM64的中断初始化主要在init_IRQ中完成，包括中断栈的初始化以及中断控制器的初始化</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>void __init init_IRQ(void)
+{
+    init_irq_stacks();  //中断栈的初始化，中断栈将从vmalloc区域分配，每个CPU的中断栈指针将保存在全局per-cpu变量irq_stack_ptr中
+    irqchip_init();     //初始化irq控制器，并注册irq_domain
+    if (!handle_arch_irq)
+        panic(&quot;No interrupt controller found.&quot;);
+
+    if (system_uses_irq_prio_masking()) {
+        /*
+         * Now that we have a stack for our IRQ handler, set
+         * the PMR/PSR pair to a consistent state.
+         */
+        WARN_ON(read_sysreg(daif) &amp; PSR_A_BIT);
+        local_daif_restore(DAIF_PROCCTX_NOIRQ);
+    }
+}
+
+void __init irqchip_init(void)
+{
+    //扫描__irqchip_of_table，匹配DTB中定义的中断控制器，匹配成功则调用中断控制器设置的初始化函数
+    of_irq_init(__irqchip_of_table);
+    acpi_probe_device_table(irqchip);
+}
+</pre></div>
+</div>
+</section>
+<section id="of-irq-init">
+<h2><span class="section-number">4.4.3.2. </span>of_irq_init<a class="headerlink" href="#of-irq-init" title="此标题的永久链接"></a></h2>
+<p>首先看一下__irqchip_of_table的来历</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//include/linux/of.h
+#if defined(CONFIG_OF) &amp;&amp; !defined(MODULE)
+#define _OF_DECLARE(table, name, compat, fn, fn_type)                       \
+    static const struct of_device_id __of_table_##name              \
+        __used __section(__##table##_of_table)                      \
+         = { .compatible = compat,                          \
+             .data = (fn == (fn_type)NULL) ? fn : fn  }
+#else
+#define _OF_DECLARE(table, name, compat, fn, fn_type)                       \
+    static const struct of_device_id __of_table_##name              \
+        __attribute__((unused))                                     \
+         = { .compatible = compat,                          \
+             .data = (fn == (fn_type)NULL) ? fn : fn }
+#endif
+
+#define OF_DECLARE_1(table, name, compat, fn) \
+        _OF_DECLARE(table, name, compat, fn, of_init_fn_1)
+#define OF_DECLARE_1_RET(table, name, compat, fn) \
+        _OF_DECLARE(table, name, compat, fn, of_init_fn_1_ret)
+#define OF_DECLARE_2(table, name, compat, fn) \
+        _OF_DECLARE(table, name, compat, fn, of_init_fn_2)
+
+//include/linux/irqchip.h
+#define IRQCHIP_DECLARE(name, compat, fn) OF_DECLARE_2(irqchip, name, compat, fn)
+</pre></div>
+</div>
+<p>对于每种中断控制器，都会通过IRQCHIP_DECLARE静态声明自己的struct of_device_id 结构体。下面针对GIC-V4进行分析</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IRQCHIP_DECLARE</span><span class="p">(</span><span class="n">gic_400</span><span class="p">,</span> <span class="s2">&quot;arm,gic-400&quot;</span><span class="p">,</span> <span class="n">gic_of_init</span><span class="p">);</span>
+
+<span class="n">等价于</span>
+
+<span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">of_device_id</span> <span class="n">__of_table_gic</span><span class="o">-</span><span class="mi">400</span>  \
+    <span class="n">__used</span> <span class="n">__section</span><span class="p">(</span><span class="s2">&quot;__irqchip_of_table&quot;</span><span class="p">)</span>  \
+    <span class="o">=</span> <span class="p">{</span> <span class="o">.</span><span class="n">compatible</span> <span class="o">=</span> <span class="s2">&quot;arm,gic-400&quot;</span> <span class="p">,</span>   \
+        <span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">gic_of_init</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>不同的中断控制器有对应的IRQCHIP_DECLARE声明，他们都位于__irqchip_of_table段，of_irq_init就是遍历__irqchip_of_table段中所有的中断控制器，
+对其执行相应的中断控制器初始化</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>void __init of_irq_init(const struct of_device_id *matches)
+{
+    const struct of_device_id *match;
+    struct device_node *np, *parent = NULL;
+    struct of_intc_desc *desc, *temp_desc;
+    struct list_head intc_desc_list, intc_parent_list;
+
+    INIT_LIST_HEAD(&amp;intc_desc_list);    //初始化两个list，分别为dts节点中init-controller属性的list和init-controller-parent属性的list
+    INIT_LIST_HEAD(&amp;intc_parent_list);
+
+    for_each_matching_node_and_match(np, matches, &amp;match) {     //遍历每个中断控制器为其建立intc_dest,并设置每个中断控制器的parent
+        if (!of_property_read_bool(np, &quot;interrupt-controller&quot;) ||   //如果当前节点不是interrupt-controller或者处于disabled状态则继续遍历
+                !of_device_is_available(np))
+            continue;
+
+        if (WARN(!match-&gt;data, &quot;of_irq_init: no init function for %s\n&quot;,
+             match-&gt;compatible))
+            continue;
+
+        /*
+         * Here, we allocate and populate an of_intc_desc with the node
+         * pointer, interrupt-parent device_node etc.
+         */
+        desc = kzalloc(sizeof(*desc), GFP_KERNEL);      //为desc分配空间
+        if (!desc) {
+            of_node_put(np);
+            goto err;
+        }
+
+        desc-&gt;irq_init_cb = match-&gt;data;    //中断初始化回调，match-&gt;data就是上面的__of_table_gic-400.data
+        desc-&gt;dev = of_node_get(np);
+        desc-&gt;interrupt_parent = of_irq_find_parent(np);    //解析当前节点的parent
+        if (desc-&gt;interrupt_parent == np)
+            desc-&gt;interrupt_parent = NULL;
+        list_add_tail(&amp;desc-&gt;list, &amp;intc_desc_list);
+    }
+
+    /*
+     * The root irq controller is the one without an interrupt-parent.
+     * That one goes first, followed by the controllers that reference it,
+     * followed by the ones that reference the 2nd level controllers, etc.
+     */
+    while (!list_empty(&amp;intc_desc_list)) {
+        /*
+         * Process all controllers with the current &#39;parent&#39;.
+         * First pass will be looking for NULL as the parent.
+         * The assumption is that NULL parent means a root controller.
+         */
+        list_for_each_entry_safe(desc, temp_desc, &amp;intc_desc_list, list) {
+            int ret;
+
+            if (desc-&gt;interrupt_parent != parent)
+                continue;
+
+            list_del(&amp;desc-&gt;list);
+
+            of_node_set_flag(desc-&gt;dev, OF_POPULATED);
+
+            pr_debug(&quot;of_irq_init: init %pOF (%p), parent %p\n&quot;,
+                 desc-&gt;dev,
+                 desc-&gt;dev, desc-&gt;interrupt_parent);
+            //执行中断初始化函数
+            ret = desc-&gt;irq_init_cb(desc-&gt;dev,
+                        desc-&gt;interrupt_parent);
+            if (ret) {
+                of_node_clear_flag(desc-&gt;dev, OF_POPULATED);
+                kfree(desc);
+                continue;
+            }
+
+            /*
+             * This one is now set up; add it to the parent list so
+             * its children can get processed in a subsequent pass.
+             */
+            list_add_tail(&amp;desc-&gt;list, &amp;intc_parent_list);
+        }
+
+        /* Get the next pending parent that might have children */
+        desc = list_first_entry_or_null(&amp;intc_parent_list,
+                        typeof(*desc), list);
+        if (!desc) {
+            pr_err(&quot;of_irq_init: children remain, but no parents\n&quot;);
+            break;
+        }
+        list_del(&amp;desc-&gt;list);
+        parent = desc-&gt;dev;
+        kfree(desc);
+    }
+
+    list_for_each_entry_safe(desc, temp_desc, &amp;intc_parent_list, list) {
+        list_del(&amp;desc-&gt;list);
+        kfree(desc);
+    }
+err:
+    list_for_each_entry_safe(desc, temp_desc, &amp;intc_desc_list, list) {
+        list_del(&amp;desc-&gt;list);
+        of_node_put(desc-&gt;dev);
+        kfree(desc);
+    }
+}
+</pre></div>
+</div>
+</section>
+<section id="gic-of-init">
+<h2><span class="section-number">4.4.3.3. </span>gic_of_init<a class="headerlink" href="#gic-of-init" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//drivers/irqchip/irq-gic.c
+int __init
+gic_of_init(struct device_node *node, struct device_node *parent)
+{
+    struct gic_chip_data *gic;
+    int irq, ret;
+
+    if (WARN_ON(!node))
+        return -ENODEV;
+
+    if (WARN_ON(gic_cnt &gt;= CONFIG_ARM_GIC_MAX_NR))
+        return -EINVAL;
+
+    gic = &amp;gic_data[gic_cnt];
+
+    ret = gic_of_setup(gic, node);  //根据device node初始化gic
+    if (ret)
+        return ret;
+
+    /*
+     * Disable split EOI/Deactivate if either HYP is not available
+     * or the CPU interface is too small.
+     */
+    if (gic_cnt == 0 &amp;&amp; !gic_check_eoimode(node, &amp;gic-&gt;raw_cpu_base))
+        static_branch_disable(&amp;supports_deactivate_key);
+
+    ret = __gic_init_bases(gic, &amp;node-&gt;fwnode); //此函数中会设置中断处理的主函数
+    if (ret) {
+        gic_teardown(gic);
+        return ret;
+    }
+
+    if (!gic_cnt) {
+        gic_init_physaddr(node);
+        gic_of_setup_kvm_info(node);
+    }
+
+    if (parent) {
+        irq = irq_of_parse_and_map(node, 0);
+        gic_cascade_irq(gic_cnt, irq);
+    }
+
+    if (IS_ENABLED(CONFIG_ARM_GIC_V2M))
+        gicv2m_init(&amp;node-&gt;fwnode, gic_data[gic_cnt].domain);
+
+    gic_cnt++;
+    return 0;
+}
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static int __init __gic_init_bases(struct gic_chip_data *gic,
+                   struct fwnode_handle *handle)
+{
+    char *name;
+    int i, ret;
+
+    if (WARN_ON(!gic || gic-&gt;domain))
+        return -EINVAL;
+
+    if (gic == &amp;gic_data[0]) {
+        /*
+         * Initialize the CPU interface map to all CPUs.
+         * It will be refined as each CPU probes its ID.
+         * This is only necessary for the primary GIC.
+         */
+        for (i = 0; i &lt; NR_GIC_CPU_IF; i++)
+            gic_cpu_map[i] = 0xff;
+#ifdef CONFIG_SMP
+        set_smp_cross_call(gic_raise_softirq);
+#endif
+        cpuhp_setup_state_nocalls(CPUHP_AP_IRQ_GIC_STARTING,
+                      &quot;irqchip/arm/gic:starting&quot;,
+                      gic_starting_cpu, NULL);
+        //设置中断顶层处理函数handle_arch_irq为gic_handle_irq，此为中断处理的主函数
+        set_handle_irq(gic_handle_irq);
+        if (static_branch_likely(&amp;supports_deactivate_key))
+            pr_info(&quot;GIC: Using split EOI/Deactivate mode\n&quot;);
+    }
+
+    if (static_branch_likely(&amp;supports_deactivate_key) &amp;&amp; gic == &amp;gic_data[0]) {
+        name = kasprintf(GFP_KERNEL, &quot;GICv2&quot;);
+        gic_init_chip(gic, NULL, name, true);
+    } else {
+        name = kasprintf(GFP_KERNEL, &quot;GIC-%d&quot;, (int)(gic-&amp;gic_data[0]));
+        gic_init_chip(gic, NULL, name, false);  //进一步初始化gic_chip
+    }
+
+    ret = gic_init_bases(gic, handle);  //中断控制器初始化
+    if (ret)
+        kfree(name);
+
+    return ret;
+}
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="irq_init_call.html" class="btn btn-neutral float-left" title="4.4.2. linux中断初始化和基本调用流程" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="irq_frame.html" class="btn btn-neutral float-right" title="4.4.4. linux 中断框架" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

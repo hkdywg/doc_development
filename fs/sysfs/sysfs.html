@@ -1,0 +1,205 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.3.1. sysfs 文件系统简介 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="5.3.2. sysfs源码分析" href="sysfs_source.html" />
+    <link rel="prev" title="5.3. linux文件系统之sysfs" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">5. file system note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../vfs/index.html">5.1. linux 虚拟文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ext4/index.html">5.2. ext4文件系统</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">5.3. linux文件系统之sysfs</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5.3.1. sysfs 文件系统简介</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">5.3.1.1. sysfs简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">5.3.1.2. sysfs目录结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">5.3.1.3. sysfs中的要素关系</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="sysfs_source.html">5.3.2. sysfs源码分析</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">5. </span>file system note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">5.3. </span>linux文件系统之sysfs</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">5.3.1. </span>sysfs 文件系统简介</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/fs/sysfs/sysfs.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sysfs">
+<h1><span class="section-number">5.3.1. </span>sysfs 文件系统简介<a class="headerlink" href="#sysfs" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">5.3.1.1. </span>sysfs简介<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>sysfs是一个基于ramfs的文件系统，用来导出内核对象的数据、属性到用户空间，以文件目录结构的形式为用户空间提供对这些数据、属性的访问支持。</p>
+<p>从驱动开发的角度，sysfs为用户提供了除了设备文件/dev和/proc之外的另一种通过用户空间访问内核数据的方式。使用sysfs编译内核的时候需要定义 <code class="docutils literal notranslate"><span class="pre">CONFIG_SYSFS</span></code> ,可以
+通过 <code class="docutils literal notranslate"><span class="pre">mount</span> <span class="pre">-t</span> <span class="pre">sysfs</span> <span class="pre">sysfs</span> <span class="pre">/sys</span></code> 命令来挂载sysfs到/sys目录</p>
+</section>
+<section id="id2">
+<h2><span class="section-number">5.3.1.2. </span>sysfs目录结构<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>目录</p></td>
+<td><p>描述</p></td>
+</tr>
+<tr class="row-even"><td><p>/sys/block</p></td>
+<td><p>块设备的存放目录，这是一个过时的接口，现在所有设备都存放在/sys/devices同时在/sys/bus或/sys/class中存放符号连接</p></td>
+</tr>
+<tr class="row-odd"><td><p>/sys/bus</p></td>
+<td><p>包含了系统中的所有总线，每一种总线通常还有两个子目录device和driver</p></td>
+</tr>
+<tr class="row-even"><td><p>/sys/class</p></td>
+<td><p>按照设备功能对系统设备进行分类的目录，例如输入设备都会在/sys/class/input中，/sys/class中都是符号连接，这样可以保证所有设备在系统中只有一个实例</p></td>
+</tr>
+<tr class="row-odd"><td><p>/sys/dev</p></td>
+<td><p>按照设备号对字符设备和块设备进行分类放在这个目录，同样使用符号链接到/sys/devices/中的相应文件</p></td>
+</tr>
+<tr class="row-even"><td><p>/sys/devices</p></td>
+<td><p>所有设备文件的实例都在此目录下</p></td>
+</tr>
+<tr class="row-odd"><td><p>/sys/fs</p></td>
+<td><p>按照设计是用于描述系统中的所有文件系统</p></td>
+</tr>
+<tr class="row-even"><td><p>/sys/kernel</p></td>
+<td><p>这里是n内核所有可调整参数的位置，但仍有一部分可调整参数位于/proc/sys/kernel中</p></td>
+</tr>
+<tr class="row-odd"><td><p>/sys/module</p></td>
+<td><p>这里有系统中的所有模块的信息，包括编译到内核中的以及编译为外部模块的(ko)</p></td>
+</tr>
+<tr class="row-even"><td><p>/sys/power</p></td>
+<td><p>这里是系统中的电源选项，如可以写入控制命令使系统关机或重启</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id3">
+<h2><span class="section-number">5.3.1.3. </span>sysfs中的要素关系<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>sysfs提供一种机制，使得可以显式的描述内核对象，对象属性以及对象间的关系。sysfs有两组接口，一组针对内核，用于将设备映射到文件系统中，另一组针对用户程序，用于读取或者操作这些设备。</p>
+<p>sysfs要素以及在用户空间的表现</p>
+<img alt="../../_images/sysfs_element.png" src="../../_images/sysfs_element.png" />
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>sysfs在内核中要素</p></td>
+<td><p>用户空间显示</p></td>
+</tr>
+<tr class="row-even"><td><p>内核对象(kobject)</p></td>
+<td><p>目录</p></td>
+</tr>
+<tr class="row-odd"><td><p>对象属性(attribute)</p></td>
+<td><p>文件</p></td>
+</tr>
+<tr class="row-even"><td><p>对象关系(relationship)</p></td>
+<td><p>链接</p></td>
+</tr>
+</tbody>
+</table>
+<p>真正的设备信息放在devices目录下，bus下对应驱动和设备，class下有不同的分类</p>
+<p>kobject和kset使linux设备驱动模型中的底层数据结构，kset结构体中包含了kobject结构体和链表头，所有属于这个kset的kobject都连接到链表头</p>
+<img alt="../../_images/sysfs_datastruct.png" src="../../_images/sysfs_datastruct.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="5.3. linux文件系统之sysfs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="sysfs_source.html" class="btn btn-neutral float-right" title="5.3.2. sysfs源码分析" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

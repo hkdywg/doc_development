@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.2.1. optee概述 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="1.2.2. TrustZone和ATF功能概述" href="trustzone.html" />
+    <link rel="prev" title="1.2. optee笔记" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">1. tee</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../atf/index.html">1.1. atf笔记</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">1.2. optee笔记</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">1.2.1. optee概述</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tee">1.2.1.1. TEE如何保证数据安全</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">1.2.1.2. TEE解决方案</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#op-tee">1.2.1.3. OP-TEE运行环境搭建</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="trustzone.html">1.2.2. TrustZone和ATF功能概述</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">1. </span>tee</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">1.2. </span>optee笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">1.2.1. </span>optee概述</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/optee/optee/optee_summary.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="optee">
+<h1><span class="section-number">1.2.1. </span>optee概述<a class="headerlink" href="#optee" title="此标题的永久链接"></a></h1>
+<section id="tee">
+<h2><span class="section-number">1.2.1.1. </span>TEE如何保证数据安全<a class="headerlink" href="#tee" title="此标题的永久链接"></a></h2>
+<p>在没有集成trustzone的环境有一个风险就是当获取root权限之后，就可以随意访问所有的数据，这样的操作十分危险．为了保障这一部分数据在root权限下不被轻松获取，
+因此在硬件层引入了trustzone技术</p>
+<p>为确保用户数据的安全，ARM公司提出了trustzone技术，ARM在AXI系统总线上添加了一根额外的安全总线，
+称为 <code class="docutils literal notranslate"><span class="pre">NS位</span></code> ，并将cortex分为两种状态: <code class="docutils literal notranslate"><span class="pre">安全世界状态(secure</span> <span class="pre">world</span> <span class="pre">status,</span> <span class="pre">SWS)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">正常世界状态(normal</span> <span class="pre">world</span> <span class="pre">status,</span> <span class="pre">NWS)</span></code> ,并添加了一种叫做monitor的模式，cortex根据NS的值来判定
+当前指令操作是需要安全操作还是非安全操作，并结合自身是否属于secure world状态来判定当前执行的指令操作．而cortex的状态切换操作由monitor来完成，
+在ATF(arm trusted firmware)中完成．</p>
+<p>在整个系统的软件层面，一般的操作系统(如Linux, Android)以及应用运行在正常世界状态中，TEE运行在安全世界状态中，正常世界状态内的开发资源相对于安全世界状态
+较为丰富，因此通常称运行在正常世界状态中的环境为丰富执行环境(Rich Execution Environment, REE)</p>
+<p>在真实环境中，可以将用户的敏感数据保存到TEE中，并由可信应用(Trusted Application, TA)使用重要算法和处理逻辑来完成对数据的处理．当需要使用用户的敏感数据做身份
+验证时，则通过在REE侧定义具体的请求编号(IDentity, ID),从TEE侧获取验证结果．验证的整个过程中用户的敏感数据始终处于TEE中，REE侧无法查看到任何TEE中的数据．对于
+REE而言，TEE中的TA相当于一个黑盒，只会接受有限且提前定义好的合法调用(TEEC)</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>当coretex处于secure world状态时，cortex会去执行TEE(Trusted execute enviorment)OS部分的代码，当cortex处于non-secure world状态时，cortex会去执行
+linux kernel部分的代码.而linux kernel无法访问TEE所有资源，只能通过特定的TA(Trust Application)和CA(Client Application)来访问TEE部分的特定资源．</p>
+</div>
+<p>TEE是基于trustzone技术搭建的安全执行环境．当cortex处于scure world状态时，coretex执行的是TEE OS的代码，而当前没有统一的TEE OS，各家厂商和组织都有自己的
+实现方式，但是所有的方案都会遵循GP(GlobalPlatform)标准．包括高通的Qsee, Trustonic的tee OS, OP-TEE等.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>各厂商的TEE OS都属于闭源的．</p>
+</div>
+</section>
+<section id="id1">
+<h2><span class="section-number">1.2.1.2. </span>TEE解决方案<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>TEE是一套完整的安全解决方案，主要包含:</p>
+<ul class="simple">
+<li><p>正常世界状态的客户端应用(Client Application, CA)</p></li>
+<li><p>安全世界状态的可信应用，可信硬件驱动(Secure Driver, SD)</p></li>
+<li><p>可信内核系统(Trusted Execution Environment Operation System, TEE OS)</p></li>
+</ul>
+<p>其系统配置，内部逻辑，安全设备和安全资源的划分是与CPU的IC设计紧密挂钩的，使用ARM架构设计不同的CPU，TEE的配置完全不一样．</p>
+</section>
+<section id="op-tee">
+<h2><span class="section-number">1.2.1.3. </span>OP-TEE运行环境搭建<a class="headerlink" href="#op-tee" title="此标题的永久链接"></a></h2>
+<p>OP-TEE是开源的TEE解决方案，下面以ubuntu 20.04为例搭建其仿真运行环境</p>
+<section id="id2">
+<h3><span class="section-number">1.2.1.3.1. </span>环境准备<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>安装环境依赖</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">apt</span> <span class="n">upgrade</span> <span class="o">-</span><span class="n">y</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> \
+<span class="n">android</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="n">adb</span> \
+<span class="n">android</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="n">fastboot</span> \
+<span class="n">autoconf</span> \
+<span class="n">automake</span> \
+<span class="n">bc</span> \
+<span class="n">bison</span> \
+<span class="n">build</span><span class="o">-</span><span class="n">essential</span> \
+<span class="n">ccache</span> \
+<span class="n">cpio</span> \
+<span class="n">cscope</span> \
+<span class="n">curl</span> \
+<span class="n">device</span><span class="o">-</span><span class="n">tree</span><span class="o">-</span><span class="n">compiler</span> \
+<span class="n">expect</span> \
+<span class="n">flex</span> \
+<span class="n">ftp</span><span class="o">-</span><span class="n">upload</span> \
+<span class="n">gdisk</span> \
+<span class="n">git</span> \
+<span class="n">iasl</span> \
+<span class="n">libattr1</span><span class="o">-</span><span class="n">dev</span> \
+<span class="n">libcap</span><span class="o">-</span><span class="n">ng</span><span class="o">-</span><span class="n">dev</span> \
+<span class="n">libfdt</span><span class="o">-</span><span class="n">dev</span> \
+<span class="n">libftdi</span><span class="o">-</span><span class="n">dev</span> \
+<span class="n">libglib2</span><span class="mf">.0</span><span class="o">-</span><span class="n">dev</span> \
+<span class="n">libgmp3</span><span class="o">-</span><span class="n">dev</span> \
+<span class="n">libhidapi</span><span class="o">-</span><span class="n">dev</span> \
+<span class="n">libmpc</span><span class="o">-</span><span class="n">dev</span> \
+<span class="n">libncurses5</span><span class="o">-</span><span class="n">dev</span> \
+<span class="n">libpixman</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">dev</span> \
+<span class="n">libslirp</span><span class="o">-</span><span class="n">dev</span> \
+<span class="n">libssl</span><span class="o">-</span><span class="n">dev</span> \
+<span class="n">libtool</span> \
+<span class="n">make</span> \
+<span class="n">mtools</span> \
+<span class="n">netcat</span> \
+<span class="n">ninja</span><span class="o">-</span><span class="n">build</span> \
+<span class="n">python</span><span class="o">-</span><span class="ow">is</span><span class="o">-</span><span class="n">python3</span> \
+<span class="n">python3</span><span class="o">-</span><span class="n">crypto</span> \
+<span class="n">python3</span><span class="o">-</span><span class="n">cryptography</span> \
+<span class="n">python3</span><span class="o">-</span><span class="n">pip</span> \
+<span class="n">python3</span><span class="o">-</span><span class="n">pyelftools</span> \
+<span class="n">python3</span><span class="o">-</span><span class="n">serial</span> \
+<span class="n">rsync</span> \
+<span class="n">unzip</span> \
+<span class="n">uuid</span><span class="o">-</span><span class="n">dev</span> \
+<span class="n">wget</span> \
+<span class="n">xdg</span><span class="o">-</span><span class="n">utils</span> \
+<span class="n">xterm</span> \
+<span class="n">xz</span><span class="o">-</span><span class="n">utils</span> \
+<span class="n">zlib1g</span><span class="o">-</span><span class="n">dev</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3><span class="section-number">1.2.1.3.2. </span>准备和编译<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>mkdir optee &amp;&amp; cd optee
+curl https://mirrors.tuna.tsinghua.edu.cn/git/git-repo -o ~/bin/repo
+chmod a+x ~/bin/repo
+export PATH=~/bin:$PATH
+#将~/bin/repo文件中的
+#REPO_URL = &quot;https://gerrit.googlesource.com/git-repo&quot;
+#更换为
+#EPO_URL = &quot;https://mirrors.tuna.tsinghua.edu.cn/git/git-repo/&quot;
+~/bin/repo init -u https://github.com/OP-TEE/manifest.git -m qemu_v8.xml
+repo sync
+cd ./build
+make -j8 toolchains
+make -f qemu_v8.mk all -j8
+make -f qemu_v8.mk run-only
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="1.2. optee笔记" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="trustzone.html" class="btn btn-neutral float-right" title="1.2.2. TrustZone和ATF功能概述" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

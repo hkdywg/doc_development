@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>9.3.3. AVB之AVTP &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="9.4. TC-8测试" href="../tc8/index.html" />
+    <link rel="prev" title="9.3.2. AVB之gPTP" href="AVB_gPTP.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">9. net</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../overview/index.html">9.1. linux 网络概览</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tcp_ip/index.html">9.2. TCP/IP详解</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">9.3. AVB笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="AVB_introduction.html">9.3.1. 车载以太网AVB概述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AVB_gPTP.html">9.3.2. AVB之gPTP</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">9.3.3. AVB之AVTP</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">9.3.3.1. 音视频数据封装</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">9.3.3.2. 媒体同步</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tc8/index.html">9.4. TC-8测试</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">9. </span>net</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">9.3. </span>AVB笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">9.3.3. </span>AVB之AVTP</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/net/AVB/AVB_AVTP.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="avbavtp">
+<h1><span class="section-number">9.3.3. </span>AVB之AVTP<a class="headerlink" href="#avbavtp" title="此标题的永久链接"></a></h1>
+<p>以下内容主要介绍AVB协议族中的音视频传输协议AVTP(IEEE Std 1722-2016)</p>
+<p>AVTP是个链路层传输协议，其主要作用有两个：</p>
+<ul>
+<li><p>音视频数据封装: 将音视频数据封装成相应的格式在链路层传输</p></li>
+<li><p>媒体同步:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>媒体时钟同步: 不同的媒体类型有自己的媒体时钟，这些媒体时钟都映射到gPTP时间(同一个时间坐标系)，接收端可以轻松进行媒体时钟恢复</p></li>
+<li><p>播放时间同步: 数据发送时指示接收方在未来的某个时间点播放，如果有多个接收者，他们就会在未来的同一时刻播放</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<section id="id1">
+<h2><span class="section-number">9.3.3.1. </span>音视频数据封装<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>AVTP是链路层传输协议，并且是基于VLAN的，在以太网帧中的位置如下：</p>
+<img alt="../../_images/AVTP_ETH.image" src="../../_images/AVTP_ETH.image" />
+<p>针对不同的音视频格式，AVTP有不同的header和payload格式，本文主要基于H264介绍AVTP</p>
+<section id="header">
+<h3><span class="section-number">9.3.3.1.1. </span>header结构<a class="headerlink" href="#header" title="此标题的永久链接"></a></h3>
+<p>下图是AVTP封装H264视频数据时的头部结构</p>
+<img alt="../../_images/avtp_header.image" src="../../_images/avtp_header.image" />
+<ul class="simple">
+<li><p>subtype: AVTP子类型，本例为压缩视频格式，一般简称为CVF</p></li>
+<li><p>tv: 它用来表示字段5是否有效，0表示无效，1表示有效．这是因为一个视频单元(NALU)会被拆分为多个AVTP包，规范要求只需要在最后一个AVTP包中添加时间戳即可</p></li>
+<li><p>sequence_num: 包序号，接收端判断是否丢包，乱序</p></li>
+<li><p>stream_id: 流id，用来标识本数据流．长度为64bit，前48bit与MAC地址定义规则一致，大部分直接拿MAC地址作为前48bit,后16bit根据需要自定义分配</p></li>
+<li><p>avtp_timestamp: AVTP Presentation time</p></li>
+<li><p>format: 用来表明payload承载的音视频数据是自定义格式还是RFC规范定义的格式</p></li>
+<li><p>format_subtype: payload承载的音视频数据自定义，本例中是H264格式</p></li>
+<li><p>M: 代表一个NALU的结束，如果一个NALU被拆分成多个AVTP报文，只有最后一个需要把M标志写成1</p></li>
+<li><p>h264_timestamp: h264时间戳</p></li>
+<li><p>ptv: 用来指示h264_timestamp字段是否有效</p></li>
+</ul>
+<p>实际抓包数据</p>
+<img alt="../../_images/net_package.image" src="../../_images/net_package.image" />
+</section>
+<section id="payload">
+<h3><span class="section-number">9.3.3.1.2. </span>payload结构<a class="headerlink" href="#payload" title="此标题的永久链接"></a></h3>
+<p>AVTP payload结构如下图所示：</p>
+<img alt="../../_images/AVTP_payload.image" src="../../_images/AVTP_payload.image" />
+<p>h264帧由多个NALU单元组成，如下图所示</p>
+<img alt="../../_images/h264_payload.image" src="../../_images/h264_payload.image" />
+<p>H264帧分为I帧，P帧，B帧三类，其中</p>
+<ul class="simple">
+<li><p>I帧不存在帧间依赖，可以单独解码成像</p></li>
+<li><p>P帧依赖本帧前面的I帧或P帧(这种依赖是从I帧依次传递过来的，所有中间任何一帧出错都会导致后续帧出错)</p></li>
+<li><p>B帧不仅依赖前面的帧，还依赖后面的帧</p></li>
+</ul>
+<p>如果一个码流只有I帧和P帧，这种码流属于 <code class="docutils literal notranslate"><span class="pre">非交叉式编码模式(Non-interleaved</span> <span class="pre">mode)</span></code> ,帧的解码顺序和显示顺序是一致的．如果码流中包含了B帧，
+就成为了 <code class="docutils literal notranslate"><span class="pre">交叉编码模式(Interleaved</span> <span class="pre">mode)</span></code> ,帧的解码顺序和显示顺序就不一定是一致的了．</p>
+<p>RTP封装H264数据是以NALU为单位进行的，而不是以帧为单位进行的．RTP打包模式有下面三种：</p>
+<ul class="simple">
+<li><p>Single NAL unit mode: 单NALU模式，使用H.241</p></li>
+<li><p>Non-interleaved mode: 非交叉模式，NALU的解码顺序和显示顺序是一致的，先解码的NALU先显示</p></li>
+<li><p>Interleaved mode: 交叉模式，本模式下NALU的解码顺序和显示顺序是不一致的，比如有B帧的情况下</p></li>
+</ul>
+<p>RTP打包使用哪种模式，有编码器决定的，不能随便填．</p>
+<p>RTP包类型有包含以下几种</p>
+<ul class="simple">
+<li><p>单个NALU: 一个数据报文包含一个完整的NALU</p></li>
+<li><p>聚合多个NALU: 一个数据包文中包含多个NALU,根据这些NALU的时间戳是否相同，又分为下面两种</p>
+<ul>
+<li><p>STAP: 一个数据报文包含多个NALU,这些NALU时间戳相同，又分为STAP-A和STAP-B方式</p></li>
+<li><p>MTAP: 一个数据报文包含多个NALU，这些NALU时间戳不同，又分为MTAP16和MTAP24方式</p></li>
+</ul>
+</li>
+<li><p>分片方式: NALU太大，无法用一个数据包传输，需要分片，又分为FU-A和FU-B方式</p></li>
+</ul>
+<p>打包模式和包类型之间的关系如下，并不能随便使用</p>
+<img alt="../../_images/package_mode.image" src="../../_images/package_mode.image" />
+</section>
+</section>
+<section id="id2">
+<h2><span class="section-number">9.3.3.2. </span>媒体同步<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<section id="avtp-presentation-time">
+<h3><span class="section-number">9.3.3.2.1. </span>AVTP Presentation Time<a class="headerlink" href="#avtp-presentation-time" title="此标题的永久链接"></a></h3>
+<p>AVTP Presentation time的含义是呈现时间，表示接收方在该时刻需要将AVTP数据包payload中的音视频数据送到应用层进行处理，比如解码播放．</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">9.3.3.2.2. </span>播放时间同步<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>播放时间同步用来指示接收端在某一时刻处理音视频数据，数据可以提前到，但不能迟到．</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">9.3.3.2.3. </span>媒体时钟同步<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>媒体时钟同步解决的是采集速度和播放速度一致的问题(相对时间同步的问题)</p>
+<p>视频的媒体时钟一般都是90khz,理想情况下，大家以同样的频率震荡，但是随着时间的流逝或者环境影响，会漂移，这就导致talker和listener的媒体时钟不同步，进而表现为播放不正常</p>
+<p>媒体时钟恢复，是指listener根据avtp presentation time重建媒体时钟，使之和采集端保持同步，进而指导音视频以采集时的速率播放，流程如下</p>
+<ol class="arabic simple">
+<li><p>在发送端talker把媒体时钟嵌入在展示时间戳中(采样点对应gPTP的某个时刻)</p></li>
+</ol>
+<img alt="../../_images/talker_timer.image" src="../../_images/talker_timer.image" />
+<ol class="arabic simple" start="2">
+<li><p>在接收端，媒体时钟从展示时间戳中恢复(AVTP Presentation time和本地gPTP时间对比，二者同步的时刻对应一个Media clock的采样点),进而控制音视频的播放</p></li>
+</ol>
+<img alt="../../_images/listener_time.image" src="../../_images/listener_time.image" />
+<ol class="arabic simple" start="3">
+<li><p>媒体时钟回复模块示意图如下</p></li>
+</ol>
+<img alt="../../_images/media_time_sync.image" src="../../_images/media_time_sync.image" />
+</section>
+<section id="h264-timestamp">
+<h3><span class="section-number">9.3.3.2.4. </span>h264_timestamp<a class="headerlink" href="#h264-timestamp" title="此标题的永久链接"></a></h3>
+<p>AVTP中有了展示时间戳，为什么还要加上h264_timestamp时间戳呢？</p>
+<p>在交叉编码模式下，解码顺序和显示顺序是不一致的，如下图所示视频数据是按照Frame0, Frame1的顺序依次采集的，接收端也要按这个顺序显示</p>
+<img alt="../../_images/frame_order.image" src="../../_images/frame_order.image" />
+<p>但由于存在B帧，编码器实际的输出顺序如下，接收端也要按照下面的顺序解码</p>
+<img alt="../../_images/frame_display_order.image" src="../../_images/frame_display_order.image" />
+<p>AVTP Presentation Time的作用是DTS(Decoding Time Stamp),在非交叉模式下，是可以正常工作的．但是在交叉模式下，由于解码顺序和显示顺序不一致，虽然能按正确的顺序
+解码，但不能按正确的顺序显示．为了解决这个问题，才加上h264_timestamp</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="AVB_gPTP.html" class="btn btn-neutral float-left" title="9.3.2. AVB之gPTP" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../tc8/index.html" class="btn btn-neutral float-right" title="9.4. TC-8测试" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

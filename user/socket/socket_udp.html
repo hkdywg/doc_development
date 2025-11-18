@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.7.2. udp socket &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="6.7.3. tcp socket" href="socket_tcp.html" />
+    <link rel="prev" title="6.7.1. socket概述" href="socket_summary.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/index.html">6.4. 通信中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">6.7. linux socket编程</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="socket_summary.html">6.7.1. socket概述</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">6.7.2. udp socket</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">6.7.2.1. 通信实例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="socket_tcp.html">6.7.3. tcp socket</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.7. </span>linux socket编程</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.7.2. </span>udp socket</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user/socket/socket_udp.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="udp-socket">
+<h1><span class="section-number">6.7.2. </span>udp socket<a class="headerlink" href="#udp-socket" title="此标题的永久链接"></a></h1>
+<p>UDP(user datagram protocal)，中文名称为用户数据报协议，属于传输层．UDP是面向非连接的协议，它不与对方建立连接，而是直接把
+要发的数据包发给对方．所以UDP适合用于一次传输的数据量很少，对可靠性要求不高，对实时性要求高的应用场景．UDP不像TCP需要建立
+三次握手的连接，因而使得通信效率很高．</p>
+<p>udp socket通信流程如下所示</p>
+<img alt="../../_images/socket_udp.jpg" src="../../_images/socket_udp.jpg" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>客户端要发起一次请求仅需要两个步骤(socket和sendto),而服务端也仅仅需要三个步骤即可接收到客户端的消息(socket,bind,recvfrom)</p>
+</div>
+<section id="id1">
+<h2><span class="section-number">6.7.2.1. </span>通信实例<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>server</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;stdio.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;string.h&gt;
+
+#define SERVER_PORT 8888
+#define BUFF_LEN 1024
+
+void handle_udp_msg(int fd)
+{
+    char buf[BUFF_LEN];  //接收缓冲区，1024字节
+    socklen_t len;
+    int count;
+    struct sockaddr_in clent_addr;  //clent_addr用于记录发送方的地址信息
+    while(1)
+    {
+        memset(buf, 0, BUFF_LEN);
+        len = sizeof(clent_addr);
+        count = recvfrom(fd, buf, BUFF_LEN, 0, (struct sockaddr*)&amp;clent_addr, &amp;len);  //recvfrom是拥塞函数，没有数据就一直拥塞
+        if(count == -1)
+        {
+            printf(&quot;recieve data fail!\n&quot;);
+            return;
+        }
+        printf(&quot;client:%s\n&quot;,buf);  //打印client发过来的信息
+        memset(buf, 0, BUFF_LEN);
+        sprintf(buf, &quot;I have recieved %d bytes data!\n&quot;, count);  //回复client
+        printf(&quot;server:%s\n&quot;,buf);  //打印自己发送的信息给
+        sendto(fd, buf, BUFF_LEN, 0, (struct sockaddr*)&amp;clent_addr, len);  //发送信息给client，注意使用了clent_addr结构体指针
+
+    }
+}
+
+
+/*
+    server:
+            socket--&gt;bind--&gt;recvfrom--&gt;sendto--&gt;close
+*/
+
+int main(int argc, char* argv[])
+{
+    int server_fd, ret;
+    struct sockaddr_in ser_addr;
+
+    server_fd = socket(AF_INET, SOCK_DGRAM, 0); //AF_INET:IPV4;SOCK_DGRAM:UDP
+    if(server_fd &lt; 0)
+    {
+        printf(&quot;create socket fail!\n&quot;);
+        return -1;
+    }
+
+    memset(&amp;ser_addr, 0, sizeof(ser_addr));
+    ser_addr.sin_family = AF_INET;
+    ser_addr.sin_addr.s_addr = htonl(INADDR_ANY); //IP地址，需要进行网络序转换，INADDR_ANY：本地地址
+    ser_addr.sin_port = htons(SERVER_PORT);  //端口号，需要网络序转换
+
+    ret = bind(server_fd, (struct sockaddr*)&amp;ser_addr, sizeof(ser_addr));
+    if(ret &lt; 0)
+    {
+        printf(&quot;socket bind fail!\n&quot;);
+        return -1;
+    }
+
+    handle_udp_msg(server_fd);   //处理接收到的数据
+
+    close(server_fd);
+    return 0;
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>client</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;sys/types.h&gt;</span>
+<span class="c1">#include &lt;sys/socket.h&gt;</span>
+<span class="c1">#include &lt;netinet/in.h&gt;</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+
+<span class="c1">#define SERVER_PORT 8888</span>
+<span class="c1">#define BUFF_LEN 512</span>
+<span class="c1">#define SERVER_IP &quot;172.0.5.182&quot;</span>
+
+
+<span class="n">void</span> <span class="n">udp_msg_sender</span><span class="p">(</span><span class="nb">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">struct</span> <span class="n">sockaddr</span><span class="o">*</span> <span class="n">dst</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="n">socklen_t</span> <span class="nb">len</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">sockaddr_in</span> <span class="n">src</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">char</span> <span class="n">buf</span><span class="p">[</span><span class="n">BUFF_LEN</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;TEST UDP MSG!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+        <span class="nb">len</span> <span class="o">=</span> <span class="n">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">dst</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;client:</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">buf</span><span class="p">);</span>  <span class="o">//</span><span class="n">打印自己发送的信息</span>
+        <span class="n">sendto</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">BUFF_LEN</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="nb">len</span><span class="p">);</span>
+        <span class="n">memset</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">BUFF_LEN</span><span class="p">);</span>
+        <span class="n">recvfrom</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">BUFF_LEN</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">src</span><span class="p">,</span> <span class="o">&amp;</span><span class="nb">len</span><span class="p">);</span>  <span class="o">//</span><span class="n">接收来自server的信息</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;server:</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">buf</span><span class="p">);</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>  <span class="o">//</span><span class="n">一秒发送一次消息</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="o">/*</span>
+    <span class="n">client</span><span class="p">:</span>
+            <span class="n">socket</span><span class="o">--&gt;</span><span class="n">sendto</span><span class="o">--&gt;</span><span class="n">revcfrom</span><span class="o">--&gt;</span><span class="n">close</span>
+<span class="o">*/</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">client_fd</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">sockaddr_in</span> <span class="n">ser_addr</span><span class="p">;</span>
+
+    <span class="n">client_fd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_DGRAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">client_fd</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;create socket fail!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ser_addr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">ser_addr</span><span class="p">));</span>
+    <span class="n">ser_addr</span><span class="o">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+    <span class="o">//</span><span class="n">ser_addr</span><span class="o">.</span><span class="n">sin_addr</span><span class="o">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">inet_addr</span><span class="p">(</span><span class="n">SERVER_IP</span><span class="p">);</span>
+    <span class="n">ser_addr</span><span class="o">.</span><span class="n">sin_addr</span><span class="o">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">htonl</span><span class="p">(</span><span class="n">INADDR_ANY</span><span class="p">);</span>  <span class="o">//</span><span class="n">注意网络序转换</span>
+    <span class="n">ser_addr</span><span class="o">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="n">htons</span><span class="p">(</span><span class="n">SERVER_PORT</span><span class="p">);</span>  <span class="o">//</span><span class="n">注意网络序转换</span>
+
+    <span class="n">udp_msg_sender</span><span class="p">(</span><span class="n">client_fd</span><span class="p">,</span> <span class="p">(</span><span class="n">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">ser_addr</span><span class="p">);</span>
+
+    <span class="n">close</span><span class="p">(</span><span class="n">client_fd</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="socket_summary.html" class="btn btn-neutral float-left" title="6.7.1. socket概述" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="socket_tcp.html" class="btn btn-neutral float-right" title="6.7.3. tcp socket" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

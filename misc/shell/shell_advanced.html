@@ -1,0 +1,654 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.3.3. shell三剑客grep sed awk &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="7.3.4. 正则表达式" href="regular_expression.html" />
+    <link rel="prev" title="7.3.2. Makefile与shell的区别" href="Makefile_shell/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.3. shell 使用笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="shell_rule.html">7.3.1. shell基本语法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Makefile_shell/index.html">7.3.2. Makefile与shell的区别</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.3.3. shell三剑客grep sed awk</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#grep">7.3.3.1. grep</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sed">7.3.3.2. sed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#awk">7.3.3.3. awk</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="regular_expression.html">7.3.4. 正则表达式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="built-in_command.html">7.3.5. shell内建命令</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.9. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.3. </span>shell 使用笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.3.3. </span>shell三剑客grep sed awk</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/misc/shell/shell_advanced.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="shellgrep-sed-awk">
+<h1><span class="section-number">7.3.3. </span>shell三剑客grep sed awk<a class="headerlink" href="#shellgrep-sed-awk" title="此标题的永久链接"></a></h1>
+<p>awk、grep、sed是linux操作文件的三大利器，合称文本三剑客。grep适合单纯的文件查找或者匹配文本，sed更适合编辑匹配到的文本，awk适合格式化文本，对文本进行复杂的格式处理</p>
+<section id="grep">
+<h2><span class="section-number">7.3.3.1. </span>grep<a class="headerlink" href="#grep" title="此标题的永久链接"></a></h2>
+<p>grep用于过滤搜索特定字符，可使用正则表达式配合使用.搜索成功返回0,不成功返回1,文件不存在则返回2</p>
+<p>命令格式</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">grep</span> <span class="p">[</span><span class="n">option</span><span class="p">]</span> <span class="n">pattern</span> <span class="n">file</span>
+</pre></div>
+</div>
+<p>命令参数如下</p>
+<ul class="simple">
+<li><p>-A&lt;显示行数&gt;: 除了显示符合匹配样式的那一行之外，并显示该行之后的内容</p></li>
+<li><p>-B&lt;显示行数&gt;: 除了显示符合匹配样式的那一行之外，并显示该行之前的内容</p></li>
+<li><p>-C&lt;显示行数&gt;: 除了显示符合匹配样式的那一行之外，并显示该行前后的内容</p></li>
+<li><p>-c: 统计匹配的行数</p></li>
+<li><p>-e: 实现多个选项间的逻辑or关系</p></li>
+<li><p>-E: 扩展的正则表达式</p></li>
+<li><p>-f FILE: 从file获取pattern匹配</p></li>
+<li><p>-F: 相当于fgrep</p></li>
+<li><p>-i –igonre-case : 忽略大小写的区别</p></li>
+<li><p>-n: 显示匹配的行号</p></li>
+<li><p>-o: 仅显示匹配到的字符串</p></li>
+<li><p>-q: 静默模式,不输出任何信息</p></li>
+<li><p>-s: 不显示错误信息</p></li>
+<li><p>-v: 显示不被pattern匹配到的行</p></li>
+<li><p>-w: 匹配整个单词</p></li>
+</ul>
+</section>
+<section id="sed">
+<h2><span class="section-number">7.3.3.2. </span>sed<a class="headerlink" href="#sed" title="此标题的永久链接"></a></h2>
+<p>sed是一种流编辑器，它一次处理一行内容，处理时把当前处理的行存储在临时缓冲区中，称为”模式空间”，接着用sed命令处理缓冲区中的内容，处理完成后，把缓冲区中的内容送往屏幕，
+然后读入下一行，执行下一个循环。文件内容并没有改变，除非你使用重定向存储输出或者-i</p>
+<section id="id1">
+<h3><span class="section-number">7.3.3.2.1. </span>sed命令解释<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<p>命令格式</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">se</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="s1">&#39;[地址定界] command&#39;</span> <span class="n">file</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>常用选项options</strong></p>
+<ul class="simple">
+<li><p>-n:不输出模式空间内容到屏幕，即不自动打印，只打印匹配到的行</p></li>
+<li><p>-e:多点编辑，对每行处理时，可以有多个script</p></li>
+<li><p>-f:把script写到文件当中，在执行sed时-f指定文件路径,如果是多个script，换行写</p></li>
+<li><p>-r:支持扩展的正则表达式</p></li>
+<li><p>-i:直接将处理结果写入文件</p></li>
+<li><p>i.bak:在将处理的结果写入文件之前备份一份</p></li>
+</ul>
+<p><strong>地址定界</strong></p>
+<ul class="simple">
+<li><p>不给地址：对全文进行处理</p></li>
+<li><p>单地址:</p>
+<ol class="arabic simple">
+<li><p>#:指定的行</p></li>
+<li><p>/pattern/:被此模式能够匹配到的每一行</p></li>
+</ol>
+</li>
+<li><p>地址范围:</p>
+<ol class="arabic simple">
+<li><p>#,#</p></li>
+<li><p>#,+#</p></li>
+<li><p>/pat1/,/pat2/</p></li>
+<li><p>,/pat1/</p></li>
+</ol>
+</li>
+<li><p>~:步进</p>
+<ol class="arabic simple">
+<li><p>sed -n ‘1~2p’  #只打印奇数行(1~2从第一行,一次加2行)</p></li>
+<li><p>sed -n ‘2~2p’  #只打印偶数行</p></li>
+</ol>
+</li>
+</ul>
+<p><strong>编辑命令commmand</strong></p>
+<ul class="simple">
+<li><p>d:删除模式空间匹配的行，并立即启用下一轮循环</p></li>
+<li><p>p:打印当前模式空间内容,追加到默认输出之后</p></li>
+<li><p>a:在指定行后面追加文本,支持使用n实现多行追加</p></li>
+<li><p>i:在前面插入文件，支持使用n实现多行追加</p></li>
+<li><p>c:替换行为单行或者多行文本，支持使用n实现多行追加</p></li>
+<li><p>w:保存模式匹配到的行到指定文件</p></li>
+<li><p>r:读取指定文件的文本到模式空间中匹配到的行后</p></li>
+<li><p>=:为模式空间中的行打印行号</p></li>
+<li><p>!:为模式空间中匹配行取反处理</p></li>
+<li><p>s///:查找替换,支持使用其他分隔符，如s&#64;&#64;&#64;,s###</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3><span class="section-number">7.3.3.2.2. </span>sed用法演示<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p><strong>常用选项options演示</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="n">demo</span>
+<span class="n">aaa</span>
+<span class="n">bbb</span>
+<span class="n">AABBCCDD</span>
+
+<span class="n">sed</span> <span class="s2">&quot;/aaa/p&quot;</span> <span class="n">demo</span>   <span class="c1">#匹配到的行会打印一遍，没有匹配到的行也会打印</span>
+<span class="n">aaa</span>
+<span class="n">aaa</span>
+<span class="n">bbb</span>
+<span class="n">AABBCCDD</span>
+
+<span class="n">sed</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;/aaa/p&quot;</span> <span class="n">demo</span>    <span class="c1">#-n不显示没匹配的行</span>
+<span class="n">aaa</span>
+
+<span class="n">sed</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;s/a/A/&quot;</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;s/b/B/&quot;</span> <span class="n">demo</span> <span class="c1">#-e多点编辑</span>
+<span class="n">Aaa</span>
+<span class="n">Bbb</span>
+<span class="n">AABBCCDD</span>
+
+<span class="n">cat</span> <span class="n">sedscript</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">s</span><span class="o">/</span><span class="n">A</span><span class="o">/</span><span class="n">a</span><span class="o">/</span><span class="n">g</span>
+
+<span class="n">sed</span> <span class="o">-</span><span class="n">f</span> <span class="n">sedscript</span><span class="o">.</span><span class="n">txt</span> <span class="n">demo</span>
+<span class="n">aaa</span>
+<span class="n">bbb</span>
+<span class="n">aaBBCCDD</span>
+</pre></div>
+</div>
+<p><strong>地址界定演示</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sed</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;p&quot;</span> <span class="n">demo</span>     <span class="c1">#不指定行，打印全文</span>
+<span class="n">aaa</span>
+<span class="n">bbb</span>
+<span class="n">AABBCCDD</span>
+
+<span class="n">sed</span> <span class="s2">&quot;2s/b/B/g&quot;</span> <span class="n">demo</span> <span class="c1">#替换第2行的b-&gt;B</span>
+<span class="n">aaa</span>
+<span class="n">BBB</span>
+<span class="n">AABBCCDD</span>
+
+<span class="n">sed</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;1,2p&quot;</span> <span class="n">demo</span> <span class="c1">#打印1-2行</span>
+<span class="n">aaa</span>
+<span class="n">bbb</span>
+
+<span class="n">sed</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;/aaa/,/DD/p&quot;</span> <span class="n">demo</span>
+<span class="n">aaa</span>
+<span class="n">bbb</span>
+<span class="n">AABBCCDD</span>
+
+<span class="n">sed</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;2,/DD/p&quot;</span> <span class="n">demo</span>
+<span class="n">bbb</span>
+<span class="n">AABBCCDD</span>
+
+<span class="n">sed</span> <span class="s2">&quot;1~2s/[aA]/E/g&quot;</span> <span class="n">demo</span>    <span class="c1">#将奇数行的a或A替换为E</span>
+<span class="n">EEE</span>
+<span class="n">bbb</span>
+<span class="n">EEBBCCDD</span>
+</pre></div>
+</div>
+<p><strong>编辑命令command演示</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sed</span> <span class="s2">&quot;2d&quot;</span> <span class="n">demo</span>       <span class="c1">#删除第2行</span>
+<span class="n">aaa</span>
+<span class="n">AABBCCDD</span>
+
+<span class="n">sed</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;2p&quot;</span> <span class="n">demo</span>    <span class="c1">#打印第二行</span>
+
+<span class="n">sed</span> <span class="s2">&quot;2a123&quot;</span> <span class="n">demo</span>    <span class="c1">#在第二行后面加123</span>
+<span class="n">aaa</span>
+<span class="n">bbb</span>
+<span class="mi">123</span>
+<span class="n">AABBCCDD</span>
+
+<span class="n">sed</span> <span class="s2">&quot;1i123&quot;</span> <span class="n">demo</span>    <span class="c1">#在第一行前面加123</span>
+
+<span class="n">sed</span> <span class="s2">&quot;3c123</span><span class="se">\n</span><span class="s2">456&quot;</span>    <span class="c1">#替换第三行的内容</span>
+<span class="n">aaa</span>
+<span class="n">bbb</span>
+<span class="mi">123</span>
+<span class="mi">456</span>
+
+<span class="n">sed</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;3w/root/demo3&quot;</span> <span class="n">demo</span>     <span class="c1">#保存第三行的内容到demo3文件中</span>
+
+<span class="n">sed</span> <span class="s2">&quot;1r/root/demo3&quot;</span> <span class="n">demo</span>    <span class="c1">#读取demo3的内容到第1行后</span>
+
+<span class="n">sed</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;=&quot;</span> <span class="n">demo</span>     <span class="c1">#打印行号</span>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+
+<span class="n">sed</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;2!p&quot;</span> <span class="c1">#打印除了第2行的内容</span>
+
+<span class="n">sed</span> <span class="s1">&#39;s@[a-z]@\u&amp;@g&#39;</span> <span class="n">demo</span> <span class="c1">#将全文的小写字母替换为大写字母</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3><span class="section-number">7.3.3.2.3. </span>sed高级编辑命令<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>格式</p></li>
+<li><p>h:把模式空间中的内容覆盖至保持空间中</p></li>
+<li><p>H:把模式空间中的内容追加至保持空间中</p></li>
+<li><p>g:从保持空间取出数据覆盖至模式空间中</p></li>
+<li><p>G:从保持空间取出数据追加至模式空间中</p></li>
+<li><p>x:把模式空间中的内容与保持空间中的内容进行互换</p></li>
+<li><p>n:读取匹配到的行的下一行覆盖至模式空间</p></li>
+<li><p>N:读取匹配到的行的下一行追加至模式空间</p></li>
+<li><p>d:删除模式空间中的行</p></li>
+<li><p>D:当前模式空间开端至n的内容(不再传至标准输出)，放弃之后的命令，但是对剩余模式空间重新执行sed</p></li>
+</ul>
+<p><strong>案例</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="n">num</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">One</span>
+<span class="n">Two</span>
+<span class="n">Three</span>
+
+<span class="n">sed</span> <span class="s1">&#39;1!G;h;$!d&#39;</span> <span class="n">num</span>
+<span class="n">Three</span>
+<span class="n">Two</span>
+<span class="n">One</span>
+</pre></div>
+</div>
+<p>示意图如下所示:</p>
+<img alt="../../_images/sed.png" src="../../_images/sed.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>保持空间是模式空间一个临时存放数据的缓冲区，协助模式空间进行数据处理</p>
+</div>
+<p><strong>演示</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">seq</span> <span class="mi">99</span> <span class="o">|</span> <span class="n">sed</span> <span class="o">-</span><span class="n">n</span> <span class="s2">&quot;n;p&quot;</span>   <span class="c1">#打印偶数行</span>
+<span class="mi">2</span>
+<span class="mi">4</span>
+<span class="mi">6</span>
+<span class="mi">8</span>
+
+<span class="n">seq</span> <span class="mi">9</span> <span class="o">|</span> <span class="n">sed</span> <span class="s2">&quot;1!G;h;$!d&quot;</span>     <span class="c1">#倒序显示</span>
+
+<span class="n">seq</span> <span class="mi">9</span> <span class="o">|</span> <span class="n">sed</span> <span class="s1">&#39;H;n;d&#39;</span> <span class="c1">#显示奇数行</span>
+
+<span class="n">seq</span> <span class="mi">9</span> <span class="o">|</span> <span class="n">sed</span> <span class="s2">&quot;N:D&quot;</span> <span class="c1">#显示最后一行</span>
+
+<span class="n">seq</span> <span class="mi">9</span> <span class="o">|</span> <span class="n">sed</span> <span class="s2">&quot;G&quot;</span> <span class="c1">#每行之间加空行</span>
+
+<span class="n">seq</span> <span class="mi">9</span> <span class="o">|</span> <span class="n">sed</span> <span class="s2">&quot;g&quot;</span> <span class="c1">#把每行内容替换为空行</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="awk">
+<h2><span class="section-number">7.3.3.3. </span>awk<a class="headerlink" href="#awk" title="此标题的永久链接"></a></h2>
+<p>awk是一种编程语言，用于在linux/unix下对文本和数据进行处理,数据可以来自标准输入(stdin)、一个或者多个文件或其他命令的输出。它支持用户自定义函数和动态正则表达式等先进功能，
+可以在命令行使用也可以作为脚本使用</p>
+<p>语法</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">awk</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="s1">&#39;program&#39;</span> <span class="n">var</span><span class="o">=</span><span class="n">value</span> <span class="n">file</span><span class="o">...</span>
+<span class="n">awk</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="o">-</span><span class="n">f</span> <span class="n">programfile</span> <span class="n">var</span><span class="o">=</span><span class="n">value</span> <span class="n">file</span><span class="o">...</span>
+<span class="n">awk</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="s1">&#39;BEGIN{ action;... } pattern{ action;... } END{ actions;.. }&#39;</span> <span class="n">file</span><span class="o">...</span>
+</pre></div>
+</div>
+<p><strong>常用命令选项</strong></p>
+<ul class="simple">
+<li><p>-F fs:fs指定输入分隔符,fs可以是字符串或正则表达式</p></li>
+<li><p>-v var=value:赋值一个用户定义变量，将外部变量传递给awk</p></li>
+<li><p>-f scriptfile:从脚本文件中读取awk命令</p></li>
+</ul>
+<section id="id4">
+<h3><span class="section-number">7.3.3.3.1. </span>awk变量<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>变量:内置变量和自定义变量,每个变量前加-v命令选项</p>
+<section id="id5">
+<h4><span class="section-number">7.3.3.3.1.1. </span>内置变量<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h4>
+<ol class="arabic simple">
+<li><p>格式</p></li>
+</ol>
+<ul class="simple">
+<li><p>FS:输入字段分隔符,默认为空白字符</p></li>
+<li><p>OFS:输出字段分隔符，默认为空白字符</p></li>
+<li><p>RS:输入记录分隔符，指定输入时的换行符，原换行符仍有效</p></li>
+<li><p>ORS:输出记录分隔符，输出时用指定符号代替换行符</p></li>
+<li><p>NF:字段数量，共有多少字段，$NF引用最后一列</p></li>
+<li><p>NR:行号，后可跟多个文件，第二个文件行号继续从第一个文件最后行号开始</p></li>
+<li><p>FNR:各文件分别计数，行号</p></li>
+<li><p>FILENAME:当前文件名</p></li>
+<li><p>ARGC:命令行参数个数</p></li>
+<li><p>ARGV:数组，保存的是命令行所给定的各参数，查看参数</p></li>
+</ul>
+<p>演示</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="n">awkdemo</span>
+<span class="n">hello</span><span class="p">:</span><span class="n">world</span>
+<span class="n">linux</span><span class="p">:</span><span class="n">redhat</span><span class="p">:</span><span class="n">lalala</span><span class="p">:</span><span class="n">hahaha</span>
+<span class="n">along</span><span class="p">:</span><span class="n">love</span><span class="p">:</span><span class="n">youou</span>
+
+<span class="n">awk</span> <span class="o">-</span><span class="n">v</span> <span class="n">FS</span><span class="o">=</span><span class="s1">&#39;:&#39;</span> <span class="s1">&#39;{print $1,$2}&#39;</span> <span class="n">awkdemo</span>   <span class="c1">#FS指定输入分隔符</span>
+
+<span class="n">awk</span> <span class="o">-</span><span class="n">v</span> <span class="n">FS</span><span class="o">=</span><span class="s1">&#39;:&#39;</span> <span class="n">OFS</span><span class="o">=</span><span class="s2">&quot;----&quot;</span> <span class="s1">&#39;{print $1,$2}&#39;</span> <span class="n">awkdemo</span> <span class="c1">#OFS指定输出分隔符</span>
+
+<span class="n">awk</span> <span class="o">-</span><span class="n">v</span> <span class="n">RS</span><span class="o">=</span><span class="s1">&#39;:&#39;</span> <span class="s1">&#39;{print $1,$2}&#39;</span> <span class="n">awkdemo</span>
+
+<span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;{print NF}&#39;</span> <span class="n">awkdemo</span>
+
+<span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;{print $(NF-1)&#39;</span> <span class="n">awkdemo</span>    <span class="c1">#显示倒数第2列</span>
+
+<span class="n">awk</span> <span class="n">END</span><span class="s1">&#39;{print NR} awkdemo  #统计行号</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h4><span class="section-number">7.3.3.3.1.2. </span>自定义变量<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h4>
+<p>自定义变量区分大小写</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">v</span> <span class="n">var</span><span class="o">=</span><span class="n">value</span>
+
+<span class="n">awk</span> <span class="n">v</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ywg&quot;</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;print name&quot;:&quot;$0&#39;</span> <span class="n">awkdemo</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="pintf">
+<h3><span class="section-number">7.3.3.3.2. </span>pintf命令<a class="headerlink" href="#pintf" title="此标题的永久链接"></a></h3>
+<p>格式：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pritnf</span> <span class="s2">&quot;FORMAT&quot;</span><span class="p">,</span> <span class="n">item1</span><span class="p">,</span><span class="n">item2</span><span class="p">,</span><span class="o">...</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>必须指定FORMAT</p></li>
+<li><p>不会自动换行，需要显示给出换行控制符,n</p></li>
+<li><p>FORMAT中需要分别为后面每个item指定格式符</p></li>
+</ol>
+<p>格式符：与item一一对应</p>
+<ul class="simple">
+<li><p>%c:显示字符的ADCII码</p></li>
+<li><p>%d,%i:显示十进制整数</p></li>
+<li><p>%e,%E:显示科学计数法数值</p></li>
+<li><p>%f:显示为浮点数,小数, %5.1f带整数、小数，整数5位小数1位</p></li>
+<li><p>%g,%G:以科学计数法或浮点形式显示数值</p></li>
+<li><p>%s:显示字符串</p></li>
+<li><p>%u:无符号整数</p></li>
+<li><p>%%:显示%自身</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;{printf &quot;</span><span class="si">%20s</span><span class="s1">----</span><span class="si">%u</span><span class="se">\n</span><span class="s1">&quot;,$1,$3}&#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>
+
+<span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;{printf &quot;</span><span class="si">%-20s</span><span class="s1">----</span><span class="si">%-u</span><span class="se">\n</span><span class="s1">&quot;,$1,$3}&#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>   <span class="c1">#使用-进行左对齐</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h3><span class="section-number">7.3.3.3.3. </span>操作符<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>格式</p>
+<ul class="simple">
+<li><p>算数操作符</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>x+y,x-y,x*y,x/y,x^y,x%y</p></li>
+<li><p>-x:转换为负数</p></li>
+<li><p>+x:转换为数值</p></li>
+</ol>
+<ul class="simple">
+<li><p>字符串操作符：没有符号的操作符，字符串连接</p></li>
+<li><p>赋值操作符：</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>=,+=,-=,*=,/=,%=,^=</p></li>
+<li><p>++,–</p></li>
+</ol>
+<ul class="simple">
+<li><p>比较操作符</p></li>
+</ul>
+<p>==,!=,&gt;,&gt;=,&lt;=</p>
+<ul class="simple">
+<li><p>模式匹配符:~:左边和右边是否匹配包含 !~:是否不匹配</p></li>
+<li><p>逻辑操作符:&amp;&amp; || !</p></li>
+<li><p>函数调用:function_name(argu1,argu2,…)</p></li>
+</ul>
+<p>演示</p>
+<p>模式匹配</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">-</span><span class="n">h</span> <span class="o">|</span> <span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;$0 ~ /^\/dev/&#39;</span>     <span class="c1">#查询以/dev开头的磁盘信息</span>
+
+<span class="n">df</span> <span class="o">-</span><span class="n">h</span> <span class="o">|</span> <span class="n">awk</span> <span class="s1">&#39;$0 ~ /^\/dev/{print $(NF-1)&quot;----&quot;$1}&#39;</span>   <span class="c1">#只显示磁盘情况和磁盘名</span>
+
+<span class="n">df</span> <span class="o">-</span><span class="n">h</span> <span class="o">|</span> <span class="n">awk</span> <span class="s1">&#39;/^\/dev/{print $(NF-1)&quot;---&quot;$1}&#39;</span> <span class="o">|</span> <span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="o">%</span> <span class="s1">&#39;$1 &gt; 40&#39;</span>
+</pre></div>
+</div>
+<p>逻辑操作符</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;$3&gt;0 &amp;&amp; $3&lt;=1000 {print $1,$3}&#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>
+
+<span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;!($0 ~ /bash$/) {print $1,$3}&#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>
+</pre></div>
+</div>
+</section>
+<section id="awk-pattern">
+<h3><span class="section-number">7.3.3.3.4. </span>awk pattern匹配部分<a class="headerlink" href="#awk-pattern" title="此标题的永久链接"></a></h3>
+<p>根据pattern条件，过滤匹配的行，再做处理</p>
+<ol class="arabic">
+<li><p>如果未指定：空模式，匹配每一行</p></li>
+<li><p>/regular expression/: 仅处理能够模式匹配到的行,正则，需要用//括起来</p></li>
+<li><p>relational expression: 关系表达式,结果为真才会被处理</p>
+<p>真:结果为非0值，非空字符串</p>
+<p>假：结果为空字符串或0值</p>
+</li>
+<li><p>line ranges:行范围</p>
+<p>startline(起始行),endline(结束行):/part1/,/part2/ 不支持直接给出数字，可以有多段，中间可以有间隔</p>
+</li>
+<li><p>BEGIN/END 模式</p>
+<p>BEGIN{}: 仅在开始处理文件中的文本之前执行一次</p>
+<p>END{}: 仅在文本处理完成之后执行</p>
+</li>
+</ol>
+<p>演示</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;/^h/,/^a/{print $1}&#39;</span> <span class="n">awkdemo</span><span class="o">.</span><span class="n">txt</span>
+
+<span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;BEGIN{print &quot;第一列&quot;}{print $1} END{print &quot;结束&quot;}&#39;</span> <span class="n">awkdemo</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3><span class="section-number">7.3.3.3.5. </span>awk高阶用法<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<p><strong>控制语句之if else判断</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="n">condition</span><span class="p">){</span><span class="n">statement</span><span class="p">;</span><span class="o">...</span><span class="p">}[</span><span class="k">else</span> <span class="n">statement</span><span class="p">]</span>    <span class="c1">#双分支</span>
+<span class="k">if</span><span class="p">(</span><span class="n">condition1</span><span class="p">){</span><span class="n">statement1</span><span class="p">;</span><span class="o">...</span><span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">condition2</span><span class="p">)</span><span class="k">else</span><span class="p">{</span><span class="n">statement3</span><span class="p">}</span>   <span class="c1">#多分支</span>
+</pre></div>
+</div>
+<p>使用场景:对awk取得的整行或某个字段做条件判断</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;{if($3&gt;10 &amp;&amp; $3&lt;1000)print $1,$3}&#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>
+
+<span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;{if($NF==&quot;/bin/bash&quot;) print $1,$NF}&#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>
+
+<span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;{if($3&gt;==1000) {printf &quot;commmon user: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&quot;,$1} else{printf &quot;root or sysuser: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&quot;,$1}}&#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>
+</pre></div>
+</div>
+<p><strong>控制语句之while循环</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">while</span><span class="p">(</span><span class="n">condition</span><span class="p">){</span><span class="n">statement</span><span class="p">;</span><span class="o">...</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>注:条件为真，进入循环；条件为假，退出循环</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;/^along/{i=1;while(i&lt;=NF){print $i,length($i);i++}}&#39;</span> <span class="n">awkdemo</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p><strong>控制语句之do while循环</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">do</span> <span class="p">{</span><span class="n">statement</span><span class="p">;</span><span class="o">..</span><span class="p">}</span><span class="k">while</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>注:无论真假，至少会执行一次</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">awk</span> <span class="s1">&#39;BEGIN{sum=0;i=1;do{sum+=i;i++}while(i&lt;1000);print sum}&#39;</span>
+</pre></div>
+</div>
+<p><strong>控制语句之for循环</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="n">expr1</span><span class="p">;</span><span class="n">expr2</span><span class="p">;</span><span class="n">expr3</span><span class="p">)</span> <span class="p">{</span><span class="n">statement</span><span class="p">;</span><span class="o">...</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>特殊用法:遍历数组中的元素</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="p">(</span><span class="n">var</span> <span class="ow">in</span> <span class="n">array</span><span class="p">)</span> <span class="p">{</span><span class="k">for</span><span class="o">-</span><span class="n">body</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s1">&#39;{for(i=1;i&lt;=NF;i++) {print $i,length($i)}}&#39;</span> <span class="n">awkdemo</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3><span class="section-number">7.3.3.3.6. </span>字符串处理<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h3>
+<p>rand()返回0到1之间一个随机数，需要一个种子srand()，没有种子，一直输出0.237788</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">awk</span> <span class="s1">&#39;BEGIN{srand(); print rand()}&#39;</span>
+
+<span class="n">awk</span> <span class="s1">&#39;BEGIN{srand()} {printf int(rand()*100%50)}&#39;</span> <span class="c1">#取0-50的随机数</span>
+</pre></div>
+</div>
+<p>字符串处理:</p>
+<ul class="simple">
+<li><p>length([s]):返回指定字符串的长度</p></li>
+<li><p>sub(r,s,[t]):对t字符串进行搜索r表示的模式匹配的内容，并将第一个匹配的内容替换为s</p></li>
+<li><p>gsub(r,s,[t]):对t字符串进行搜索r表示的模式匹配的内容，并将全部匹配的内容替换为s</p></li>
+<li><p>split(s,array,[r]):以r为分割符切割字符串s并将切割后的结果保存至array所表示的数组中，第一个索引值为1第二个为2</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="s2">&quot;2008:08:08 08:08:08&quot;</span> <span class="o">|</span> <span class="n">awk</span> <span class="s1">&#39;sub(/:/,&quot;-&quot;,$1)&#39;</span>
+
+<span class="n">echo</span> <span class="s2">&quot;2008:08:08 08:08:08&quot;</span> <span class="o">|</span> <span class="n">awk</span> <span class="s1">&#39;gsub(/:/,&quot;-&quot;,$1)&#39;</span>
+
+<span class="n">echo</span> <span class="s2">&quot;2008:08:08 08:08:08&quot;</span> <span class="o">|</span> <span class="n">awk</span> <span class="s1">&#39;{split($0,i,&quot;:&quot;)}END{for(n in i){print n,i[n]}}&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="id10">
+<h3><span class="section-number">7.3.3.3.7. </span>awk自定义函数<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h3>
+<p>格式：和bash区别:定义函数中需要加参数，return 返回值不是$?，是相当于echo输出</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">name</span> <span class="p">(</span><span class="n">parm1</span><span class="p">,</span> <span class="n">parm2</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">statements</span>
+    <span class="k">return</span> <span class="n">expression</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cat fun.awk
+function max(v1,v2) {
+    v1&gt;v2?var=v1:var=v2
+    return var
+}
+BEGIN{a=3;b=2;printf max(a,b)}
+
+awk -f fun.awk
+</pre></div>
+</div>
+<p>awk可以借助system调用shell命令</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">awk</span> <span class="n">BEGIN</span><span class="s1">&#39;{system(&quot;hostname&quot;)}&#39;</span>
+</pre></div>
+</div>
+<p>awk程序也可以写成脚本，直接调用或执行</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cat f1.awk
+#!/bin/awk -f
+{if($3 &gt;= 1000)print $1,$3}
+
+chmod +x f1.awk
+
+./f1.awk -F: /etc/passwd
+</pre></div>
+</div>
+<p>向awk脚本传递参数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">awkfile</span> <span class="n">var</span><span class="o">=</span><span class="n">value</span> <span class="n">var2</span><span class="o">=</span><span class="n">value2</span> <span class="o">...</span> <span class="n">inputfile</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>在BEGIN过程中不可用，直到首行输入完成以后变量才可使用，可以通过-v参数让awk在BEGIN之前得到变量的值，命令行中每指定一个变量都需要一个-v</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="Makefile_shell/index.html" class="btn btn-neutral float-left" title="7.3.2. Makefile与shell的区别" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="regular_expression.html" class="btn btn-neutral float-right" title="7.3.4. 正则表达式" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

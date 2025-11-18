@@ -1,0 +1,332 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.4.4. 死锁检测—-lockdep &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.4.5. kernel-debug之debugfs" href="../debugfs/index.html" />
+    <link rel="prev" title="3.4.2. kernel-debug之kdump" href="../kdump-kexec/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.4. linux kernel debug tools</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../oops/index.html">3.4.1. linux oops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kdump-kexec/index.html">3.4.2. kernel-debug之kdump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kdump-kexec/index.html#kernel-debugprintk">3.4.3. kernel debug之printk</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.4.4. 死锁检测—-lockdep</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">3.4.4.1. 配置说明</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">3.4.4.2. 死锁</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">3.4.4.3. lockdep</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">3.4.4.4. 实现原理</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../debugfs/index.html">3.4.5. kernel-debug之debugfs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.4. </span>linux kernel debug tools</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.4.4. </span>死锁检测—-lockdep</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/debug/lockdep/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lockdep">
+<h1><span class="section-number">3.4.4. </span>死锁检测—-lockdep<a class="headerlink" href="#lockdep" title="此标题的永久链接"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">lockdep</span></code> 是内核提供的协助发现死锁问题的功能，主要是跟踪每个锁的自身状态和各个锁之间的依赖关系，经过一系列的验证规则来确保锁之间的依赖关系是
+正确的。</p>
+<p>Lockdep检测的锁包括:spinlock, rwlock, mutex, rwsem的死锁、锁的错误释放，原子操作中的睡眠等错误操作</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Kernel</span> <span class="n">hacking</span>  <span class="o">---&gt;</span>
+  <span class="n">Lock</span> <span class="n">Debugging</span> <span class="p">(</span><span class="n">spinlocks</span><span class="p">,</span> <span class="n">mutexes</span><span class="p">,</span> <span class="n">etc</span><span class="o">...</span><span class="p">)</span>  <span class="o">---&gt;</span>
+    <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Lock</span> <span class="n">debugging</span><span class="p">:</span> <span class="n">prove</span> <span class="n">locking</span> <span class="n">correctness</span>
+    <span class="p">[</span> <span class="p">]</span> <span class="n">Lock</span> <span class="n">usage</span> <span class="n">statistics</span>
+    <span class="o">-*-</span> <span class="n">RT</span> <span class="n">Mutex</span> <span class="n">debugging</span><span class="p">,</span> <span class="n">deadlock</span> <span class="n">detection</span>
+    <span class="o">-*-</span> <span class="n">Spinlock</span> <span class="ow">and</span> <span class="n">rw</span><span class="o">-</span><span class="n">lock</span> <span class="n">debugging</span><span class="p">:</span> <span class="n">basic</span> <span class="n">checks</span>
+    <span class="o">-*-</span> <span class="n">Mutex</span> <span class="n">debugging</span><span class="p">:</span> <span class="n">basic</span> <span class="n">checks</span>
+    <span class="o">-*-</span> <span class="n">Wait</span><span class="o">/</span><span class="n">wound</span> <span class="n">mutex</span> <span class="n">debugging</span><span class="p">:</span> <span class="n">Slowpath</span> <span class="n">testing</span>
+    <span class="o">-*-</span> <span class="n">RW</span> <span class="n">Semaphore</span> <span class="n">debugging</span><span class="p">:</span> <span class="n">basic</span> <span class="n">checks</span>
+    <span class="o">-*-</span> <span class="n">Lock</span> <span class="n">debugging</span><span class="p">:</span> <span class="n">detect</span> <span class="n">incorrect</span> <span class="n">freeing</span> <span class="n">of</span> <span class="n">live</span> <span class="n">locks</span>
+    <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Lock</span> <span class="n">dependency</span> <span class="n">engine</span> <span class="n">debugging</span>
+    <span class="p">[</span> <span class="p">]</span> <span class="n">Sleep</span> <span class="n">inside</span> <span class="n">atomic</span> <span class="n">section</span> <span class="n">checking</span>
+    <span class="p">[</span> <span class="p">]</span> <span class="n">Locking</span> <span class="n">API</span> <span class="n">boot</span><span class="o">-</span><span class="n">time</span> <span class="bp">self</span><span class="o">-</span><span class="n">tests</span>
+    <span class="o">&lt;</span> <span class="o">&gt;</span> <span class="n">torture</span> <span class="n">tests</span> <span class="k">for</span> <span class="n">locking</span>
+    <span class="o">&lt;</span> <span class="o">&gt;</span> <span class="n">Wait</span><span class="o">/</span><span class="n">wound</span> <span class="n">mutex</span> <span class="n">selftests</span>
+</pre></div>
+</div>
+<section id="id1">
+<h2><span class="section-number">3.4.4.1. </span>配置说明<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG_DEBUG_KERNEL</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_LOCK_DEBUGGING_SUPPORT</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_DEBUG_LOCKDEP</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_PROVE_LOCKING</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_DEBUG_SPINLOCK</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_DEBUG_MUTEXES</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_DEBUG_ATOMIC_SLEEP</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_LOCK_STAT</span><span class="o">=</span><span class="n">y</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>CONFIG_DEBUG_KERNEL: KERNEL DEBUG总开关</p></li>
+<li><p>CONFNIG_LOCK_DEBUGGING_SUPPORT: 会对Lockdep的使用过程进行更多的自我检测，增加额外的开销</p></li>
+<li><p>CONFIG_PROVE_LOCKING: 内核再死锁发生前报告死锁详细信息，参见/proc/lockdep_chains</p></li>
+<li><p>CONFIG_LOCK_STAT: 记录锁持有竞争区域的信息，包括等待时间、持有时间等，参见/proc/lock_stat</p></li>
+<li><p>CONFIG_DEBUG_MUTEXES: 检测并报告mutex错误</p></li>
+<li><p>CONFIG_DEBUG_SPINLOCK: 检测并报告spinlock</p></li>
+</ul>
+</div>
+</section>
+<section id="id2">
+<h2><span class="section-number">3.4.4.2. </span>死锁<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>死锁是指多个进程因为长时间等待已被其他进程占有的资源而陷入阻塞的一种状态。当等待的资源一直不释放，死锁就会一直持续下去，死锁一旦发生，
+程序本身是解决不了的。只能靠外部力量来使程序恢复运行,如重启、看门狗复位等。</p>
+<p>Linux提供了检测死锁的机制，主要分为 <code class="docutils literal notranslate"><span class="pre">D状态死锁</span></code> 和 <code class="docutils literal notranslate"><span class="pre">R状态死锁</span></code></p>
+<ul class="simple">
+<li><p>D状态死锁</p></li>
+</ul>
+<p>进程等待I/O资源无法得到满足，长时间(系统默认配置120s)处于TASK_UNINTERRUPTIBLE睡眠状态，这种状态下进程不响应异步信号(包括kill -9).
+对于这种死锁的检测Linux提供的是hung task机制，触发该问题成因比较复杂多样，如mutex lock, 内存不足等。D状态死锁只是局部多进程间互锁，
+一般来说只是hang机，冻屏，但不会影响看门狗等。</p>
+<ul class="simple">
+<li><p>R状态死锁</p></li>
+</ul>
+<p>进程长时间(系统默认配置60s)处于TASK_RUNNING状态垄断CPU而不发生切换，一般情况下只是进程关抢占或关中断后长时间执行任务、
+死循环，此时往往会导致多CPU间互锁，整个系统无法正常调度，导致喂狗线程无法执行，最终引起看门狗复位。该问题多为原子操作, spinlock等CPU间
+并发操作处理不当造成。</p>
+<p>内核R状态死锁检测机制就是 <code class="docutils literal notranslate"><span class="pre">lockdep机制</span></code></p>
+</section>
+<section id="id3">
+<h2><span class="section-number">3.4.4.3. </span>lockdep<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>常见的死锁有以下两种:</p>
+<ul class="simple">
+<li><p>递归死锁: 中断等延迟操作中使用了锁，和外面的锁构成了递归死锁。</p></li>
+<li><p>AB-BA: 多个锁处理不当而引发死锁，多个内核路径上的处理顺序不一致也会导致死锁</p></li>
+</ul>
+<p>当检测到死锁风险时，lockdep会打印以下几种类型的风险提示</p>
+<ul class="simple">
+<li><p>INFO: possible circular locking dependency detected 圆形锁，获取锁的顺序异常(ABBA)</p></li>
+<li><p>INFO: %s-safe -&gt; %s-unsafe lock order detected: 获取从safe的锁类到unsafe的锁类操作</p></li>
+<li><p>INFO: possible recusive locking detected 重复获取同类锁(AA)</p></li>
+<li><p>INFO: inconsistent lock state 锁的状态前后不一致</p></li>
+<li><p>INFO: possble irq lock innversion dependency detected 嵌套获取锁的状态前后需要保持一致</p></li>
+<li><p>INFO: suspicious RCU usage 可疑的RCU用法</p></li>
+</ul>
+<p>lockdep机制生效时，检测到死锁的打印示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>   <span class="mf">11.841571</span><span class="p">]</span> <span class="n">Deadlock</span> <span class="n">example</span><span class="p">:</span> <span class="n">Initializing</span>
+<span class="p">[</span>   <span class="mf">11.842570</span><span class="p">]</span> <span class="n">Thread</span> <span class="mi">1</span><span class="p">:</span> <span class="n">Trying</span> <span class="n">to</span> <span class="n">lock</span> <span class="n">lock_a</span><span class="o">...</span>
+<span class="p">[</span>   <span class="mf">11.842907</span><span class="p">]</span> <span class="n">Thread</span> <span class="mi">1</span><span class="p">:</span> <span class="n">Acquired</span> <span class="n">lock_a</span>
+<span class="p">[</span>   <span class="mf">11.845990</span><span class="p">]</span> <span class="n">Thread</span> <span class="mi">2</span><span class="p">:</span> <span class="n">Trying</span> <span class="n">to</span> <span class="n">lock</span> <span class="n">lock_b</span><span class="o">...</span>
+<span class="p">[</span>   <span class="mf">11.846217</span><span class="p">]</span> <span class="n">Thread</span> <span class="mi">2</span><span class="p">:</span> <span class="n">Acquired</span> <span class="n">lock_b</span>
+<span class="p">[</span>   <span class="mf">11.951178</span><span class="p">]</span> <span class="n">Thread</span> <span class="mi">1</span><span class="p">:</span> <span class="n">Trying</span> <span class="n">to</span> <span class="n">lock</span> <span class="n">lock_b</span><span class="o">...</span>
+<span class="p">[</span>   <span class="mf">11.954377</span><span class="p">]</span> <span class="n">Thread</span> <span class="mi">2</span><span class="p">:</span> <span class="n">Trying</span> <span class="n">to</span> <span class="n">lock</span> <span class="n">lock_a</span><span class="o">...</span>
+<span class="p">[</span>   <span class="mf">11.955362</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.955558</span><span class="p">]</span> <span class="o">======================================================</span>
+<span class="p">[</span>   <span class="mf">11.956057</span><span class="p">]</span> <span class="n">WARNING</span><span class="p">:</span> <span class="n">possible</span> <span class="n">circular</span> <span class="n">locking</span> <span class="n">dependency</span> <span class="n">detected</span>
+<span class="p">[</span>   <span class="mf">11.956839</span><span class="p">]</span> <span class="mf">5.4.0</span> <span class="c1">#18 Tainted: G           O</span>
+<span class="p">[</span>   <span class="mf">11.957253</span><span class="p">]</span> <span class="o">------------------------------------------------------</span>
+<span class="p">[</span>   <span class="mf">11.957810</span><span class="p">]</span> <span class="n">thread2</span><span class="o">/</span><span class="mi">178</span> <span class="ow">is</span> <span class="n">trying</span> <span class="n">to</span> <span class="n">acquire</span> <span class="n">lock</span><span class="p">:</span>
+<span class="p">[</span>   <span class="mf">11.958359</span><span class="p">]</span> <span class="n">ffffde46cc52f110</span> <span class="p">(</span><span class="n">lock_a</span><span class="p">){</span><span class="o">+.+.</span><span class="p">},</span> <span class="n">at</span><span class="p">:</span> <span class="n">thread2_fn</span><span class="o">+</span><span class="mh">0x5c</span><span class="o">/</span><span class="mh">0x88</span> <span class="p">[</span><span class="n">simple_lock</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.959062</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.959062</span><span class="p">]</span> <span class="n">but</span> <span class="n">task</span> <span class="ow">is</span> <span class="n">already</span> <span class="n">holding</span> <span class="n">lock</span><span class="p">:</span>
+<span class="p">[</span>   <span class="mf">11.959202</span><span class="p">]</span> <span class="n">ffffde46cc52f070</span> <span class="p">(</span><span class="n">lock_b</span><span class="p">){</span><span class="o">+.+.</span><span class="p">},</span> <span class="n">at</span><span class="p">:</span> <span class="n">thread2_fn</span><span class="o">+</span><span class="mh">0x2c</span><span class="o">/</span><span class="mh">0x88</span> <span class="p">[</span><span class="n">simple_lock</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.959364</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.959364</span><span class="p">]</span> <span class="n">which</span> <span class="n">lock</span> <span class="n">already</span> <span class="n">depends</span> <span class="n">on</span> <span class="n">the</span> <span class="n">new</span> <span class="n">lock</span><span class="o">.</span>
+<span class="p">[</span>   <span class="mf">11.959364</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.959519</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.959519</span><span class="p">]</span> <span class="n">the</span> <span class="n">existing</span> <span class="n">dependency</span> <span class="n">chain</span> <span class="p">(</span><span class="ow">in</span> <span class="n">reverse</span> <span class="n">order</span><span class="p">)</span> <span class="ow">is</span><span class="p">:</span>
+<span class="p">[</span>   <span class="mf">11.959676</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.959676</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="c1">#1 (lock_b){+.+.}:</span>
+<span class="p">[</span>   <span class="mf">11.959838</span><span class="p">]</span>        <span class="n">__mutex_lock</span><span class="o">+</span><span class="mh">0xa4</span><span class="o">/</span><span class="mh">0x970</span>
+<span class="p">[</span>   <span class="mf">11.959936</span><span class="p">]</span>        <span class="n">mutex_lock_nested</span><span class="o">+</span><span class="mh">0x1c</span><span class="o">/</span><span class="mh">0x28</span>
+<span class="p">[</span>   <span class="mf">11.960027</span><span class="p">]</span>        <span class="n">thread1_fn</span><span class="o">+</span><span class="mh">0x5c</span><span class="o">/</span><span class="mh">0xb8</span> <span class="p">[</span><span class="n">simple_lock</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.960138</span><span class="p">]</span>        <span class="n">kthread</span><span class="o">+</span><span class="mh">0x134</span><span class="o">/</span><span class="mh">0x138</span>
+<span class="p">[</span>   <span class="mf">11.960217</span><span class="p">]</span>        <span class="n">ret_from_fork</span><span class="o">+</span><span class="mh">0x10</span><span class="o">/</span><span class="mh">0x18</span>
+<span class="p">[</span>   <span class="mf">11.960331</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.960331</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="c1">#0 (lock_a){+.+.}:</span>
+<span class="p">[</span>   <span class="mf">11.960436</span><span class="p">]</span>        <span class="n">__lock_acquire</span><span class="o">+</span><span class="mh">0xdc0</span><span class="o">/</span><span class="mh">0x11c0</span>
+<span class="p">[</span>   <span class="mf">11.960528</span><span class="p">]</span>        <span class="n">lock_acquire</span><span class="o">+</span><span class="mh">0xf8</span><span class="o">/</span><span class="mh">0x280</span>
+<span class="p">[</span>   <span class="mf">11.960614</span><span class="p">]</span>        <span class="n">__mutex_lock</span><span class="o">+</span><span class="mh">0xa4</span><span class="o">/</span><span class="mh">0x970</span>
+<span class="p">[</span>   <span class="mf">11.960695</span><span class="p">]</span>        <span class="n">mutex_lock_nested</span><span class="o">+</span><span class="mh">0x1c</span><span class="o">/</span><span class="mh">0x28</span>
+<span class="p">[</span>   <span class="mf">11.960785</span><span class="p">]</span>        <span class="n">thread2_fn</span><span class="o">+</span><span class="mh">0x5c</span><span class="o">/</span><span class="mh">0x88</span> <span class="p">[</span><span class="n">simple_lock</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.960884</span><span class="p">]</span>        <span class="n">kthread</span><span class="o">+</span><span class="mh">0x134</span><span class="o">/</span><span class="mh">0x138</span>
+<span class="p">[</span>   <span class="mf">11.960956</span><span class="p">]</span>        <span class="n">ret_from_fork</span><span class="o">+</span><span class="mh">0x10</span><span class="o">/</span><span class="mh">0x18</span>
+<span class="p">[</span>   <span class="mf">11.961049</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.961049</span><span class="p">]</span> <span class="n">other</span> <span class="n">info</span> <span class="n">that</span> <span class="n">might</span> <span class="n">help</span> <span class="n">us</span> <span class="n">debug</span> <span class="n">this</span><span class="p">:</span>
+<span class="p">[</span>   <span class="mf">11.961049</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.961237</span><span class="p">]</span>  <span class="n">Possible</span> <span class="n">unsafe</span> <span class="n">locking</span> <span class="n">scenario</span><span class="p">:</span>
+<span class="p">[</span>   <span class="mf">11.961237</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.961362</span><span class="p">]</span>        <span class="n">CPU0</span>                    <span class="n">CPU1</span>
+<span class="p">[</span>   <span class="mf">11.961460</span><span class="p">]</span>        <span class="o">----</span>                    <span class="o">----</span>
+<span class="p">[</span>   <span class="mf">11.961561</span><span class="p">]</span>   <span class="n">lock</span><span class="p">(</span><span class="n">lock_b</span><span class="p">);</span>
+<span class="p">[</span>   <span class="mf">11.961644</span><span class="p">]</span>                                <span class="n">lock</span><span class="p">(</span><span class="n">lock_a</span><span class="p">);</span>
+<span class="p">[</span>   <span class="mf">11.961766</span><span class="p">]</span>                                <span class="n">lock</span><span class="p">(</span><span class="n">lock_b</span><span class="p">);</span>
+<span class="p">[</span>   <span class="mf">11.961878</span><span class="p">]</span>   <span class="n">lock</span><span class="p">(</span><span class="n">lock_a</span><span class="p">);</span>
+<span class="p">[</span>   <span class="mf">11.961951</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.961951</span><span class="p">]</span>  <span class="o">***</span> <span class="n">DEADLOCK</span> <span class="o">***</span>
+<span class="p">[</span>   <span class="mf">11.961951</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.962087</span><span class="p">]</span> <span class="mi">1</span> <span class="n">lock</span> <span class="n">held</span> <span class="n">by</span> <span class="n">thread2</span><span class="o">/</span><span class="mi">178</span><span class="p">:</span>
+<span class="p">[</span>   <span class="mf">11.962194</span><span class="p">]</span>  <span class="c1">#0: ffffde46cc52f070 (lock_b){+.+.}, at: thread2_fn+0x2c/0x88 [simple_lock]</span>
+<span class="p">[</span>   <span class="mf">11.962379</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.962379</span><span class="p">]</span> <span class="n">stack</span> <span class="n">backtrace</span><span class="p">:</span>
+<span class="p">[</span>   <span class="mf">11.962585</span><span class="p">]</span> <span class="n">CPU</span><span class="p">:</span> <span class="mi">0</span> <span class="n">PID</span><span class="p">:</span> <span class="mi">178</span> <span class="n">Comm</span><span class="p">:</span> <span class="n">thread2</span> <span class="n">Tainted</span><span class="p">:</span> <span class="n">G</span>           <span class="n">O</span>      <span class="mf">5.4.0</span> <span class="c1">#18</span>
+<span class="p">[</span>   <span class="mf">11.962732</span><span class="p">]</span> <span class="n">Hardware</span> <span class="n">name</span><span class="p">:</span> <span class="n">linux</span><span class="p">,</span><span class="n">dummy</span><span class="o">-</span><span class="n">virt</span> <span class="p">(</span><span class="n">DT</span><span class="p">)</span>
+<span class="p">[</span>   <span class="mf">11.962915</span><span class="p">]</span> <span class="n">Call</span> <span class="n">trace</span><span class="p">:</span>
+<span class="p">[</span>   <span class="mf">11.962978</span><span class="p">]</span>  <span class="n">dump_backtrace</span><span class="o">+</span><span class="mh">0x0</span><span class="o">/</span><span class="mh">0x158</span>
+<span class="p">[</span>   <span class="mf">11.963062</span><span class="p">]</span>  <span class="n">show_stack</span><span class="o">+</span><span class="mh">0x14</span><span class="o">/</span><span class="mh">0x20</span>
+<span class="p">[</span>   <span class="mf">11.963132</span><span class="p">]</span>  <span class="n">dump_stack</span><span class="o">+</span><span class="mh">0xe8</span><span class="o">/</span><span class="mh">0x154</span>
+<span class="p">[</span>   <span class="mf">11.963207</span><span class="p">]</span>  <span class="n">print_circular_bug</span><span class="o">.</span><span class="n">isra</span><span class="mf">.41</span><span class="o">+</span><span class="mh">0x1b8</span><span class="o">/</span><span class="mh">0x210</span>
+<span class="p">[</span>   <span class="mf">11.963299</span><span class="p">]</span>  <span class="n">check_noncircular</span><span class="o">+</span><span class="mh">0x178</span><span class="o">/</span><span class="mh">0x1e0</span>
+<span class="p">[</span>   <span class="mf">11.963382</span><span class="p">]</span>  <span class="n">__lock_acquire</span><span class="o">+</span><span class="mh">0xdc0</span><span class="o">/</span><span class="mh">0x11c0</span>
+<span class="p">[</span>   <span class="mf">11.963463</span><span class="p">]</span>  <span class="n">lock_acquire</span><span class="o">+</span><span class="mh">0xf8</span><span class="o">/</span><span class="mh">0x280</span>
+<span class="p">[</span>   <span class="mf">11.963539</span><span class="p">]</span>  <span class="n">__mutex_lock</span><span class="o">+</span><span class="mh">0xa4</span><span class="o">/</span><span class="mh">0x970</span>
+<span class="p">[</span>   <span class="mf">11.963618</span><span class="p">]</span>  <span class="n">mutex_lock_nested</span><span class="o">+</span><span class="mh">0x1c</span><span class="o">/</span><span class="mh">0x28</span>
+<span class="p">[</span>   <span class="mf">11.963692</span><span class="p">]</span>  <span class="n">thread2_fn</span><span class="o">+</span><span class="mh">0x5c</span><span class="o">/</span><span class="mh">0x88</span> <span class="p">[</span><span class="n">simple_lock</span><span class="p">]</span>
+<span class="p">[</span>   <span class="mf">11.963777</span><span class="p">]</span>  <span class="n">kthread</span><span class="o">+</span><span class="mh">0x134</span><span class="o">/</span><span class="mh">0x138</span>
+<span class="p">[</span>   <span class="mf">11.963846</span><span class="p">]</span>  <span class="n">ret_from_fork</span><span class="o">+</span><span class="mh">0x10</span><span class="o">/</span><span class="mh">0x18</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2><span class="section-number">3.4.4.4. </span>实现原理<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#ifdef CONFIG_DEBUG_SPINLOCK</span>
+  <span class="n">extern</span> <span class="n">void</span> <span class="n">__raw_spin_lock_init</span><span class="p">(</span><span class="n">raw_spinlock_t</span> <span class="o">*</span><span class="n">lock</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span>
+                   <span class="n">struct</span> <span class="n">lock_class_key</span> <span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="n">short</span> <span class="n">inner</span><span class="p">);</span>
+
+<span class="c1"># define raw_spin_lock_init(lock)                   \</span>
+<span class="n">do</span> <span class="p">{</span>                                    \
+    <span class="n">static</span> <span class="n">struct</span> <span class="n">lock_class_key</span> <span class="n">__key</span><span class="p">;</span>             \
+                                    \
+    <span class="n">__raw_spin_lock_init</span><span class="p">((</span><span class="n">lock</span><span class="p">),</span> <span class="c1">#lock, &amp;__key, LD_WAIT_SPIN);  \</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1">#else</span>
+<span class="c1"># define raw_spin_lock_init(lock)               \</span>
+    <span class="n">do</span> <span class="p">{</span> <span class="o">*</span><span class="p">(</span><span class="n">lock</span><span class="p">)</span> <span class="o">=</span> <span class="n">__RAW_SPIN_LOCK_UNLOCKED</span><span class="p">(</span><span class="n">lock</span><span class="p">);</span> <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1">#endif</span>
+</pre></div>
+</div>
+<p>对于每个锁的初始化，这段代码创建了一个静态变量(__key)，并使用它的地址作为识别锁的类型。因此，系统中每个锁(包括rwlock和mutex)
+都会被分配一个特定的key值，并且都是静态申明的，同一类的锁会对应同一个key值。</p>
+<p>Lockdep为每个锁类维护了befor和after两个链表来记录锁的依赖关系，从而能够检测死锁、潜在的锁顺序问题、锁的获取和释放状态</p>
+<ul class="simple">
+<li><p>befor: 表示当前锁依赖其他锁的关系，也就是说某个锁必须在其他锁之前被获取。例如Lock1必须在Lock2之前你获取，那么Lock2会出现在Lock1的befor链表中</p></li>
+<li><p>after: 表示其他锁依赖当前锁的关系，也就是说某个锁必须在当前锁获取之后才能获取</p></li>
+</ul>
+<p><strong>Lockdep逻辑</strong></p>
+<p>当获取L时，检查after链表中的锁类是否已经被获取，如果存在则报重复上锁。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../kdump-kexec/index.html" class="btn btn-neutral float-left" title="3.4.2. kernel-debug之kdump" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../debugfs/index.html" class="btn btn-neutral float-right" title="3.4.5. kernel-debug之debugfs" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

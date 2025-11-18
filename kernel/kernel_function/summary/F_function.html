@@ -1,0 +1,1232 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.6.1.92. FD_ALIGN &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.6.1.130. get_cr" href="G_function.html" />
+    <link rel="prev" title="3.6.1.69. early_alloc" href="E_function.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.6. linux 内核函数</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="kernel_function.html">3.6.1. 内核函数汇总</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="A_function.html">3.6.1.1. add_static_vm_early</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#adjust-lowmem-bounds">3.6.1.2. adjust_lowmem_bounds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#alloc-init-pmd">3.6.1.3. alloc_init_pmd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#alloc-init-pud">3.6.1.4. alloc_init_pud</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#alloc-node-mem-map">3.6.1.5. alloc_node_mem_map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#array-size">3.6.1.6. ARRAY_SIZE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arch-get-next-mach">3.6.1.7. arch_get_next_mach</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arch-local-irq-disable">3.6.1.8. arch_local_irq_disable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-adjust-dma-zone">3.6.1.9. arm_adjust_dma_zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-initrd-init">3.6.1.10. arm_initrd_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-pte-alloc">3.6.1.11. arm_pte_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-memblock-init">3.6.1.12. arm_memblock_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-mm-memblock-reserve">3.6.1.13. arm_mm_memblock_reserve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="B_function.html">3.6.1.14. boot_cpu_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="B_function.html#build-mem-type-table">3.6.1.15. build_mem_type_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html">3.6.1.16. cacheid_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cache-is-vipt">3.6.1.17. cache_is_vipt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cache-is-vipt-aliasing">3.6.1.18. cache_is_vipt_aliasing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cache-is-vipt-nonaliasing">3.6.1.19. cache_is_vipt_nonaliasing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cache-is-vivt-asid-tagged">3.6.1.20. cache_is_vivt_asid_tagged</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cahceid">3.6.1.21. cahceid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cachepolicy">3.6.1.22. cachepolicy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#calc-memmap-size">3.6.1.23. calc_memmap_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#calculatode-totalpage">3.6.1.24. calculatode_totalpage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#check-block">3.6.1.25. check_block</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#check-off">3.6.1.26. check_off</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#choose-memblock-flags">3.6.1.27. choose_memblock_flags</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#clamp">3.6.1.28. clamp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-activate-area">3.6.1.29. cma_activate_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-alloc">3.6.1.30. cma_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-bitmap-aligned-mask">3.6.1.31. cma_bitmap_aligned_mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-bitmap-cligned-offset">3.6.1.32. cma_bitmap_cligned_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-bitmap-maxno">3.6.1.33. cma_bitmap_maxno</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-bitmap-pages-to-bits">3.6.1.34. cma_bitmap_pages_to_bits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-clear-bitmap">3.6.1.35. cma_clear_bitmap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-declare-contiguous">3.6.1.36. cma_declare_contiguous</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-early-percent-memory">3.6.1.37. cma_early_percent_memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-for-each-area">3.6.1.38. cma_for_each_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-get-base">3.6.1.39. cma_get_base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-get-name">3.6.1.40. cma_get_name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-get-size">3.6.1.41. cma_get_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-init-reserved-areas">3.6.1.42. cma_init_reserved_areas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-init-reserved-mem">3.6.1.43. cma_init_reserved_mem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-release">3.6.1.44. cma_release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-active-mask">3.6.1.45. __cpu_active_mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-has-aliasing-icache">3.6.1.46. cpu_has_aliasing_icache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-init">3.6.1.47. cpu_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-logical-map">3.6.1.48. cpu_logical_map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-max-bits-warn">3.6.1.49. cpu_max_bits_warn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-proc-init">3.6.1.50. cpu_proc_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-to-fdt32">3.6.1.51. CPU_TO_FDT32</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpuid-init-hwcaps">3.6.1.52. cpuid_init_hwcaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#create-mapping">3.6.1.53. create_mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#id1">3.6.1.54. __create_mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#current-stack-pointer">3.6.1.55. current_stack_pointer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#current-thread-info">3.6.1.56. current_thread_info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html">3.6.1.57. dev_get_cma_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dev-set-cma-area">3.6.1.58. dev_set_cma_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#devicemaps-init">3.6.1.59. devicemaps_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-alloc-from-contiguous">3.6.1.60. dma_alloc_from_contiguous</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-contiguous-early-fixup">3.6.1.61. dma_contiguous_early_fixup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-contiguous-remap">3.6.1.62. dma_contiguous_remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-contiguous-reserve">3.6.1.63. dma_contiguous_reserve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-contiguous-set-default">3.6.1.64. dma_contiguous_set_default</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-release-from-contiguous">3.6.1.65. dma_release_from_contiguous</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#do-early-param">3.6.1.66. do_early_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dt-mem-next-cell">3.6.1.67. dt_mem_next_cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dump-stack-set-arch-desc">3.6.1.68. dump_stack_set_arch_desc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html">3.6.1.69. early_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-alloc-aligned">3.6.1.70. early_alloc_aligned</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-cma">3.6.1.71. early_cma</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-fixmap-shutdown">3.6.1.72. early_fixmap_shutdown</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-ioremap-init">3.6.1.73. early_ioremap_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-ioremap-setup">3.6.1.74. early_ioremap_setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-add-memory-arch">3.6.1.75. early_init_dt_add_memory_arch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-alloc-reserved-memory-arch">3.6.1.76. early_init_dt_alloc_reserved_memory_arch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-check-for-initrd">3.6.1.77. early_init_dt_check_for_initrd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-declare-initrd">3.6.1.78. __early_init_dt_declare_initrd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-reserve-memory-arch">3.6.1.79. early_init_dt_reserve_memory_arch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-scan-chosen">3.6.1.80. early_init_dt_scan_chosen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-scan-memory">3.6.1.81. early_init_dt_scan_memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-sacn-nodes">3.6.1.82. early_init_dt_sacn_nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-scan-root">3.6.1.83. early_init_dt_scan_root</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-verify">3.6.1.84. early_init_dt_verify</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-fdt-reserve-self">3.6.1.85. early_init_fdt_reserve_self</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-fdt-scan-reserved-mem">3.6.1.86. early_init_fdt_scan_reserved_mem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-mm-init">3.6.1.87. early_mm_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-pte-alloc">3.6.1.88. early_pte_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-trap-init">3.6.1.89. early_trap_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#elf-hwcap-fixup">3.6.1.90. elf_hwcap_fixup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#end-of-stack">3.6.1.91. end_of_stack</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.6.1.92. FD_ALIGN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-boot-cpuid-phys">3.6.1.93. fdt_boot_cpuid_phys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-check-header">3.6.1.94. fdt_check_header</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-check-node-offset">3.6.1.95. fdt_check_node_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-check-prop-offset">3.6.1.96. fdt_check_prop_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-first-property-offset">3.6.1.97. fdt_first_property_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-get-property-by-offset">3.6.1.98. fdt_get_property_by_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-header-size">3.6.1.99. fdt_header_size_</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">3.6.1.100. fdt_header_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-init-reserved-mem">3.6.1.101. fdt_init_reserved_mem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-get-header">3.6.1.102. fdt_get_header</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-get-mem-rsv">3.6.1.103. fdt_get_mem_rsv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-get-name">3.6.1.104. fdt_get_name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-get-property-namelen">3.6.1.105. fdt_get_property_namelen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-get-string">3.6.1.106. fdt_get_string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-getprop">3.6.1.107. fdt_getprop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-getprop-namelen">3.6.1.108. fdt_getprop_namelen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-last-comp-version">3.6.1.109. fdt_last_comp_version</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-magic">3.6.1.110. fdt_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-mem-rsv">3.6.1.111. fdt_mem_rsv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-next-node">3.6.1.112. fdt_next_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-next-tag">3.6.1.113. fdt_next_tag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-off-dt-strings">3.6.1.114. fdt_off_dt_strings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-offset-ptr">3.6.1.115. fdt_offset_ptr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">3.6.1.116. fdt_offset_ptr_</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-reserved-mem-save-node">3.6.1.117. fdt_reserved_mem_save_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-ro-probe">3.6.1.118. FDT_RO_PROBE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">3.6.1.119. fdt_ro_probe_</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-scan-reserved-mem">3.6.1.120. __fdt_scan_reserved_mem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-size-dt-strings">3.6.1.121. fdt_size_dt_strings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-size-dt-struct">3.6.1.122. fdt_size_dt_struct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-string-eq">3.6.1.123. fdt_string_eq</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fdt-totalsize">3.6.1.124. fdt_totalsize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fill-pmd-pags">3.6.1.125. fill_pmd_pags</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#find-limits">3.6.1.126. find_limits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fix-to-virt">3.6.1.127. fix_to_virt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fixmap-pmd">3.6.1.128. fixmap_pmd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flush-pmd-entry">3.6.1.129. flush_pmd_entry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="G_function.html">3.6.1.130. get_cr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="G_function.html#get-cpu-architecture">3.6.1.131. __get_cpu_architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html">3.6.1.132. icache_is_pipt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#icache-is-vipt-aliasing">3.6.1.133. icache_is_vipt_aliasing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#icache-is-vivt-asid-tagged">3.6.1.134. icache_is_vivt_asid_tagged</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#iotable-init">3.6.1.135. iotable_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#init-default-cache-policy">3.6.1.136. init_default_cache_policy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#init-utsname">3.6.1.137. init_utsname</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#initial-pmd-value">3.6.1.138. initial_pmd_value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#isspace">3.6.1.139. isspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#is-highmem-idx">3.6.1.140. is_highmem_idx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#is-smp">3.6.1.141. is_smp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="K_function.html">3.6.1.142. KERNEL_END</a></li>
+<li class="toctree-l4"><a class="reference internal" href="K_function.html#kernel-start">3.6.1.143. KERNEL_START</a></li>
+<li class="toctree-l4"><a class="reference internal" href="K_function.html#kmap-init">3.6.1.144. kmap_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="K_function.html#kuser-init">3.6.1.145. kuser_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html">3.6.1.146. list_add_tail</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html#list-for-each-entry">3.6.1.147. list_for_each_entry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html#local-irq-disable">3.6.1.148. local_irq_disable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html#lookup-processor">3.6.1.149. lookup_processor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html#lookup-processor-type">3.6.1.150. lookup_processor_type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html">3.6.1.151. __map_init_section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#map-lowmem">3.6.1.152. map_lowmem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-add">3.6.1.153. memblock_add</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-add-range">3.6.1.154. memblock_add_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-addrs-overlap">3.6.1.155. memblock_addrs_overlap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-alloc-base">3.6.1.156. memblock_alloc_base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-alloc-base-nid">3.6.1.157. memblock_alloc_base_nid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-alloc-internal">3.6.1.158. memblock_alloc_internal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-alloc-node-nopanic">3.6.1.159. memblock_alloc_node_nopanic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-alloc-range">3.6.1.160. memblock_alloc_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-alloc-range-nid">3.6.1.161. memblock_alloc_range_nid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-allow-resize">3.6.1.162. memblock_allow_resize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-bottom-up">3.6.1.163. memblock_bottom_up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-cap-size">3.6.1.164. memblock_cap_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-double-array">3.6.1.165. memblock_double_array</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-end-of-dram">3.6.1.166. memblock_end_of_DRAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-find-in-range">3.6.1.167. memblock_find_in_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-find-in-range-node">3.6.1.168. memblock_find_in_range_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-find-range-bottom-up">3.6.1.169. __memblock_find_range_bottom_up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-find-range-top-down">3.6.1.170. __memblock_find_range_top_down</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-free">3.6.1.171. memblock_free</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-insert-region">3.6.1.172. memblock_insert_region</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-is-hotpluggable">3.6.1.173. memblock_is_hotpluggable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-is-mirror">3.6.1.174. memblock_is_mirror</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-is-nomap">3.6.1.175. memblock_is_nomap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-is-region-memory">3.6.1.176. memblock_is_region_memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-is-region-reserved">3.6.1.177. memblock_is_region_reserved</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-isolate-range">3.6.1.178. memblock_isolate_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-merge-regions">3.6.1.179. memblock_merge_regions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-overlaps-region">3.6.1.180. memblock_overlaps_region</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-phys-alloc">3.6.1.181. memblock_phys_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-resion-memory-base-pfn">3.6.1.182. memblock_resion_memory_base_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-region-memory-end-pfn">3.6.1.183. memblock_region_memory_end_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-remove-range">3.6.1.184. memblock_remove_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-remove">3.6.1.185. memblock_remove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-remove-region">3.6.1.186. memblock_remove_region</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-reserve">3.6.1.187. memblock_reserve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-search">3.6.1.188. memblock_search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-start-of-dram">3.6.1.189. memblock_start_of_DRAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#movable-node-is-enabled">3.6.1.190. movable_node_is_enabled</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html">3.6.1.191. nextprop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html#next-arg">3.6.1.192. next_arg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html#next-mem-range">3.6.1.193. __next_mem_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html#next-mem-range-rev">3.6.1.194. __next_mem_range_rev</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html#nr-cpumask-bits">3.6.1.195. nr_cpumask_bits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html">3.6.1.196. of_compat_cmp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-declare">3.6.1.197. _OF_DECLARE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-fdt-device-is-available">3.6.1.198. of_fdt_device_is_available</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-fdt-is-compatible">3.6.1.199. of_fdt_is_compatible</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-flat-dt-is-compatible">3.6.1.200. of_flat_dt_is_compatible</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-flat-dt-match-machine">3.6.1.201. of_flat_dt_match_machine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-get-flat-dt-prop">3.6.1.202. of_get_flat_dt_prop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-get-flat-dt-root">3.6.1.203. of_get_flat_dt_root</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-scan-flat-dt">3.6.1.204. of_scan_flat_dt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html">3.6.1.205. page_address_htable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#page-address-init">3.6.1.206. page_address_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#page-offset">3.6.1.207. PAGE_OFFSET</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#page-to-pfn">3.6.1.208. __page_to_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#parameq">3.6.1.209. parameq</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#parse-args">3.6.1.210. parse_args</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#parse-early-options">3.6.1.211. parse_early_options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#parse-early-param">3.6.1.212. parse_early_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#parse-one">3.6.1.213. parse_one</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#per-cpu-offset">3.6.1.214. __per_cpu_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#id1">3.6.1.215. per_cpu_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pfn-down">3.6.1.216. PFN_DOWN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pfn-phys">3.6.1.217. PFN_PHYS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pfn-pte">3.6.1.218. pfn_pte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pfn-up">3.6.1.219. PFN_UP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#phys-offset">3.6.1.220. PHYS_OFFSET</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#phys-pfn">3.6.1.221. PHYS_PFN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#phys-to-pfn">3.6.1.222. __phys_to_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#phys-to-virt">3.6.1.223. __phys_to_virt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#id2">3.6.1.224. phys_to_virt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgd-addr-end">3.6.1.225. pgd_addr_end</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgd-index">3.6.1.226. pgd_index</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgd-offset">3.6.1.227. pgd_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgd-offset-k">3.6.1.228. pgd_offset_k</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgdat-end-pfn">3.6.1.229. pgdat_end_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgprot">3.6.1.230. __pgprot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pgrot-val">3.6.1.231. pgrot_val</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-addr-end">3.6.1.232. pmd_addr_end</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-bad">3.6.1.233. pmd_bad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-clear">3.6.1.234. pmd_clear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-empty-section-gap">3.6.1.235. pmd_empty_section_gap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-none">3.6.1.236. pmd_none</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-off-k">3.6.1.237. pmd_off_k</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-offset">3.6.1.238. pmd_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-page-vaddr">3.6.1.239. pmd_page_vaddr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-populate">3.6.1.240. __pmd_populate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-populate-kernel">3.6.1.241. pmd_populate_kernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#pmd-val">3.6.1.242. pmd_val</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#populate-zone">3.6.1.243. populate_zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="P_function.html#prepare-page-table">3.6.1.244. prepare_page_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html">3.6.1.245. raw_local_irq_disable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#raw-smp-processor-id">3.6.1.246. raw_smp_processor_id</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-cma-device-init">3.6.1.247. rmem_cma_device_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-cma-device-release">3.6.1.248. rmem_cma_device_release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-cma-setup">3.6.1.249. rmem_cma_setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-dma-setup">3.6.1.250. rmem_dma_setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#reservedmem-of-declare">3.6.1.251. RESERVEDMEM_OF_DECLARE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#reserved-mem-alloc-size">3.6.1.252. __reserved_mem_alloc_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#reserved-mem-check-root">3.6.1.253. __reserved_mem_check_root</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#reserved-mem-init-node">3.6.1.254. __reserved_mem_init_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-check-for-overlap">3.6.1.255. __rmem_check_for_overlap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#round-mask">3.6.1.256. __round_mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html">3.6.1.257. set_cpu_active</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#set-cpu-online">3.6.1.258. set_cpu_online</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#set-task-stack-end-magic">3.6.1.259. set_task_stack_end_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#setup-dma-zone">3.6.1.260. setup_dma_zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#setup-machine-fdt">3.6.1.261. setup_machine_fdt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#setup-processor">3.6.1.262. setup_processor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#skip-spaces">3.6.1.263. skip_spaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#smp-setup-processor-id">3.6.1.264. smp_setup_processor_id</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#start-kernel">3.6.1.265. start_kernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="T_function.html">3.6.1.266. TASKE_SIZE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="T_function.html#task-thread-info">3.6.1.267. task_thread_info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html">3.6.1.268. __va</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vectors-base">3.6.1.269. vectors_base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vectors-high">3.6.1.270. vectors_high</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vm-area-add-early">3.6.1.271. vm_area_add_early</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vm-reseve-area-early">3.6.1.272. vm_reseve_area_early</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vmalloc-min">3.6.1.273. vmalloc_min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html">3.6.1.274. zone_absent_pages_in_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html#zone-init-internals">3.6.1.275. zone_init_internals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html#zone-movable-is-highmem">3.6.1.276. zone_movable_is_highmem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html#zone-pcp-init">3.6.1.277. zone_pcp_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html#zone-spanned-pages-in-node">3.6.1.278. zone_spanned_pages_in_node</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../module/index.html">3.6.2. Linux内核API之模块机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thread_management/index.html">3.6.3. Linux内核API之进程管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thread_schedule/index.html">3.6.4. Linux内核API之进程调度</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interrupt/index.html">3.6.5. Linux内核API之中断机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../memory/index.html">3.6.6. Linux内核API之内存管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../timer/index.html">3.6.7. Linux内核API之定时机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sync/index.html">3.6.8. Linux内核API之同步机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filesystem/index.html">3.6.9. Linux内核API之文件系统</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../device/index.html">3.6.10. Linux内核API之设备管理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.6. </span>linux 内核函数</a></li>
+          <li class="breadcrumb-item"><a href="kernel_function.html"><span class="section-number">3.6.1. </span>内核函数汇总</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.6.1.92. </span>FD_ALIGN</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/kernel_function/summary/F_function.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="fd-align">
+<h1><span class="section-number">3.6.1.92. </span>FD_ALIGN<a class="headerlink" href="#fd-align" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define FDT_ALIGN(x, a) (((x) + (a) - 1) &amp; ~((a) - 1))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">FDT_ALIGN</span></code> 用于将x参数按照a对齐</p>
+</section>
+<section id="fdt-boot-cpuid-phys">
+<h1><span class="section-number">3.6.1.93. </span>fdt_boot_cpuid_phys<a class="headerlink" href="#fdt-boot-cpuid-phys" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define fdt_boot_cpuid_phys(fdt) (fdt_get_header(fdt, boot_cpuid_phys))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_boot_cpuid_phys</span></code> 用于读取DTB header的boot_cpuid_phys信息</p>
+</section>
+<section id="fdt-check-header">
+<h1><span class="section-number">3.6.1.94. </span>fdt_check_header<a class="headerlink" href="#fdt-check-header" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int fdt_check_header(const void *fdt)
+{
+    size_t hdrsize;
+
+    //检查dtb的magic是否有效
+    if(fdt_magic(fdt) != FDT_MAGIC)
+        return -FDT_ERR_BADMAGIC;
+
+    //获取dtb header大小
+    hdrsize = fdt_header_size(fdt);
+    //判断dtb版本
+    if((fdt_version(fdt) &lt; FDT_FIRST_SUPPORTED_VERSION) ||
+        (fdt_last_comp_version(fdt) &gt; FDT_LAST_SUPPORTED_VERSION))
+            return -FDT_ERR_BADVERSION;
+
+    if(fdt_version(fdt) &lt; fdt_last_comp_version(fdt))
+        return -FDT_ERR_BADVERSION;
+    //如果dtb长度比dtb header小，或者dtb 长度比INT_MAX大，则认为dtb无效
+    if((fdt_totalsize(fdt) &lt; hdrsize) || (fdt_totalsize(fdt) &gt; INT_MAX))
+        return -FDT_ERR_TRUNCATED;
+
+    //检查dtb reserved区域是否在大于dtb header而小于dtb 二进制大小的区域内
+    if(!check_off_(hdrsize, fdt_totalsize(fdt), fdt_off_mem_rsvmap(fdt)))
+        return -FDT_ERR_TRUNCTED;
+
+    //如果dtb版本小于17,如果此时devicetree struct的位置不再hdrsize和totalsize之间，则认定dtb无效
+    if(fdt_version(fdt) &lt; 17) {
+        if(!check_off_(hdrsize, fdt_totalsize(fdt), fdt_off_dt_struct(fdt)))
+            return -FDT_ERR_TRUNCTED;
+    } else {
+        if(!check_block_(hdrsize, fdt_totalsize(fdt), fdt_off_dt_struct(fdt), fdt_size_dt_struct(fdt)))
+            return -FDT_ERR_TRUNCTED;
+    }
+
+    if(!check_block_(hdrsize, fdt_totalsize(fdt), fdt_off_dt_strings(fdt), fdt_size_dt_strings(fdt)))
+        return -FDT_ERR_TRUNCTED;
+
+    return 0;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_check_header</span></code> 用于检查DTB二进制文件是否有效</p>
+</section>
+<section id="fdt-check-node-offset">
+<h1><span class="section-number">3.6.1.95. </span><a class="reference internal" href="#fdt-check-node-offset">fdt_check_node_offset</a><a class="headerlink" href="#fdt-check-node-offset" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">fdt_check_node_offset_</span><span class="p">(</span><span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">fdt</span><span class="p">,</span> <span class="nb">int</span> <span class="n">offset</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">((</span><span class="n">offset</span> <span class="o">&lt;</span>  <span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">offset</span> <span class="o">%</span> <span class="n">FDT_TAGSIZE</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">fdt_next_tag</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">offset</span><span class="p">)</span> <span class="o">!=</span> <span class="n">FDT_BEGIN_NODE</span><span class="p">))</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">FDT_ERR_BADOFFSET</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">offset</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_check_node_offset_</span></code> 用于判断offset对应的值是否为fdt device node</p>
+</section>
+<section id="fdt-check-prop-offset">
+<h1><span class="section-number">3.6.1.96. </span><a class="reference internal" href="#fdt-check-prop-offset">fdt_check_prop_offset</a><a class="headerlink" href="#fdt-check-prop-offset" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">fdt</span><span class="p">:</span> <span class="n">指向dtb</span>
+<span class="o">//</span><span class="n">offset</span><span class="p">:</span> <span class="n">property在dtb</span> <span class="n">devicetree</span> <span class="n">structure内偏移</span>
+<span class="nb">int</span> <span class="n">fdt_check_prop_offset_</span><span class="p">(</span><span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">fdt</span><span class="p">,</span> <span class="nb">int</span> <span class="n">offset</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">((</span><span class="n">offset</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">offset</span> <span class="o">%</span> <span class="n">FDT_TAGSIZE</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">fdt_next_tag</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">offset</span><span class="p">)</span> <span class="o">!=</span> <span class="n">FDT_PROP</span><span class="p">))</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">FDT_ERR_BADOFFSET</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">offset</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_check_prop_offset_</span></code> 用于判断offset对应的tag是否为fdt property.</p>
+</section>
+<section id="fdt-first-property-offset">
+<h1><span class="section-number">3.6.1.97. </span>fdt_first_property_offset<a class="headerlink" href="#fdt-first-property-offset" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">fdt_first_property_offset</span><span class="p">(</span><span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">fdt</span><span class="p">,</span> <span class="nb">int</span> <span class="n">nodeoffset</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">offset</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">((</span><span class="n">offset</span> <span class="o">=</span> <span class="n">fdt_check_node_offset_</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span> <span class="n">nodeoffset</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">offset</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">nextprop_</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_first_property_offset</span></code> 用于获得device node的第一个属性在dtb devicetree structure区域内的偏移</p>
+</section>
+<section id="fdt-get-property-by-offset">
+<h1><span class="section-number">3.6.1.98. </span><a class="reference internal" href="#fdt-get-property-by-offset">fdt_get_property_by_offset</a><a class="headerlink" href="#fdt-get-property-by-offset" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">fdt_property</span> <span class="o">*</span><span class="n">fdt_get_property_by_offset_</span><span class="p">(</span><span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">fdt</span><span class="p">,</span> <span class="nb">int</span> <span class="n">offset</span><span class="p">,</span> <span class="nb">int</span> <span class="o">*</span><span class="n">lenp</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">err</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">fdt_property</span> <span class="o">*</span><span class="n">prop</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">((</span><span class="n">err</span> <span class="o">=</span> <span class="n">fdt_check_prop_offset_</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span> <span class="n">offset</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">lenp</span><span class="p">)</span>
+            <span class="o">*</span><span class="n">lenp</span> <span class="o">=</span> <span class="n">err</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">NULL</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">prop</span> <span class="o">=</span> <span class="n">fdt_offset_ptr_</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">lenp</span><span class="p">)</span>
+        <span class="o">*</span><span class="n">lenp</span> <span class="o">=</span> <span class="n">fdt32_ld</span><span class="p">(</span><span class="o">&amp;</span><span class="n">prop</span><span class="o">-&gt;</span><span class="nb">len</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">prop</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_get_property_by_offset_</span></code> 通过属性在dtb devicetree structure区域内的偏移获取属性值的长度．</p>
+</section>
+<section id="fdt-header-size">
+<h1><span class="section-number">3.6.1.99. </span><a href="#id4"><span class="problematic" id="id5">fdt_header_size_</span></a><a class="headerlink" href="#fdt-header-size" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define FDT_V1_SIZE         (7*sizeof(fdt32_t))</span>
+<span class="c1">#define FDT_V2_SIZE         (FDT_V1_SIZE + sizeof(fdt32_t))</span>
+<span class="c1">#define FDT_V3_SIZE         (FDT_V2_SIZE + sizoef(fdt32_t))</span>
+<span class="c1">#define FDT_V16_SIZE        FDT_V3_SIZE</span>
+<span class="c1">#define FDT_V17_SIZE        (FDT_V16_SIZE + sizeof(fdt32_t))</span>
+
+<span class="n">size_t</span> <span class="n">fdt_header_size_</span><span class="p">(</span><span class="n">uint32_t</span> <span class="n">version</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">version</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">FDT_V1_SIZE</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">version</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">FDT_V2_SIZE</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">version</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">FDT_V3_SIZE</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">version</span> <span class="o">&lt;=</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">FDT_V16_SIZE</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="n">FDT_V17_SIZE</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_header_size_</span></code> 用于获得dtb header结构的长度</p>
+</section>
+<section id="id1">
+<h1><span class="section-number">3.6.1.100. </span>fdt_header_size<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">size_t</span> <span class="n">fdt_header_size</span><span class="p">(</span><span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">fdt</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">fdt_header_size_</span><span class="p">(</span><span class="n">fdt_version</span><span class="p">(</span><span class="n">fdt</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="fdt-init-reserved-mem">
+<h1><span class="section-number">3.6.1.101. </span>fdt_init_reserved_mem<a class="headerlink" href="#fdt-init-reserved-mem" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>void __init fdt_init_reserved_mem(void)
+{
+    int i;
+
+    //检查reserved_mem数组对应的预留区是否存在重叠部分
+    __rmem_check_for_overlap();
+
+    for(i = 0; i &lt; reserved_mem_count; i++) {
+        struct reserved_mem *rmem = &amp;reserved_mem[i];
+        unsigned long node = rmem-&gt;fdt_node;
+        int len;
+        const __be32 *prop;
+        int err = 0;
+
+        //获得节点的phandle或linux,phandle属性
+        prop = of_get_flat_dt_prop(node, &quot;phandle&quot;, &amp;len);
+        if(!prop)
+            prop = of_get_flat_dt_prop(node, &quot;linux,phandle&quot;, &amp;len);
+        if(prop)
+            rmem-&gt;phanlde = of_read_number(prop, len/4);
+
+        //为预留区分配内存
+        if(rmem-&gt;size == 0)
+            err = __reserved_mem_alloc_size(node, rmem-&gt;name, &amp;rmem-&gt;base, &amp;rmem-&gt;size);
+
+        //初始化预留区
+        if(err == 0)
+            __reserved_mem_init_node(rmem);
+    }
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_init_reserved_mem</span></code> 用于为reserved_mem[]数组内的保留区分配内存并初始化预留区</p>
+</section>
+<section id="fdt-get-header">
+<h1><span class="section-number">3.6.1.102. </span>fdt_get_header<a class="headerlink" href="#fdt-get-header" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define fdt_get_header(fdt, field)  \</span>
+    <span class="p">(</span><span class="n">fdt32_ld</span><span class="p">(</span><span class="o">&amp;</span><span class="p">((</span><span class="n">const</span> <span class="n">struct</span> <span class="n">fdt_header</span> <span class="o">*</span><span class="p">)(</span><span class="n">fdt</span><span class="p">))</span><span class="o">-&gt;</span><span class="n">field</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_get_header</span></code> 用于从dtb的header读取指定的信息．</p>
+</section>
+<section id="fdt-get-mem-rsv">
+<h1><span class="section-number">3.6.1.103. </span>fdt_get_mem_rsv<a class="headerlink" href="#fdt-get-mem-rsv" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int fdt_get_mem_rsv(const void *fdt, int n, uint64_t *address, uint64_t *size)
+{
+    const struct fdt_reserve_entry *re;
+
+    FDT_RO_PROBE(fdt);
+    re = fdt_mem_rsv(fdt, n);
+    if(!re)
+        return -FDT_ERR_BADOFFSET;
+
+    *address = fdt64_ld(&amp;re-&gt;address);
+    *size = fdt64_ld(&amp;re-&gt;size);
+
+    return 0;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_get_mem_rsv</span></code> 用于获得dtb保留区中指定区域的地址和长度</p>
+</section>
+<section id="fdt-get-name">
+<h1><span class="section-number">3.6.1.104. </span>fdt_get_name<a class="headerlink" href="#fdt-get-name" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//fdt: 指向dtb
+//nodeoffset: device-node在dtb devicetree structure区域内的偏移
+//len: 用于存储名字的长度
+const char *fdt_get_name(const void *fdt, int nodeoffset, int *len)
+{
+    //获取nodeoffset对应的指针
+    const struct fdt_node_header *nh = fdt_offset_ptr_(fdt, nodeoffset);
+    const char *nameptr;
+    int err;
+
+    //对fdt进行最小健全性检测，以及检查device-node的合法性
+    if((err = fdt_ro_probe_(fdt)) != 0 || ((err = fdt_check_node_offset_(fdt, nodeoffset)) &lt; 0))
+        goto fail;
+
+    //获取name
+    nameptr = nh-&gt;name;
+
+    //如果当前版本小于17
+    if(fdt_version(fdt) &lt; 0x10) {
+        const char *leaf;
+        leaf = strrchr(nameptr, &#39;/&#39;);
+        if(leaf == NULL) {
+            err = -FDT_ERR_BADSTRUCTURE;
+            goto fail;
+        }
+        nameptr = leaf + 1;
+    }
+
+    if(len)
+        *len = strlen(strlen(nameptr));
+
+    return nameptr;
+
+fail:
+    if(len)
+        *len = err;
+    return NULL;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_get_name</span></code> 通过节点的偏移获得节点的名字.</p>
+</section>
+<section id="fdt-get-property-namelen">
+<h1><span class="section-number">3.6.1.105. </span><a class="reference internal" href="#fdt-get-property-namelen">fdt_get_property_namelen</a><a class="headerlink" href="#fdt-get-property-namelen" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//fdt: 指向dtb
+//offset: property在dtb devicetree structure中的偏移
+//name: 需要查找的property名字
+//namelen: 名字的长度
+//lenp: 用于存储property的偏移
+static const struct fdt_property *fdt_get_property_namelen_(const void *fdt, int offset, const char *name,
+                                                        int namelen, int *lenp, int *poffset)
+{
+    //获得offset参数开始之后的第一个property
+    for(offset = fdt_first_property_offset(fdt, offset); (offset &gt;= 0); (offset = fdt_next_property_offset(fdt, offset))) {
+        const struct fdt_property *prop;
+
+        if(!(prop = fdt_get_property_by_offset_(fdt, offset, lenp))) {
+            offset = -FDT_ERR_INTERNAL;
+            break;
+        }
+
+        //对比property属性名字是否和name参数一致
+        if(fdt_string_eq_(fdt, fdt32_ld(&amp;prop-&gt;nameoff), name, namelen)) {
+            if(poffset)
+                *poffset = offset;
+            return prop;
+        }
+    }
+    if(lenp)
+        *lenp = offset;
+
+    return NULL;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_get_property_namelen_</span></code> 通过name参数获得dtb中的property</p>
+</section>
+<section id="fdt-get-string">
+<h1><span class="section-number">3.6.1.106. </span>fdt_get_string<a class="headerlink" href="#fdt-get-string" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>const char *fdt_get_string(const void *fdt, int stroffset, int *lenp)
+{
+    //计算字符串在dtb内的偏移
+    uint32_t absoffset = stroffset + fdt_off_dt_strings(fdt);
+    size_t len;
+    int err;
+    const char *s, *n;
+
+    //对dtb进行最小健全性检查
+    err = fdt_ro_probe_(fdt);
+    if(err != 0)
+        goto fail;
+
+    err = -FDT_ERR_BADOFFSET;
+    //判断offset是否超过fdt的size
+    If(absoffset &gt;= fdt_totalsize(fdt))
+        goto fail;
+    len = fdt_totalsize(fdt) - absoffset;
+
+    //获取dtb的magic并做不同的处理
+    if(fdt_magic(fdt) == FDT_MAGIC) {
+        if(stroffset &lt; 0)
+            goto fail;
+
+        if(fdt_version(fdt) &gt;= 17) {
+            if(stroffset &gt;= fdt_size_dt_strings(fdt))
+                goto fail;
+            if((fdt_size_dt_strings(fdt) - stroffset) &lt; len)
+                len = fdt_size_dt_strings(fdt) - stroffset;
+        }
+    } else if(fdt_magic(fdt) == FDT_SW_MAGIC) {
+        if((stroffset &gt;= 0) || (stroffset &lt; -fdt_size_dt_strings(fdt)))
+            goto fail;
+        if((-stroffset) &lt; len)
+            len = -stroffset;
+    } else {
+        err = -FDT_ERR_INTERNAL;
+        goto fail;
+    }
+
+    s = (const char *)fdt + absoffset;
+    n = memchr(s, &#39;\&#39;, len);
+
+    if(!n) {
+        err = -FDT_ERR_TRUNCATED;
+        goto fail;
+    }
+
+    if(lenp)
+        *lenp = n - s;
+
+    return s;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_get_string</span></code> 通过字符串在dtb devicetree strings区域内的偏移，获得对应的字符串</p>
+</section>
+<section id="fdt-getprop">
+<h1><span class="section-number">3.6.1.107. </span>fdt_getprop<a class="headerlink" href="#fdt-getprop" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">fdt_getprop</span><span class="p">(</span><span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">fdt</span><span class="p">,</span> <span class="nb">int</span> <span class="n">nodeoffset</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">name</span> <span class="p">,</span><span class="nb">int</span> <span class="o">*</span><span class="n">lenp</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">fdt_getprop_namelen</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span> <span class="n">nodeoffset</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">lenp</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_getprop</span></code> 通过名字获得device-node中的属性值</p>
+</section>
+<section id="fdt-getprop-namelen">
+<h1><span class="section-number">3.6.1.108. </span>fdt_getprop_namelen<a class="headerlink" href="#fdt-getprop-namelen" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>const void *fdt_getprop_namelen(const void *fdt, int nodeoffset, const char *name, int namelen, int *lenp)
+{
+    int poffset;
+    const struct fdt_property *prop;
+
+    prop = fdt_get_property_namelen_(fdt, nodeoffset, name, namelen, lenp, &amp;poffset);
+    if(!prop)
+        return NULL;
+
+    if(fdt_version(fdt) &lt; 0x10 &amp;&amp; (poffset + sizeof(*prop)) % 8 &amp;&amp; fdt32_ld(&amp;prop-&gt;len) &gt;= 8)
+        return prop-&gt;data + 4;
+
+    return prop-&gt;data;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_getprop_namelen</span></code> 用于获得device-node内部属性的值</p>
+</section>
+<section id="fdt-last-comp-version">
+<h1><span class="section-number">3.6.1.109. </span>fdt_last_comp_version<a class="headerlink" href="#fdt-last-comp-version" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define fdt_last_comp_version(fdt)      (fdt_get_header(fdt, last_comp_version))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_last_comp_version</span></code> 用于读取dtb header的last_comp_version信息</p>
+</section>
+<section id="fdt-magic">
+<h1><span class="section-number">3.6.1.110. </span>fdt_magic<a class="headerlink" href="#fdt-magic" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define fdt_magic(fdt) (fdt_get_header(fdt, magic))</span>
+</pre></div>
+</div>
+</section>
+<section id="fdt-mem-rsv">
+<h1><span class="section-number">3.6.1.111. </span>fdt_mem_rsv<a class="headerlink" href="#fdt-mem-rsv" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int fdt_get_mem_rsv(const void *fdt, int n, uint64_t *address, uint64_t *size)
+{
+    const struct fdt_reserve_entry *re;
+
+    FDT_RO_PROBE(fdt);
+    re = fdt_mem_rsv(fdt, n);
+    if(!re)
+        return -FDT_ERR_BADOFFSET;
+
+    *address = fdt64_ld(&amp;re-&gt;address);
+    *size = fdt64_ld(&amp;re-&gt;size);
+
+    return 0;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_get_mem_rsv</span></code> 用于获取dtb保留区中指定区域的地址和长度</p>
+</section>
+<section id="fdt-next-node">
+<h1><span class="section-number">3.6.1.112. </span>fdt_next_node<a class="headerlink" href="#fdt-next-node" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//fdt: 指向dtb
+//offset: 指向当前device-node在dtb devicetree structure区域中的偏移
+//depth: 用于识别当前节点的深度
+int fdt_next_node(const void *fdt, int offset, int *depth)
+{
+    int nexoffset = 0;
+    uint32_t tag;
+
+    //判断offset对应的device-node是否有效
+    if(offset &gt;= 0)
+        if((nextoffset = fdt_check_node_offset_(fdt, offset)) &lt; 0)
+
+    do {
+        offset = nextoffset;
+        //获取当前tag的下一个tag及偏移
+        tag = fdt_next_tag(fdt, offset, &amp;nextoffset);
+
+        switch(tag) {
+        case FDT_PROP:
+        case FDT_NOP:
+            break;
+        //如果tag值为FDT_BEGIN_NODE，那么当前节点包含了一个子节点
+        case FDT_BEGIN_NODE:
+            if(depth)
+                (*depth)++;
+            break;
+        case FDT_END_NODE:
+            if(depth &amp;&amp; ((--(*depth)) &lt; 0))
+                return nextoffset;
+            break;
+        case FDT_END:
+            if((nextoffset &gt;= 0) || ((nextoffset == -FDT_ERR_TRUNCTED) &amp;&amp; !depth))
+                return -FDT_ERR_NOTFOUND;
+            else
+                return nextoffset;
+        }
+    } while(tag != FDT_BEGIN_NODE);
+
+    return offset;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_next_node</span></code> 用于获得当前device-node的下一个device-node</p>
+</section>
+<section id="fdt-next-tag">
+<h1><span class="section-number">3.6.1.113. </span>fdt_next_tag<a class="headerlink" href="#fdt-next-tag" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>uint32_t fdt_next_tag(const void *fdt, int startoffset, int *nextoffset)
+{
+    const fdt32_t *tagp, *lenp;
+    uint32_t tag;
+    int offset = startoffset;
+    const char *p;
+
+    *nextoffset = -FDT_ERR_TRUNCATED;
+    tagp = fdt_offset_ptr(fdt, offset, FDT_TAGSIZE);
+    if(!tagp)
+        return FDT_END;
+    tag = fdt32_to_cpu(*tagp);
+    offset += FDT_TAGSIZE;
+
+    *nextoffset = -FDT_ERR_BADSTRUCTURE;
+    switch(tag) {
+    case FDT_BEGIN_NODE:
+        do {
+            p = fdt_offset_ptr(fdt, offset++, 1);
+        } while(p &amp;&amp; (*p != &#39;\0&#39;));
+        if(!p)
+            return FDT_END;
+        break;
+
+    case FDT_PROP:
+        lenp = fdt_offset_ptr(fdt, offset, sizeof(*lenp));
+        if(!lenp)
+            return FDT_END;
+        offset += sizeof(struct fdt_property) - FDT_TAGSIZE + fdt32_to_cpu(*lenp);
+        if(fdt_version(fdt) &lt; 0x10 &amp;&amp; fdt32_to_cpu(*lenp) &gt;= 8 &amp;&amp; ((offset - fdt32_to_cpu(*lenp)) % 8) != 0)
+            offset += 4;
+        break;
+    case FDT_END:
+    case FDT_END_NODE:
+    case FDT_NOP:
+        break;
+    }
+
+}
+</pre></div>
+</div>
+</section>
+<section id="fdt-off-dt-strings">
+<h1><span class="section-number">3.6.1.114. </span>fdt_off_dt_strings<a class="headerlink" href="#fdt-off-dt-strings" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define fdt_off_dt_strings(fdt) (fdt_get_header(fdt, off_dt_strings))</span>
+<span class="c1">#define fdt_off_mem_rsvmap(fdt) (fdt_get_header(fdt, off_mem_rsvmap))</span>
+<span class="c1">#define fdt_off_dt_struct(fdt) (fdt_get_header(fdt, off_dt_struct))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_off_dt_strings</span></code> 用于读取dtb header的off_dt_strings信息．</p>
+</section>
+<section id="fdt-offset-ptr">
+<h1><span class="section-number">3.6.1.115. </span>fdt_offset_ptr<a class="headerlink" href="#fdt-offset-ptr" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">fdt</span><span class="p">:</span> <span class="n">指向dtb</span>
+<span class="o">//</span><span class="n">offset</span><span class="p">:</span> <span class="n">device</span><span class="o">-</span><span class="n">node在dtb</span> <span class="n">structure区域内的偏移</span>
+<span class="o">//</span><span class="nb">len</span><span class="p">:</span> <span class="n">表示device</span><span class="o">-</span><span class="n">node的长度</span>
+<span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">fdt_offset_ptr</span><span class="p">(</span><span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">fdt</span><span class="p">,</span> <span class="nb">int</span> <span class="n">offset</span><span class="p">,</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="nb">len</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">unsigned</span> <span class="n">absoffset</span> <span class="o">=</span> <span class="n">offsdt</span> <span class="o">+</span> <span class="n">fdt_off_dt_struct</span><span class="p">(</span><span class="n">fdt</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">((</span><span class="n">absoffset</span> <span class="o">&lt;</span> <span class="n">offset</span><span class="p">)</span> <span class="o">||</span> <span class="p">((</span><span class="n">absoffset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">absoffset</span><span class="p">)</span>
+    <span class="o">||</span> <span class="p">(</span><span class="n">absoffset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">fdt_totalsize</span><span class="p">(</span><span class="n">fdt</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">NULL</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">fdt_version</span><span class="p">(</span><span class="n">fdt</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mh">0x11</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(((</span><span class="n">offset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">offset</span><span class="p">)</span> <span class="o">||</span> <span class="p">((</span><span class="n">offset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">fdt_size_dt_struct</span><span class="p">(</span><span class="n">fdt</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="n">NULL</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">fdt_offset_ptr_</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span> <span class="n">offset</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_offset_ptr</span></code> 通过device-node在dtb structure内的偏移获得指向device-node的指针</p>
+</section>
+<section id="id2">
+<h1><span class="section-number">3.6.1.116. </span><a href="#id6"><span class="problematic" id="id7">fdt_offset_ptr_</span></a><a class="headerlink" href="#id2" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">fdt</span><span class="p">:</span> <span class="n">指向dtb</span>
+<span class="o">//</span><span class="n">offset</span><span class="p">:</span> <span class="n">device</span><span class="o">-</span><span class="n">node在dtb</span> <span class="n">structure区块内的偏移</span>
+<span class="n">static</span> <span class="n">inline</span> <span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">fdt_ofset_ptr_</span><span class="p">(</span><span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">fdt</span><span class="p">,</span> <span class="nb">int</span> <span class="n">offset</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">const</span> <span class="n">char</span><span class="o">*</span><span class="p">)</span><span class="n">fdt</span> <span class="o">+</span> <span class="n">fdt_off_dt_struct</span><span class="p">(</span><span class="n">fdt</span><span class="p">)</span> <span class="o">+</span> <span class="n">offset</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_offset_ptr_</span></code> 通过device-node在dtb structure内的偏移得到指向device-node的指针．</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>dtb的结构涉及如下图所示</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>boot_param_header</p></td>
+</tr>
+<tr class="row-even"><td><p>memory reserve map</p></td>
+</tr>
+<tr class="row-odd"><td><p>device-tree structure</p></td>
+</tr>
+<tr class="row-even"><td><p>device-tree strings</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="fdt-reserved-mem-save-node">
+<h1><span class="section-number">3.6.1.117. </span>fdt_reserved_mem_save_node<a class="headerlink" href="#fdt-reserved-mem-save-node" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define MAX_RESERVED_REGIONS 32</span>
+<span class="n">static</span> <span class="n">struct</span> <span class="n">reserved_mem</span> <span class="n">reserved_mem</span><span class="p">[</span><span class="n">MAX_RESERVED_REGIONS</span><span class="p">];</span>
+<span class="o">//</span><span class="n">node</span><span class="p">:</span> <span class="n">指向节点偏移</span>
+<span class="o">//</span><span class="n">uname</span><span class="p">:</span> <span class="n">指向预留区的名字</span>
+<span class="o">//</span><span class="n">base</span><span class="p">:</span> <span class="n">预留区的起始地址</span>
+<span class="o">//</span><span class="n">size</span><span class="p">:</span> <span class="n">预留区的长度</span>
+<span class="n">void</span> <span class="n">__init</span> <span class="n">fdt_reserved_mem_save_node</span><span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span> <span class="n">node</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">uname</span><span class="p">,</span>
+                    <span class="n">phys_addr_t</span> <span class="n">base</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">size</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">reserved_mem</span> <span class="o">*</span><span class="n">rmem</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">reserved_mem</span><span class="p">[</span><span class="n">reserved_mem_count</span><span class="p">];</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">reserved_mem_count</span> <span class="o">==</span> <span class="n">ARRAY_SIZE</span><span class="p">(</span><span class="n">reserved_mem</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">pr_err</span><span class="p">(</span><span class="s2">&quot;not enough space all defined regions.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">rmem</span><span class="o">-&gt;</span><span class="n">fdt_node</span> <span class="o">=</span> <span class="n">node</span><span class="p">;</span>
+    <span class="n">rmem</span><span class="o">-&gt;</span><span class="n">name</span> <span class="o">=</span> <span class="n">uname</span><span class="p">;</span>
+    <span class="n">rmem</span><span class="o">-&gt;</span><span class="n">base</span> <span class="o">=</span> <span class="n">base</span><span class="p">;</span>
+    <span class="n">rmem</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span><span class="p">;</span>
+
+    <span class="n">reserved_mem_count</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_reserved_mem_save_node</span></code> 用于将dts中”reserved-memory”添加到系统的reserved_mem[]数组中</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>内核使用一个struct reserved_mem数组维护着系统中所有的保留区</p>
+</div>
+</section>
+<section id="fdt-ro-probe">
+<h1><span class="section-number">3.6.1.118. </span>FDT_RO_PROBE<a class="headerlink" href="#fdt-ro-probe" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define FDT_RO_PROBE(fdt)   \</span>
+<span class="p">{</span>   \
+    <span class="nb">int</span> <span class="n">err_</span><span class="p">;</span> \
+    <span class="k">if</span><span class="p">((</span><span class="n">err_</span> <span class="o">=</span> <span class="n">fdt_ro_probe_</span><span class="p">(</span><span class="n">fdt</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> \
+        <span class="k">return</span> <span class="n">err_</span><span class="p">;</span>    \
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">FDT_RO_PROBE</span></code> 用于检查dtb的完整性</p>
+</section>
+<section id="id3">
+<h1><span class="section-number">3.6.1.119. </span><a href="#id8"><span class="problematic" id="id9">fdt_ro_probe_</span></a><a class="headerlink" href="#id3" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">fdt_ro_probe_</span><span class="p">(</span><span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">fdt</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="o">//</span><span class="n">检查DTB的MAGIC信息</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">fdt_magic</span><span class="p">(</span><span class="n">fdt</span><span class="p">)</span> <span class="o">==</span> <span class="n">FDT_MAGIC</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">fdt_version</span><span class="p">(</span><span class="n">fdt</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">FDT_FIRST_SUPPORTED_VERSION</span><span class="p">)</span>
+            <span class="k">return</span> <span class="o">-</span><span class="n">FDT_ERR_BADVERSION</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">fdt_last_comp_version</span><span class="p">(</span><span class="n">fdt</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">FDT_LAST_SUPPORTED_VERSION</span><span class="p">)</span>
+            <span class="k">return</span> <span class="o">-</span><span class="n">FDT_ERR_BADVERSION</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">fdt_magic</span><span class="p">(</span><span class="n">fdt</span><span class="p">)</span> <span class="o">==</span> <span class="n">FDT_SW_MAGIC</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">fdt_size_dt_struct</span><span class="p">(</span><span class="n">fdt</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="o">-</span><span class="n">FDT_ERR_BADSTATE</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">FDT_ERR_BADMAGIC</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_ro_probe_</span></code> 用于一个只读dtb的最小健全性检查．</p>
+</section>
+<section id="fdt-scan-reserved-mem">
+<h1><span class="section-number">3.6.1.120. </span>__fdt_scan_reserved_mem<a class="headerlink" href="#fdt-scan-reserved-mem" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//node: 指向子节点的索引
+//uname: 子节点的名字
+//depth: 子节点的深度
+//data: 私有数据
+static int __init __fdt_scan_reserved_mem(unsigned long node, const char *uname,
+                                    int depth, void *void)
+{
+    static int found;
+    int err;
+
+    //判断节点是否是reserved-memory节点内的子节点
+    if(!fount &amp;&amp; depth == 1 &amp;&amp; strcmp(uname, &quot;reserved-memory&quot;) == 0) {
+        if(__reserved_mem_check_root(node) != 0) {
+            pr_err(&quot;reserved memory: unsupported node format, ignoring\n&quot;);
+            return 1;
+        }
+        fount = 1;
+        return 0;
+    } else if(!found) {
+        return 0;
+    } else if(found &amp;&amp; depth &lt; 2) {
+        return 1;
+    }
+
+    //判断节点的status是否为okay
+    if(!of_fdt_device_is_available(initial_boot_params, node))
+        return 0;
+
+    //将节点的reg属性对应的预留区加入到MEMBLOCK内存分配器的保留区
+    err = __reserved_mem_reserve_reg(node, uname);
+    if(err == -ENOENT &amp;&amp; of_get_flat_dt_prop(node, &quot;size&quot;, NULL))
+        fdt_reserved_mem_save_node(node, uname, 0, 0);
+
+    return 0;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">__fdt_scan_reserved_mem</span></code> 用于将dts中reserved-memory节点包含的子节点预留区加入到系统内进行维护．</p>
+</section>
+<section id="fdt-size-dt-strings">
+<h1><span class="section-number">3.6.1.121. </span>fdt_size_dt_strings<a class="headerlink" href="#fdt-size-dt-strings" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define fdt_size_dt_strings(fdt) (fdt_get_header(fdt, size_dt_strings))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_size_dt_strings</span></code> 用于读取dtb header的dt_strings_size信息</p>
+</section>
+<section id="fdt-size-dt-struct">
+<h1><span class="section-number">3.6.1.122. </span>fdt_size_dt_struct<a class="headerlink" href="#fdt-size-dt-struct" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define fdt_size_dt_struct(fdt) (fdt_get_header(fdt, size_dt_struct))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_size_dt_struct</span></code> 用于读取dtb header的dt_struct_size信息</p>
+</section>
+<section id="fdt-string-eq">
+<h1><span class="section-number">3.6.1.123. </span><a class="reference internal" href="#fdt-string-eq">fdt_string_eq</a><a class="headerlink" href="#fdt-string-eq" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="nb">int</span> <span class="n">fdt_string_eq_</span><span class="p">(</span><span class="n">const</span> <span class="n">void</span> <span class="o">*</span><span class="n">fdt</span><span class="p">,</span> <span class="nb">int</span> <span class="n">stroffset</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="nb">int</span> <span class="nb">len</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">slen</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="n">fdt_get_string</span><span class="p">(</span><span class="n">fdt</span><span class="p">,</span> <span class="n">stroffset</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">slen</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">p</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">slen</span> <span class="o">==</span> <span class="nb">len</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">memcmp</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="nb">len</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_string_eq_</span></code> 用于对比offset对应dtb devicetree strings区域内字符串与参数s给定的字符串是否相等</p>
+</section>
+<section id="fdt-totalsize">
+<h1><span class="section-number">3.6.1.124. </span>fdt_totalsize<a class="headerlink" href="#fdt-totalsize" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define fdt_totalsize(fdt) (fdt_get_header(fdt, totalsize))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fdt_totalsize</span></code> 用于读取dtb header的totalsize信息</p>
+</section>
+<section id="fill-pmd-pags">
+<h1><span class="section-number">3.6.1.125. </span>fill_pmd_pags<a class="headerlink" href="#fill-pmd-pags" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span> <span class="n">__init</span> <span class="n">fill_pmd_gaps</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">static_vm</span> <span class="o">*</span><span class="n">svm</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">vm_struct</span> <span class="o">*</span><span class="n">vm</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">addr</span><span class="p">,</span> <span class="nb">next</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">pmd_t</span> <span class="o">*</span><span class="n">pmd</span><span class="p">;</span>
+
+    <span class="n">list_for_each_entry</span><span class="p">(</span><span class="n">svm</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">static_vmlist</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">vm</span>  <span class="o">=</span> <span class="o">&amp;</span><span class="n">svm</span><span class="o">-&gt;</span><span class="n">vm</span><span class="p">;</span>
+        <span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)</span><span class="n">vm</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">addr</span> <span class="o">&lt;</span> <span class="nb">next</span><span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+
+        <span class="k">if</span><span class="p">((</span><span class="n">addr</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">PMD_MASK</span><span class="p">)</span> <span class="o">==</span> <span class="n">SECTION_SIZE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">pmd</span> <span class="o">=</span> <span class="n">pmd_off_k</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">pmd_none</span><span class="p">(</span><span class="o">*</span><span class="n">pmd</span><span class="p">))</span>
+                <span class="n">pmd_empty_section_gap</span><span class="p">(</span><span class="n">addr</span> <span class="o">&amp;</span> <span class="n">PMD_MASK</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">addr</span> <span class="o">+=</span> <span class="n">vm</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">((</span><span class="n">addr</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">PMD_MASK</span><span class="p">)</span> <span class="o">==</span> <span class="n">SECTION_SIZE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">pmd</span> <span class="o">=</span> <span class="n">pmd_off_k</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">pmd_none</span><span class="p">(</span><span class="o">*</span><span class="n">pmd</span><span class="p">))</span>
+                <span class="n">pmd_empty_section_gap</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nb">next</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span> <span class="o">+</span> <span class="n">PMD_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">PMD_MASK</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fill_pmd_gaps</span></code> 用于检查静态映射区的虚拟地址，是否存在PMD入口值占用了一个，并且基数PMD入口</p>
+</section>
+<section id="find-limits">
+<h1><span class="section-number">3.6.1.126. </span>find_limits<a class="headerlink" href="#find-limits" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span> <span class="n">__init</span> <span class="n">find_limits</span><span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span> <span class="o">*</span><span class="nb">min</span><span class="p">,</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="o">*</span><span class="n">max_low</span><span class="p">,</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="o">*</span><span class="n">max_high</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="o">*</span><span class="n">max_low</span> <span class="o">=</span> <span class="n">PFN_DOWN</span><span class="p">(</span><span class="n">memblock_get_current_limit</span><span class="p">());</span>
+    <span class="o">*</span><span class="nb">min</span> <span class="o">=</span> <span class="n">PFN_UP</span><span class="p">(</span><span class="n">memblock_start_of_DRAM</span><span class="p">());</span>
+    <span class="o">*</span><span class="n">max_high</span> <span class="o">=</span> <span class="n">PFN_DOWN</span><span class="p">(</span><span class="n">memblock_end_of_DRAM</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">find_limits</span></code> 获得物理地址低端物理内存的起始页帧和终止页帧以及MEMBLOCK内存分配器支持的最大页帧</p>
+</section>
+<section id="fix-to-virt">
+<h1><span class="section-number">3.6.1.127. </span>fix_to_virt<a class="headerlink" href="#fix-to-virt" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">__always_inline</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">fix_to_virt</span><span class="p">(</span><span class="n">const</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">idx</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">BUILD_BUG_ON</span><span class="p">(</span><span class="n">idx</span> <span class="o">&gt;=</span> <span class="n">__end_of_fixed_addresses</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">__fix_to_virt</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fix_to_virt</span></code> 通过FIXMAP索引获得对应的虚拟地址</p>
+</section>
+<section id="fixmap-pmd">
+<h1><span class="section-number">3.6.1.128. </span>fixmap_pmd<a class="headerlink" href="#fixmap-pmd" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">pmd_t</span> <span class="o">*</span> <span class="n">__init</span> <span class="n">fixmap_pmd</span><span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span> <span class="n">addr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">pgd_t</span> <span class="o">*</span><span class="n">pgd</span> <span class="o">=</span> <span class="n">pgd_offset_k</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+    <span class="n">pgd_t</span> <span class="o">*</span><span class="n">pud</span> <span class="o">=</span> <span class="n">pud_offset</span><span class="p">(</span><span class="n">pgd</span><span class="p">,</span> <span class="n">addr</span><span class="p">);</span>
+    <span class="n">pgd_t</span> <span class="o">*</span><span class="n">pmd</span> <span class="o">=</span> <span class="n">pmd_offset</span><span class="p">(</span><span class="n">pud</span><span class="p">,</span> <span class="n">addr</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">pmd</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fixmap_pmd</span></code> 用于获得FIXMAP区间虚拟地址对应的PMD入口地址</p>
+</section>
+<section id="flush-pmd-entry">
+<h1><span class="section-number">3.6.1.129. </span>flush_pmd_entry<a class="headerlink" href="#flush-pmd-entry" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">flush_pmd_entry</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">pmd</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">const</span> <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">__tbl_flag</span> <span class="o">=</span> <span class="n">__cpu_tlb_flags</span><span class="p">;</span>
+
+    <span class="n">tlb_op</span><span class="p">(</span><span class="n">TLB_DCLEAN</span><span class="p">,</span> <span class="s2">&quot;c7, c10, 1 @ flush_pmd&quot;</span><span class="p">,</span> <span class="n">pmd</span><span class="p">);</span>
+    <span class="n">tlb_l2_op</span><span class="p">(</span><span class="n">TLB_L2CLEAN_FR</span><span class="p">,</span> <span class="s2">&quot;c15, c9, 1 @ L2 flush_pmd&quot;</span><span class="p">,</span> <span class="n">pmd</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">tlb_flag</span><span class="p">(</span><span class="n">TLB_WB</span><span class="p">))</span>
+        <span class="n">dsb</span><span class="p">(</span><span class="n">ishst</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">flush_pmd_entry</span></code> 的目的是 ‘clean data of unified cache line by mva to poc’</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="E_function.html" class="btn btn-neutral float-left" title="3.6.1.69. early_alloc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="G_function.html" class="btn btn-neutral float-right" title="3.6.1.130. get_cr" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

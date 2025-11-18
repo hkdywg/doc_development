@@ -1,0 +1,544 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.4.3.1. mqtt协议基础 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="6.4.3.2. MQTT流程图" href="mqtt_flow.html" />
+    <link rel="prev" title="6.4.3. mqtt协议" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">6.4. 通信中间件</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../opendds/index.html">6.4.1. opendds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../some_ip/index.html">6.4.2. SOME/IP</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">6.4.3. mqtt协议</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">6.4.3.1. mqtt协议基础</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt_flow.html">6.4.3.2. MQTT流程图</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt_packet.html">6.4.3.3. MQTT报文</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt_usermenu.html">6.4.3.4. MQTT应用示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6.4. </span>通信中间件</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.4.3. </span>mqtt协议</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.4.3.1. </span>mqtt协议基础</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user/communication/mqtt/mqtt_note.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mqtt">
+<h1><span class="section-number">6.4.3.1. </span>mqtt协议基础<a class="headerlink" href="#mqtt" title="此标题的永久链接"></a></h1>
+<p><a class="reference external" href="http://docs.oasis-open.org/mqtt/mqtt/v5.0/csprd02/mqtt-v5.0-csprd02.html">MQTT5.0官方文档</a></p>
+<p><a class="reference external" href="http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html">MQTT3.1.1官方文档</a></p>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../../_downloads/a4a7209ee2f37ec4764e36b59206ab4d/MQTT-3.1.1-CN.pdf"><code class="xref download docutils literal notranslate"><span class="pre">MQTT-3.1.1-CN.pdf</span></code></a></p></li>
+</ul>
+<ul class="simple">
+<li><p>MQTT服务器地址：test.ranye-iot.net</p></li>
+<li><p>TCP 端口：1883</p></li>
+<li><p>TCP/TLS 端口：8883</p></li>
+</ul>
+<p>MQTT(消息队列遥测传输)是一种轻量级通讯协议，该协议一个重要特点是易于在客户端实现．广泛应用于车联网，智能家居，物联网领域．</p>
+<section id="id1">
+<h2><span class="section-number">6.4.3.1.1. </span>MQTT基础原理<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>在MQTT协议通讯中，有两个最为重要的角色，他们分别是服务端和客户端</p>
+<ul class="simple">
+<li><p>MQTT服务端: 它是MQTT信息传输的枢纽，负责将MQTT客户端发送来的消息传递给MQTT客户端，MQTT服务端还负责管理MQTT客户端，确保客户端之间的通讯顺畅</p></li>
+<li><p>MQTT客户端: MQTT客户端可以向服务端发布消息，也可以从服务端接收消息．我们把客户端发送信息的行为称为”发布”消息，而客户端想要从服务端接收信息，则需要向服务端”订阅”消息</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>MQTT客户端在订阅消息时，MQTT服务端使用”主题”来控制</p>
+</div>
+<p><strong>MQTT发布/订阅特性</strong></p>
+<ul class="simple">
+<li><p>相互可独立: MQTT客户端是一个个独立的个体，他们无需了解彼此的存在，依然可以实现信息交流</p></li>
+<li><p>空间可分离: MQTT客户端在通讯时的必要条件是连接到了同一个MQTT通讯网络，这个网络可以是互联网或者局域网</p></li>
+<li><p>时间可异步: MQTT客户端在发送和接收信息时无需同步．</p></li>
+</ul>
+<section id="id2">
+<h3><span class="section-number">6.4.3.1.1.1. </span>MQTT客户端连接<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>MQTT客户端连接服务端有两步</p>
+<ol class="arabic simple">
+<li><p>首先是MQTT客户端将会向服务端发送连接请求，该请求实际上是一个包含有连接请求信息的数据包，这个数据包的官方名称为 <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code></p></li>
+<li><p>MQTT服务端收到客户端连接请求后，会向客户端发送连接确认，同样的，该确认也是一个数据包，这个数据包官方名称为 <code class="docutils literal notranslate"><span class="pre">CONNACK</span></code></p></li>
+</ol>
+<p><strong>CONNECT-连接服务端</strong></p>
+<p>CONNECT报文</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>报文字段</p></td>
+<td><p>内容示例</p></td>
+</tr>
+<tr class="row-even"><td><p>clientId</p></td>
+<td><p>“client-1”</p></td>
+</tr>
+<tr class="row-odd"><td><p>cleanSession</p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p>username(可选)</p></td>
+<td><p>“test_sender”</p></td>
+</tr>
+<tr class="row-odd"><td><p>password(可选)</p></td>
+<td><p>“root”</p></td>
+</tr>
+<tr class="row-even"><td><p>lastWillTopic(可选)</p></td>
+<td><p>“/test_sender/will”</p></td>
+</tr>
+<tr class="row-odd"><td><p>lastWillQos(可选)</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>lastWillMessage(可选)</p></td>
+<td><p>“unexpected exit”</p></td>
+</tr>
+<tr class="row-odd"><td><p>lastWillRetain(可选)</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>keepAlive(可选)</p></td>
+<td><p>60</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>ClientId是MQTT客户端的标识，MQTT服务端用该标识来识别客户端，所以ClientId必须是独立的</p></li>
+<li><p>cleanSession(清除会话), 在MQTT通讯中存在报文丢失的情况，为了报文可以准确无误的送达，服务端将会执行以下两个操作</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>将尚未被客户端确认的报文保存起来</p></li>
+<li><p>再次尝试向客户端发送报文，并且再次等待客户端发送确认信息</p></li>
+</ol>
+<p>如果cleanSession被设置为”true”,那服务端不需要客户端确认收到报文，也不会保存任何报文，在这种情况下，一旦报文丢失便是永久性的丢失．
+当cleanSession被设置为”false”，服务端将保存客户端未收到的报文</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果需要服务端保存报文，光设置cleanSession为false是不够的，还需要传递MQTT信息Qos级别大于0</p>
+</div>
+<ul class="simple">
+<li><p>keepAlive(心跳时间间隔): 用于服务端实时了解客户端是否与其保持连接的情况</p></li>
+</ul>
+<p><strong>CONNACK-确认连接请求</strong></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>报文字段</p></td>
+<td><p>内容示例</p></td>
+</tr>
+<tr class="row-even"><td><p>sessionPresent</p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p>returnCode</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>returnCode(连接返回码): 当服务端收到客户端的连接请求后，会向客户端发送returnCode,用以说明连接情况</p></li>
+</ul>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>返回码</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>连接成功</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>连接被服务端拒绝，原因是不支持客户端的MQTT协议版本</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>连接被服务端拒绝，原因是不支持客户端标识符的编码,如客户端使用UTF-8编码，但服务端不允许使用此编码</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>连接被服务端拒绝，原因是服务端不可用，即，网络连接已经建立，但MQTT服务不可用</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>连接被服务端拒绝，原因是用户名或密码无效</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>连接被服务端拒绝，原因是客户端未被授权连接到此服务端</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>sessionPresent(当前会话):</p>
+<ul>
+<li><p>当cleanSession为true时，sessionPreset肯定是false</p></li>
+<li><p>当cleanSession为false时，如果服务端的确保存了没有收到客户端接收确认的报文信息，那么cleanSession为true,否则为false</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id3">
+<h3><span class="section-number">6.4.3.1.1.2. </span>发布/订阅/取消订阅<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p><strong>PUBLISH-发布消息</strong></p>
+<p>MQTT客户端一旦连接到服务端便可以发送消息，每条发布的MQTT消息必须包含一个主题，MQTT服务器可以通过主题确定将消息发给哪些客户端</p>
+<img alt="../../../_images/MQTT-PUBLISH.png" src="../../../_images/MQTT-PUBLISH.png" />
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>报文字段</p></td>
+<td><p>内容实例</p></td>
+</tr>
+<tr class="row-even"><td><p>packetId</p></td>
+<td><p>4314</p></td>
+</tr>
+<tr class="row-odd"><td><p>topicName</p></td>
+<td><p>“topic_vehicle_speed”</p></td>
+</tr>
+<tr class="row-even"><td><p>qos</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>retainFlag</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>payload</p></td>
+<td><p>“vehicle_speed:65.3”</p></td>
+</tr>
+<tr class="row-odd"><td><p>dupFlag</p></td>
+<td><p>false</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>topicName: 主题名用于识别此消息应发布到哪一个主题</p></li>
+<li><p>qos(服务质量等级): QoS(Quality of Service)表示MQTT消息的服务质量等级，QoS有三个级别:0,1,2</p></li>
+<li><p>packetId(报文标识符): 报文标识符用于对MQTT报文进行标识，不同的MQTT报文所拥有的标识符不同</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>报文标识符的内容与QoS级别有着密不可分的关系，只有qos级别大于0时，报文标识符才是非零数值，如果qos等于0,报文标识符为0</p>
+</div>
+<ul class="simple">
+<li><p>reatinFlag(保留标志): 默认情况下，当客户端订阅了某一主题后并不会马上收到该主题的信息，只有在服务端接收到该主题的新的消息后才会将该消息推动给客户端.
+但有些情况下，我们需要客户端马上收到该主题的消息，那么需要用到该标志</p></li>
+<li><p>paload(有效载荷): MQTT发送的实际数据</p></li>
+<li><p>dupFlag(重发标志): 当MQTT报文的接收方没有及时发送收到报文时，发送方会重复发送MQTT报文．在重复发送MQTT报文时，发送方会将此”重发标志”设置为true</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>dupFlag只在QOS级别大于0时使用</p>
+</div>
+<p><strong>SUBSCRIBE-订阅主题</strong></p>
+<p>客户端想要订阅主题，首先要向服务端发送主题订阅请求，客户端是向服务端发送 <code class="docutils literal notranslate"><span class="pre">SUBSCRIBE</span></code> 报文来实现这一情况．该报文含有一系列”订阅主题名”</p>
+<p><strong>SUBACK-订阅确认</strong></p>
+<p>服务端收到客户端的订阅报文后，会向客户端发送 <code class="docutils literal notranslate"><span class="pre">SUBACK</span></code> 报文确认订阅. SUBACK报文包含有returnCode(订阅返回码)和packetId(报文标识符)</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>返回码</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>订阅成功-qos 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>订阅成功-qos 1</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>订阅成功-qos 2</p></td>
+</tr>
+<tr class="row-odd"><td><p>128</p></td>
+<td><p>订阅失败</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>UNSUBSCRIBE-取消订阅</strong></p>
+<p>当客户端要取消订阅某主题时，可通过向服务端发送 <code class="docutils literal notranslate"><span class="pre">UNSUBSCRIBE</span></code> 报文来实现</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>报文字段</p></td>
+<td><p>实例内容</p></td>
+</tr>
+<tr class="row-even"><td><p>packetId</p></td>
+<td><p>4315</p></td>
+</tr>
+<tr class="row-odd"><td><p>topic1</p></td>
+<td><p>“topic_1”</p></td>
+</tr>
+<tr class="row-even"><td><p>topic2</p></td>
+<td><p>“topic_2”</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">6.4.3.1.2. </span>MQTT主题<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>主题的基本形式就是一个字符串</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ol class="arabic simple">
+<li><p>主题是区分大小写的</p></li>
+<li><p>主题可以使用空格,如”current time”</p></li>
+<li><p>大部分MQTT服务端是不支持中文主题的</p></li>
+</ol>
+</div>
+<ul class="simple">
+<li><p>主题分级</p></li>
+</ul>
+<p>为了更好的对主题进行管理和分类，我们可以对主题进行分级处理，MQTT主题各个级别之间可以使用”/”来分割．如”typer-1/motor/1/speed”, 此
+示例中共有四级主题</p>
+<ul class="simple">
+<li><p>主题通配符</p></li>
+</ul>
+<p>当客户端订阅主题时，可以使用通配符同时订阅多个主题，通配符只能在订阅主题时使用．通配符分为单级通配符和多级通配符</p>
+<ol class="arabic simple">
+<li><p>单级通配符( <code class="docutils literal notranslate"><span class="pre">+</span></code> ): 单级通配符可以替代一个主题级别</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">home</span><span class="o">/</span><span class="n">control</span><span class="o">/</span><span class="n">led</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">kitchen</span><span class="o">/</span><span class="n">temperature</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">bedroom</span><span class="o">/</span><span class="n">temperature</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">livingroom</span><span class="o">/</span><span class="n">temperature</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">rawdata</span>
+<span class="n">office</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">livingroom</span><span class="o">/</span><span class="n">temperature</span>
+<span class="c1">##以上为所有主题</span>
+<span class="c1">##当使用home/sensor/+/temperature订阅主题时，可以收到以下主题的消息</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">kitchen</span><span class="o">/</span><span class="n">temperature</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">bedroom</span><span class="o">/</span><span class="n">temperature</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">livingroom</span><span class="o">/</span><span class="n">temperature</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>多级通配符( <code class="docutils literal notranslate"><span class="pre">#</span></code> ): 多级通配符可以涵盖任意数量的主题级别</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">home</span><span class="o">/</span><span class="n">control</span><span class="o">/</span><span class="n">led</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">kitchen</span><span class="o">/</span><span class="n">temperature</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">bedroom</span><span class="o">/</span><span class="n">temperature</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">livingroom</span><span class="o">/</span><span class="n">temperature</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">rawdata</span>
+<span class="n">office</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">livingroom</span><span class="o">/</span><span class="n">temperature</span>
+<span class="c1">##以上为所有主题</span>
+<span class="c1">##当使用home/# 订阅主题时，可以收到以下主题的消息</span>
+<span class="n">home</span><span class="o">/</span><span class="n">control</span><span class="o">/</span><span class="n">led</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">kitchen</span><span class="o">/</span><span class="n">temperature</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">bedroom</span><span class="o">/</span><span class="n">temperature</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">livingroom</span><span class="o">/</span><span class="n">temperature</span>
+<span class="n">home</span><span class="o">/</span><span class="n">sensor</span><span class="o">/</span><span class="n">rawdata</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>多级通配符必须是主题中的最后一个字符</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ol class="arabic simple">
+<li><p>以 <code class="docutils literal notranslate"><span class="pre">$</span></code> 开始的主题是MQTT服务端系统保留的特殊主题，我们不能随意订阅或者向其发布消息</p></li>
+<li><p>不要用”/”作为主题开头，MQTT运行使用”/”作为主题开头，但这么做毫无意义，并且会额外产生一个没用的主题级别</p></li>
+<li><p>主题中不要使用空格，虽然这样合规，但会使得阅读和调试变得困难</p></li>
+</ol>
+</div>
+</section>
+<section id="qos">
+<h2><span class="section-number">6.4.3.1.3. </span>QoS服务质量等级<a class="headerlink" href="#qos" title="此标题的永久链接"></a></h2>
+<p>MQTT服务质量(Quality of Service)用于告知物联网系统，哪些信息是重要信息需要准确无误的传输，而哪些信息不那么重要，即使丢失也没有问题</p>
+<p>MQTT协议有三种服务质量级别:</p>
+<ul class="simple">
+<li><p>QoS = 0 : 最多发一次</p></li>
+<li><p>Qos = 1 : 最少发一次</p></li>
+<li><p>Qos = 2 : 保证收一次</p></li>
+</ul>
+<hr class="docutils" />
+<p>Qos = 0 : 最多发一次</p>
+<p>0是服务质量QoS的最低级别，此时，MQTT不能保证所有信息都得以传输，也就是说发送端一旦发送消息后，并不会检查消息是否被正常接收</p>
+<hr class="docutils" />
+<p>Qos = 1 : 最少发一次</p>
+<p>当QoS级别为1时，发送端在消息发送完成后，会检查接收端是否已经成功接收到了消息．</p>
+<img alt="../../../_images/PUBLISH-PUBACK.png" src="../../../_images/PUBLISH-PUBACK.png" />
+<p>发送端将消息发送给接收端后，会等待接收端的确认．接收端成功接收消息后，会发送一条确认报文 <code class="docutils literal notranslate"><span class="pre">PUBACK</span></code> 给发送端．如果发送端收到了
+确认报文，那么便认为是消息已经成功接收. 当过了一段时间没有收到确认报文，会重复发送一条消息</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>PUBACK字段</p></td>
+<td><p>内容</p></td>
+</tr>
+<tr class="row-even"><td><p>packetId</p></td>
+<td><p>4319</p></td>
+</tr>
+</tbody>
+</table>
+<p>当重复发送一条消息时，PUBLISH报文中的 <code class="docutils literal notranslate"><span class="pre">dupFlag</span></code> 会被设置为true, 以此通知接收端此消息为重复发送</p>
+<hr class="docutils" />
+<p>QoS = 2 : 保证收一次</p>
+<p>2级服务质量时，MQTT协议可以保证接收端只接收一次消息，是最安全的服务级别，也是最慢的服务级别</p>
+<img alt="../../../_images/MQTT-QoS-2-PUBLISH.png" src="../../../_images/MQTT-QoS-2-PUBLISH.png" />
+<img alt="../../../_images/MQTT-QoS-2-PUBREC.png" src="../../../_images/MQTT-QoS-2-PUBREC.png" />
+<img alt="../../../_images/MQTT-QoS-2-PUBREL.png" src="../../../_images/MQTT-QoS-2-PUBREL.png" />
+<img alt="../../../_images/MQTT-QoS-2-PUBCOMP.png" src="../../../_images/MQTT-QoS-2-PUBCOMP.png" />
+<section id="id5">
+<h3><span class="section-number">6.4.3.1.3.1. </span>设置QoS<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<ol class="arabic simple">
+<li><p>客户端发布消息时， <code class="docutils literal notranslate"><span class="pre">PUBLISH</span></code> 数据包中有一个 <code class="docutils literal notranslate"><span class="pre">qos</span></code> 字段，该字段用于设置客户端发布MQTT消息的QoS等级</p></li>
+<li><p>客户端在订阅MQTT主题时， <code class="docutils literal notranslate"><span class="pre">SUBSCRIBE</span></code> 数据包中也同样有一个字段用于设置订阅主题的QoS级别</p></li>
+</ol>
+<p>另外要想实现QoS&gt;0的MQTT通讯，客户端在连接服务端时，必须要将cleanSession设置为false</p>
+<hr class="docutils" />
+<p>当消息的发布者和订阅者使用不同级别的QoS时，会发生服务质量降级</p>
+<img alt="../../../_images/MQTT-QoS-Set-1-1.png" src="../../../_images/MQTT-QoS-Set-1-1.png" />
+<img alt="../../../_images/MQTT-QoS-Set-2.png" src="../../../_images/MQTT-QoS-Set-2.png" />
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">6.4.3.1.4. </span>保留消息<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p>要讲明“保留消息”这一概念，我们先看一个场景。假设我们正在利用MQTT协议开发一套智能家居物联网系统。在该系统中有一台专门用于检测和发布室温信息的MQTT客户端，它每到整点时就会测量当前室温并且向MQTT服务端发布室温测量结果。</p>
+<p>假设在该智能家具物联网系统中，还有一台环境信息显示客户端。这台客户端的作用就是把当前的室温显示在屏幕上以便我们实时了解室内温度。换句话说，这台环境信息显示客户端一启动就会订阅室温主题，这样室温检测客户端一发布消息，显示客户端就能获取到最新的温度消息并显示在屏幕上了。</p>
+<p>假设某天上午7：00，我们的室温检测客户端将最新的室温消息发布到了服务端，那么订阅了室温消息的显示客户端也就马上获取到室温消息并且显示在屏幕上。</p>
+<p>然而在7：10的时候，家里的小狗不小心把显示客户端的电源碰掉了，显示客户端没有电也就自动关机了。我们发现这一问题后，马上把显示客户端重新通电，客户端通电启动后会立刻订阅室温主题。</p>
+<p>但这时候问题出现了，室温测量客户端每到整点才发布一次温度信息。上一次发布时间是7：00，下一次发布时间是8：00。所以，尽管显示客户端订阅了室温主题，它还要等到8：00钟才能收到最新室温消息。在8：00前的几十分钟里，显示客户端无法获知当前室温信息，也就无法将室温信息显示在屏幕上供我们查阅。</p>
+<p>为了避免以上情况出现，我们可以让室温测量客户端在每次向室温主题发布消息时都使用“保留消息”这一模式将温度信息发布到服务端。这样无论显示客户端在任何时间订阅室温主题，都会马上收到该主题中的“保留消息”，也就是温度测量客户端发布的最新室温消息。</p>
+<ul class="simple">
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">PUBLISH</span></code> 报文中 <code class="docutils literal notranslate"><span class="pre">retainFlag</span></code> 字段用于设置是否为保留消息</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<ol class="arabic simple">
+<li><p>每个主题只能有一个保留消息，如果客户端想要更新保留消息，就需要向该主题发送一条信息的保留消息，服务端会将新的消息覆盖旧的保留消息</p></li>
+<li><p>如果想要删除主题的保留消息，则需要向该主题发布一条空的保留消息，即发送0字节payload保留消息</p></li>
+</ol>
+</div>
+</section>
+<section id="id7">
+<h2><span class="section-number">6.4.3.1.5. </span>心跳机制<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
+<p>在MQTT通信机制中，当客户端没有消息向服务端发送时，可以定时向服务端发送一条消息，这条消息也被称为心跳请求( <code class="docutils literal notranslate"><span class="pre">PINGREQ</span></code> ).
+用于通知服务端，当前客户端依然在线．服务端在收到客户端的心跳请求后，会回复一条消息，也称心跳响应( <code class="docutils literal notranslate"><span class="pre">PINGRESP</span></code> )</p>
+<img alt="../../../_images/MQTT-Keep-Alive-1.jpg" src="../../../_images/MQTT-Keep-Alive-1.jpg" />
+<ol class="arabic simple">
+<li><p>如果在心跳间隔内有消息发送到服务端则不需要发送心跳请求.</p></li>
+<li><p>实际运行中，如果服务端没有在1.5倍心跳时间间隔内没有收到PINGREQ请求，那么会认为该客户端已掉线</p></li>
+<li><p>同时客户端也可以利用此机制判断自己与服务端是否保持连接，当发送心跳请求后没有收到心跳确认则认为自己已经断开与服务端的连接</p></li>
+</ol>
+</section>
+<section id="id8">
+<h2><span class="section-number">6.4.3.1.6. </span>MQTT遗嘱<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
+<p>当客户端正常断开连接时，会向服务端发送 <code class="docutils literal notranslate"><span class="pre">DISCONNECT</span></code> 报文. 当客户端意外断线时，服务端会发布客户端的遗嘱消息</p>
+<p>在客户端连接服务端时，会发送 <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code> 报文，此报文字段中包含 <code class="docutils literal notranslate"><span class="pre">lastWillTopic</span></code> <code class="docutils literal notranslate"><span class="pre">lastWillQos</span></code> <code class="docutils literal notranslate"><span class="pre">lastWillMessage</span></code> <code class="docutils literal notranslate"><span class="pre">lastWillRetain</span></code> ，
+这些称为遗嘱消息</p>
+<ul class="simple">
+<li><p>lastWillTopic: 与普通的MQTT主题类似,只有订阅了此主题的客户端才会收到遗嘱消息</p></li>
+<li><p>lastWillMessage: 遗嘱消息内容</p></li>
+<li><p>lastWillQoS: 遗嘱QoS</p></li>
+<li><p>lastWillRetain: 遗嘱保留，遗嘱消息也可以设置为保留消息</p></li>
+</ul>
+</section>
+<section id="id9">
+<h2><span class="section-number">6.4.3.1.7. </span>MQTT用户密码认证<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
+<p>有些MQTT服务端需要客户端在连接时提供用户名和密码</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="6.4.3. mqtt协议" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="mqtt_flow.html" class="btn btn-neutral float-right" title="6.4.3.2. MQTT流程图" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.6.1.1. DoIP协议框架 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="6.7. linux socket编程" href="../../socket/index.html" />
+    <link rel="prev" title="6.6.1. DoIP协议" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../communication/index.html">6.4. 通信中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">6.6. 车载应用汇总</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">6.6.1. DoIP协议</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">6.6.1.1. DoIP协议框架</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6.6. </span>车载应用汇总</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.6.1. </span>DoIP协议</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.6.1.1. </span>DoIP协议框架</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user/verhicle_app/doip/doip_frame.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="doip">
+<h1><span class="section-number">6.6.1.1. </span>DoIP协议框架<a class="headerlink" href="#doip" title="此标题的永久链接"></a></h1>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../../_downloads/40b3caa3a325eaa184b4bc39ea87d36d/ISO%2013400-1-2011.pdf"><code class="xref download docutils literal notranslate"><span class="pre">ISO</span> <span class="pre">13400-1-2011</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../../_downloads/4476a20abad82c59b612394da0b84f61/ISO%2013400-2-2019.pdf"><code class="xref download docutils literal notranslate"><span class="pre">ISO</span> <span class="pre">13400-2-2019</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../../_downloads/b107f961576919444991bf86fe2855bc/ISO%2013400-3-2016.pdf"><code class="xref download docutils literal notranslate"><span class="pre">ISO</span> <span class="pre">13400-3-2016</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../../_downloads/f0a072c762d62f784aabced479200c59/ISO%2013400-4-2016.pdf"><code class="xref download docutils literal notranslate"><span class="pre">ISO</span> <span class="pre">13400-4-2016</span></code></a></p></li>
+</ul>
+<p>DoIP协议(Diagnostic On IP—ISO 13400)定义将IP技术应用到车载网络诊断范畴的通信规则．其中包含两层含义:</p>
+<ul class="simple">
+<li><p>将IP技术应用到车载网络中，需满足车规需求</p></li>
+<li><p>在诊断范畴，DoIP协议定义了从物理层(Physical Layer)到应用层(Application Layer)搭建”通信桥梁”的规则(此处可类似
+CAN总线的TP层协议ISO 15765-2)</p></li>
+</ul>
+<p>将上述概念映射到OSI计算机7层模型:</p>
+<img alt="../../../_images/iso_layer.webp" src="../../../_images/iso_layer.webp" />
+<p>DoIP所在的位置位于七层模型中第三层和第四层．如图所示，其中运用到的IP协议，TCP/IP协议，UDP协议．整个ISO 13400-2协议中定义的内容
+是规定了搭建”通信渠道”(Tester与ECU之间的通信渠道)的规则．TLS是2020版DoIP协议新增的内容，主要目的是为了保证通信数据的安全性．</p>
+<section id="id1">
+<h2><span class="section-number">6.6.1.1.1. </span>DoIP通信过程<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>下面会对整个”通信桥梁”的搭建过程做一个概述性的描述，具体步骤如下</p>
+<ol class="arabic simple">
+<li><p>物理连接(Physically connection)</p></li>
+<li><p>车辆申明(Vehicle Discovery)</p></li>
+<li><p>通信建立(Connection Establishment)</p></li>
+<li><p>诊断通信(Diagnostic Communication)</p></li>
+</ol>
+<section id="id2">
+<h3><span class="section-number">6.6.1.1.1.1. </span>物理连接<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>首先从功能视角来看车内网络与车身外网络</p>
+<img alt="../../../_images/net_link.webp" src="../../../_images/net_link.webp" />
+<p>车外客户端(Test equipment)用相应的接口卡(IP-Based Network)连接车身边缘节点(DoIP Edge Node WG).在ISO 13400协议中规定外部诊断设备连接边缘节点，
+且需要用激活线来激活边缘节点的DoIP功能</p>
+<img alt="../../../_images/ip_request.jpg" src="../../../_images/ip_request.jpg" />
+<p>物理连接后，通过相应手段获取IP地址，建立通信．</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">6.6.1.1.1.2. </span>车辆声明<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>物理连接后，车辆会以广播的形式发送三次车辆声明，声明的信息可以包含:</p>
+<ol class="arabic simple">
+<li><p>VIN</p></li>
+<li><p>EID</p></li>
+<li><p>GID</p></li>
+</ol>
+<img alt="../../../_images/vehicle_rq.webp" src="../../../_images/vehicle_rq.webp" />
+<p>如果诊断设备没有获取车辆信息，也可以主动请求(Vehicle Identification request)来获取相应信息(如上图所示)</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">6.6.1.1.1.3. </span>建立通信<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>在DoIP协议中，有Socket概念: Socket一端连接着IP地址，一端连接着Port端口．并且Socket对于芯片而言是一种资源．因此有激活失效之分</p>
+<img alt="../../../_images/con_create.jpg" src="../../../_images/con_create.jpg" />
+<p>在协议中定义了Payload Type(0005/0006)用于激活Socket</p>
+<img alt="../../../_images/payload_type.webp" src="../../../_images/payload_type.webp" />
+<p>激活后，Socket使能，接下来就可以进行诊断通信</p>
+</section>
+<section id="id5">
+<h3><span class="section-number">6.6.1.1.1.4. </span>诊断通信<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>Socket激活后，可以进行诊断通信，通信模型如下图所示</p>
+<img alt="../../../_images/diag_con.jpg" src="../../../_images/diag_con.jpg" />
+<p>外部Tester发送诊断请求，网关收到诊断请求后，会给予一个收到答复(Acknowledgement),用意是告诉Tester,网关此时已收到诊断请求，与此同时网关
+将诊断请求(Diagnostic Request)发送至Target ECU. ECU收到诊断请求，并基于这个请求给予响应</p>
+<p>因此对于Tester而言，一共收到两个响应</p>
+<ol class="arabic simple">
+<li><p>Diagnostic Message Acknowledgement</p></li>
+<li><p>Diagnostic Message Response</p></li>
+</ol>
+<p>每一帧响应对应的帧类型不同</p>
+<img alt="../../../_images/response_1.png" src="../../../_images/response_1.png" />
+<img alt="../../../_images/response_2.jpg" src="../../../_images/response_2.jpg" />
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">6.6.1.1.2. </span>DoIP协议<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p>在数据链路层和物理层，根据IS0-13400的要求，DoIP通信在物理层支持100BASE-TX和10BASE-TX两种制式</p>
+<p>在传输层，DoIP通信必须同时支持UDP和TCP，并对UDP和TCP的使用场合进行了定义，对所使用的端口号也进行了定义</p>
+<p>在网络层上DoIP使用IPV6协议，但为了向后兼容的原因，也支持IPV4,对于IPV4还要支持地址解析协议(ARP),对于IPV6还要支持邻居发现协议(NDP)，
+这两个协议都是用于在只知道IP地址的情况下获取MAC地址的．</p>
+<section id="id7">
+<h3><span class="section-number">6.6.1.1.2.1. </span>DoIP数据帧格式<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p><strong>以太网帧</strong></p>
+<img alt="../../../_images/net_frame.png" src="../../../_images/net_frame.png" />
+<p><strong>IP段</strong></p>
+<img alt="../../../_images/IP_segment.png" src="../../../_images/IP_segment.png" />
+<p><strong>TCP段</strong></p>
+<img alt="../../../_images/TCP_segment.png" src="../../../_images/TCP_segment.png" />
+<p><strong>UDP段</strong></p>
+<img alt="../../../_images/UDP_segment.png" src="../../../_images/UDP_segment.png" />
+<p><strong>DoIP段</strong></p>
+<img alt="../../../_images/Doip_segment.png" src="../../../_images/Doip_segment.png" />
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>协议版本值</p></td>
+<td><p>解释</p></td>
+</tr>
+<tr class="row-even"><td><p>0x00</p></td>
+<td><p>reserved</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x01</p></td>
+<td><p>DoIP ISO/DIS 13400-2:2010</p></td>
+</tr>
+<tr class="row-even"><td><p>0x02</p></td>
+<td><p>DoIP ISO 13400-2:2012</p></td>
+</tr>
+<tr class="row-odd"><td><p>0x03..0xFE</p></td>
+<td><p>reserved by this part of ISO 13400</p></td>
+</tr>
+<tr class="row-even"><td><p>0xFF</p></td>
+<td><p>default value for vehicle identifcation request messages</p></td>
+</tr>
+</tbody>
+</table>
+<p>DoIP datatype</p>
+<img alt="../../../_images/DoIP_DataType.png" src="../../../_images/DoIP_DataType.png" />
+<ul class="simple">
+<li><p>0x0001至0x0004 用于汽车标识上报或请求，只能通过UDP报文来发送这种命令，主要用于汽车和诊断仪进入网络之后，诊断连接建立
+之前的车辆发现过程．</p></li>
+<li><p>0x0005和0x0006标识的Routing activation request和response用于在socket建立之后，进行诊断通信的请求</p></li>
+<li><p>0x0007和0x0008用于Alive check,用于检查当前建立的诊断连接socket是否仍然在使用中，如果不再使用，则关闭socket释放资源</p></li>
+<li><p>0x8001, 0x8002, 0x8003,分别代表的含义是诊断消息，诊断正响应和诊断负响应</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3><span class="section-number">6.6.1.1.2.2. </span>连接状态<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<img alt="../../../_images/con_sta.png" src="../../../_images/con_sta.png" />
+<p>DoIP实体内管理着一个DoIP connection table,用来记录和维护诊断通信的逻辑连接．</p>
+<ul class="simple">
+<li><p>[Step1] 当一个新的套接字建立，逻辑连接的状态就从”listen”跳转到”socket initialized”,同时启动一个定时器，initial inactivity timer</p></li>
+<li><p>[Step2] 当DoIP实体接收到tester发来的一个routing activation信息后，逻辑连接的状态从”socket initialized”跳转到”Registered[Pending for Authentication]”,
+此时initial inactivity timer被停止，启动general inactivity timer的定时器</p></li>
+<li><p>[Step3] 在完成Authentication之后，逻辑连接的状态就从”Registered[Pending for Authentication]”跳转到”Registered[Pending for Confrmation]”</p></li>
+<li><p>[Step4] 在完成Confrmation之后，逻辑连接的状态就从”Registered[Pending for Confrmation]”跳转到”Registered[Routing Active]”</p></li>
+<li><p>[Step5] 如果initial timer或general inactivity timer过期后仍没有收到后续请求，或者authentication和confrmation被拒绝了，又或者外部测试设备对alive check消息没有响应，则逻辑
+进入”Finalize”状态</p></li>
+<li><p>[Step6] 进入Finalize后，此时TCP套接字将被关闭，并重新回到”listen”状态</p></li>
+</ul>
+</section>
+</section>
+<section id="id9">
+<h2><span class="section-number">6.6.1.1.3. </span>示例<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
+<p>以下为请求DID F810读取的DoIP报文</p>
+<img alt="../../../_images/did_read.png" src="../../../_images/did_read.png" />
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>字段</p></td>
+<td><p>描述</p></td>
+</tr>
+<tr class="row-even"><td><p>byte 0</p></td>
+<td><p>ISO 13400版本</p></td>
+</tr>
+<tr class="row-odd"><td><p>byte1</p></td>
+<td><p>ISO 13400版本逐比特取反</p></td>
+</tr>
+<tr class="row-even"><td><p>byte2-3</p></td>
+<td><p>数据类型，0x8001,表明这是一个诊断信息的数据包</p></td>
+</tr>
+<tr class="row-odd"><td><p>byte4-7</p></td>
+<td><p>数据长度，在这个例子中值为7，表示后面有7个字节的数据</p></td>
+</tr>
+<tr class="row-even"><td><p>byte8-9</p></td>
+<td><p>源地址</p></td>
+</tr>
+<tr class="row-odd"><td><p>byte10-11</p></td>
+<td><p>目的地址</p></td>
+</tr>
+<tr class="row-even"><td><p>byte12-13</p></td>
+<td><p>具体的诊断命令，SID是22，表示读取，DID是0xF810</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="6.6.1. DoIP协议" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../socket/index.html" class="btn btn-neutral float-right" title="6.7. linux socket编程" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

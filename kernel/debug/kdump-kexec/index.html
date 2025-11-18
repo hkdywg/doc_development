@@ -1,192 +1,128 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN" >
+<html class="writer-html5" lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>2.1.1. kernel-debug之kdump &mdash; ywg_dev_doc 0.1 文档</title>
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.4.2. kernel-debug之kdump &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
-        <script src="../../../_static/translations.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../../genindex.html" />
     <link rel="search" title="搜索" href="../../../search.html" />
-    <link rel="next" title="2.1.3. kernel-debug之debugfs" href="../debugfs/index.html" />
-    <link rel="prev" title="2.1. linux kernel debug tools" href="../index.html" /> 
+    <link rel="next" title="3.4.4. 死锁检测—-lockdep" href="../lockdep/index.html" />
+    <link rel="prev" title="3.4.1.1. linux oops问题分析" href="../oops/oops_summary.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
           
-
-          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">1. u-boot dev note</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">2. kernel note</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html">2.1. linux kernel debug tools</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">2.1.1. kernel-debug之kdump</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#kdump">2.1.1.1. kdump机制介绍</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#kdump-kexec">2.1.1.2. kdump kexec安装</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#kexec">2.1.1.3. kexec 应用方法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.4. linux kernel debug tools</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../oops/index.html">3.4.1. linux oops</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.4.2. kernel-debug之kdump</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#kdump">3.4.2.1. kdump机制介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">3.4.2.2. 启动参数配置</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kdump-kexec">3.4.2.3. kdump kexec安装</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kexec">3.4.2.4. kexec 应用方法</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#kernel-debugprintk">2.1.2. kernel debug之printk</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#printk">2.1.2.1. printk</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#log">2.1.2.2. LOG等级</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id1">2.1.2.3. 记录缓冲区</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#klogd">2.1.2.4. klogd</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#dmesg">2.1.2.5. dmesg</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id2">2.1.2.6. 动态调试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kernel-debugprintk">3.4.3. kernel debug之printk</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#printk">3.4.3.1. printk</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#log">3.4.3.2. LOG等级</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">3.4.3.3. 记录缓冲区</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#klogd">3.4.3.4. klogd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dmesg">3.4.3.5. dmesg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">3.4.3.6. 动态调试</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../debugfs/index.html">2.1.3. kernel-debug之debugfs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../lockdep/index.html">3.4.4. 死锁检测—-lockdep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../debugfs/index.html">3.4.5. kernel-debug之debugfs</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">2.2. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">3. linux driver modules note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">4. file system note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">5. application development node</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../issues/index.html">8. Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">ywg_dev_doc</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../index.html"><span class="section-number">2. </span>kernel note</a> &raquo;</li>
-        
-          <li><a href="../index.html"><span class="section-number">2.1. </span>linux kernel debug tools</a> &raquo;</li>
-        
-      <li><span class="section-number">2.1.1. </span>kernel-debug之kdump</li>
-    
-    
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.4. </span>linux kernel debug tools</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.4.2. </span>kernel-debug之kdump</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../../../_sources/kernel/debug/kdump-kexec/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
+            <a href="../../../_sources/kernel/debug/kdump-kexec/index.rst.txt" rel="nofollow"> 查看页面源码</a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="kernel-debugkdump">
-<h1><span class="section-number">2.1.1. </span>kernel-debug之kdump<a class="headerlink" href="#kernel-debugkdump" title="永久链接至标题">¶</a></h1>
-<div class="section" id="kdump">
-<h2><span class="section-number">2.1.1.1. </span>kdump机制介绍<a class="headerlink" href="#kdump" title="永久链接至标题">¶</a></h2>
+             
+  <section id="kernel-debugkdump">
+<h1><span class="section-number">3.4.2. </span>kernel-debug之kdump<a class="headerlink" href="#kernel-debugkdump" title="此标题的永久链接"></a></h1>
+<section id="kdump">
+<h2><span class="section-number">3.4.2.1. </span>kdump机制介绍<a class="headerlink" href="#kdump" title="此标题的永久链接"></a></h2>
 <p>一般情况下kernel crash时系统处于死机状态，无法通过一般手段获取故障发生时的
 现场信息。这种情况下kdump-kexec机制应运而生。
 kexec可在一个内核运行时加载另一个内核，而且不进行硬件初始化。在跳过u-boot
@@ -209,12 +145,32 @@ kexec-tools，他将捕获内核的地址传递给生产内核，从而在系统
 由于kdump利用kexec启动捕获内核绕过了boot，没有硬件复位，使得生产内核 的内
 存得以保留。这是内核崩溃转存的本质。</p>
 </div></blockquote>
+<p><strong>什么情况下会触发coredump</strong></p>
+<ul class="simple">
+<li><p>SIGSEGV: 非法内存访问，比如访问空指针或者越界数组</p></li>
+<li><p>SIGBUS: 总线错误，通常是硬件相关的内存访问问题，比如对齐错误</p></li>
+<li><p>SIGABRT: 程序主动调用abort函数中止，比如assert失败</p></li>
+<li><p>SIGFPE: 浮点运算异常，比如除零</p></li>
+<li><p>SIGALL: 非法指令，可能代码被篡改或者编译器生成的问题</p></li>
+<li><p>SIGQUIT: 用户通过键盘触发的退出信号</p></li>
+<li><p>SIGSYS: 非法系统调用，可能调用了内核不支持的API</p></li>
+<li><p>SIGTRAP: 断点或跟踪陷阱，通常是调试相关</p></li>
+</ul>
+</section>
+<section id="id1">
+<h2><span class="section-number">3.4.2.2. </span>启动参数配置<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>内核启动参数中需要做以下配置，用于crashkernel内存预留</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">crashkernel</span><span class="o">=</span><span class="mi">128</span><span class="n">M</span>    <span class="o">//</span><span class="n">大小可自定义</span>
+</pre></div>
 </div>
-<div class="section" id="kdump-kexec">
-<h2><span class="section-number">2.1.1.2. </span>kdump kexec安装<a class="headerlink" href="#kdump-kexec" title="永久链接至标题">¶</a></h2>
+<p>如果crashkernel内存预留成功，可以通过/proc/iomem中看到对应项目</p>
+<img alt="../../../_images/crash_kernel_reserve_mem.png" src="../../../_images/crash_kernel_reserve_mem.png" />
+</section>
+<section id="kdump-kexec">
+<h2><span class="section-number">3.4.2.3. </span>kdump kexec安装<a class="headerlink" href="#kdump-kexec" title="此标题的永久链接"></a></h2>
 <p>kexec安装</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="n">edge</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">utils</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">kexec</span><span class="o">/</span><span class="n">kexec</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mf">2.0</span><span class="o">.</span><span class="mf">17.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
-<span class="n">tar</span> <span class="n">xvzf</span> <span class="n">kexec</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mf">2.0</span><span class="o">.</span><span class="mf">17.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">mirrors</span><span class="o">.</span><span class="n">edge</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">pub</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">utils</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">kexec</span><span class="o">/</span><span class="n">kexec</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mf">2.0.17</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">tar</span> <span class="n">xvzf</span> <span class="n">kexec</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mf">2.0.17</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
 <span class="o">./</span><span class="n">configure</span> <span class="o">--</span><span class="n">build</span><span class="o">=</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span> <span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">aarch64</span><span class="o">-</span><span class="n">unknown</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span> <span class="o">--</span><span class="n">target</span><span class="o">=</span><span class="n">aarch64</span><span class="o">-</span><span class="n">unknown</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span>
 <span class="n">make</span> <span class="n">ARCH</span><span class="o">=</span><span class="n">arm64</span> <span class="n">clean</span> <span class="nb">all</span>
 <span class="n">make</span> <span class="n">install</span>
@@ -228,11 +184,12 @@ kexec-tools，他将捕获内核的地址传递给生产内核，从而在系统
 <span class="n">CONFIG_DEBUG_INFO</span><span class="o">=</span><span class="n">y</span>
 <span class="n">CONFIG_CRASH_DUMP</span><span class="o">=</span><span class="n">y</span>
 <span class="n">CONFIG_PROC_VMCORE</span><span class="o">=</span><span class="n">y</span>
+<span class="n">CONFIG_PROC_KCORE</span><span class="o">=</span><span class="n">y</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="kexec">
-<h2><span class="section-number">2.1.1.3. </span>kexec 应用方法<a class="headerlink" href="#kexec" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="kexec">
+<h2><span class="section-number">3.4.2.4. </span>kexec 应用方法<a class="headerlink" href="#kexec" title="此标题的永久链接"></a></h2>
 <p>编译kexec-tools的源码可得到kexec的可执行文件，kexec用来加载捕获内核
 加载的命令如下</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>kexec -p kernel.img --initrd=initramfs-image.img --reuse-cmdline
@@ -251,24 +208,37 @@ kexec -p Image --command-line=&quot;`cat /proc/cmdline`&quot;
 </div>
 <p>kdump-kexec机制正常运行的情况下，kdump会抓取系统崩溃时的函数调用栈现场以及寄存器和ram信息，并
 利用kexec完成捕获内核的启动。在捕获内核中可以查看故障现场情况，分析确认问题。</p>
-<dl class="simple">
-<dt>::</dt><dd><p>crash vmlinux vmcore
-在kgdb中输入BT，可找到系统崩溃处的详细信息</p>
-</dd>
-</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>crash vmlinux vmcore
+在kgdb中输入BT，可找到系统崩溃处的详细信息
+</pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>crash不容易交叉编译，可以将捕获内核生成的coredump文件　<code class="docutils literal notranslate"><span class="pre">/proc/vmcore</span></code> 拷贝到主机端．然后在主机端进行分析．</p>
 </div>
-<div class="section" id="kernel-debugprintk">
-<h1><span class="section-number">2.1.2. </span>kernel debug之printk<a class="headerlink" href="#kernel-debugprintk" title="永久链接至标题">¶</a></h1>
-<div class="section" id="printk">
-<h2><span class="section-number">2.1.2.1. </span>printk<a class="headerlink" href="#printk" title="永久链接至标题">¶</a></h2>
+<p>如果遇到 <code class="docutils literal notranslate"><span class="pre">crash:</span> <span class="pre">cannot</span> <span class="pre">determine</span> <span class="pre">VA_BITS_ACTUAL</span></code> 问题，可以手动定义位宽</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">crash</span> <span class="n">vmlinux</span> <span class="n">vmcore</span> <span class="o">--</span><span class="n">machdep</span> <span class="n">vabits_actual</span><span class="o">=</span><span class="mi">48</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果使用qemu启动虚拟机的话．可以通过在启动参数中增加以下选项</p>
+<p>-virtfs local,path=${SHARE_DIR},mount_tag=hostshare,security_model=none,id=hostshare</p>
+<p>同时在系统启动后挂载 mount -t 9p -o trans=virtio hostshare /mnt</p>
+</div>
+</section>
+</section>
+<section id="kernel-debugprintk">
+<h1><span class="section-number">3.4.3. </span>kernel debug之printk<a class="headerlink" href="#kernel-debugprintk" title="此标题的永久链接"></a></h1>
+<section id="printk">
+<h2><span class="section-number">3.4.3.1. </span>printk<a class="headerlink" href="#printk" title="此标题的永久链接"></a></h2>
 <p>pintk()
 内核提供的格式化打印函数
 健壮性是printk最容易被接受的一个特质，几乎在任何地方，任何时候都可以调用它（中断上下文、进程上下文
 持有锁时、多处理器处理时等）；</p>
-</div>
-<div class="section" id="log">
-<h2><span class="section-number">2.1.2.2. </span>LOG等级<a class="headerlink" href="#log" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="log">
+<h2><span class="section-number">3.4.3.2. </span>LOG等级<a class="headerlink" href="#log" title="此标题的永久链接"></a></h2>
 <p>printk与printf一个主要的区别在于前者可以指定log级别。内核根据这个级别判断是否在终端上打印消息。
 可以使用下面的方式指定log级别</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">printk</span><span class="p">(</span><span class="n">KERN_CRIT</span> <span class="s2">&quot;hello,world!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
@@ -314,9 +284,9 @@ $ cat /proc/sys/kernel/printk_ratelimit_burst
 日志级别、默认控制台日志级别。
 第二项表示printk消息之间的延迟毫秒数
 第三项定义消息之间允许的最小时间间隔</p>
-</div>
-<div class="section" id="id1">
-<h2><span class="section-number">2.1.2.3. </span>记录缓冲区<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="id2">
+<h2><span class="section-number">3.4.3.3. </span>记录缓冲区<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p>内核消息都被保存在一个LOG_BUG_LEN大小的环形队列中。
 关于LOG_BUG_LEN的定义</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define __LOG_BUF_LEN (1 &lt;&lt; CONFIG_LOG_BUF_SHIFT)</span>
@@ -329,9 +299,9 @@ $ cat /proc/sys/kernel/printk_ratelimit_burst
 3.在读写环形队列时，同步问题很容易得到解决。</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="klogd">
-<h2><span class="section-number">2.1.2.4. </span>klogd<a class="headerlink" href="#klogd" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="klogd">
+<h2><span class="section-number">3.4.3.4. </span>klogd<a class="headerlink" href="#klogd" title="此标题的永久链接"></a></h2>
 <p>在标准的Linux系统上，用户空间的守护进程klogd从纪录缓冲区中获取内核消息，再通过syslogd守护进程把这些消息
 保存在系统日志文件中。klogd进程既可以从/proc/kmsg文件中，也可以通过syslog()系统调用读取这些消息。默认情况下，
 它选择读取/proc方式实现。klogd守护进程在消息缓冲区有新的消息之前，一直处于阻塞状态。一旦有新的内核消息，
@@ -339,9 +309,9 @@ klogd被唤醒，读出内核消息并进行处理。默认情况下，处理例
 一般把接收到的消息写入/var/log/messages文件中。不过，还是可以通过/etc/syslog.conf文件来进行配置，可以选择其
 他的输出文件。</p>
 <img alt="../../../_images/klogd.jpg" src="../../../_images/klogd.jpg" />
-</div>
-<div class="section" id="dmesg">
-<h2><span class="section-number">2.1.2.5. </span>dmesg<a class="headerlink" href="#dmesg" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="dmesg">
+<h2><span class="section-number">3.4.3.5. </span>dmesg<a class="headerlink" href="#dmesg" title="此标题的永久链接"></a></h2>
 <p>dmesg 命令也可用于打印和控制内核环缓冲区。这个命令使用 klogctl 系统调用来读取内核环缓冲区，并将它转发到标准
 输出（stdout）。这个命令也可以用来清除内核环缓冲区（使用 -c 选项），设置控制台日志级别（-n 选项），以及定义
 用于读取内核日志消息的缓冲区大小（-s 选项）。注意，如果没有指定缓冲区大小，那么 dmesg 会使用 klogctl 的
@@ -351,9 +321,9 @@ SYSLOG_ACTION_SIZE_BUFFER 操作确定缓冲区大小。</p>
 输出可能还产生中断。所以如果你的驱动在功能调试完成以后做性能测试或者发布的时候千万记得尽量减少printk输出，做到
 仅在出错时输出少量信息。否则往console输出无用信息影响性能。
 b) printk的临时缓存printk_buf只有1K，所有一次printk函数只能记录&lt;1K的信息到log buffer，并且printk使用的“ringbuffer”.</p>
-</div>
-<div class="section" id="id2">
-<h2><span class="section-number">2.1.2.6. </span>动态调试<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="id3">
+<h2><span class="section-number">3.4.3.6. </span>动态调试<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <p>动态调试是通过动态的开启和禁止某些内核代码来获取额外的内核信息。
 首先内核选项CONFIG_DYNAMIC_DEBUG应该被设置。所有通过pr_debug()/dev_debug()打印的信息都可以动态的显示或不显示。
 可以通过简单的查询语句来筛选需要显示的信息。</p>
@@ -363,63 +333,38 @@ b) printk的临时缓存printk_buf只有1K，所有一次printk函数只能记�
 <p>－模块名</p>
 <p>－格式化字符串</p>
 <p>将要打印信息的格式写入&lt;debugfs&gt;/dynamic_debug/control中。</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../debugfs/index.html" class="btn btn-neutral float-right" title="2.1.3. kernel-debug之debugfs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../index.html" class="btn btn-neutral float-left" title="2.1. linux kernel debug tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../oops/oops_summary.html" class="btn btn-neutral float-left" title="3.4.1.1. linux oops问题分析" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../lockdep/index.html" class="btn btn-neutral float-right" title="3.4.4. 死锁检测—-lockdep" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; 版权所有 2020, yinwg
-
-    </p>
+    <p>&#169; 版权所有 2019, yinwg。</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

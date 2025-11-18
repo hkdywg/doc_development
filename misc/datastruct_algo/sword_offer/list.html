@@ -1,0 +1,934 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.9.2.2. 链表操作 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="7.9.2.3. 栈和队列操作" href="stack_queue.html" />
+    <link rel="prev" title="7.9.2.1. 数组操作" href="array.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">7.9. 数据结构与算法</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../datastruct/index.html">7.9.1. 数据结构与算法</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">7.9.2. 剑指offer</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="array.html">7.9.2.1. 数组操作</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">7.9.2.2. 链表操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stack_queue.html">7.9.2.3. 栈和队列操作</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm/index.html">7.9.3. 算法</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7.9. </span>数据结构与算法</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.9.2. </span>剑指offer</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.9.2.2. </span>链表操作</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/misc/datastruct_algo/sword_offer/list.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">7.9.2.2. </span>链表操作<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2><span class="section-number">7.9.2.2.1. </span>从尾到头打印链表<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<section id="id3">
+<h3><span class="section-number">7.9.2.2.1.1. </span>题目描述<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>输入一个链表的头节点，从尾到头反过来返回每个节点的值（用数组返回）。</p>
+<p>示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>输入：head = [1,3,2]
+输出：[2,3,1]
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3><span class="section-number">7.9.2.2.1.2. </span>解题思路<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>方法1: 先求链表长度，然后再将链表中元素逆序存入数组中</p>
+<p>方法2: 先反转链表并求其长度，在将反转后的链表数据拷贝至数组中</p>
+</section>
+<section id="id5">
+<h3><span class="section-number">7.9.2.2.1.3. </span>代码<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="c1">#define USING_METHOD_1</span>
+<span class="o">//</span><span class="c1">#define USING_METHOD_2</span>
+
+
+<span class="n">struct</span> <span class="n">ListNode</span> <span class="p">{</span>
+    <span class="nb">int</span> <span class="n">val</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">ListNode</span> <span class="o">*</span><span class="nb">next</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">#ifdef USING_METHOD_1</span>
+<span class="nb">int</span> <span class="o">*</span><span class="n">reversePrint</span><span class="p">(</span><span class="n">struct</span> <span class="n">ListNode</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="nb">int</span> <span class="o">*</span><span class="n">returnSize</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">listlen</span><span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">ListNode</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">listlen</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nb">int</span> <span class="o">*</span><span class="n">arr</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">sizeof</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">*</span> <span class="n">listlen</span><span class="p">);</span>
+    <span class="o">*</span><span class="n">returnSize</span> <span class="o">=</span> <span class="n">listlen</span><span class="p">;</span>
+    <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="o">*</span><span class="p">(</span><span class="n">arr</span> <span class="o">+</span> <span class="n">listlen</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">;</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+        <span class="n">listlen</span><span class="o">--</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">arr</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">#else</span>
+<span class="nb">int</span> <span class="o">*</span><span class="n">reversePrint</span><span class="p">(</span><span class="n">struct</span> <span class="n">ListNode</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="nb">int</span> <span class="o">*</span><span class="n">returnSize</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">listlen</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">ListNode</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">ListNode</span> <span class="o">*</span><span class="nb">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">ListNode</span> <span class="o">*</span><span class="n">tail</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+    <span class="p">{</span>
+
+        <span class="nb">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+        <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">tail</span><span class="p">;</span>
+        <span class="n">tail</span> <span class="o">=</span> <span class="n">cur</span><span class="p">;</span>
+
+        <span class="n">cur</span> <span class="o">=</span> <span class="nb">next</span><span class="p">;</span>
+        <span class="n">listlen</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>   <span class="o">//</span><span class="n">反转链表并求其长度</span>
+    <span class="nb">int</span> <span class="o">*</span><span class="n">arr</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">sizeof</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">*</span><span class="n">listlen</span><span class="p">);</span>
+    <span class="o">*</span><span class="n">returnSize</span> <span class="o">=</span> <span class="n">listlen</span><span class="p">;</span>
+    <span class="n">cur</span> <span class="o">=</span> <span class="n">tail</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">listlen</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">;</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">arr</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">#endif</span>
+
+<span class="n">void</span> <span class="n">AddListNode</span><span class="p">(</span><span class="n">struct</span> <span class="n">ListNode</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="n">struct</span> <span class="n">ListNode</span> <span class="o">*</span><span class="n">node</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">ListNode</span> <span class="o">*</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">node</span><span class="p">;</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">listlen</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="o">*</span><span class="n">arr</span><span class="p">;</span>
+    <span class="n">static</span> <span class="n">struct</span> <span class="n">ListNode</span> <span class="n">listhead</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">ListNode</span> <span class="n">node_1</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">ListNode</span> <span class="n">node_2</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">ListNode</span> <span class="n">node_3</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">ListNode</span> <span class="n">node_4</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">ListNode</span> <span class="n">node_5</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">val</span> <span class="o">=</span> <span class="mi">70</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+
+    <span class="n">AddListNode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">listhead</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_1</span><span class="p">);</span>
+    <span class="n">AddListNode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">listhead</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_2</span><span class="p">);</span>
+    <span class="n">AddListNode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">listhead</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_3</span><span class="p">);</span>
+    <span class="n">AddListNode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">listhead</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_4</span><span class="p">);</span>
+    <span class="n">AddListNode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">listhead</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_5</span><span class="p">);</span>
+
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">reversePrint</span><span class="p">(</span><span class="o">&amp;</span><span class="n">listhead</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">listlen</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">listlen</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">7.9.2.2.2. </span>删除链表的节点<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<section id="id7">
+<h3><span class="section-number">7.9.2.2.2.1. </span>题目描述<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。</p>
+<p>返回删除后的链表的头节点。</p>
+<p>示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>输入: head = [4,5,1,9], val = 5
+输出: [4,1,9]
+解释: 给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -&gt; 1 -&gt; 9.
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3><span class="section-number">7.9.2.2.2.2. </span>题目解析<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<p>遍历链表，当head.val == val时，定位到目标节点</p>
+<p>定位到目标节点后，需要修改这个节点，题目的要求是删除，对于链表中的每个节点来说，它都有前驱和后继两个节点，那么删除操作就很简单了：设节点 cur 的前驱节点为 pre ，后继节点为 cur.next ，执行 pre.next = cur.next ，即可实现删除 cur 节点。</p>
+</section>
+<section id="id9">
+<h3><span class="section-number">7.9.2.2.2.3. </span>代码<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="n">struct</span> <span class="n">list_node</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="nb">next</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nb">int</span> <span class="n">insert_listnode</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">node</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">node</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="n">delete_listnode</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="nb">int</span> <span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">prev</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">==</span> <span class="n">value</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">cur</span> <span class="o">==</span> <span class="n">head</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">prev</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+            <span class="k">return</span> <span class="n">head</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">cur</span><span class="p">;</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">traverse_listnode</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;list node </span><span class="si">%d</span><span class="s2">  ---&gt;  </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">++</span><span class="p">,</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">);</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nb">int</span><span class="o">*</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_0</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_1</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_2</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_3</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_4</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_5</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">node_0</span><span class="p">;</span>
+
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_1</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_2</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_3</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_4</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_5</span><span class="p">);</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">delete_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;not found list node</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">head</span> <span class="o">=</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="n">traverse_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="k">
+<h2><span class="section-number">7.9.2.2.3. </span>链表中倒数第 K 个节点<a class="headerlink" href="#k" title="此标题的永久链接"></a></h2>
+<section id="id10">
+<h3><span class="section-number">7.9.2.2.3.1. </span>题目描述<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h3>
+<p>输入一个链表，输出该链表中倒数第 k 个节点。为了符合大多数人的习惯，本题从 1 开始计数，即链表的尾节点是倒数第 1 个节点。</p>
+<p>示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">给定一个链表</span><span class="p">:</span> <span class="mi">1</span><span class="o">-&gt;</span><span class="mi">2</span><span class="o">-&gt;</span><span class="mi">3</span><span class="o">-&gt;</span><span class="mi">4</span><span class="o">-&gt;</span><span class="mi">5</span><span class="p">,</span> <span class="n">和</span> <span class="n">k</span> <span class="o">=</span> <span class="mf">2.</span>
+
+<span class="n">返回链表</span> <span class="mi">4</span><span class="o">-&gt;</span><span class="mf">5.</span>
+</pre></div>
+</div>
+</section>
+<section id="id11">
+<h3><span class="section-number">7.9.2.2.3.2. </span>解析思路<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h3>
+<p>1、初始化两个指针 fast 和 slow，一开始都指向链表的头节点
+2、前指针 fast 先向前走 k 步
+3、两个指针 fast 和 slow 同时向前移动，直到前指针slow 指向 NULL
+4、最后返回 slow</p>
+</section>
+<section id="id12">
+<h3><span class="section-number">7.9.2.2.3.3. </span>代码<a class="headerlink" href="#id12" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="n">struct</span> <span class="n">list_node</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="nb">next</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nb">int</span> <span class="n">insert_listnode</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">node</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">node</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="n">delete_listnode</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="nb">int</span> <span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">prev</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">==</span> <span class="n">value</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">cur</span> <span class="o">==</span> <span class="n">head</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">prev</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+            <span class="k">return</span> <span class="n">head</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">cur</span><span class="p">;</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">traverse_listnode</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;list node </span><span class="si">%d</span><span class="s2">  ---&gt;  </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">++</span><span class="p">,</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">);</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="n">getKthFromEnd</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="nb">int</span> <span class="n">k</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">fast</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">slow</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">fast</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">slow</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nb">int</span><span class="o">*</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_0</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_1</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_2</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_3</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_4</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_5</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">node_0</span><span class="p">;</span>
+
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_1</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_2</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_3</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_4</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_5</span><span class="p">);</span>
+
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">new</span> <span class="o">=</span> <span class="n">getKthFromEnd</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+
+    <span class="n">traverse_listnode</span><span class="p">(</span><span class="n">new</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id13">
+<h2><span class="section-number">7.9.2.2.4. </span>反转链表<a class="headerlink" href="#id13" title="此标题的永久链接"></a></h2>
+<section id="id14">
+<h3><span class="section-number">7.9.2.2.4.1. </span>题目描述<a class="headerlink" href="#id14" title="此标题的永久链接"></a></h3>
+<p>给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。</p>
+</section>
+<section id="id15">
+<h3><span class="section-number">7.9.2.2.4.2. </span>题目解析<a class="headerlink" href="#id15" title="此标题的永久链接"></a></h3>
+<ol class="arabic simple">
+<li><p>通过递归函数，一直递归到链表的最后一个结点为止，此时，该结点就是反转成功后的头结点，是最终的返回结果。</p></li>
+<li><p>在递归函数中，让当前节点的下一个节点的 next 指针指向当前节点。</p></li>
+<li><p>在递归函数中，让当前节点的 next 指针指向 null</p></li>
+<li><p>通过二三步的操作，已经让递归函数中的链表实现了局部反转，将结果返回给上一层递归函数</p></li>
+<li><p>所有递归结束后，链表反转成功。</p></li>
+</ol>
+</section>
+<section id="id16">
+<h3><span class="section-number">7.9.2.2.4.3. </span>代码<a class="headerlink" href="#id16" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="c1">#define ARRAY_SIZE 12</span>
+
+<span class="n">struct</span> <span class="n">list_node</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="nb">next</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nb">int</span> <span class="n">insert_listnode</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">node</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">node</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="n">delete_listnode</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="nb">int</span> <span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">prev</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">==</span> <span class="n">value</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">cur</span> <span class="o">==</span> <span class="n">head</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">prev</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+            <span class="k">return</span> <span class="n">head</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">cur</span><span class="p">;</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">traverse_listnode</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;list node </span><span class="si">%d</span><span class="s2">  ---&gt;  </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">++</span><span class="p">,</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">);</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="n">getKthFromEnd</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="nb">int</span> <span class="n">k</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">fast</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">slow</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">fast</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">slow</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="n">reverseList</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">tail</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="o">*</span><span class="nb">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nb">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+        <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">tail</span><span class="p">;</span>
+        <span class="n">tail</span> <span class="o">=</span> <span class="n">cur</span><span class="p">;</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">tail</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="n">reverseList_recusion</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">head</span> <span class="o">==</span> <span class="n">NULL</span> <span class="o">||</span> <span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">head</span><span class="p">;</span>
+
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">reverseList_recusion</span><span class="p">(</span><span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">);</span>
+
+    <span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+    <span class="k">return</span>  <span class="n">cur</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nb">int</span><span class="o">*</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_0</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_1</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_2</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_3</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_4</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_5</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">node_0</span><span class="p">;</span>
+
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_1</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_2</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_3</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_4</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_5</span><span class="p">);</span>
+
+    <span class="o">//</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">new</span> <span class="o">=</span> <span class="n">reverseList</span><span class="p">(</span><span class="n">head</span><span class="p">);</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">new</span> <span class="o">=</span> <span class="n">reverseList_recusion</span><span class="p">(</span><span class="n">head</span><span class="p">);</span>
+
+    <span class="n">traverse_listnode</span><span class="p">(</span><span class="n">new</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id17">
+<h2><span class="section-number">7.9.2.2.5. </span>复杂链表的复制<a class="headerlink" href="#id17" title="此标题的永久链接"></a></h2>
+<section id="id18">
+<h3><span class="section-number">7.9.2.2.5.1. </span>题目描述<a class="headerlink" href="#id18" title="此标题的永久链接"></a></h3>
+<p>请实现 copyRandomList 函数，复制一个复杂链表。在复杂链表中，每个节点除了有一个 next 指针指向下一个节点，还有一个 random 指针指向链表中的任意节点或者 null。</p>
+</section>
+<section id="id19">
+<h3><span class="section-number">7.9.2.2.5.2. </span>题目解析<a class="headerlink" href="#id19" title="此标题的永久链接"></a></h3>
+<p>首先我得思路是创建一个新的链表，依次复制每个节点，但是问题出现了，random指向一个随机值，这个随机值可能没有创建呢，所以依次复制会出现错误。 random的复制成了难题。</p>
+<p>假定现在有一个复杂链表的形状如下图：</p>
+<img alt="../../../_images/list_step.png" src="../../../_images/list_step.png" />
+<p>1.首先我们在每个链表节点的后面创建一个新的节点，将其串联起来。如下图的黄色箭头所示。</p>
+<img alt="../../../_images/list_step1.png" src="../../../_images/list_step1.png" />
+<p>2.接下来，我们将它的新节点的random指向该指的地方，如下图的绿色箭头所示。</p>
+<img alt="../../../_images/list_step2.png" src="../../../_images/list_step2.png" />
+<p>3.接下来我们把两个混在一起的链表拆开，拆开就可以变成两个链表。</p>
+<img alt="../../../_images/list_step3.png" src="../../../_images/list_step3.png" />
+</section>
+<section id="id20">
+<h3><span class="section-number">7.9.2.2.5.3. </span>代码<a class="headerlink" href="#id20" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct list_node
+{
+    int value;
+    struct list_node *next;
+    struct list_node *random;
+};
+
+struct list_node* create_listnode(int value)
+{
+    struct list_node *node = (struct list_node *)malloc(sizeof(struct list_node));
+    if(node != NULL)
+    {
+        node-&gt;value = value;
+        node-&gt;next = NULL;
+        node-&gt;random = NULL;
+    }
+    return node;
+}
+
+int traverse_listnode(struct list_node *head)
+{
+    struct list_node *cur = head;
+    unsigned int i = 0;
+    while(cur)
+    {
+        printf(&quot;list node %d  ---&gt;  %d, list node random ---&gt;  %d\n&quot;, i++, cur-&gt;value, cur-&gt;random-&gt;value);
+        cur = cur-&gt;next;
+    }
+    return 0;
+}
+
+struct list_node * copy_list(struct list_node *head)
+{
+    struct list_node *cur = head;
+    struct list_node *copy = NULL;
+    struct list_node *next = NULL;
+    struct list_node *new_list = NULL;
+
+    while(cur)
+    {
+        next = cur-&gt;next;
+        copy = create_listnode(cur-&gt;value);
+        copy-&gt;next = next;
+        cur-&gt;next = copy;
+        cur = next;
+    }
+
+    cur = head;
+    while(cur)
+    {
+        if(cur-&gt;random != NULL)
+        {
+            copy = cur-&gt;next;
+            copy-&gt;random = cur-&gt;random-&gt;next;
+        }
+        cur = cur-&gt;next-&gt;next;
+    }
+
+    cur = head;
+    new_list = cur-&gt;next;
+
+    while(cur)
+    {
+        copy = cur-&gt;next;
+        next = cur-&gt;next-&gt;next;
+
+        cur-&gt;next = next;
+        copy-&gt;next = next ? next-&gt;next : NULL;
+        cur = next;
+    }
+    return new_list;
+}
+
+
+int main()
+{
+    struct list_node *node0 = create_listnode(1);
+    struct list_node *node1 = create_listnode(3);
+    struct list_node *node2 = create_listnode(5);
+    struct list_node *node3 = create_listnode(9);
+
+    node0-&gt;next = node1;
+    node1-&gt;next = node2;
+    node2-&gt;next = node3;
+
+    node0-&gt;random = node3;
+    node1-&gt;random = node0;
+    node2-&gt;random = node1;
+    node3-&gt;random = node2;
+    //struct list_node *new = reverseList(head);
+    struct list_node *new = copy_list(node0);
+    traverse_listnode(new);
+    return 0;
+}
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id21">
+<h2><span class="section-number">7.9.2.2.6. </span>两个链表的第一个公共结点<a class="headerlink" href="#id21" title="此标题的永久链接"></a></h2>
+<section id="id22">
+<h3><span class="section-number">7.9.2.2.6.1. </span>题目描述<a class="headerlink" href="#id22" title="此标题的永久链接"></a></h3>
+<p>编写一个程序，找到两个单链表相交的起始节点。</p>
+</section>
+<section id="id23">
+<h3><span class="section-number">7.9.2.2.6.2. </span>题目解析<a class="headerlink" href="#id23" title="此标题的永久链接"></a></h3>
+<p>无论 A、B 两个链表是否有相交点，最终都会指向一个相同的节点，要么是它们的公共尾部，要么是 NULL。</p>
+<p>让指针 pointA 和 pointB 分别指向链表 A 和链表 B 的头结点，之后两个指针分别以步幅为 1 的速度向链表的尾部遍历。</p>
+<p>当指针 pointA 遍历到链表 A 的尾节点时，此时指针 pointA 走了 a 个节点，将指针 pointA 指向链表 B 的头部，继续向后遍历，直至走到 c1，此时指针 pointA 总共走了 a + ( b - c  ) 步。</p>
+<p>当指针 pointB 遍历到链表 B 的尾节点时，此时指针 pointB 走了 b 个节点，将指针 pointB 指向链表 A 的头部，继续向后遍历，直至走到 c1，此时指针 pointB 总共走了 b + ( a - c  ) 步。</p>
+<p>根据数学知识，a + ( b - c  ) = b + ( a - c  ) ，如果 c &gt; 0，表明两链表有公共尾部， c1 存在，两两链表同时到达 c1；如果 c = 0，表明两链表没有公共尾部，指针 pointA 和 pointB 都指向</p>
+</section>
+<section id="id24">
+<h3><span class="section-number">7.9.2.2.6.3. </span>代码<a class="headerlink" href="#id24" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="n">struct</span> <span class="n">list_node</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="nb">next</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nb">int</span> <span class="n">insert_listnode</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">node</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">node</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="n">delete_listnode</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="nb">int</span> <span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">prev</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">==</span> <span class="n">value</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">cur</span> <span class="o">==</span> <span class="n">head</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">prev</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+            <span class="k">return</span> <span class="n">head</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">cur</span><span class="p">;</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">traverse_listnode</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">unsigned</span> <span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;list node </span><span class="si">%d</span><span class="s2">  ---&gt;  </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">++</span><span class="p">,</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">);</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="n">getKthFromEnd</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="nb">int</span> <span class="n">k</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">fast</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">slow</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">k</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">fast</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+        <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">slow</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="n">reverseList</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">tail</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">,</span> <span class="o">*</span><span class="nb">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nb">next</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+        <span class="n">cur</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">tail</span><span class="p">;</span>
+        <span class="n">tail</span> <span class="o">=</span> <span class="n">cur</span><span class="p">;</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">tail</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="n">reverseList_recusion</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">head</span> <span class="o">==</span> <span class="n">NULL</span> <span class="o">||</span> <span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">head</span><span class="p">;</span>
+
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">reverseList_recusion</span><span class="p">(</span><span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">);</span>
+
+    <span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+    <span class="k">return</span>  <span class="n">cur</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">struct</span> <span class="n">list_node</span><span class="o">*</span> <span class="n">getIntersectionNode</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head_1</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head_2</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">list_1</span> <span class="o">=</span> <span class="n">head_1</span><span class="p">,</span> <span class="o">*</span><span class="n">list_2</span> <span class="o">=</span> <span class="n">head_2</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">list_1</span> <span class="o">!=</span> <span class="n">list_2</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">list_1</span> <span class="o">=</span> <span class="n">list_1</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+        <span class="n">list_2</span> <span class="o">=</span> <span class="n">list_2</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">list_1</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span>
+            <span class="n">list_1</span> <span class="o">=</span> <span class="n">head_2</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">list_2</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span>
+            <span class="n">list_2</span> <span class="o">=</span> <span class="n">head_1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">list_1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_0</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_1</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_2</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_3</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_4</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_5</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_6</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_7</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_8</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="n">node_9</span> <span class="o">=</span> <span class="p">{</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">9</span><span class="p">,</span> <span class="o">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">};</span>
+
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">node_0</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">head_1</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">node_9</span><span class="p">;</span>
+
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_1</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_2</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_3</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_4</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_5</span><span class="p">);</span>
+
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head_1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_8</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head_1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_7</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head_1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_6</span><span class="p">);</span>
+    <span class="n">insert_listnode</span><span class="p">(</span><span class="n">head_1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">node_3</span><span class="p">);</span>
+    <span class="o">//</span><span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">new</span> <span class="o">=</span> <span class="n">reverseList</span><span class="p">(</span><span class="n">head</span><span class="p">);</span>
+    <span class="n">struct</span> <span class="n">list_node</span> <span class="o">*</span><span class="n">new</span> <span class="o">=</span> <span class="n">getIntersectionNode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">head_1</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;first intersetion node is </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">new</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="array.html" class="btn btn-neutral float-left" title="7.9.2.1. 数组操作" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="stack_queue.html" class="btn btn-neutral float-right" title="7.9.2.3. 栈和队列操作" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

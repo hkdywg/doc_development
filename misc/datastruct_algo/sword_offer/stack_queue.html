@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.9.2.3. 栈和队列操作 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="7.9.3. 算法" href="../algorithm/index.html" />
+    <link rel="prev" title="7.9.2.2. 链表操作" href="list.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">7.9. 数据结构与算法</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../datastruct/index.html">7.9.1. 数据结构与算法</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">7.9.2. 剑指offer</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="array.html">7.9.2.1. 数组操作</a></li>
+<li class="toctree-l4"><a class="reference internal" href="list.html">7.9.2.2. 链表操作</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">7.9.2.3. 栈和队列操作</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm/index.html">7.9.3. 算法</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7.9. </span>数据结构与算法</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.9.2. </span>剑指offer</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.9.2.3. </span>栈和队列操作</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/misc/datastruct_algo/sword_offer/stack_queue.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">7.9.2.3. </span>栈和队列操作<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2><span class="section-number">7.9.2.3.1. </span>用两个栈实现队列<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<section id="id3">
+<h3><span class="section-number">7.9.2.3.1.1. </span>题目描述<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">7.9.2.3.1.2. </span>解题思路<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>一个队列包含了两个栈stack1和stack2，此题要求我们操作这两个先进后出的栈实现一个先进先出的队列。</p>
+<p>入队: 将元素进栈stack1</p>
+<p>出队: 判断 stack2是否为空，如果为空，则将栈stack1中的所有元素pop，并push进栈stack2，栈stack2出栈。如果不为空，直接出栈</p>
+</section>
+<section id="id5">
+<h3><span class="section-number">7.9.2.3.1.3. </span>代码<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+
+#define STACK_INIT_SIZE     (20)
+
+struct stack
+{
+    int *data;
+    int *top;
+    int stacksize;
+};
+
+struct queue
+{
+    struct stack *stack1;
+    struct stack *stack2;
+};
+
+struct stack* init_stack()
+{
+    struct stack *s;
+    s = (struct stack*)malloc(sizeof(struct stack));
+    if(s == NULL)
+        return NULL;
+    s-&gt;data = (int *)malloc(STACK_INIT_SIZE);
+    s-&gt;top = s-&gt;data;
+    s-&gt;stacksize = STACK_INIT_SIZE;
+    return s;
+}
+
+int stack_destroy(struct stack* s)
+{
+    if(s != NULL)
+    {
+        free(s-&gt;data);
+        s-&gt;data = NULL;
+        s-&gt;top = NULL;
+        free(s);
+    }
+    return 0;
+}
+
+
+int push_stack(struct stack *s, int num)
+{
+    if((s-&gt;top - s-&gt;data) &gt;= s-&gt;stacksize)
+    {
+        s-&gt;data = (int *)realloc(s-&gt;data, s-&gt;stacksize + STACK_INIT_SIZE);
+        printf(&quot;realloc...\n&quot;);
+    }
+    if(s-&gt;data == NULL)
+        return -1;
+    *(s-&gt;top++) = num;
+}
+
+int pop_stack(struct stack *s)
+{
+    if(s-&gt;data == s-&gt;top)
+        return -1;
+    return *(--s-&gt;top);
+}
+
+int isempty_stack(struct stack *s)
+{
+    return(s-&gt;top == s-&gt;data);
+}
+
+
+struct queue* queue_create()
+{
+    struct queue *q = (struct queue*)malloc(sizeof(struct queue));
+    if(q == NULL)
+        return NULL;
+    q-&gt;stack1 = init_stack();
+    q-&gt;stack2 = init_stack();
+    return q;
+}
+
+int queue_destroy(struct queue* q)
+{
+    if(q != NULL)
+    {
+        stack_destroy(q-&gt;stack1);
+        stack_destroy(q-&gt;stack2);
+    }
+    return 0;
+}
+
+int push_queue(struct queue *q, int num)
+{
+    if(q-&gt;stack1 != NULL)
+    {
+        push_stack(q-&gt;stack1, num);
+        return 0;
+    }
+}
+
+int pop_queue(struct queue *q)
+{
+    int ret;
+    if(isempty_stack(q-&gt;stack2))
+    {
+        while(!isempty_stack(q-&gt;stack1))
+        {
+            push_stack(q-&gt;stack2, pop_stack(q-&gt;stack1));
+        }
+        ret = pop_stack(q-&gt;stack2);
+    }
+    else
+    {
+        ret = pop_stack(q-&gt;stack2);
+    }
+    printf(&quot;pop value = %d\n&quot;, ret);
+    return ret;
+}
+
+int main()
+{
+
+    struct queue* test_queue = queue_create();
+    if(test_queue != NULL)
+    {
+        push_queue(test_queue, 1);
+        push_queue(test_queue, 2);
+        push_queue(test_queue, 3);
+        push_queue(test_queue, 4);
+        push_queue(test_queue, 5);
+        pop_queue(test_queue);
+        pop_queue(test_queue);
+        pop_queue(test_queue);
+        pop_queue(test_queue);
+        pop_queue(test_queue);
+    }
+
+    return 0;
+}
+</pre></div>
+</div>
+</section>
+</section>
+<section id="min">
+<h2><span class="section-number">7.9.2.3.2. </span>包含min函数的栈<a class="headerlink" href="#min" title="此标题的永久链接"></a></h2>
+<section id="id6">
+<h3><span class="section-number">7.9.2.3.2.1. </span>题目描述<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h3>
+<p>定义栈的数据结构，在该类型中实现一个能够得到栈的最小元素的min函数，在该栈中，调用min、push以及pop的时间复杂度都是O(1)</p>
+</section>
+<section id="id7">
+<h3><span class="section-number">7.9.2.3.2.2. </span>题目解析<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>由于需要在常数时间内找到最小元素，那么说明不能使用遍历，因为遍历是O(n)级别的时间，那么只能使用辅助空间进行存储，这是一种空间换时间的思想。</p>
+<p>需要设置两个栈: 普通栈和辅助栈</p>
+<ul class="simple">
+<li><p>push操作</p></li>
+</ul>
+<p>普通栈: 直接添加push进来的值</p>
+<p>辅助栈: 每次push一个新元素的时候，将普通栈中的最小元素push进辅助栈中</p>
+<ul class="simple">
+<li><p>pop操作</p></li>
+</ul>
+<p>普通栈: 直接pop普通栈中的栈顶元素</p>
+<p>辅助栈: 判断普通栈中移除的元素是否与辅助栈中的元素相同，如果相同则将辅助栈中的栈顶元素移除，否则不操作。这样做的目的是为了让辅助栈中的栈顶元素始终是普通栈中的最小值</p>
+<ul class="simple">
+<li><p>getmin操作</p></li>
+</ul>
+<p>普通栈: 不执行操作</p>
+<p>辅助栈: 返回辅助栈的栈顶元素</p>
+</section>
+<section id="id8">
+<h3><span class="section-number">7.9.2.3.2.3. </span>代码<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="c1">#define STACK_SIZE      (1024)</span>
+
+<span class="n">struct</span> <span class="n">minstack</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="o">*</span><span class="n">top</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="o">*</span><span class="n">min_top</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="o">*</span><span class="n">stack</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="o">*</span><span class="n">min_stack</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">minstack</span><span class="o">*</span> <span class="n">minstack_create</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">minstack</span><span class="o">*</span> <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">minstack</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">sizeof</span><span class="p">(</span><span class="n">struct</span> <span class="n">minstack</span><span class="p">));</span>
+
+    <span class="n">s</span><span class="o">-&gt;</span><span class="n">stack</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">sizeof</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">*</span> <span class="n">STACK_SIZE</span><span class="p">);</span>
+    <span class="n">s</span><span class="o">-&gt;</span><span class="n">min_stack</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">sizeof</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">*</span> <span class="n">STACK_SIZE</span><span class="p">);</span>
+    <span class="n">s</span><span class="o">-&gt;</span><span class="n">top</span> <span class="o">=</span> <span class="n">s</span><span class="o">-&gt;</span><span class="n">stack</span><span class="p">;</span>
+    <span class="n">s</span><span class="o">-&gt;</span><span class="n">min_top</span> <span class="o">=</span> <span class="n">s</span><span class="o">-&gt;</span><span class="n">min_stack</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">void</span> <span class="n">minstack_push</span><span class="p">(</span><span class="n">struct</span> <span class="n">minstack</span><span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="nb">int</span> <span class="n">num</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">top</span><span class="p">)</span> <span class="o">=</span> <span class="n">num</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">min_top</span> <span class="o">==</span> <span class="n">s</span><span class="o">-&gt;</span><span class="n">min_stack</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="o">*</span><span class="p">(</span><span class="o">++</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">min_top</span><span class="p">)</span> <span class="o">=</span> <span class="n">num</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">min_top</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">num</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="o">*</span><span class="p">(</span><span class="o">++</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">min_top</span><span class="p">)</span> <span class="o">=</span> <span class="n">num</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">void</span> <span class="n">minstack_pop</span><span class="p">(</span><span class="n">struct</span> <span class="n">minstack</span><span class="o">*</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">top</span><span class="p">)</span> <span class="o">==</span> <span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">min_stack</span><span class="p">))</span>
+    <span class="p">{</span>
+        <span class="n">s</span><span class="o">-&gt;</span><span class="n">top</span><span class="o">--</span><span class="p">;</span>
+        <span class="n">s</span><span class="o">-&gt;</span><span class="n">min_top</span><span class="o">--</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">s</span><span class="o">-&gt;</span><span class="n">top</span><span class="o">--</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="nb">int</span> <span class="n">minstack_top</span><span class="p">(</span><span class="n">struct</span> <span class="n">minstack</span><span class="o">*</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">top</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">minstack_min</span><span class="p">(</span><span class="n">struct</span> <span class="n">minstack</span><span class="o">*</span> <span class="n">s</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="o">*</span><span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">min_top</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">minstack</span> <span class="o">*</span><span class="n">test_stack</span> <span class="o">=</span> <span class="n">minstack_create</span><span class="p">();</span>
+    <span class="n">minstack_push</span><span class="p">(</span><span class="n">test_stack</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">minstack_push</span><span class="p">(</span><span class="n">test_stack</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+    <span class="n">minstack_push</span><span class="p">(</span><span class="n">test_stack</span><span class="p">,</span> <span class="o">-</span><span class="mi">13</span><span class="p">);</span>
+    <span class="n">minstack_push</span><span class="p">(</span><span class="n">test_stack</span><span class="p">,</span> <span class="mi">12</span><span class="p">);</span>
+    <span class="n">minstack_push</span><span class="p">(</span><span class="n">test_stack</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    <span class="n">minstack_push</span><span class="p">(</span><span class="n">test_stack</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">);</span>
+    <span class="n">minstack_push</span><span class="p">(</span><span class="n">test_stack</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+
+    <span class="nb">int</span> <span class="nb">min</span> <span class="o">=</span> <span class="n">minstack_min</span><span class="p">(</span><span class="n">test_stack</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;minstack number is </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">min</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id9">
+<h2><span class="section-number">7.9.2.3.3. </span>队列的最大值<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
+<section id="id10">
+<h3><span class="section-number">7.9.2.3.3.1. </span>题目描述<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h3>
+<p>定义一个队列并实现函数max_value得到队列里最大值，要求函数max_value, push_back, pop_front的均摊时间复杂度都是O(1)</p>
+<p>若队列为空，pop_front和max_value需要返回-1</p>
+</section>
+<section id="id11">
+<h3><span class="section-number">7.9.2.3.3.2. </span>题目解析<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h3>
+<p>此题采用链表进行操作</p>
+</section>
+<section id="id12">
+<h3><span class="section-number">7.9.2.3.3.3. </span>代码<a class="headerlink" href="#id12" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="c1">#include &lt;string.h&gt;</span>
+<span class="c1">#include &lt;stdlib.h&gt;</span>
+
+<span class="n">struct</span> <span class="n">maxqueue</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">maxqueue</span> <span class="o">*</span><span class="nb">next</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">maxqueue_head</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">maxqueue</span><span class="o">*</span> <span class="n">front</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">maxqueue</span><span class="o">*</span> <span class="n">rear</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+<span class="n">struct</span> <span class="n">maxqueue_head</span><span class="o">*</span> <span class="n">maxqueuehead_create</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">maxqueue_head</span><span class="o">*</span> <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">head</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">sizeof</span><span class="p">(</span><span class="n">struct</span> <span class="n">maxqueue_head</span><span class="p">));</span>
+    <span class="n">h</span><span class="o">-&gt;</span><span class="n">front</span> <span class="o">=</span> <span class="n">h</span><span class="o">-&gt;</span><span class="n">rear</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">h</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">maxqueue_maxvalue</span><span class="p">(</span><span class="n">struct</span> <span class="n">maxqueue_head</span><span class="o">*</span> <span class="n">h</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">front</span> <span class="o">==</span>  <span class="n">NULL</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">maxqueue</span><span class="o">*</span> <span class="n">q</span> <span class="o">=</span> <span class="n">h</span><span class="o">-&gt;</span><span class="n">front</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">maxvalue</span> <span class="o">=</span> <span class="n">q</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">q</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">&gt;</span> <span class="n">maxvalue</span><span class="p">)</span>
+            <span class="n">maxvalue</span> <span class="o">=</span> <span class="n">q</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">maxvalue</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">void</span> <span class="n">maxqueue_pushback</span><span class="p">(</span><span class="n">struct</span> <span class="n">maxqueue_head</span><span class="o">*</span> <span class="n">h</span><span class="p">,</span> <span class="nb">int</span> <span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">maxqueue</span> <span class="o">*</span><span class="n">new</span> <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">maxqueue</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">sizeof</span><span class="p">(</span><span class="n">struct</span> <span class="n">maxqueue</span><span class="p">));</span>
+    <span class="n">new</span><span class="o">-&gt;</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">new</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">front</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">h</span><span class="o">-&gt;</span><span class="n">front</span> <span class="o">=</span> <span class="n">new</span><span class="p">;</span>
+        <span class="n">h</span><span class="o">-&gt;</span><span class="n">rear</span> <span class="o">=</span> <span class="n">new</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">h</span><span class="o">-&gt;</span><span class="n">rear</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">new</span><span class="p">;</span>
+        <span class="n">h</span><span class="o">-&gt;</span><span class="n">rear</span> <span class="o">=</span> <span class="n">new</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">maxqueue_popfront</span><span class="p">(</span><span class="n">struct</span> <span class="n">maxqueue_head</span><span class="o">*</span> <span class="n">h</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">front</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="n">struct</span> <span class="n">maxqueue</span><span class="o">*</span> <span class="k">del</span> <span class="o">=</span> <span class="n">h</span><span class="o">-&gt;</span><span class="n">front</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">tmp</span> <span class="o">=</span> <span class="k">del</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">;</span>
+    <span class="n">h</span><span class="o">-&gt;</span><span class="n">front</span> <span class="o">=</span> <span class="k">del</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="k">del</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">tmp</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">maxqueue_value</span><span class="p">(</span><span class="n">struct</span> <span class="n">maxqueue</span><span class="o">*</span> <span class="n">q</span><span class="p">)</span>
+<span class="p">{</span>
+
+<span class="p">}</span>
+
+<span class="nb">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+
+    <span class="n">struct</span> <span class="n">maxqueue_head</span><span class="o">*</span> <span class="n">head</span> <span class="o">=</span> <span class="n">maxqueuehead_create</span><span class="p">();</span>
+    <span class="n">maxqueue_pushback</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="mi">14</span><span class="p">);</span>
+    <span class="n">maxqueue_pushback</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="mi">350</span><span class="p">);</span>
+    <span class="n">maxqueue_pushback</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="mi">89</span><span class="p">);</span>
+    <span class="n">maxqueue_pushback</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="n">maxqueue_pushback</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="mi">66</span><span class="p">);</span>
+
+    <span class="n">maxqueue_popfront</span><span class="p">(</span><span class="n">head</span><span class="p">);</span>
+    <span class="n">maxqueue_popfront</span><span class="p">(</span><span class="n">head</span><span class="p">);</span>
+
+    <span class="nb">int</span> <span class="n">maxvalue</span> <span class="o">=</span> <span class="n">maxqueue_maxvalue</span><span class="p">(</span><span class="n">head</span><span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;maxvalue = </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">maxvalue</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id13">
+<h2><span class="section-number">7.9.2.3.4. </span>滑动窗口的最大值<a class="headerlink" href="#id13" title="此标题的永久链接"></a></h2>
+<section id="id14">
+<h3><span class="section-number">7.9.2.3.4.1. </span>题目描述<a class="headerlink" href="#id14" title="此标题的永久链接"></a></h3>
+<p>给定一个数组和一个滑动窗口的大小，找出所有滑动窗口里数值的最大值。</p>
+<p>例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>如果输入数组{2,3,4,2,6,2,5,1}及滑动窗口的大小3，那么一共存在6个滑动窗口，他们的最大值分别为{4,4,6,6,6,5}；
+针对数组{2,3,4,2,6,2,5,1}的滑动窗口有以下6个：
+{[2,3,4],2,6,2,5,1}， {2,[3,4,2],6,2,5,1}， {2,3,[4,2,6],2,5,1}， {2,3,4,[2,6,2],5,1}， {2,3,4,2,[6,2,5],1}， {2,3,4,2,6,[2,5,1]}。
+</pre></div>
+</div>
+</section>
+<section id="id15">
+<h3><span class="section-number">7.9.2.3.4.2. </span>题目解析<a class="headerlink" href="#id15" title="此标题的永久链接"></a></h3>
+<p>可采用双指针解法</p>
+</section>
+<section id="id16">
+<h3><span class="section-number">7.9.2.3.4.3. </span>代码<a class="headerlink" href="#id16" title="此标题的永久链接"></a></h3>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="list.html" class="btn btn-neutral float-left" title="7.9.2.2. 链表操作" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../algorithm/index.html" class="btn btn-neutral float-right" title="7.9.3. 算法" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1012 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.6.1.205. page_address_htable &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.6.1.245. raw_local_irq_disable" href="R_function.html" />
+    <link rel="prev" title="3.6.1.196. of_compat_cmp" href="O_function.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.6. linux 内核函数</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="kernel_function.html">3.6.1. 内核函数汇总</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="A_function.html">3.6.1.1. add_static_vm_early</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#adjust-lowmem-bounds">3.6.1.2. adjust_lowmem_bounds</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#alloc-init-pmd">3.6.1.3. alloc_init_pmd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#alloc-init-pud">3.6.1.4. alloc_init_pud</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#alloc-node-mem-map">3.6.1.5. alloc_node_mem_map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#array-size">3.6.1.6. ARRAY_SIZE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arch-get-next-mach">3.6.1.7. arch_get_next_mach</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arch-local-irq-disable">3.6.1.8. arch_local_irq_disable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-adjust-dma-zone">3.6.1.9. arm_adjust_dma_zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-initrd-init">3.6.1.10. arm_initrd_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-pte-alloc">3.6.1.11. arm_pte_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-memblock-init">3.6.1.12. arm_memblock_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="A_function.html#arm-mm-memblock-reserve">3.6.1.13. arm_mm_memblock_reserve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="B_function.html">3.6.1.14. boot_cpu_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="B_function.html#build-mem-type-table">3.6.1.15. build_mem_type_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html">3.6.1.16. cacheid_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cache-is-vipt">3.6.1.17. cache_is_vipt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cache-is-vipt-aliasing">3.6.1.18. cache_is_vipt_aliasing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cache-is-vipt-nonaliasing">3.6.1.19. cache_is_vipt_nonaliasing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cache-is-vivt-asid-tagged">3.6.1.20. cache_is_vivt_asid_tagged</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cahceid">3.6.1.21. cahceid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cachepolicy">3.6.1.22. cachepolicy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#calc-memmap-size">3.6.1.23. calc_memmap_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#calculatode-totalpage">3.6.1.24. calculatode_totalpage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#check-block">3.6.1.25. check_block</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#check-off">3.6.1.26. check_off</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#choose-memblock-flags">3.6.1.27. choose_memblock_flags</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#clamp">3.6.1.28. clamp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-activate-area">3.6.1.29. cma_activate_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-alloc">3.6.1.30. cma_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-bitmap-aligned-mask">3.6.1.31. cma_bitmap_aligned_mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-bitmap-cligned-offset">3.6.1.32. cma_bitmap_cligned_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-bitmap-maxno">3.6.1.33. cma_bitmap_maxno</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-bitmap-pages-to-bits">3.6.1.34. cma_bitmap_pages_to_bits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-clear-bitmap">3.6.1.35. cma_clear_bitmap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-declare-contiguous">3.6.1.36. cma_declare_contiguous</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-early-percent-memory">3.6.1.37. cma_early_percent_memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-for-each-area">3.6.1.38. cma_for_each_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-get-base">3.6.1.39. cma_get_base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-get-name">3.6.1.40. cma_get_name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-get-size">3.6.1.41. cma_get_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-init-reserved-areas">3.6.1.42. cma_init_reserved_areas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-init-reserved-mem">3.6.1.43. cma_init_reserved_mem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cma-release">3.6.1.44. cma_release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-active-mask">3.6.1.45. __cpu_active_mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-has-aliasing-icache">3.6.1.46. cpu_has_aliasing_icache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-init">3.6.1.47. cpu_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-logical-map">3.6.1.48. cpu_logical_map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-max-bits-warn">3.6.1.49. cpu_max_bits_warn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-proc-init">3.6.1.50. cpu_proc_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpu-to-fdt32">3.6.1.51. CPU_TO_FDT32</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#cpuid-init-hwcaps">3.6.1.52. cpuid_init_hwcaps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#create-mapping">3.6.1.53. create_mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#id1">3.6.1.54. __create_mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#current-stack-pointer">3.6.1.55. current_stack_pointer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="C_function.html#current-thread-info">3.6.1.56. current_thread_info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html">3.6.1.57. dev_get_cma_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dev-set-cma-area">3.6.1.58. dev_set_cma_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#devicemaps-init">3.6.1.59. devicemaps_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-alloc-from-contiguous">3.6.1.60. dma_alloc_from_contiguous</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-contiguous-early-fixup">3.6.1.61. dma_contiguous_early_fixup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-contiguous-remap">3.6.1.62. dma_contiguous_remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-contiguous-reserve">3.6.1.63. dma_contiguous_reserve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-contiguous-set-default">3.6.1.64. dma_contiguous_set_default</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dma-release-from-contiguous">3.6.1.65. dma_release_from_contiguous</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#do-early-param">3.6.1.66. do_early_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dt-mem-next-cell">3.6.1.67. dt_mem_next_cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="D_function.html#dump-stack-set-arch-desc">3.6.1.68. dump_stack_set_arch_desc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html">3.6.1.69. early_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-alloc-aligned">3.6.1.70. early_alloc_aligned</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-cma">3.6.1.71. early_cma</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-fixmap-shutdown">3.6.1.72. early_fixmap_shutdown</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-ioremap-init">3.6.1.73. early_ioremap_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-ioremap-setup">3.6.1.74. early_ioremap_setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-add-memory-arch">3.6.1.75. early_init_dt_add_memory_arch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-alloc-reserved-memory-arch">3.6.1.76. early_init_dt_alloc_reserved_memory_arch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-check-for-initrd">3.6.1.77. early_init_dt_check_for_initrd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-declare-initrd">3.6.1.78. __early_init_dt_declare_initrd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-reserve-memory-arch">3.6.1.79. early_init_dt_reserve_memory_arch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-scan-chosen">3.6.1.80. early_init_dt_scan_chosen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-scan-memory">3.6.1.81. early_init_dt_scan_memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-sacn-nodes">3.6.1.82. early_init_dt_sacn_nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-scan-root">3.6.1.83. early_init_dt_scan_root</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-dt-verify">3.6.1.84. early_init_dt_verify</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-fdt-reserve-self">3.6.1.85. early_init_fdt_reserve_self</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-init-fdt-scan-reserved-mem">3.6.1.86. early_init_fdt_scan_reserved_mem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-mm-init">3.6.1.87. early_mm_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-pte-alloc">3.6.1.88. early_pte_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#early-trap-init">3.6.1.89. early_trap_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#elf-hwcap-fixup">3.6.1.90. elf_hwcap_fixup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="E_function.html#end-of-stack">3.6.1.91. end_of_stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html">3.6.1.92. FD_ALIGN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-boot-cpuid-phys">3.6.1.93. fdt_boot_cpuid_phys</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-check-header">3.6.1.94. fdt_check_header</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-check-node-offset">3.6.1.95. fdt_check_node_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-check-prop-offset">3.6.1.96. fdt_check_prop_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-first-property-offset">3.6.1.97. fdt_first_property_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-get-property-by-offset">3.6.1.98. fdt_get_property_by_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-header-size">3.6.1.99. fdt_header_size_</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#id1">3.6.1.100. fdt_header_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-init-reserved-mem">3.6.1.101. fdt_init_reserved_mem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-get-header">3.6.1.102. fdt_get_header</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-get-mem-rsv">3.6.1.103. fdt_get_mem_rsv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-get-name">3.6.1.104. fdt_get_name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-get-property-namelen">3.6.1.105. fdt_get_property_namelen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-get-string">3.6.1.106. fdt_get_string</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-getprop">3.6.1.107. fdt_getprop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-getprop-namelen">3.6.1.108. fdt_getprop_namelen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-last-comp-version">3.6.1.109. fdt_last_comp_version</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-magic">3.6.1.110. fdt_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-mem-rsv">3.6.1.111. fdt_mem_rsv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-next-node">3.6.1.112. fdt_next_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-next-tag">3.6.1.113. fdt_next_tag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-off-dt-strings">3.6.1.114. fdt_off_dt_strings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-offset-ptr">3.6.1.115. fdt_offset_ptr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#id2">3.6.1.116. fdt_offset_ptr_</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-reserved-mem-save-node">3.6.1.117. fdt_reserved_mem_save_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-ro-probe">3.6.1.118. FDT_RO_PROBE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#id3">3.6.1.119. fdt_ro_probe_</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-scan-reserved-mem">3.6.1.120. __fdt_scan_reserved_mem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-size-dt-strings">3.6.1.121. fdt_size_dt_strings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-size-dt-struct">3.6.1.122. fdt_size_dt_struct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-string-eq">3.6.1.123. fdt_string_eq</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fdt-totalsize">3.6.1.124. fdt_totalsize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fill-pmd-pags">3.6.1.125. fill_pmd_pags</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#find-limits">3.6.1.126. find_limits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fix-to-virt">3.6.1.127. fix_to_virt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#fixmap-pmd">3.6.1.128. fixmap_pmd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="F_function.html#flush-pmd-entry">3.6.1.129. flush_pmd_entry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="G_function.html">3.6.1.130. get_cr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="G_function.html#get-cpu-architecture">3.6.1.131. __get_cpu_architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html">3.6.1.132. icache_is_pipt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#icache-is-vipt-aliasing">3.6.1.133. icache_is_vipt_aliasing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#icache-is-vivt-asid-tagged">3.6.1.134. icache_is_vivt_asid_tagged</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#iotable-init">3.6.1.135. iotable_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#init-default-cache-policy">3.6.1.136. init_default_cache_policy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#init-utsname">3.6.1.137. init_utsname</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#initial-pmd-value">3.6.1.138. initial_pmd_value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#isspace">3.6.1.139. isspace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#is-highmem-idx">3.6.1.140. is_highmem_idx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="I_function.html#is-smp">3.6.1.141. is_smp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="K_function.html">3.6.1.142. KERNEL_END</a></li>
+<li class="toctree-l4"><a class="reference internal" href="K_function.html#kernel-start">3.6.1.143. KERNEL_START</a></li>
+<li class="toctree-l4"><a class="reference internal" href="K_function.html#kmap-init">3.6.1.144. kmap_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="K_function.html#kuser-init">3.6.1.145. kuser_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html">3.6.1.146. list_add_tail</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html#list-for-each-entry">3.6.1.147. list_for_each_entry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html#local-irq-disable">3.6.1.148. local_irq_disable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html#lookup-processor">3.6.1.149. lookup_processor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="L_function.html#lookup-processor-type">3.6.1.150. lookup_processor_type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html">3.6.1.151. __map_init_section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#map-lowmem">3.6.1.152. map_lowmem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-add">3.6.1.153. memblock_add</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-add-range">3.6.1.154. memblock_add_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-addrs-overlap">3.6.1.155. memblock_addrs_overlap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-alloc-base">3.6.1.156. memblock_alloc_base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-alloc-base-nid">3.6.1.157. memblock_alloc_base_nid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-alloc-internal">3.6.1.158. memblock_alloc_internal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-alloc-node-nopanic">3.6.1.159. memblock_alloc_node_nopanic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-alloc-range">3.6.1.160. memblock_alloc_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-alloc-range-nid">3.6.1.161. memblock_alloc_range_nid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-allow-resize">3.6.1.162. memblock_allow_resize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-bottom-up">3.6.1.163. memblock_bottom_up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-cap-size">3.6.1.164. memblock_cap_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-double-array">3.6.1.165. memblock_double_array</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-end-of-dram">3.6.1.166. memblock_end_of_DRAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-find-in-range">3.6.1.167. memblock_find_in_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-find-in-range-node">3.6.1.168. memblock_find_in_range_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-find-range-bottom-up">3.6.1.169. __memblock_find_range_bottom_up</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-find-range-top-down">3.6.1.170. __memblock_find_range_top_down</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-free">3.6.1.171. memblock_free</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-insert-region">3.6.1.172. memblock_insert_region</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-is-hotpluggable">3.6.1.173. memblock_is_hotpluggable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-is-mirror">3.6.1.174. memblock_is_mirror</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-is-nomap">3.6.1.175. memblock_is_nomap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-is-region-memory">3.6.1.176. memblock_is_region_memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-is-region-reserved">3.6.1.177. memblock_is_region_reserved</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-isolate-range">3.6.1.178. memblock_isolate_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-merge-regions">3.6.1.179. memblock_merge_regions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-overlaps-region">3.6.1.180. memblock_overlaps_region</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-phys-alloc">3.6.1.181. memblock_phys_alloc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-resion-memory-base-pfn">3.6.1.182. memblock_resion_memory_base_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-region-memory-end-pfn">3.6.1.183. memblock_region_memory_end_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-remove-range">3.6.1.184. memblock_remove_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-remove">3.6.1.185. memblock_remove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-remove-region">3.6.1.186. memblock_remove_region</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-reserve">3.6.1.187. memblock_reserve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-search">3.6.1.188. memblock_search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#memblock-start-of-dram">3.6.1.189. memblock_start_of_DRAM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="M_function.html#movable-node-is-enabled">3.6.1.190. movable_node_is_enabled</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html">3.6.1.191. nextprop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html#next-arg">3.6.1.192. next_arg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html#next-mem-range">3.6.1.193. __next_mem_range</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html#next-mem-range-rev">3.6.1.194. __next_mem_range_rev</a></li>
+<li class="toctree-l4"><a class="reference internal" href="N_function.html#nr-cpumask-bits">3.6.1.195. nr_cpumask_bits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html">3.6.1.196. of_compat_cmp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-declare">3.6.1.197. _OF_DECLARE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-fdt-device-is-available">3.6.1.198. of_fdt_device_is_available</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-fdt-is-compatible">3.6.1.199. of_fdt_is_compatible</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-flat-dt-is-compatible">3.6.1.200. of_flat_dt_is_compatible</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-flat-dt-match-machine">3.6.1.201. of_flat_dt_match_machine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-get-flat-dt-prop">3.6.1.202. of_get_flat_dt_prop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-get-flat-dt-root">3.6.1.203. of_get_flat_dt_root</a></li>
+<li class="toctree-l4"><a class="reference internal" href="O_function.html#of-scan-flat-dt">3.6.1.204. of_scan_flat_dt</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.6.1.205. page_address_htable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-address-init">3.6.1.206. page_address_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-offset">3.6.1.207. PAGE_OFFSET</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#page-to-pfn">3.6.1.208. __page_to_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parameq">3.6.1.209. parameq</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parse-args">3.6.1.210. parse_args</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parse-early-options">3.6.1.211. parse_early_options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parse-early-param">3.6.1.212. parse_early_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parse-one">3.6.1.213. parse_one</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#per-cpu-offset">3.6.1.214. __per_cpu_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">3.6.1.215. per_cpu_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pfn-down">3.6.1.216. PFN_DOWN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pfn-phys">3.6.1.217. PFN_PHYS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pfn-pte">3.6.1.218. pfn_pte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pfn-up">3.6.1.219. PFN_UP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#phys-offset">3.6.1.220. PHYS_OFFSET</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#phys-pfn">3.6.1.221. PHYS_PFN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#phys-to-pfn">3.6.1.222. __phys_to_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#phys-to-virt">3.6.1.223. __phys_to_virt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">3.6.1.224. phys_to_virt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pgd-addr-end">3.6.1.225. pgd_addr_end</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pgd-index">3.6.1.226. pgd_index</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pgd-offset">3.6.1.227. pgd_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pgd-offset-k">3.6.1.228. pgd_offset_k</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pgdat-end-pfn">3.6.1.229. pgdat_end_pfn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pgprot">3.6.1.230. __pgprot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pgrot-val">3.6.1.231. pgrot_val</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmd-addr-end">3.6.1.232. pmd_addr_end</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmd-bad">3.6.1.233. pmd_bad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmd-clear">3.6.1.234. pmd_clear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmd-empty-section-gap">3.6.1.235. pmd_empty_section_gap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmd-none">3.6.1.236. pmd_none</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmd-off-k">3.6.1.237. pmd_off_k</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmd-offset">3.6.1.238. pmd_offset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmd-page-vaddr">3.6.1.239. pmd_page_vaddr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmd-populate">3.6.1.240. __pmd_populate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmd-populate-kernel">3.6.1.241. pmd_populate_kernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pmd-val">3.6.1.242. pmd_val</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#populate-zone">3.6.1.243. populate_zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prepare-page-table">3.6.1.244. prepare_page_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html">3.6.1.245. raw_local_irq_disable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#raw-smp-processor-id">3.6.1.246. raw_smp_processor_id</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-cma-device-init">3.6.1.247. rmem_cma_device_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-cma-device-release">3.6.1.248. rmem_cma_device_release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-cma-setup">3.6.1.249. rmem_cma_setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-dma-setup">3.6.1.250. rmem_dma_setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#reservedmem-of-declare">3.6.1.251. RESERVEDMEM_OF_DECLARE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#reserved-mem-alloc-size">3.6.1.252. __reserved_mem_alloc_size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#reserved-mem-check-root">3.6.1.253. __reserved_mem_check_root</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#reserved-mem-init-node">3.6.1.254. __reserved_mem_init_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#rmem-check-for-overlap">3.6.1.255. __rmem_check_for_overlap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="R_function.html#round-mask">3.6.1.256. __round_mask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html">3.6.1.257. set_cpu_active</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#set-cpu-online">3.6.1.258. set_cpu_online</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#set-task-stack-end-magic">3.6.1.259. set_task_stack_end_magic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#setup-dma-zone">3.6.1.260. setup_dma_zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#setup-machine-fdt">3.6.1.261. setup_machine_fdt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#setup-processor">3.6.1.262. setup_processor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#skip-spaces">3.6.1.263. skip_spaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#smp-setup-processor-id">3.6.1.264. smp_setup_processor_id</a></li>
+<li class="toctree-l4"><a class="reference internal" href="S_function.html#start-kernel">3.6.1.265. start_kernel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="T_function.html">3.6.1.266. TASKE_SIZE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="T_function.html#task-thread-info">3.6.1.267. task_thread_info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html">3.6.1.268. __va</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vectors-base">3.6.1.269. vectors_base</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vectors-high">3.6.1.270. vectors_high</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vm-area-add-early">3.6.1.271. vm_area_add_early</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vm-reseve-area-early">3.6.1.272. vm_reseve_area_early</a></li>
+<li class="toctree-l4"><a class="reference internal" href="V_function.html#vmalloc-min">3.6.1.273. vmalloc_min</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html">3.6.1.274. zone_absent_pages_in_node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html#zone-init-internals">3.6.1.275. zone_init_internals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html#zone-movable-is-highmem">3.6.1.276. zone_movable_is_highmem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html#zone-pcp-init">3.6.1.277. zone_pcp_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Z_function.html#zone-spanned-pages-in-node">3.6.1.278. zone_spanned_pages_in_node</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../module/index.html">3.6.2. Linux内核API之模块机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thread_management/index.html">3.6.3. Linux内核API之进程管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thread_schedule/index.html">3.6.4. Linux内核API之进程调度</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interrupt/index.html">3.6.5. Linux内核API之中断机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../memory/index.html">3.6.6. Linux内核API之内存管理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../timer/index.html">3.6.7. Linux内核API之定时机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../sync/index.html">3.6.8. Linux内核API之同步机制</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../filesystem/index.html">3.6.9. Linux内核API之文件系统</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../device/index.html">3.6.10. Linux内核API之设备管理</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.6. </span>linux 内核函数</a></li>
+          <li class="breadcrumb-item"><a href="kernel_function.html"><span class="section-number">3.6.1. </span>内核函数汇总</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.6.1.205. </span>page_address_htable</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/kernel_function/summary/P_function.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="page-address-htable">
+<h1><span class="section-number">3.6.1.205. </span>page_address_htable<a class="headerlink" href="#page-address-htable" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">struct</span> <span class="n">page_address_slot</span> <span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="n">lh</span><span class="p">;</span>
+    <span class="n">spinlock_t</span> <span class="n">lock</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">___cacheline_aligned_in_smp</span> <span class="n">page_address_htable</span><span class="p">[</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">PA_HASH_ORDER</span><span class="p">];</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">page_address_htable</span></code> 是一个全局变量，维护高端内存线性地址中永久映射的全局变量</p>
+</section>
+<section id="page-address-init">
+<h1><span class="section-number">3.6.1.206. </span>page_address_init<a class="headerlink" href="#page-address-init" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">__init</span> <span class="n">page_address_init</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ARRAY_SIZE</span><span class="p">(</span><span class="n">page_address_htable</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">INIT_LIST_HEAD</span><span class="p">(</span><span class="o">&amp;</span><span class="n">page_address_htable</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lh</span><span class="p">);</span>
+        <span class="n">spin_lock_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">page_address_htable</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lock</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">page_address_init</span></code> 用于初始化高端内存线性地址中永久映射的全局变量．内核使用全局数组page_address_htable维护高端内存页表池的链表，
+并带一个自旋锁．</p>
+</section>
+<section id="page-offset">
+<h1><span class="section-number">3.6.1.207. </span>PAGE_OFFSET<a class="headerlink" href="#page-offset" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>config PAGE_OFFSET
+    hex
+    default PHYS_OFFSET if !MMU
+    default 0x40000000 if VMSPLIT_1G
+    default 0x80000000 if VMSPLIT_2G
+    default 0xB0000000 if VMSPLIT_3G_OPT
+    default 0xC0000000
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">PAGE_OFFSET</span></code> 宏用于指明内核空间虚拟地址的起始地址．其值与用户空间和内核空间虚拟地址划分有关，如果用于空间与内核空间按
+1:3，那么内核空间虚拟地址从0x40000000开始．2:2则从0x80000000开始，3:1则从0xB0000000开始</p>
+</section>
+<section id="page-to-pfn">
+<h1><span class="section-number">3.6.1.208. </span>__page_to_pfn<a class="headerlink" href="#page-to-pfn" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define __page_to_pfn(page) ((unsigned long)((page) - mem_map) + ARCH_PFN_OFFSET)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">__page_to_pfn</span></code> 用于将struct page转换成物理页帧号</p>
+</section>
+<section id="parameq">
+<h1><span class="section-number">3.6.1.209. </span>parameq<a class="headerlink" href="#parameq" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bool</span> <span class="n">parameq</span><span class="p">(</span><span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">parameqn</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">parameq</span></code> 用于对比a字符串是否与b字符串相等</p>
+</section>
+<section id="parse-args">
+<h1><span class="section-number">3.6.1.210. </span>parse_args<a class="headerlink" href="#parse-args" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//doing: 标识符字符串
+//args: 包含启动参数的字符串
+//params: 内核参数列表
+//num: 内核参数的数量
+//unknown: 私有函数
+char *parse_args(const char *doing, char *args, const struct kernel_param *params, unsigned num,
+        s16 min_level, s16 max_level, void *arg, int(*unknown)(char *param, char *val, const char *doing, void *arg))
+{
+    char *param, *val, *err = NULL;
+
+    //将args参数开始处的空格去掉
+    args = skip_spaces(args);
+
+    while(*args)
+    {
+        int ret;
+        int irq_was_disabled;
+
+        //从args字符串中获得一个参数的名字，并将其存储到param里，值存储在val中
+        args = next_arg(args, &amp;param, &amp;val);
+        if(!val &amp;&amp; strcmp(param, &quot;--&quot;) == 0)
+            return err ? : args;
+        //判断当前中断是否使能
+        irq_was_disabled = irqs_disabled();
+        //在内核参数中找到与参数名字相同的内核参数，并将内核参数的值设置成val的值
+        ret = parse_one(param, val, doing, params, num, min_level, max_level, arg, unknown);
+        if(irq_was_disabled &amp;&amp; !irqs_disabled())
+            pr_warn(&quot;%s: option &#39;%s&#39; enabled irq!\n&quot;, doing, param);
+
+        swtich(ret)
+        {
+        case 9:
+            continue;
+        case -ENOENT:
+            pr_err(&quot;%s: Unknown parameter &#39;%s&#39;\n&quot;, doing, param);
+            break;
+        case -ENOSPC:
+            pr_err(&quot;%s: &#39;%s&#39; to large for paramters &#39;%s&#39;\n&quot;, doing, val ?:&quot;&quot;, param);
+            break;
+        default:
+            pr_err(&quot;%s: &#39;%s&#39; invalid for paramter &#39;%s&#39;\n&quot;, doing, val ?:&quot;&quot;, param);
+            break;
+        }
+        err = ERR_PTR(ret);
+    }
+
+    return err;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">parse_args</span></code> 用于从一个字符串中解析参数，并设置对应的内核参数</p>
+</section>
+<section id="parse-early-options">
+<h1><span class="section-number">3.6.1.211. </span>parse_early_options<a class="headerlink" href="#parse-early-options" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">__init</span> <span class="n">parse_early_options</span><span class="p">(</span><span class="n">char</span> <span class="o">*</span><span class="n">cmdline</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">parse_args</span><span class="p">(</span><span class="s2">&quot;early options&quot;</span><span class="p">,</span> <span class="n">cmdline</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">do_early_param</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">parse_early_options</span></code> 用于初始化cmdline内早期启动参数</p>
+</section>
+<section id="parse-early-param">
+<h1><span class="section-number">3.6.1.212. </span>parse_early_param<a class="headerlink" href="#parse-early-param" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">__init</span> <span class="n">parse_early_param</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">static</span> <span class="nb">int</span> <span class="n">done</span> <span class="n">__initdata</span><span class="p">;</span>
+    <span class="n">static</span> <span class="n">char</span> <span class="n">tmp_cmdline</span><span class="p">[</span><span class="n">COMMAND_LINE_SIZE</span><span class="p">]</span> <span class="n">__initdata</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">done</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">strcpy</span><span class="p">(</span><span class="n">tmp_cmdline</span><span class="p">,</span> <span class="n">boot_command_line</span><span class="p">,</span> <span class="n">COMMAND_LINE_SIZE</span><span class="p">);</span>
+    <span class="n">parse_early_options</span><span class="p">(</span><span class="n">tmp_cmdline</span><span class="p">);</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">parse_early_param</span></code> 用于系统启动早期，设置指定的启动参数.函数定义了两个静态变量，函数首先判断done的值，以防止该函数被二次执行</p>
+</section>
+<section id="parse-one">
+<h1><span class="section-number">3.6.1.213. </span>parse_one<a class="headerlink" href="#parse-one" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static int parse_one(char *param, char *val, const char *doing, const struct kernel_param *params,
+    unsigned num_params, s16 min_level, s16 max_level, void *arg, int (*handle_unknown)(char *param, char *val, const char *doing, void *arg))
+{
+    unsigned int i;
+    int err;
+
+    for(i = 0; i &lt; num_params; i++) {
+        //找到与参数param相同的kernel_param
+        if(parameq(param, params[i].name)) {
+            //检查kernel_param中成员进行检测
+            if(params[i].level &lt; min_level || param[i].level &gt; max_level)
+                return 0;
+            if(!val  &amp;&amp; !(params[i].ops-&gt;flags &amp; KERNEL_PARAM_OPS_FL_NOARG))
+                return -EINVAL;
+            kernel_param_lock(params[i].mod);
+            param_check_unsafe(&amp;params[i]);
+            //执行kernel_param中包含的set函数，该函数就是用cmdline中参数设置内核中启动的参数
+            err = params[i].ops-&gt;set(val, &amp;params[i]);
+            kernel_param_unlock(params[i].mod);
+            return err;
+        }
+    }
+
+    //执行handle_unknown函数
+    if(handle_unknown)
+        return handle_unknown(param, val, doing, arg);
+
+    return -ENOENT;
+}
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">parse_one</span></code> 用于解析cmdline里面的一个参数，并在内核启动过程中设置这个内核参数</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>内核将所有启动参数的钩子函数存放在”__param” section里，在这个section中，每个成员按struct kernel_param
+格式存储．</p>
+</div>
+</section>
+<section id="per-cpu-offset">
+<h1><span class="section-number">3.6.1.214. </span>__per_cpu_offset<a class="headerlink" href="#per-cpu-offset" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unsigned</span> <span class="n">long</span> <span class="n">__per_cpu_offset</span><span class="p">[</span><span class="n">NR_CPUS</span><span class="p">]</span> <span class="n">__read_mostly</span><span class="p">;</span>
+<span class="n">EXPORT_SYMBOL</span><span class="p">(</span><span class="n">__per_cpu_offset</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h1><span class="section-number">3.6.1.215. </span>per_cpu_offset<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#ifndef __per_cpu_offset</span>
+<span class="n">extern</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">__per_cpu_offset</span><span class="p">[</span><span class="n">NR_CPUS</span><span class="p">];</span>
+<span class="c1">#define per_cpu_offset(x) (__per_cpu_offset[x])</span>
+<span class="c1">#endif</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">per_cpu_offset</span></code> 用于获得特定CPU在__per_cpu_offset[]数组中的偏移</p>
+</section>
+<section id="pfn-down">
+<h1><span class="section-number">3.6.1.216. </span>PFN_DOWN<a class="headerlink" href="#pfn-down" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define PFN_DOWN(x) ((x) &gt;&gt; PAGE_OFFSET)</span>
+</pre></div>
+</div>
+</section>
+<section id="pfn-phys">
+<h1><span class="section-number">3.6.1.217. </span>PFN_PHYS<a class="headerlink" href="#pfn-phys" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define PFN_PHYS(x) ((phys_addr_t)(x) &lt;&lt; PAGE_SHITF)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">PFN_PHYS</span></code> 将物理页帧转换为物理地址．参数x指向物理页帧号</p>
+</section>
+<section id="pfn-pte">
+<h1><span class="section-number">3.6.1.218. </span>pfn_pte<a class="headerlink" href="#pfn-pte" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define pfn_pte(pfn, prot)  __pte(__pfn_to_phys(pfn) | pgprot_val(prot))</span>
+<span class="c1">#define __pfn_to_phys(pfn) PFN_PHYS(pfn)</span>
+<span class="c1">#define pgrpot_val(x) ((x).pgprot)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pfn_pte</span></code> 用于制作一个PTE入口项</p>
+</section>
+<section id="pfn-up">
+<h1><span class="section-number">3.6.1.219. </span>PFN_UP<a class="headerlink" href="#pfn-up" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define PFN_UP(x) (((x) + PAGE_SIZE - 1) &gt;&gt; PAGE_SHIFT)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">PFN_UP</span></code> 将参数x对应的下一个页帧号</p>
+</section>
+<section id="phys-offset">
+<h1><span class="section-number">3.6.1.220. </span>PHYS_OFFSET<a class="headerlink" href="#phys-offset" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>config PHYS_OFFSET
+    hex &quot;Physical address of main memory&quot; if MMU
+    depends on !ARM_PATCH_PHYS_VIRT
+    default DRAM_BASE if !MMU
+    default 0x00000000 if ARCH_EBSA110 || \
+        ARCH_ROOTBRIDGE || ARCH_INTEGRATOR || ARCH_IOP13XX || \
+        ARCH_KS8695 || ARCH_REALVIEW
+    default 0x10000000 if ARCH_OMAP1 || ARCH_RPC
+    default 0x20000000 if ARCH_S5PV210
+    default 0xc0000000 if ARCH_SA1100
+    help
+        Please provide the physical address corresponding to the localtion of main memory in your system
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">PHYS_OFFSET</span></code> 用于指明DRAM在地址总线上的偏移．其定义在”arch/arm/Kconfig”</p>
+</section>
+<section id="phys-pfn">
+<h1><span class="section-number">3.6.1.221. </span>PHYS_PFN<a class="headerlink" href="#phys-pfn" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define PHYS_PFN(x) ((unsigned long)((x) &gt;&gt; PAGE_SHIFT))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">PHYS_PFN</span></code> 用于将物理地址转换成物理页帧号</p>
+</section>
+<section id="phys-to-pfn">
+<h1><span class="section-number">3.6.1.222. </span>__phys_to_pfn<a class="headerlink" href="#phys-to-pfn" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define __phys_to_pfn(paddr) PHYS_PFN(paddr)</span>
+</pre></div>
+</div>
+</section>
+<section id="phys-to-virt">
+<h1><span class="section-number">3.6.1.223. </span>__phys_to_virt<a class="headerlink" href="#phys-to-virt" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define __fix_to_virt(x)     (FIXADDR_TOP - ((x) &lt;&lt; PAGE_SHIFT))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">__fix_to_virt</span></code> 用于FIXMAP索引获得对应的虚拟地址</p>
+</section>
+<section id="id2">
+<h1><span class="section-number">3.6.1.224. </span>phys_to_virt<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="o">*</span><span class="n">phys_to_virt</span><span class="p">(</span><span class="n">phys_addr_t</span> <span class="n">x</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="n">__phys_to_virt</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="pgd-addr-end">
+<h1><span class="section-number">3.6.1.225. </span>pgd_addr_end<a class="headerlink" href="#pgd-addr-end" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#define pgd_addr_end(addr, end)         \
+({  unsigned long __boundary = ((addr) + PGDIR_SIZE) &amp; PGDIR_MASK;  \
+    (__boundary - 1 &lt; (end) - 1) ? __boundary : (end);  \
+})
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pgd_addr_end</span></code> 用于获得addr下一个PGDIR_SIZE地址</p>
+</section>
+<section id="pgd-index">
+<h1><span class="section-number">3.6.1.226. </span>pgd_index<a class="headerlink" href="#pgd-index" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define pgd_index(addr) ((addr) &gt;&gt; PGDIR_SHIFT)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pgd_index</span></code> 用于获得虚拟地址x在页目录中的索引</p>
+<ul class="simple">
+<li><p>例如二级页表的32位地址上，页目录和页表的布局如下</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span><span class="o">-</span><span class="n">level</span> <span class="n">Page</span> <span class="n">Table</span>
+
+<span class="mi">32</span>                        <span class="mi">22</span>                      <span class="mi">12</span>                      <span class="mi">0</span>
+<span class="o">+-------------------------+------------------------+----------------------+</span>
+<span class="o">|</span>     <span class="n">Directory</span>           <span class="o">|</span>        <span class="n">Table</span>           <span class="o">|</span>       <span class="n">Offset</span>         <span class="o">|</span>
+<span class="o">+-------------------------+------------------------+----------------------+</span>
+                          <span class="o">|</span>  <span class="o">&lt;------------</span> <span class="n">PGDIR_SHIFT</span> <span class="o">-----------------&gt;</span> <span class="o">|</span>
+                                                   <span class="o">|</span> <span class="o">&lt;---</span><span class="n">PAGE_SHIFT</span><span class="o">-----&gt;</span> <span class="o">|</span>
+</pre></div>
+</div>
+</section>
+<section id="pgd-offset">
+<h1><span class="section-number">3.6.1.227. </span>pgd_offset<a class="headerlink" href="#pgd-offset" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define pgd_offset(mm, addr)    ((mm)-&gt;pgd + pgd_index(addr))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pgd_offset</span></code> 用于获得虚拟地址对应的页目录内容</p>
+<ul class="simple">
+<li><p>例如在二级页表中，页目录索引与进程页目录的关系如下图</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="mi">2</span><span class="o">-</span><span class="n">level</span> <span class="n">Page</span> <span class="n">Table</span>
+
+  <span class="mi">32</span>                        <span class="mi">22</span>                      <span class="mi">12</span>                      <span class="mi">0</span>
+  <span class="o">+-------------------------+------------------------+----------------------+</span>
+  <span class="o">|</span>     <span class="n">Directory</span>           <span class="o">|</span>        <span class="n">Table</span>           <span class="o">|</span>       <span class="n">Offset</span>         <span class="o">|</span>
+  <span class="o">+-------------------------+------------------------+----------------------+</span>
+            <span class="o">|</span>               <span class="o">|</span>  <span class="o">&lt;------------</span> <span class="n">PGDIR_SHIFT</span> <span class="o">-----------------&gt;</span> <span class="o">|</span>
+            <span class="o">|</span>                                        <span class="o">|</span> <span class="o">&lt;---</span><span class="n">PAGE_SHIFT</span><span class="o">-----&gt;</span> <span class="o">|</span>
+            <span class="o">|</span>
+            <span class="o">|</span>
+            <span class="o">|</span>
+            <span class="o">|</span>
+            <span class="o">|</span>
+            <span class="o">|</span>
+            <span class="o">|</span>             <span class="o">+--------------+</span>
+            <span class="o">|</span>             <span class="o">|</span>              <span class="o">|</span>
+            <span class="o">|</span>             <span class="o">+--------------+</span>
+            <span class="o">|</span>             <span class="o">|</span>              <span class="o">|</span>
+            <span class="n">o</span><span class="o">------------&gt;+--------------+</span>
+                          <span class="o">|</span>              <span class="o">|</span>
+                          <span class="o">+--------------+</span>
+                          <span class="o">|</span>              <span class="o">|</span>
+                          <span class="o">+--------------+</span>
+                          <span class="o">|</span>              <span class="o">|</span>
+                          <span class="o">+--------------+</span>
+                          <span class="o">|</span>              <span class="o">|</span>
+                          <span class="o">+--------------+</span>
+                          <span class="o">|</span>              <span class="o">|</span>
+                          <span class="o">+--------------+</span>
+                          <span class="o">|</span>              <span class="o">|</span>
+                          <span class="o">+--------------+</span>
+                          <span class="o">|</span>              <span class="o">|</span>
+                          <span class="o">+--------------+</span>
+                          <span class="o">|</span>              <span class="o">|</span>
+<span class="n">task_struct</span><span class="o">-&gt;</span><span class="n">mm</span><span class="o">-&gt;</span><span class="n">pgd</span><span class="o">-----&gt;+--------------+</span>
+</pre></div>
+</div>
+</section>
+<section id="pgd-offset-k">
+<h1><span class="section-number">3.6.1.228. </span>pgd_offset_k<a class="headerlink" href="#pgd-offset-k" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#deinf pgd_offset_k(addr)   pgd_offset(&amp;init_mm, addr)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pgd_offset_k</span></code> 用于获得内核空间虚拟地址对应的页目录入口地址</p>
+<ul class="simple">
+<li><p>例如在二级页表中，内核虚拟地址对应的页目录关系如下</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2</span><span class="o">-</span><span class="n">level</span> <span class="n">Page</span> <span class="n">Table</span>
+
+<span class="mi">32</span>                        <span class="mi">22</span>                      <span class="mi">12</span>                      <span class="mi">0</span>
+<span class="o">+-------------------------+------------------------+----------------------+</span>
+<span class="o">|</span>     <span class="n">Directory</span>           <span class="o">|</span>        <span class="n">Table</span>           <span class="o">|</span>       <span class="n">Offset</span>         <span class="o">|</span>
+<span class="o">+-------------------------+------------------------+----------------------+</span>
+          <span class="o">|</span>               <span class="o">|</span>  <span class="o">&lt;------------</span> <span class="n">PGDIR_SHIFT</span> <span class="o">-----------------&gt;</span> <span class="o">|</span>
+          <span class="o">|</span>                                        <span class="o">|</span> <span class="o">&lt;---</span><span class="n">PAGE_SHIFT</span><span class="o">-----&gt;</span> <span class="o">|</span>
+          <span class="o">|</span>
+          <span class="o">|</span>
+          <span class="o">|</span>
+          <span class="o">|</span>
+          <span class="o">|</span>
+          <span class="o">|</span>
+          <span class="o">|</span>             <span class="o">+--------------+</span>
+          <span class="o">|</span>             <span class="o">|</span>              <span class="o">|</span>
+          <span class="o">|</span>             <span class="o">+--------------+</span>
+          <span class="o">|</span>             <span class="o">|</span>              <span class="o">|</span>
+          <span class="n">o</span><span class="o">------------&gt;+--------------+</span>
+                        <span class="o">|</span>              <span class="o">|</span>
+                        <span class="o">+--------------+</span>
+                        <span class="o">|</span>              <span class="o">|</span>
+                        <span class="o">+--------------+</span>
+                        <span class="o">|</span>              <span class="o">|</span>
+                        <span class="o">+--------------+</span>
+                        <span class="o">|</span>              <span class="o">|</span>
+                        <span class="o">+--------------+</span>
+                        <span class="o">|</span>              <span class="o">|</span>
+                        <span class="o">+--------------+</span>
+                        <span class="o">|</span>              <span class="o">|</span>
+                        <span class="o">+--------------+</span>
+                        <span class="o">|</span>              <span class="o">|</span>
+                        <span class="o">+--------------+</span>
+                        <span class="o">|</span>              <span class="o">|</span>
+      <span class="n">init_mm</span><span class="o">-&gt;</span><span class="n">pgd</span><span class="o">-----&gt;+--------------+</span>
+</pre></div>
+</div>
+</section>
+<section id="pgdat-end-pfn">
+<h1><span class="section-number">3.6.1.229. </span>pgdat_end_pfn<a class="headerlink" href="#pgdat-end-pfn" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">pgdat_end_pfn</span><span class="p">(</span><span class="n">pg_data_t</span> <span class="o">*</span><span class="n">pgdat</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">pgdat</span><span class="o">-&gt;</span><span class="n">node_start_pfn</span> <span class="o">+</span> <span class="n">pgdata</span><span class="o">-&gt;</span><span class="n">node_spanned_pages</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pgdat_end_pfn</span></code> 用于获得pglist指向的结束页帧号．函数通过从pglist结构中获得起始页帧加上横跨页帧的数量，以此获得结束页帧号</p>
+</section>
+<section id="pgprot">
+<h1><span class="section-number">3.6.1.230. </span>__pgprot<a class="headerlink" href="#pgprot" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define __pgprot(x) ((pgprot_t) { (x) })</span>
+</pre></div>
+</div>
+</section>
+<section id="pgrot-val">
+<h1><span class="section-number">3.6.1.231. </span>pgrot_val<a class="headerlink" href="#pgrot-val" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define pgrot_val(x)    ((x).pgprot)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pgrot_val</span></code> 用于获得PTE入口标志</p>
+</section>
+<section id="pmd-addr-end">
+<h1><span class="section-number">3.6.1.232. </span>pmd_addr_end<a class="headerlink" href="#pmd-addr-end" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#define pmd_addr_end(addr, end)     \
+({  unsigned long __boundary = ((addr) + PMD_SIZE) &amp; PMD_MASK;  \
+    (__boundary - 1 &lt; (end) - 1) ? __boundary: (end);   \
+})
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pmd_addr_end</span></code> 用于获得addr下一个PMD_SIZE地址</p>
+</section>
+<section id="pmd-bad">
+<h1><span class="section-number">3.6.1.233. </span>pmd_bad<a class="headerlink" href="#pmd-bad" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define pmd_bad(pmd)    (pmd_val(pmd) &amp; 2)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pmd_bad</span></code> 判断PMD入口项是否有效</p>
+</section>
+<section id="pmd-clear">
+<h1><span class="section-number">3.6.1.234. </span>pmd_clear<a class="headerlink" href="#pmd-clear" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define pmd_clear(pmdp) \</span>
+<span class="n">do</span> <span class="p">{</span>    \
+    <span class="n">pmdp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">__pmd</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> \
+    <span class="n">pmdp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">__pmd</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> \
+    <span class="n">clean_pmd_entry</span><span class="p">(</span><span class="n">pmdp</span><span class="p">);</span>  \
+<span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pmd_clear</span></code> 用于清除一个PMD入口项</p>
+</section>
+<section id="pmd-empty-section-gap">
+<h1><span class="section-number">3.6.1.235. </span>pmd_empty_section_gap<a class="headerlink" href="#pmd-empty-section-gap" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">void</span> <span class="n">__init</span> <span class="n">pmd_empty_section_gap</span><span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span> <span class="n">addr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">vm_reserve_area_early</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">SECTION_SIZE</span><span class="p">,</span> <span class="n">pmd_empty_section_gap</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">void</span> <span class="n">__init</span> <span class="n">vm_reserve_area_early</span><span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span> <span class="n">addr</span><span class="p">,</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">size</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">caller</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">vm_struct</span> <span class="o">*</span><span class="n">vm</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">static_vm</span> <span class="o">*</span><span class="n">svm</span><span class="p">;</span>
+
+    <span class="n">svm</span> <span class="o">=</span> <span class="n">early_alloc_aligned</span><span class="p">(</span><span class="n">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">svm</span><span class="p">),</span> <span class="n">__alignof__</span><span class="p">(</span><span class="o">*</span><span class="n">svm</span><span class="p">));</span>
+
+    <span class="n">vm</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">svm</span><span class="o">-&gt;</span><span class="n">vm</span><span class="p">;</span>
+    <span class="n">vm</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="n">addr</span><span class="p">;</span>
+    <span class="n">vm</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span><span class="p">;</span>
+    <span class="n">vm</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">=</span> <span class="n">VM_IOREMAP</span> <span class="o">|</span> <span class="n">VM_ARM_EMPTY_MAPPING</span><span class="p">;</span>
+    <span class="n">vm</span><span class="o">-&gt;</span><span class="n">caller</span> <span class="o">=</span> <span class="n">caller</span><span class="p">;</span>
+    <span class="n">add_static_vm_early</span><span class="p">(</span><span class="n">svm</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pmd_empty_section_gap</span></code> 将addr对应的虚拟空间加入到系统静态映射中预留区</p>
+</section>
+<section id="pmd-none">
+<h1><span class="section-number">3.6.1.236. </span>pmd_none<a class="headerlink" href="#pmd-none" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define pmd_none(pmd)   (!pmd_val(pmd))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pmd_none</span></code> 判断PMD入口项是否为空. 函数通过pmd_val函数读取PMD入口项的值，如果值为0，那么返回true,表示PMD入口项为空</p>
+</section>
+<section id="pmd-off-k">
+<h1><span class="section-number">3.6.1.237. </span>pmd_off_k<a class="headerlink" href="#pmd-off-k" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">pmd_t</span> <span class="o">*</span><span class="n">pmd_off_k</span><span class="p">(</span><span class="n">unsigned</span> <span class="n">long</span> <span class="n">virt</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">pmd_offset</span><span class="p">(</span><span class="n">pud_offset</span><span class="p">(</span><span class="n">pgd_offset_k</span><span class="p">(</span><span class="n">virt</span><span class="p">),</span> <span class="n">virt</span><span class="p">),</span> <span class="n">virt</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pmd_off_k</span></code> 用于获得内核虚拟地址对应的PMD入口</p>
+</section>
+<section id="pmd-offset">
+<h1><span class="section-number">3.6.1.238. </span>pmd_offset<a class="headerlink" href="#pmd-offset" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">pmd_t</span> <span class="o">*</span><span class="n">pmd_offset</span><span class="p">(</span><span class="n">pud_t</span> <span class="o">*</span><span class="n">pud</span><span class="p">,</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">address</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">pmd_t</span> <span class="o">*</span><span class="p">)</span><span class="n">pud</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pmd_offset</span></code> 用于从PUD页表中获得PMD入口地址</p>
+</section>
+<section id="pmd-page-vaddr">
+<h1><span class="section-number">3.6.1.239. </span>pmd_page_vaddr<a class="headerlink" href="#pmd-page-vaddr" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">pte_t</span> <span class="o">*</span><span class="n">pmd_page_vaddr</span><span class="p">(</span><span class="n">pmd_t</span> <span class="n">pmd</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">__va</span><span class="p">(</span><span class="n">pmd_val</span><span class="p">(</span><span class="n">pmd</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">PHYS_MASK</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">s32</span><span class="p">)</span><span class="n">PAGE_MASK</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pmd_page_vaddr</span></code> 用于获得PMD入口对应的PTE页表基地址</p>
+</section>
+<section id="pmd-populate">
+<h1><span class="section-number">3.6.1.240. </span>__pmd_populate<a class="headerlink" href="#pmd-populate" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">__pmd_populate</span><span class="p">(</span><span class="n">pmd_t</span> <span class="o">*</span><span class="n">pmdp</span><span class="p">,</span> <span class="n">phys_addr_t</span> <span class="n">pte</span><span class="p">,</span> <span class="n">pmdval_t</span> <span class="n">prot</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">pmdval_t</span> <span class="n">pmdval</span> <span class="o">=</span>  <span class="p">(</span><span class="n">pte</span> <span class="o">+</span> <span class="n">PTE_HWTABLE_OFF</span><span class="p">)</span> <span class="o">|</span> <span class="n">port</span><span class="p">;</span>
+    <span class="n">pmdp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">__pmd</span><span class="p">(</span><span class="n">pmdval</span><span class="p">);</span>
+<span class="c1">#ifndef CONFIG_ARM_LPAE</span>
+    <span class="n">pmdp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">__pmd</span><span class="p">(</span><span class="n">pmdval</span> <span class="o">+</span> <span class="mi">256</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">pte_t</span><span class="p">));</span>
+<span class="c1">#endif</span>
+    <span class="n">flush_pmd_entry</span><span class="p">(</span><span class="n">pmdp</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">__pmd_populate</span></code> 向指定的PMD入口填充PTE页表的物理地址与标志</p>
+</section>
+<section id="pmd-populate-kernel">
+<h1><span class="section-number">3.6.1.241. </span>pmd_populate_kernel<a class="headerlink" href="#pmd-populate-kernel" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">pmd_populate_kernel</span><span class="p">(</span><span class="n">struct</span> <span class="n">mm_struct</span> <span class="o">*</span><span class="n">mm</span><span class="p">,</span> <span class="n">pmd_t</span> <span class="o">*</span><span class="n">pmdp</span><span class="p">,</span> <span class="n">pte_t</span> <span class="o">*</span><span class="n">ptep</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">__pmd_populate</span><span class="p">(</span><span class="n">pmdp</span><span class="p">,</span> <span class="n">__pa</span><span class="p">(</span><span class="n">ptep</span><span class="p">),</span> <span class="n">_PAGE_KERNEL_TABLE</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pmd_populate_kernel</span></code> 是为内核PMD入口填充PTE页表信息</p>
+</section>
+<section id="pmd-val">
+<h1><span class="section-number">3.6.1.242. </span>pmd_val<a class="headerlink" href="#pmd-val" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define pmd_val(x)  ((x).pmd)</span>
+</pre></div>
+</div>
+</section>
+<section id="populate-zone">
+<h1><span class="section-number">3.6.1.243. </span>populate_zone<a class="headerlink" href="#populate-zone" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="nb">bool</span> <span class="n">populate_zone</span><span class="p">(</span><span class="n">struct</span> <span class="n">zone</span> <span class="o">*</span><span class="n">zone</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">zone</span><span class="o">-&gt;</span><span class="n">present_pages</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">populate_zone</span></code> 用于判断ZONE是否已经包含物理内存</p>
+</section>
+<section id="prepare-page-table">
+<h1><span class="section-number">3.6.1.244. </span>prepare_page_table<a class="headerlink" href="#prepare-page-table" title="此标题的永久链接"></a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">prepare_page_table</span><span class="p">(</span><span class="n">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">unsigned</span> <span class="n">long</span> <span class="n">addr</span><span class="p">;</span>
+    <span class="n">phys_addr_t</span> <span class="n">end</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="n">addr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">addr</span> <span class="o">&lt;</span> <span class="n">MODULES_VADDR</span><span class="p">;</span> <span class="n">addr</span> <span class="o">+=</span> <span class="n">PMD_SIZE</span><span class="p">)</span>
+        <span class="n">pmd_clear</span><span class="p">(</span><span class="n">pmd_off_k</span><span class="p">(</span><span class="n">addr</span><span class="p">));</span>
+
+<span class="c1">#ifdef CONFIG_XIP_KERNEL</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="p">((</span><span class="n">unsigned</span> <span class="n">long</span><span class="p">)</span><span class="n">_exiprom</span> <span class="o">+</span> <span class="n">PMD_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">PMD_MASK</span><span class="p">;</span>
+<span class="c1">#endif</span>
+
+    <span class="k">for</span><span class="p">(</span> <span class="p">;</span> <span class="n">addr</span> <span class="o">&lt;</span> <span class="n">PAGE_OFFSET</span><span class="p">;</span> <span class="n">addr</span> <span class="o">+=</span> <span class="n">PMD_SIZE</span><span class="p">)</span>
+        <span class="n">pmd_clear</span><span class="p">(</span><span class="n">pmd_offset_k</span><span class="p">(</span><span class="n">addr</span><span class="p">));</span>
+
+    <span class="n">end</span> <span class="o">=</span> <span class="n">memblock</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">base</span> <span class="o">+</span> <span class="n">memblock</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">regions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">end</span> <span class="o">&gt;=</span> <span class="n">arm_lowmem_limit</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">arm_lowmem_limit</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="n">addr</span> <span class="o">=</span> <span class="n">__phys_to_virt</span><span class="p">(</span><span class="n">end</span><span class="p">);</span> <span class="n">addr</span> <span class="o">&lt;</span> <span class="n">VMALLOC_START</span><span class="p">;</span> <span class="n">addr</span> <span class="o">+=</span> <span class="n">PMD_SIZE</span><span class="p">)</span>
+        <span class="n">pmd_clear</span><span class="p">(</span><span class="n">pmd_off_k</span><span class="p">(</span><span class="n">addr</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">prepare_page_table</span></code> 函数的作用是建立页表之前，清除未使用的页表．函数分别找了三段虚拟地址，分别为</p>
+<ul class="simple">
+<li><p>0地址到MODULE_VADDR</p></li>
+<li><p>MODULE_VADDR到PAGE_OFFSET</p></li>
+<li><p>第一块DRM大于arm_lowmem_limit部分</p></li>
+</ul>
+<p>对这三段地址分别使用pmd_off_k计算出pmd入口之后，使用pmd_clear将pmd项清除，并刷新TLB和Cache</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="O_function.html" class="btn btn-neutral float-left" title="3.6.1.196. of_compat_cmp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="R_function.html" class="btn btn-neutral float-right" title="3.6.1.245. raw_local_irq_disable" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

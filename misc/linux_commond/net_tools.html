@@ -1,0 +1,497 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.11.1. 网络调试工具 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8. embeded" href="../../embedded/index.html" />
+    <link rel="prev" title="7.11. linux命令汇总" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.9. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.11. linux命令汇总</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.11.1. 网络调试工具</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bmon">7.11.1.1. bmon 强大的网络带宽监视和调试工具</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iperf">7.11.1.2. iperf 命令</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#netstat">7.11.1.3. netstat 命令</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tcpdump">7.11.1.4. tcpdump</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.11. </span>linux命令汇总</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.11.1. </span>网络调试工具</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/misc/linux_commond/net_tools.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">7.11.1. </span>网络调试工具<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="bmon">
+<h2><span class="section-number">7.11.1.1. </span>bmon 强大的网络带宽监视和调试工具<a class="headerlink" href="#bmon" title="此标题的永久链接"></a></h2>
+<p>可以通过以下命令启动bmon</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bmon</span>
+<span class="n">或者可以指定网络</span><span class="p">,</span><span class="n">以下命令将监视enp4s0网络接口</span>
+<span class="n">bmon</span> <span class="o">-</span><span class="n">p</span> <span class="n">enp4s0</span>
+<span class="n">也可以使用</span><span class="o">-</span><span class="n">r指定间隔</span>
+<span class="n">bmon</span> <span class="o">-</span><span class="n">r</span> <span class="mi">2</span> <span class="o">-</span><span class="n">p</span> <span class="n">enp4s0</span>
+</pre></div>
+</div>
+<p>bmon可以用来监控网络带宽，可查看TX和RX，方便用来定位带宽导致的问题</p>
+</section>
+<section id="iperf">
+<h2><span class="section-number">7.11.1.2. </span>iperf 命令<a class="headerlink" href="#iperf" title="此标题的永久链接"></a></h2>
+<p>iperf是一个网络性能测试工具，可以用来测试tcp和udp的最大带宽性能，具有多种参数和udp特性，可以根据需要进行调整，
+可以报告带宽，延迟抖动和数据包丢失。</p>
+<p>iperf 分别运行在客户端和服务器端，所以在测试时需要在进行通信的测试的双方分别运行iperf。</p>
+<ul class="simple">
+<li><p>通用配置选项</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>-F,--file name      //客户端：从文件中读取并写入网络，而不是使用随机数据
+                    //服务器端：从网络读取并写入文件，而不是将数据丢弃
+
+-V，--verbose       //更详细的输出
+
+-B,--bind host      //绑定到主机一个地址，对于客户端，这设置了出战接口。对于服务器，这将设置传入的接口
+
+--logfile file      //将输出发送到一个日志文件
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>服务器选项</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">s</span><span class="p">,</span><span class="o">--</span><span class="n">server</span>         <span class="o">//</span><span class="n">在服务器模式下运行iperf</span>
+
+<span class="o">-</span><span class="n">D</span><span class="p">,</span><span class="o">--</span><span class="n">daemon</span>         <span class="o">//</span><span class="n">在后台运行服务器作为守护进程</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>客户端选项</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>-c,--client host        //在客户端模式下运行iper
+
+-u,--udp                //使用UDP
+
+-t,--time n             //设置传输总时间，默认是10s
+
+-b,--bandwidth n[KM]    //UDP模式使用的带宽，默认是1Mbit/sec
+
+-N,--no-delay           //设置TCP不延迟选项，使nagle算法失效
+
+-P，--paranlel n        //线程数，默认是1线程
+
+-4，--version4          //只使用IPV4
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>应用实例</p></li>
+</ul>
+<p>服务器端</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>yinwg@yinwg-ThinkPad-E470:~$ iperf3 -s -V
+iperf 3.1.3
+Linux yinwg-ThinkPad-E470 5.4.0-65-generic #73~18.04.1-Ubuntu SMP Tue Jan 19 09:02:24 UTC 2021 x86_64
+-----------------------------------------------------------
+Server listening on 5201
+-----------------------------------------------------------
+Time: Fri, 05 Mar 2021 01:18:41 GMT
+Accepted connection from 192.168.199.2, port 45332
+      Cookie: ARK.1614907121.724677.7b5fc3d948282c
+      TCP MSS: 1448 (default)
+[  5] local 192.168.199.1 port 5201 connected to 192.168.199.2 port 45334
+Starting Test: protocol: TCP, 1 streams, 131072 byte blocks, omitting 0 seconds, 10 second test
+[ ID] Interval           Transfer     Bandwidth
+[  5]   0.00-1.00   sec  25.7 MBytes   216 Mbits/sec
+[  5]   1.00-2.00   sec  25.8 MBytes   216 Mbits/sec
+[  5]   2.00-3.00   sec  25.8 MBytes   216 Mbits/sec
+[  5]   3.00-4.00   sec  25.8 MBytes   216 Mbits/sec
+[  5]   4.00-5.00   sec  25.8 MBytes   216 Mbits/sec
+[  5]   5.00-6.00   sec  25.8 MBytes   216 Mbits/sec
+[  5]   6.00-7.00   sec  25.8 MBytes   216 Mbits/sec
+[  5]   7.00-8.00   sec  25.8 MBytes   216 Mbits/sec
+[  5]   8.00-9.00   sec  25.8 MBytes   216 Mbits/sec
+[  5]   9.00-10.00  sec  25.8 MBytes   216 Mbits/sec
+[  5]  10.00-10.00  sec  84.8 KBytes   214 Mbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+Test Complete. Summary Results:
+[ ID] Interval           Transfer     Bandwidth
+[  5]   0.00-10.00  sec  0.00 Bytes  0.00 bits/sec                  sender
+[  5]   0.00-10.00  sec   258 MBytes   216 Mbits/sec                  receiver
+CPU Utilization: local/receiver 13.4% (3.3%u/10.1%s), remote/sender 0.0% (0.0%u/0.0%s)
+iperf 3.1.3
+Linux yinwg-ThinkPad-E470 5.4.0-65-generic #73~18.04.1-Ubuntu SMP Tue Jan 19 09:02:24 UTC 2021 x86_64
+-----------------------------------------------------------
+Server listening on 5201
+-----------------------------------------------------------
+</pre></div>
+</div>
+<p>客户端</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="nd">@ARK</span><span class="p">:</span><span class="o">~</span><span class="c1"># iperf3 -c 192.168.199.1</span>
+<span class="n">Connecting</span> <span class="n">to</span> <span class="n">host</span> <span class="mf">192.168.199.1</span><span class="p">,</span> <span class="n">port</span> <span class="mi">5201</span>
+<span class="p">[</span>  <span class="mi">4</span><span class="p">]</span> <span class="n">local</span> <span class="mf">192.168.199.2</span> <span class="n">port</span> <span class="mi">45334</span> <span class="n">connected</span> <span class="n">to</span> <span class="mf">192.168.199.1</span> <span class="n">port</span> <span class="mi">5201</span>
+<span class="p">[</span> <span class="n">ID</span><span class="p">]</span> <span class="n">Interval</span>           <span class="n">Transfer</span>     <span class="n">Bandwidth</span>       <span class="n">Retr</span>  <span class="n">Cwnd</span>
+<span class="p">[</span>  <span class="mi">4</span><span class="p">]</span>   <span class="mf">0.00</span><span class="o">-</span><span class="mf">1.00</span>   <span class="n">sec</span>  <span class="mf">26.4</span> <span class="n">MBytes</span>   <span class="mi">221</span> <span class="n">Mbits</span><span class="o">/</span><span class="n">sec</span>    <span class="mi">0</span>    <span class="mi">102</span> <span class="n">KBytes</span>
+<span class="p">[</span>  <span class="mi">4</span><span class="p">]</span>   <span class="mf">1.00</span><span class="o">-</span><span class="mf">2.00</span>   <span class="n">sec</span>  <span class="mf">25.8</span> <span class="n">MBytes</span>   <span class="mi">216</span> <span class="n">Mbits</span><span class="o">/</span><span class="n">sec</span>    <span class="mi">0</span>    <span class="mi">102</span> <span class="n">KBytes</span>
+<span class="p">[</span>  <span class="mi">4</span><span class="p">]</span>   <span class="mf">2.00</span><span class="o">-</span><span class="mf">3.00</span>   <span class="n">sec</span>  <span class="mf">25.7</span> <span class="n">MBytes</span>   <span class="mi">216</span> <span class="n">Mbits</span><span class="o">/</span><span class="n">sec</span>    <span class="mi">0</span>    <span class="mi">102</span> <span class="n">KBytes</span>
+<span class="p">[</span>  <span class="mi">4</span><span class="p">]</span>   <span class="mf">3.00</span><span class="o">-</span><span class="mf">4.00</span>   <span class="n">sec</span>  <span class="mf">25.8</span> <span class="n">MBytes</span>   <span class="mi">216</span> <span class="n">Mbits</span><span class="o">/</span><span class="n">sec</span>    <span class="mi">0</span>    <span class="mi">102</span> <span class="n">KBytes</span>
+<span class="p">[</span>  <span class="mi">4</span><span class="p">]</span>   <span class="mf">4.00</span><span class="o">-</span><span class="mf">5.00</span>   <span class="n">sec</span>  <span class="mf">25.7</span> <span class="n">MBytes</span>   <span class="mi">216</span> <span class="n">Mbits</span><span class="o">/</span><span class="n">sec</span>    <span class="mi">0</span>    <span class="mi">102</span> <span class="n">KBytes</span>
+<span class="p">[</span>  <span class="mi">4</span><span class="p">]</span>   <span class="mf">5.00</span><span class="o">-</span><span class="mf">6.00</span>   <span class="n">sec</span>  <span class="mf">25.8</span> <span class="n">MBytes</span>   <span class="mi">216</span> <span class="n">Mbits</span><span class="o">/</span><span class="n">sec</span>    <span class="mi">0</span>    <span class="mi">102</span> <span class="n">KBytes</span>
+<span class="p">[</span>  <span class="mi">4</span><span class="p">]</span>   <span class="mf">6.00</span><span class="o">-</span><span class="mf">7.00</span>   <span class="n">sec</span>  <span class="mf">26.2</span> <span class="n">MBytes</span>   <span class="mi">219</span> <span class="n">Mbits</span><span class="o">/</span><span class="n">sec</span>    <span class="mi">0</span>    <span class="mi">168</span> <span class="n">KBytes</span>
+<span class="p">[</span>  <span class="mi">4</span><span class="p">]</span>   <span class="mf">7.00</span><span class="o">-</span><span class="mf">8.00</span>   <span class="n">sec</span>  <span class="mf">26.2</span> <span class="n">MBytes</span>   <span class="mi">219</span> <span class="n">Mbits</span><span class="o">/</span><span class="n">sec</span>    <span class="mi">0</span>    <span class="mi">242</span> <span class="n">KBytes</span>
+<span class="p">[</span>  <span class="mi">4</span><span class="p">]</span>   <span class="mf">8.00</span><span class="o">-</span><span class="mf">9.00</span>   <span class="n">sec</span>  <span class="mf">25.8</span> <span class="n">MBytes</span>   <span class="mi">216</span> <span class="n">Mbits</span><span class="o">/</span><span class="n">sec</span>    <span class="mi">0</span>    <span class="mi">242</span> <span class="n">KBytes</span>
+<span class="p">[</span>  <span class="mi">4</span><span class="p">]</span>   <span class="mf">9.00</span><span class="o">-</span><span class="mf">10.00</span>  <span class="n">sec</span>  <span class="mf">25.7</span> <span class="n">MBytes</span>   <span class="mi">216</span> <span class="n">Mbits</span><span class="o">/</span><span class="n">sec</span>    <span class="mi">0</span>    <span class="mi">242</span> <span class="n">KBytes</span>
+<span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span> <span class="o">-</span>
+<span class="p">[</span> <span class="n">ID</span><span class="p">]</span> <span class="n">Interval</span>           <span class="n">Transfer</span>     <span class="n">Bandwidth</span>       <span class="n">Retr</span>
+<span class="p">[</span>  <span class="mi">4</span><span class="p">]</span>   <span class="mf">0.00</span><span class="o">-</span><span class="mf">10.00</span>  <span class="n">sec</span>   <span class="mi">259</span> <span class="n">MBytes</span>   <span class="mi">217</span> <span class="n">Mbits</span><span class="o">/</span><span class="n">sec</span>    <span class="mi">0</span>             <span class="n">sender</span>
+<span class="p">[</span>  <span class="mi">4</span><span class="p">]</span>   <span class="mf">0.00</span><span class="o">-</span><span class="mf">10.00</span>  <span class="n">sec</span>   <span class="mi">258</span> <span class="n">MBytes</span>   <span class="mi">216</span> <span class="n">Mbits</span><span class="o">/</span><span class="n">sec</span>                  <span class="n">receiver</span>
+
+<span class="n">iperf</span> <span class="n">Done</span><span class="o">.</span>
+</pre></div>
+</div>
+</section>
+<section id="netstat">
+<h2><span class="section-number">7.11.1.3. </span>netstat 命令<a class="headerlink" href="#netstat" title="此标题的永久链接"></a></h2>
+<p>netstat 命令用于显示各种网络相关信息，如网络连接，路由表，接口状态，多播成员等等。</p>
+<p>netstat 输出结果可以分为两部分</p>
+<p>一部分是：active interrnet connections,称为有源TCP连接，其中Recv-Q和Send-Q指的是接收队列和发送队列一般为0</p>
+<p>一部分是：active unix domain sockets,称为有源unix域套接口(和网络套接字一样，只能用于本机通信，性能可以提高一倍)</p>
+<p>proto显示使用的协议，refcnt表示连接到本套接口上的进程号，types表示套接口的类型，state显示套接口当前的状态，path表示连接到套接口的其他进程使用的路径名。</p>
+<ul class="simple">
+<li><p>常见参数</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>-a      显示所有选项
+
+-t      仅显示tcp相关选项
+
+-u      仅显示udp相关选项
+
+-l      仅列出所有在listen的服务状态
+
+-p      显示建立相关连接的程序名
+
+-r      显示路由表
+
+-e      显示扩展信息，例如uid
+
+-s      按各个协议进行统计
+
+-c      每隔一个固定时间，执行该netstat命令
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>命令实例</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">netstat</span> <span class="o">-</span><span class="n">a</span> <span class="o">|</span> <span class="n">more</span>       <span class="o">//</span><span class="n">列出所有端口</span>
+
+<span class="n">netstat</span> <span class="o">-</span><span class="n">au</span>             <span class="o">//</span><span class="n">列出所有udp端口</span>
+<span class="n">激活Internet连接</span> <span class="p">(</span><span class="n">服务器和已建立连接的</span><span class="p">)</span>
+<span class="n">Proto</span> <span class="n">Recv</span><span class="o">-</span><span class="n">Q</span> <span class="n">Send</span><span class="o">-</span><span class="n">Q</span> <span class="n">Local</span> <span class="n">Address</span>           <span class="n">Foreign</span> <span class="n">Address</span>         <span class="n">State</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">0.0.0.0</span><span class="p">:</span><span class="mi">44527</span>           <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="n">localhost</span><span class="p">:</span><span class="n">domain</span>        <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">0.0.0.0</span><span class="p">:</span><span class="n">bootpc</span>          <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">0.0.0.0</span><span class="p">:</span><span class="n">bootpc</span>          <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">0.0.0.0</span><span class="p">:</span><span class="n">tftp</span>            <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">0.0.0.0</span><span class="p">:</span><span class="n">sunrpc</span>          <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">0.0.0.0</span><span class="p">:</span><span class="mi">37209</span>           <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">0.0.0.0</span><span class="p">:</span><span class="mi">49720</span>           <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">0.0.0.0</span><span class="p">:</span><span class="n">ipp</span>             <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">0.0.0.0</span><span class="p">:</span><span class="mi">45790</span>           <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">0.0.0.0</span><span class="p">:</span><span class="mi">829</span>             <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">224.0.0.251</span><span class="p">:</span><span class="n">mdns</span>        <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">224.0.0.251</span><span class="p">:</span><span class="n">mdns</span>        <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">224.0.0.251</span><span class="p">:</span><span class="n">mdns</span>        <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+<span class="n">udp</span>        <span class="mi">0</span>      <span class="mi">0</span> <span class="mf">224.0.0.251</span><span class="p">:</span><span class="n">mdns</span>        <span class="mf">0.0.0.0</span><span class="p">:</span><span class="o">*</span>
+
+<span class="n">netstat</span> <span class="o">-</span><span class="n">lt</span>             <span class="o">//</span><span class="n">列出所有的在监听的tcp端口</span>
+
+<span class="n">netstat</span> <span class="o">-</span><span class="n">lx</span>             <span class="o">//</span><span class="n">列出所有监听的unix端口</span>
+
+<span class="n">netstat</span> <span class="o">-</span><span class="n">r</span>              <span class="o">//</span><span class="n">显示路由表信息</span>
+<span class="n">root</span><span class="nd">@ARK</span><span class="p">:</span><span class="o">~</span><span class="c1"># netstat -r</span>
+<span class="n">Kernel</span> <span class="n">IP</span> <span class="n">routing</span> <span class="n">table</span>
+<span class="n">Destination</span>     <span class="n">Gateway</span>         <span class="n">Genmask</span>         <span class="n">Flags</span>   <span class="n">MSS</span> <span class="n">Window</span>  <span class="n">irtt</span> <span class="n">Iface</span>
+<span class="n">default</span>         <span class="mf">192.168.199.1</span>   <span class="mf">0.0.0.0</span>         <span class="n">UG</span>        <span class="mi">0</span> <span class="mi">0</span>          <span class="mi">0</span> <span class="n">usb0</span>
+<span class="mf">192.168.1.0</span>     <span class="mf">0.0.0.0</span>         <span class="mf">255.255.255.0</span>   <span class="n">U</span>         <span class="mi">0</span> <span class="mi">0</span>          <span class="mi">0</span> <span class="n">eth0</span>
+<span class="mf">192.168.199.0</span>   <span class="mf">0.0.0.0</span>         <span class="mf">255.255.255.0</span>   <span class="n">U</span>         <span class="mi">0</span> <span class="mi">0</span>          <span class="mi">0</span> <span class="n">usb0</span>
+
+<span class="n">netstat</span> <span class="o">-</span><span class="n">i</span>              <span class="o">//</span><span class="n">显示网络接口列表</span>
+<span class="n">Kernel</span> <span class="n">Interface</span> <span class="n">table</span>
+<span class="n">Iface</span>      <span class="n">MTU</span>    <span class="n">RX</span><span class="o">-</span><span class="n">OK</span> <span class="n">RX</span><span class="o">-</span><span class="n">ERR</span> <span class="n">RX</span><span class="o">-</span><span class="n">DRP</span> <span class="n">RX</span><span class="o">-</span><span class="n">OVR</span>    <span class="n">TX</span><span class="o">-</span><span class="n">OK</span> <span class="n">TX</span><span class="o">-</span><span class="n">ERR</span> <span class="n">TX</span><span class="o">-</span><span class="n">DRP</span> <span class="n">TX</span><span class="o">-</span><span class="n">OVR</span> <span class="n">Flg</span>
+<span class="n">enp4s0</span>    <span class="mi">1500</span> <span class="mi">681787887</span>      <span class="mi">0</span> <span class="mi">215214</span> <span class="mi">0</span>       <span class="mi">6151104</span>      <span class="mi">0</span>      <span class="mi">0</span>      <span class="mi">0</span> <span class="n">BMRU</span>
+<span class="n">enx20210</span>  <span class="mi">1500</span>   <span class="mi">756690</span>      <span class="mi">0</span>      <span class="mi">0</span> <span class="mi">0</span>        <span class="mi">379179</span>      <span class="mi">0</span>      <span class="mi">0</span>      <span class="mi">0</span> <span class="n">BMRU</span>
+<span class="n">lo</span>       <span class="mi">65536</span>   <span class="mi">609276</span>      <span class="mi">0</span>      <span class="mi">0</span> <span class="mi">0</span>        <span class="mi">609276</span>      <span class="mi">0</span>      <span class="mi">0</span>      <span class="mi">0</span> <span class="n">LRU</span>
+<span class="n">wlp5s0</span>    <span class="mi">1500</span>  <span class="mi">5444407</span>      <span class="mi">0</span> <span class="mi">948041</span> <span class="mi">0</span>          <span class="mi">4651</span>      <span class="mi">0</span>     <span class="mi">19</span>      <span class="mi">0</span> <span class="n">BMRU</span>
+
+<span class="n">netstat</span> <span class="o">-</span><span class="n">ap</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">ssh</span>  <span class="o">//</span><span class="n">找出程序运行的端口</span>
+</pre></div>
+</div>
+</section>
+<section id="tcpdump">
+<h2><span class="section-number">7.11.1.4. </span>tcpdump<a class="headerlink" href="#tcpdump" title="此标题的永久链接"></a></h2>
+<p>网络上的流量数据包非常多，如果想要抓取所需要的数据包，就需要进行过滤，所以学习抓包工具其实就是学习如何定义过滤器的过程</p>
+<p><code class="docutils literal notranslate"><span class="pre">tcpdump</span></code> 命令行</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tcpdump</span> <span class="n">option</span> <span class="n">proto</span> <span class="nb">dir</span> <span class="nb">type</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>option: 可选参数</p>
+<ul>
+<li><p>[-aAbdDefhHIJKILnNOpqRStuUvxX] [-B size]</p></li>
+<li><p>[-c count] [-C file_size] [-E alog:secret] [-F file]</p></li>
+<li><p>[-G seconds] [-i interface] [-j tstamptype]</p></li>
+<li><p>[-M secret] [-P in|out|inout] [-r file] [-s snaplen]</p></li>
+<li><p>[-T type] [-V file] [-W filecount]</p></li>
+<li><p>[-y datalinktype] [-z command] [-Z user]</p></li>
+</ul>
+</li>
+<li><p>proto: 类过滤器，根据协议进行过滤，可识别的关键词:tcp, udp, icmp, ip, ip6, arp, rarp, ether, wlan, fddi, tr, decnet</p></li>
+<li><p>type: 类过滤器，可识别的关键词有: host, net, port, portrange, 这些词后面需要再接参数</p></li>
+<li><p>direction: 类过滤器，根据数据流进行过滤，可识别的关键词有: src, dst,同时可以使用逻辑运算符进行组合，比如src or dst</p></li>
+</ul>
+<section id="id2">
+<h3><span class="section-number">7.11.1.4.1. </span>tcpdump输出内容<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>tcpdump输出实例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">21</span><span class="p">:</span><span class="mi">26</span><span class="p">:</span><span class="mf">49.013621</span> <span class="n">IP</span>          <span class="mf">172.20.20.1.15605</span>    <span class="o">&gt;</span>        <span class="mf">172.20.20.2.5920</span><span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="n">P</span><span class="o">.</span><span class="p">],</span> <span class="n">seq</span> <span class="mi">49</span><span class="p">:</span><span class="mi">97</span><span class="p">,</span> <span class="n">ack</span> <span class="mi">106048</span><span class="p">,</span> <span class="n">win</span> <span class="mi">4723</span><span class="p">,</span> <span class="n">length</span> <span class="mi">48</span>
+<span class="n">时间戳</span>　        <span class="n">网络协议</span>    <span class="n">发送方IP</span><span class="o">+</span><span class="n">端口号</span>　　<span class="n">数据流向</span>     <span class="n">接收方IP</span><span class="o">+</span><span class="n">端口号</span>  <span class="n">flag标识符</span>  <span class="n">seq号</span>　　　<span class="n">ack号</span>　　　<span class="n">win窗口</span>      <span class="n">数据长度</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Flags标识符
+- [S]: SYN(开始连接)</p>
+<ul class="simple">
+<li><p>[P]: PSH(推送数据)</p></li>
+<li><p>[F]: FIN(结束连接)</p></li>
+<li><p>[R]: RST(重置连接)</p></li>
+<li><p>[.]: 没有Flag,(意思是除上面四种类型外的其他情况，有可能是ACK也有可能URG)</p></li>
+</ul>
+</div>
+</section>
+<section id="id3">
+<h3><span class="section-number">7.11.1.4.2. </span>常规过滤规则<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>基于IP地址过滤: host</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tcpdump</span> <span class="n">host</span> <span class="mf">172.29.4.43</span>
+<span class="n">tcpdump</span> <span class="o">-</span><span class="n">i</span> <span class="n">ens33</span> <span class="n">src</span> <span class="mf">172.29.4.43</span>
+<span class="n">tcpdump</span> <span class="o">-</span><span class="n">i</span> <span class="n">ens33</span> <span class="n">dst</span> <span class="mf">172.29.4.37</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>基于网段进行过滤</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tcpdump</span> <span class="n">net</span> <span class="mf">172.29.4.23</span><span class="o">/</span><span class="mi">56</span>
+<span class="c1">#网段同样可以细分为源网段和目标网段</span>
+<span class="n">tcpdump</span> <span class="n">src</span> <span class="n">net</span> <span class="mf">172.29</span>
+<span class="n">tcpdump</span> <span class="n">dst</span> <span class="n">net</span> <span class="mf">172.29</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>基于端口进行过滤</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tcpdump</span> <span class="n">port</span> <span class="mi">8088</span>
+<span class="n">tcpdump</span> <span class="n">src</span> <span class="n">port</span> <span class="mi">8088</span>
+<span class="n">tcpdump</span> <span class="n">dst</span> <span class="n">port</span> <span class="mi">8088</span>
+<span class="c1">#同时指定两个端口</span>
+<span class="n">tcpdump</span> <span class="n">port</span> <span class="mi">80</span> <span class="ow">or</span> <span class="n">port</span> <span class="mi">8088</span>
+<span class="n">tcpdump</span> <span class="n">portrange</span> <span class="mi">8000</span><span class="o">-</span><span class="mi">8088</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>对于一些常见协议的默认端口可以直接使用协议名，如果http=80, https=443
+tcpdump tcp port http</p>
+</div>
+<ul class="simple">
+<li><p>基于协议进行过滤: proto</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tcpdump</span> <span class="n">icmp</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3><span class="section-number">7.11.1.4.3. </span>可选参数解析<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p><strong>设置不解析域名提升速度</strong></p>
+<ul class="simple">
+<li><p>-n: 不把ip转化成域名，直接显示ip，避免执行DNS lookups的过程，速度会快很多</p></li>
+<li><p>-nn: 不把协议和端口转化成名字</p></li>
+<li><p>-N: 不打印出host的域名部分，如果设置了此规则，tcpdump将会打印’nic’而不是’nic.ddn.mil’</p></li>
+</ul>
+<p><strong>过滤结果输出到文件</strong></p>
+<p>使用tcpdump工具抓到包后，往往需要借助其他工具进行分析，比如常见的wireshark</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#将抓到的icmp包保存到icmp.pcap文件中</span>
+<span class="n">tcpdump</span> <span class="n">icmpp</span> <span class="o">-</span><span class="n">w</span> <span class="n">icmp</span><span class="o">.</span><span class="n">pcap</span>
+</pre></div>
+</div>
+<p><strong>从文件中读取包数据</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tcpdump</span> <span class="n">icmp</span> <span class="o">-</span><span class="n">r</span> <span class="nb">all</span><span class="o">.</span><span class="n">pcap</span>
+</pre></div>
+</div>
+<p><strong>控制详细内容的输出</strong></p>
+<ul class="simple">
+<li><p>-v: 产生详细的输出，比如包的TTL, id标识，数据包长度，以及IP包的一些选项</p></li>
+<li><p>-vv: 产生比-v更详细的输出，比如NFS回应包中的附加域将会被打印，SMB数据包也会被完全解码</p></li>
+<li><p>-vvv: 产生比-vv更详细的输出，比如telent时所使用的SB，SE选项将会被打印</p></li>
+</ul>
+<p><strong>控制时间的显示</strong></p>
+<ul class="simple">
+<li><p>-t: 在每行的输出中不输出时间戳</p></li>
+<li><p>-tt: 在每行的输出中输出时间戳</p></li>
+<li><p>-ttt: 输出每两行打印时间间隔</p></li>
+<li><p>-tttt: 在每行打印的时间戳之前添加日期的打印</p></li>
+</ul>
+<p><strong>显示数据包的头部</strong></p>
+<ul class="simple">
+<li><p>-x: 以16进制的形式打印每个包的头部数据(不包括数据链路层的头部)</p></li>
+<li><p>-xx: 以16进制的形式打印每个包的头部数据(包括数据链路层的头部)</p></li>
+<li><p>-X: 以16进制和ASCII码的形式打印每个包的数据(不包括数据链路层的头部)</p></li>
+<li><p>-XX: 以16进制和ASCII码的形式打印每个包的数据(包括数据链路层的头部)</p></li>
+</ul>
+<p><strong>过滤指定网卡的数据包</strong></p>
+<ul class="simple">
+<li><p>-i: 指定要过滤的网卡接口，如果要查看所有网卡可以”-i any”</p></li>
+</ul>
+<p><strong>过滤特定流向的数据包</strong></p>
+<ul class="simple">
+<li><p>-Q: 选择入方向还是出方向，可选项有:in, out, inout, 也可以使用 –direction=[direction]这种写法</p></li>
+</ul>
+<p><strong>其他一些常用参数</strong></p>
+<ul class="simple">
+<li><p>-A: 以ASCII码的方式显示每一个数据包，方便查看数据</p></li>
+<li><p>-l: 基于行的输出，便于保存查看</p></li>
+<li><p>-q: 简洁的打印输出，即打印很少的协议相关信息，从而输出行都比较简短</p></li>
+<li><p>-c: 捕获count个包后tcpdump就退出</p></li>
+<li><p>-s: tcpdump默认只会截取前96字节的内容，要想截取所有的报文内容可以使用 <code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">number</span></code> ,number就是要截取的报文字节数，如果是0的话表示截取报文全部内容</p></li>
+<li><p>-S:使用绝对序列号，而不是相对序列号</p></li>
+<li><p>-C: file-size, tcpdump在把原始数据包直接保存在文件中之前会检查此文件大小是否超过了file-size,如果超过了将会关闭此文件，然后创建一个新文件用于保存数据，
+新创建的文件名与-w选项指定的文件名一致，但文件名后面多了一个数字，该数字会从1开始</p></li>
+<li><p>-F: 使用file文件作为过滤条件表达式的输入</p></li>
+</ul>
+<p><strong>对输出内容进行控制的参数</strong></p>
+<ul class="simple">
+<li><p>-D: 显示所有可用的网络接口的列表</p></li>
+<li><p>-e: 每行的打印输出中将包含数据包的数据链路层头部信息</p></li>
+<li><p>-E: 揭秘IPSEC数据</p></li>
+<li><p>-L: 列出网络接口所支持的数据链路层的类型后退出</p></li>
+<li><p>-Z: 后接用户名，在抓包时会受到权限的限制，如果以root用户启动tcpdump则有超级权限</p></li>
+<li><p>-d: 打印出易读的包匹配码</p></li>
+<li><p>-dd: 以C语言的形式打印出包匹配码</p></li>
+<li><p>-ddd: 以十进制数的形式打印出包匹配码</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="7.11. linux命令汇总" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../../embedded/index.html" class="btn btn-neutral float-right" title="8. embeded" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

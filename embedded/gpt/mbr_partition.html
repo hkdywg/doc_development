@@ -1,0 +1,199 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.3.2. MBR分区表笔记 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.4. systemd 笔记" href="../systemd/index.html" />
+    <link rel="prev" title="8.3.1. gpt分区表笔记" href="gpt_partition.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.3. gpt分区表</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="gpt_partition.html">8.3.1. gpt分区表笔记</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.3.2. MBR分区表笔记</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">8.3.2.1. 硬盘结构及参数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">8.3.2.2. MBR分区</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">8.8. 视频相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.3. </span>gpt分区表</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.3.2. </span>MBR分区表笔记</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/gpt/mbr_partition.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mbr">
+<h1><span class="section-number">8.3.2. </span>MBR分区表笔记<a class="headerlink" href="#mbr" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">8.3.2.1. </span>硬盘结构及参数<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>C-Cylinder: 柱面，柱面数表示硬盘每个盘面上有几条磁道，最大为1024</p></li>
+<li><p>H-Head: 磁头，磁头数表示硬盘有多少个磁头，也就是多少盘面，最大为256</p></li>
+<li><p>S-Sector: 扇区，扇区数表示每条磁道上有几个扇区，最大为63</p></li>
+</ul>
+<p>当磁盘旋转时，磁头若保持在一个位置上，则每个磁头都会在磁盘表面上画出一个圆形轨迹，这些圆形轨迹就叫磁道</p>
+</section>
+<section id="id2">
+<h2><span class="section-number">8.3.2.2. </span>MBR分区<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>MBR磁盘分区也被称为DOS分区结构，MBR扇区由以下四部分组成</p>
+<ol class="arabic simple">
+<li><p>引导代码：引导代码占MBR分区的前440字节，负责整个系统启动，如果引导代码被破坏系统将无法启动</p></li>
+<li><p>磁盘签名: 占引导代码后面的4字节，如果此标签被破坏则会提示初始化磁盘</p></li>
+<li><p>MBR分区表: 占用64字节，是整个硬盘的分区表</p></li>
+<li><p>MBR结束标志: 占MBR扇区的最后两个字节，一直为”55 AA”</p></li>
+</ol>
+<p>MBR分区表一共占用64个字节，其中每16个字节为一个分区表项，每个分区表项对应的字节解释如下表</p>
+<img alt="../../_images/mbr.png" src="../../_images/mbr.png" />
+<p>分区表总览</p>
+<img alt="../../_images/mbr_struct.png" src="../../_images/mbr_struct.png" />
+<p>扩展分区的结构分析由于MBR仅仅为分区表保留了64字节的存储空间，而每个分区则占用16字节的空间，也就是只能分4个分区，而4个分区在实际情况下往往是不够用的。
+因此就有了扩展分区，扩展分区中的每个逻辑分区的分区信息都存在一个类似MBR的扩展引导记录(简称EBR)中，扩展引导记录包括分区表和结束标志“55 AA”，没有引导代码部分。</p>
+<ul class="simple">
+<li><p>扩展分区</p></li>
+</ul>
+<p>所谓扩展分区，严格讲它不是一个实际意义的分区，它仅仅是一个指向下一个分区的指针，这种指针结构将形成一个单向链表。这样在主引导扇区中除了主分区外，仅需要存储一个被称为扩展分区的分区数据，
+通过这个扩展分区的数据可以找到下一个分区(实际上也就是下一个逻辑磁盘)的起始位置，以此位置类推可以找到所有的分区</p>
+<ul class="simple">
+<li><p>扩展分区结构</p></li>
+</ul>
+<p>扩展分区结构: 扩展引导记录(EBR) + 逻辑分区</p>
+<p>扩展引导记录: 类似于MBR的扩展引导记录，扩展引导记录包括一个扩展分区表和该扇区的标签</p>
+<ul class="simple">
+<li><p>扩展分区表</p></li>
+</ul>
+<p>用于记录分区状态，每16bytes为一项，共四项</p>
+<ol class="arabic simple">
+<li><p>指向它自身的引导扇区</p></li>
+<li><p>指向下一个逻辑驱动器的EBR</p></li>
+<li><p>未使用</p></li>
+<li><p>未使用</p></li>
+</ol>
+<ul class="simple">
+<li><p>MBR分区说明</p></li>
+</ul>
+<img alt="../../_images/mbr_partition_struct.png" src="../../_images/mbr_partition_struct.png" />
+<ul class="simple">
+<li><p>常见分区方式</p></li>
+</ul>
+<img alt="../../_images/partition.png" src="../../_images/partition.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="gpt_partition.html" class="btn btn-neutral float-left" title="8.3.1. gpt分区表笔记" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../systemd/index.html" class="btn btn-neutral float-right" title="8.4. systemd 笔记" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

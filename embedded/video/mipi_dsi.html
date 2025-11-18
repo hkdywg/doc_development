@@ -1,0 +1,429 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.8.4. MIPI DSI &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.8.5. BT656" href="bt656.html" />
+    <link rel="prev" title="8.8.3. MIPI CSI传输协议解析" href="mipi_csi.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.8. 视频相关</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="video_interface.html">8.8.1. 视频传输接口协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LCD_timing.html">8.8.2. LCD timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html">8.8.3. MIPI CSI传输协议解析</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.8.4. MIPI DSI</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">8.8.4.1. 两种工作模式的区别</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#video-mode">8.8.4.2. video mode时序控制模式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command">8.8.4.3. Command模式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dsi">8.8.4.4. DSI 数据包</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">8.8.4.5. DSI命令模式</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bt656.html">8.8.5. BT656</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.8. </span>视频相关</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.8.4. </span>MIPI DSI</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/video/mipi_dsi.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mipi-dsi">
+<h1><span class="section-number">8.8.4. </span>MIPI DSI<a class="headerlink" href="#mipi-dsi" title="此标题的永久链接"></a></h1>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../_downloads/8210a4b476ecef2e6912593c4c912b05/Mipi-DSI-specification-v1-3.pdf"><code class="xref download docutils literal notranslate"><span class="pre">MIPI_DSI协议.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/7dac032f6f56923e056ad90ff4a0fffa/MIPI-D-PHY-Specification-v01-00-00.pdf"><code class="xref download docutils literal notranslate"><span class="pre">MIPI_DPHY协议.pdf</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../_downloads/5ea6c86170e726ebaa7fb77d3334f187/MIPI-DSI%E5%8D%8F%E8%AE%AE%E5%BD%92%E7%BA%B3%E6%95%B4%E7%90%86.pdf"><code class="xref download docutils literal notranslate"><span class="pre">MIPI协议归纳整理.pdf</span></code></a></p></li>
+</ul>
+<p>名词解释</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>缩写</p></td>
+<td><p>全称</p></td>
+<td><p>含义</p></td>
+</tr>
+<tr class="row-even"><td><p>BPP</p></td>
+<td><p>Bits per Pixel</p></td>
+<td><p>像素深度</p></td>
+</tr>
+<tr class="row-odd"><td><p>CSI</p></td>
+<td><p>Camera Serial Interface</p></td>
+<td><p>摄像串行接口</p></td>
+</tr>
+<tr class="row-even"><td><p>DBI</p></td>
+<td><p>Display Bus Interface</p></td>
+<td><p>显示总线接口</p></td>
+</tr>
+<tr class="row-odd"><td><p>DCS</p></td>
+<td><p>Display Command Set</p></td>
+<td><p>显示命令集</p></td>
+</tr>
+<tr class="row-even"><td><p>DSI</p></td>
+<td><p>Display Serial Interface</p></td>
+<td><p>显示串行接口</p></td>
+</tr>
+<tr class="row-odd"><td><p>Fps</p></td>
+<td><p>Frames per second</p></td>
+<td><p>每秒传输帧数</p></td>
+</tr>
+<tr class="row-even"><td><p>Mbps</p></td>
+<td><p>Megabits per second</p></td>
+<td><p>每秒传输的兆bit位</p></td>
+</tr>
+<tr class="row-odd"><td><p>PHY</p></td>
+<td><p>Physical Layer</p></td>
+<td><p>物理层</p></td>
+</tr>
+<tr class="row-even"><td><p>DI</p></td>
+<td><p>Data Indentifier</p></td>
+<td><p>数据识别</p></td>
+</tr>
+<tr class="row-odd"><td><p>HS</p></td>
+<td><p>High Speed</p></td>
+<td><p>高速</p></td>
+</tr>
+<tr class="row-even"><td><p>LP</p></td>
+<td><p>Low Power</p></td>
+<td><p>低功耗</p></td>
+</tr>
+<tr class="row-odd"><td><p>EoTp</p></td>
+<td><p>End of Transmission Packet</p></td>
+<td><p>传输包结尾</p></td>
+</tr>
+<tr class="row-even"><td><p>SoT</p></td>
+<td><p>Start of Transmission</p></td>
+<td><p>传输开始</p></td>
+</tr>
+<tr class="row-odd"><td><p>Lps</p></td>
+<td><p>Low Power State</p></td>
+<td><p>低功耗状态</p></td>
+</tr>
+<tr class="row-even"><td><p>PH</p></td>
+<td><p>Packet Head</p></td>
+<td><p>包头</p></td>
+</tr>
+<tr class="row-odd"><td><p>PCLK</p></td>
+<td><p>Pixel Clock</p></td>
+<td><p>像素时钟</p></td>
+</tr>
+<tr class="row-even"><td><p>DE</p></td>
+<td><p>Data Enable</p></td>
+<td><p>数据使能</p></td>
+</tr>
+<tr class="row-odd"><td><p>FR</p></td>
+<td><p>Frame Rate</p></td>
+<td><p>帧率</p></td>
+</tr>
+<tr class="row-even"><td><p>HSYNC</p></td>
+<td><p>Horizontal Sync</p></td>
+<td><p>水平同步</p></td>
+</tr>
+<tr class="row-odd"><td><p>HLW/HPW</p></td>
+<td><p>Horizontal Low Pulse Width</p></td>
+<td><p>水平同步信号宽度</p></td>
+</tr>
+<tr class="row-even"><td><p>HSA</p></td>
+<td><p>Horizontal Sync Active</p></td>
+<td><p>水平同步有效，等同HPW</p></td>
+</tr>
+<tr class="row-odd"><td><p>HBP</p></td>
+<td><p>Horizontal Back Porch</p></td>
+<td><p>水平后肩</p></td>
+</tr>
+<tr class="row-even"><td><p>HACT</p></td>
+<td><p>Horizontal Active</p></td>
+<td><p>水平有效区，即宽度</p></td>
+</tr>
+<tr class="row-odd"><td><p>HFP</p></td>
+<td><p>Horizontal Front POrtch</p></td>
+<td><p>水平前肩</p></td>
+</tr>
+<tr class="row-even"><td><p>VSYNC</p></td>
+<td><p>Vertical Sync</p></td>
+<td><p>垂直同步</p></td>
+</tr>
+<tr class="row-odd"><td><p>VLW/VPW</p></td>
+<td><p>Vertiacl Low Pulse Width</p></td>
+<td><p>垂直同步信号宽度</p></td>
+</tr>
+<tr class="row-even"><td><p>VSA</p></td>
+<td><p>Vertiacl Sync Active</p></td>
+<td><p>垂直同步宽度，等同VPW</p></td>
+</tr>
+<tr class="row-odd"><td><p>VBP</p></td>
+<td><p>Vertiacl Back Porch</p></td>
+<td><p>垂直后肩</p></td>
+</tr>
+<tr class="row-even"><td><p>VACT</p></td>
+<td><p>Vertiacl Active</p></td>
+<td><p>垂直有效区，即高度</p></td>
+</tr>
+<tr class="row-odd"><td><p>VFP</p></td>
+<td><p>Vertiacl Front Porch</p></td>
+<td><p>垂直前肩</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>MIPI lane0是双向的(低速模式双向，高速模式也只能是单向)，其他的lane只能是单向
+低速模式: LP 1-1.2V, 空闲电平(LP11),DP DN是1.2V
+高速模式HS: 100-300mv(典型值200mv)</p>
+</div>
+<p>MIPI DSI链路层支持两种工作模式，一种是 <code class="docutils literal notranslate"><span class="pre">视频模式(Video</span> <span class="pre">mode)</span></code> , 另一种是 <code class="docutils literal notranslate"><span class="pre">命令模式(Command</span> <span class="pre">mode)</span></code></p>
+<section id="id1">
+<h2><span class="section-number">8.8.4.1. </span>两种工作模式的区别<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<img alt="../../_images/dsi_mode.png" src="../../_images/dsi_mode.png" />
+<p>由上图可知</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">video</span> <span class="pre">mode</span></code> 主要针对芯片内没有frame buffer(ram)的lcd屏进行操作的，无论当前显示是否由数据更新，DSI host端移植送数据给panel显示，
+主控要按照lcd的刷新率持续发送pixel数据，与传统的rgb接口类似，主机会持续刷新显示器．由于不使用专用的数据信号v传输同步信息，控制信号
+和RGB数据是以报文的形式通过MIPI总线传输的. <code class="docutils literal notranslate"><span class="pre">链路层为video</span> <span class="pre">mode时，物理层只能为HS模式</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Command</span> <span class="pre">mode</span></code> 针对芯片内含有frame buffer(ram)的cpu屏进行操作的，只要当前数据画面有变化时，DSI host端才送数据给panel显示，主控只在需要更新
+显示图像的时候发送pixel数据，其他时候芯片自己从内部buffer里取数据显示，MIPI总线控制器不需要定期刷新显示器，这种屏幕的分辨率一般来说比较小．
+<code class="docutils literal notranslate"><span class="pre">当链路层为command</span> <span class="pre">mode时，物理层可以为HS模式，也可以为LP模式</span></code></p></li>
+</ul>
+</section>
+<section id="video-mode">
+<h2><span class="section-number">8.8.4.2. </span>video mode时序控制模式<a class="headerlink" href="#video-mode" title="此标题的永久链接"></a></h2>
+<p>video mode视频模式在传输时由三种时序控制模式，根据外围设备的要求决定来使用哪种时序控制模式比较合适，这三种模式为 <code class="docutils literal notranslate"><span class="pre">Non-Burst</span> <span class="pre">Mode</span> <span class="pre">with</span> <span class="pre">Sync</span> <span class="pre">Pulses</span></code> ,
+<code class="docutils literal notranslate"><span class="pre">Non-Burst</span> <span class="pre">Mode</span> <span class="pre">with</span> <span class="pre">Sync</span> <span class="pre">Events</span></code> 以及 <code class="docutils literal notranslate"><span class="pre">Burst</span> <span class="pre">mode</span></code> ,其中Burst mode表示RGB数据传输部分时间会被压缩</p>
+<section id="non-burst-mode-with-sync-pulses">
+<h3><span class="section-number">8.8.4.2.1. </span>Non-Burst MOde with SYnc Pulses<a class="headerlink" href="#non-burst-mode-with-sync-pulses" title="此标题的永久链接"></a></h3>
+<p>这个模式可以使外围设备可以准确的重构原始视频时序，包括同步信号，目标是通过DSI串行链路准确的传送DPI时序．这包括对应的DPI像素传输速率和同步脉冲等timing的
+宽度．因此，会使用发送同步脉冲的开始和结束的时序包来定义同步周期．此模式的输出示意图如下</p>
+<img alt="../../_images/non-burst-pulses.png" src="../../_images/non-burst-pulses.png" />
+<p>上图各数据包的定义如下</p>
+<img alt="../../_images/timing_legend.png" src="../../_images/timing_legend.png" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VSS</span><span class="p">:</span>  <span class="n">Vertical</span> <span class="n">Sync</span> <span class="n">Start</span>
+
+<span class="n">VSE</span><span class="p">:</span>  <span class="n">Vertical</span> <span class="n">Sync</span> <span class="n">End</span>
+
+<span class="n">BLLP</span><span class="p">:</span>  <span class="n">Arbitrary</span> <span class="n">sequence</span> <span class="n">of</span> <span class="n">non</span><span class="o">-</span><span class="n">restricted</span> <span class="n">DSI</span> <span class="n">packets</span> <span class="ow">or</span> <span class="n">Low</span> <span class="n">Power</span> <span class="n">Mode</span> <span class="n">incluing</span> <span class="n">optional</span> <span class="n">BTA</span><span class="o">.</span>
+
+<span class="n">HSS</span><span class="p">:</span>  <span class="n">Horizontal</span> <span class="n">Sync</span> <span class="n">Start</span>
+
+<span class="n">HAS</span><span class="p">:</span>  <span class="n">Horizontal</span> <span class="n">Sync</span> <span class="n">Active</span> <span class="ow">or</span> <span class="n">Low</span> <span class="n">Power</span> <span class="n">Mode</span><span class="p">,</span> <span class="n">No</span> <span class="n">Data</span>
+
+<span class="n">HSE</span><span class="p">:</span>  <span class="n">Horizontal</span> <span class="n">Sync</span> <span class="n">End</span>
+
+<span class="n">HFP</span><span class="p">:</span>  <span class="n">Horizontal</span> <span class="n">Front</span> <span class="n">Porch</span> <span class="ow">or</span> <span class="n">Low</span> <span class="n">Power</span> <span class="n">Mode</span>
+
+<span class="n">HBP</span><span class="p">:</span>  <span class="n">Horizontal</span> <span class="n">Back</span> <span class="n">Porch</span> <span class="ow">or</span> <span class="n">Low</span> <span class="n">Power</span> <span class="n">Mode</span>
+
+<span class="n">RGB</span><span class="p">:</span>  <span class="n">Arbitrary</span> <span class="n">sequence</span> <span class="n">of</span> <span class="n">pixel</span> <span class="n">stream</span> <span class="ow">and</span> <span class="n">Null</span> <span class="n">Packets</span>
+
+<span class="n">LPM</span><span class="p">:</span>  <span class="n">Low</span> <span class="n">Power</span> <span class="n">Mode</span> <span class="n">incuding</span> <span class="n">optional</span> <span class="n">BTA</span>
+</pre></div>
+</div>
+<img alt="../../_images/dsi_packets.png" src="../../_images/dsi_packets.png" />
+<p>由上述时序图可知，MIPI host要输入一帧数据，首先会发送VSPW(VSA lines/帧同步信号)的空数据包—–&gt;发送VBP lines的空数据包——&gt;发送VACT lines(屏宽)
+的有效RGB数据，其中每一行都包含HSS行开始信号+HSA空数据包+HSE数据包+HBP数据包+RGB数据+HFP数据包．最后发送VFP lines的空数据包．这样屏幕就刷满了一帧的数据</p>
+</section>
+<section id="non-burst-mode-with-sync-events">
+<h3><span class="section-number">8.8.4.2.2. </span>Non-Burst Mode with sync Events<a class="headerlink" href="#non-burst-mode-with-sync-events" title="此标题的永久链接"></a></h3>
+<p>这种模式与第一种模式类似，但是不需要准确的重新构建同步数据包，而只发送一种叫做 <code class="docutils literal notranslate"><span class="pre">Sync</span> <span class="pre">event</span></code> 的包</p>
+<img alt="../../_images/NonBurst_events.png" src="../../_images/NonBurst_events.png" />
+</section>
+<section id="burst-mode">
+<h3><span class="section-number">8.8.4.2.3. </span>Burst Mode<a class="headerlink" href="#burst-mode" title="此标题的永久链接"></a></h3>
+<p>在这个模式像素数据的传输时间会被压缩，留下更多的时间给LP模式或者在DSI链路上传输的数据</p>
+<img alt="../../_images/Burst_mode.png" src="../../_images/Burst_mode.png" />
+<p>mipi dsi clk存在两种工作模式，一种是连续时钟模式，传输过程中不会切换LP状态，另一种是非连续时钟信号模式，每传输完一帧图像数据，帧blanking时会切换
+为LP状态．</p>
+</section>
+</section>
+<section id="command">
+<h2><span class="section-number">8.8.4.3. </span>Command模式<a class="headerlink" href="#command" title="此标题的永久链接"></a></h2>
+<p>只有当LCD面板带有显示控制器和帧缓冲区的时候才能使用Command模式，数据传送的格式一般是在像素数据后跟着命令参数和命令．主机端可以读写LCD控制器的寄存器
+和帧缓存区的内容．</p>
+<p>每一帧数据开始传输的时间可以由TE信号(由LCD面板输出)来控制也可以使用其的外接管脚，TE线或是直接通过DSI接口传送的TE触发信息</p>
+<p>为了使用CMD模式，LCD屏需要内置一个时序控制器和缓冲区存储空间(一般为RAM).为了防止出现Tearing Effect(且屏或分屏),LCD屏需要把它的时序时间信息传递给主机端．
+在CMD模式下传送这种时序事件可以通过3种方式来实现．</p>
+<ul class="simple">
+<li><p>自动模式: 当DSI_VC_TE_i[31]寄存器的TE_START位被设置成0x01的时候软件开始传送数据．一旦数据传送完成TE_START位会被硬件自动清零．这种模式让数据的传送可以通过
+软件应用来手动或者使用TE中断来控制．如果数据传送和TE信号不匹配，就有可能出现切屏或分屏的现象</p></li>
+<li><p>DSI物理TE触发器: MIPI DSI标准定义来一个从屏到主机端的TE触发信号包，一旦收到这种数据包，Host的像素数据会自动开始传送</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>DSI Video模式: 主机需要持续刷新显示器，因此相比CMD模式更耗电．可以不带帧缓冲器
+DSI Cmd模式: MIPI总线控制器使用命令报文来发送像素数据，需要帧缓冲区，不需要定期刷新数据</p>
+</div>
+</section>
+<section id="dsi">
+<h2><span class="section-number">8.8.4.4. </span>DSI 数据包<a class="headerlink" href="#dsi" title="此标题的永久链接"></a></h2>
+<p>实例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="n">cmd</span><span class="p">}</span> <span class="p">,</span> <span class="p">{</span><span class="n">par</span><span class="o">...</span><span class="p">}</span>
+<span class="p">{</span><span class="mh">0xF0</span><span class="p">},</span> <span class="p">{</span><span class="mh">0x5A</span><span class="p">,</span><span class="mh">0x5A</span><span class="p">},</span>    <span class="c1">## cmd: 0xF0; 数据:0x5A,0x5A</span>
+<span class="p">{</span><span class="mh">0xF1</span><span class="p">},</span> <span class="p">{</span><span class="mh">0xA5</span><span class="p">,</span><span class="mh">0xA5</span><span class="p">},</span>
+<span class="o">...</span>
+<span class="p">{</span><span class="mh">0x36</span><span class="p">},</span> <span class="p">{</span><span class="mh">0x08</span><span class="p">},</span>          <span class="c1">## cmd: 0x36; 数据:0x8</span>
+<span class="o">...</span>
+<span class="p">{</span><span class="mh">0x11</span><span class="p">},</span>                  <span class="c1">## cmd: 0x11; 无数据</span>
+</pre></div>
+</div>
+<section id="id2">
+<h3><span class="section-number">8.8.4.4.1. </span>短数据包<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>短数据包(Short Packet)共4个字节，包括:1字节 <code class="docutils literal notranslate"><span class="pre">DI</span></code> 2字节 <code class="docutils literal notranslate"><span class="pre">data</span></code> 和1字节 <code class="docutils literal notranslate"><span class="pre">ECC</span></code></p>
+<p>格式: DI + DATA0~1 + ECC</p>
+<img alt="../../_images/dsi_sp.png" src="../../_images/dsi_sp.png" />
+</section>
+<section id="id3">
+<h3><span class="section-number">8.8.4.4.2. </span>长数据包<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>长数据包(Long Packet)包括: 4字节包头，数据和2字节校验</p>
+<p>格式: PH(DI + Word Count + ECC) + Packet Data + PF</p>
+<img alt="../../_images/dsi_lp.png" src="../../_images/dsi_lp.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>DI[7:6]: 虚拟通道ID
+DI[5:0]: 数据类型</p>
+</div>
+<img alt="../../_images/data_type_list_1.png" src="../../_images/data_type_list_1.png" />
+<img alt="../../_images/data_type_list_2.png" src="../../_images/data_type_list_2.png" />
+<p>DI中Data Type部分值的含义如下:</p>
+<ul class="simple">
+<li><p>0x5: 没有参数，即只有一个CMD,如上面示例中的命令0x11</p></li>
+<li><p>0x15: 一个参数，即1个CMD + 1个parameter, 如上面示例中的命令0x36</p></li>
+<li><p>0x39: 长包写，即1个CMD + 2个及以上的parameter,如上面示例中的的命令0XF0 0xF1</p></li>
+</ul>
+<p>按照MIPI DSI协议组包后的数据为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mh">0x39</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">ECC</span><span class="p">,</span><span class="mh">0xF0</span><span class="p">,</span><span class="mh">0x5A</span><span class="p">,</span><span class="mh">0x5A</span><span class="p">,</span><span class="n">PF</span>
+<span class="mh">0x39</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">ECC</span><span class="p">,</span><span class="mh">0xF1</span><span class="p">,</span><span class="mh">0xA5</span><span class="p">,</span><span class="mh">0xA5</span><span class="p">,</span><span class="n">PF</span>
+<span class="o">...</span>
+<span class="mh">0x15</span><span class="p">,</span><span class="mh">0x36</span><span class="p">,</span><span class="mh">0x08</span><span class="p">,</span><span class="n">ECC</span>
+<span class="o">...</span>
+<span class="mh">0x05</span><span class="p">,</span><span class="mh">0x11</span><span class="p">,</span><span class="mh">0x0</span><span class="p">,</span><span class="n">ECC</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">8.8.4.5. </span>DSI命令模式<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>MIPI DSI在初始化时会先进入Escape mode, 然后0x87(低字节在前)进入Low speed mode,频率为10Mhz以下．</p>
+<img alt="../../_images/dsc_cmd.jpg" src="../../_images/dsc_cmd.jpg" />
+<img alt="../../_images/escape_mode.jpg" src="../../_images/escape_mode.jpg" />
+<p>Entry Escape mode: LP11—&gt;LP10—&gt;LP00—&gt;LP01—-&gt;LP00</p>
+<p>Exit Escape mode: LP10—&gt;LP11</p>
+<p>命令行为: 0x23(Generic short Write, 2 paramters)  0x3A(register)   0x77(Data)   0x1F(Ecc)</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="mipi_csi.html" class="btn btn-neutral float-left" title="8.8.3. MIPI CSI传输协议解析" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="bt656.html" class="btn btn-neutral float-right" title="8.8.5. BT656" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

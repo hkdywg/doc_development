@@ -1,0 +1,561 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.4.3.3. MQTT报文 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="6.4.3.4. MQTT应用示例" href="mqtt_usermenu.html" />
+    <link rel="prev" title="6.4.3.2. MQTT流程图" href="mqtt_flow.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">6.4. 通信中间件</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../opendds/index.html">6.4.1. opendds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../some_ip/index.html">6.4.2. SOME/IP</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">6.4.3. mqtt协议</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="mqtt_note.html">6.4.3.1. mqtt协议基础</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt_flow.html">6.4.3.2. MQTT流程图</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">6.4.3.3. MQTT报文</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mqtt_usermenu.html">6.4.3.4. MQTT应用示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6.4. </span>通信中间件</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.4.3. </span>mqtt协议</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.4.3.3. </span>MQTT报文</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user/communication/mqtt/mqtt_packet.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mqtt">
+<h1><span class="section-number">6.4.3.3. </span>MQTT报文<a class="headerlink" href="#mqtt" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">6.4.3.3.1. </span>MQTT控制报文格式<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>MQTT协议通过交换预定义的MQTT控制报文来通信，MQTT控制报文由三部分组成</p>
+<ul class="simple">
+<li><p>Fixed Header: 固定报头，所有控制报文都包含</p></li>
+<li><p>Variable Header: 可变报头，部分控制报文包含</p></li>
+<li><p>Payload: 有效载荷，部分控制报文包含</p></li>
+</ul>
+<section id="id2">
+<h3><span class="section-number">6.4.3.3.1.1. </span>固定报头<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>固定报头格式</p></li>
+</ul>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>比特位</p></td>
+<td><p>7</p></td>
+<td><p>6</p></td>
+<td><p>5</p></td>
+<td><p>4</p></td>
+<td><p>3</p></td>
+<td><p>2</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>byte 1</p></td>
+<td colspan="4"><p>MQTT控制报文类型</p></td>
+<td colspan="4"><p>标志位</p></td>
+</tr>
+<tr class="row-odd"><td><p>btye 2..</p></td>
+<td colspan="8"><p>剩余长度</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>MQTT控制报文类型</p></li>
+</ul>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>名字</p></td>
+<td><p>值</p></td>
+<td><p>报文流动方向</p></td>
+<td><p>描述</p></td>
+</tr>
+<tr class="row-even"><td><p>Reserved</p></td>
+<td><p>0</p></td>
+<td><p>禁止</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>CONNECT</p></td>
+<td><p>1</p></td>
+<td><p>C——&gt;S</p></td>
+<td><p>客户端请求连接服务端</p></td>
+</tr>
+<tr class="row-even"><td><p>CONACK</p></td>
+<td><p>2</p></td>
+<td><p>S——&gt;C</p></td>
+<td><p>连接报文确认</p></td>
+</tr>
+<tr class="row-odd"><td><p>PUBLISH</p></td>
+<td><p>3</p></td>
+<td><p>C&lt;—–&gt;S</p></td>
+<td><p>发布消息</p></td>
+</tr>
+<tr class="row-even"><td><p>PUBACK</p></td>
+<td><p>4</p></td>
+<td><p>C&lt;—–&gt;S</p></td>
+<td><p>QOS 1消息发布收到确认</p></td>
+</tr>
+<tr class="row-odd"><td><p>PUBREC</p></td>
+<td><p>5</p></td>
+<td><p>C&lt;—–&gt;S</p></td>
+<td><p>发布收到(保证交付第一步)</p></td>
+</tr>
+<tr class="row-even"><td><p>PUREL</p></td>
+<td><p>6</p></td>
+<td><p>C&lt;—–&gt;S</p></td>
+<td><p>发布释放(保证交付第二步)</p></td>
+</tr>
+<tr class="row-odd"><td><p>PUBCOMP</p></td>
+<td><p>7</p></td>
+<td><p>C&lt;—–&gt;S</p></td>
+<td><p>QOS 2消息发布完成(保证交付第三步)</p></td>
+</tr>
+<tr class="row-even"><td><p>SUBSCRIBE</p></td>
+<td><p>8</p></td>
+<td><p>C——&gt;S</p></td>
+<td><p>客户端订阅请求</p></td>
+</tr>
+<tr class="row-odd"><td><p>SUBACK</p></td>
+<td><p>9</p></td>
+<td><p>S——&gt;C</p></td>
+<td><p>订阅请求报文确认</p></td>
+</tr>
+<tr class="row-even"><td><p>UNSUBSCRIBE</p></td>
+<td><p>10</p></td>
+<td><p>C——&gt;S</p></td>
+<td><p>客户端取消订阅请求</p></td>
+</tr>
+<tr class="row-odd"><td><p>UNSUBACK</p></td>
+<td><p>11</p></td>
+<td><p>S——&gt;C</p></td>
+<td><p>取消订阅报文确认</p></td>
+</tr>
+<tr class="row-even"><td><p>PINGREQ</p></td>
+<td><p>12</p></td>
+<td><p>C——&gt;S</p></td>
+<td><p>心跳请求</p></td>
+</tr>
+<tr class="row-odd"><td><p>PINGRESP</p></td>
+<td><p>13</p></td>
+<td><p>S——&gt;C</p></td>
+<td><p>心跳响应</p></td>
+</tr>
+<tr class="row-even"><td><p>DISCONNECT</p></td>
+<td><p>14</p></td>
+<td><p>C&lt;—–&gt;S</p></td>
+<td><p>断开连接通知</p></td>
+</tr>
+<tr class="row-odd"><td><p>AUTH</p></td>
+<td><p>15</p></td>
+<td><p>C&lt;—–&gt;S</p></td>
+<td><p>认证信息交换</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>标志位</p></li>
+</ul>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>控制报文</p></td>
+<td><p>固定报头标志</p></td>
+<td><p>b3</p></td>
+<td><p>b2</p></td>
+<td><p>b1</p></td>
+<td><p>b0</p></td>
+</tr>
+<tr class="row-even"><td><p>PUBLISH</p></td>
+<td><p>used in mqtt v3.1.1</p></td>
+<td><p>dup</p></td>
+<td colspan="2"><p>qos</p></td>
+<td><p>retain</p></td>
+</tr>
+<tr class="row-odd"><td><p>PUBREL</p></td>
+<td><p>Reserved</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>SUBSCRIBE</p></td>
+<td><p>Reserved</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>UNSUBSCRIBE</p></td>
+<td><p>Reserved</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ol class="arabic simple">
+<li><p>dup:控制报文重发的标志</p></li>
+<li><p>qos:PUBLISH报文的服务质量等级</p></li>
+<li><p>retain:PUBLISH报文保留标志,用于保留消息发送</p></li>
+</ol>
+</div>
+<ul class="simple">
+<li><p>剩余长度: 从第二字节开始，是一个变长字节的整数，用于表示当前控制报文剩余部分的字节数，包含可变报头和负载的数据</p></li>
+</ul>
+</section>
+<section id="variable-header">
+<h3><span class="section-number">6.4.3.3.1.2. </span>可变报头(Variable Header)<a class="headerlink" href="#variable-header" title="此标题的永久链接"></a></h3>
+<p>可变报头部分包含了2个字节的报文标识符字段</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>控制类型</p></td>
+<td><p>是否需要标识符字段</p></td>
+</tr>
+<tr class="row-even"><td><p>CONNECT</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-odd"><td><p>CONNACK</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>PUBLISH</p></td>
+<td><p>是(如果QOS&gt;0)</p></td>
+</tr>
+<tr class="row-odd"><td><p>PUBACK</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>PUBREC</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>PUBREL</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>PUBCOMP</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>SUBSCRIBE</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>SUBACK</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>UNSUBSCRIBE</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>UNSUBACK</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>PINGREQ</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>PINGRESP</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-odd"><td><p>DISCONNECT</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>AUTH</p></td>
+<td><p>否</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Client</span>                                      <span class="n">Server</span>
+<span class="n">PUBLISH</span> <span class="n">Packet</span> <span class="n">Identifier</span> <span class="o">=</span> <span class="mh">0x1234</span>  <span class="o">-----&gt;</span>
+      <span class="o">&lt;-----</span> <span class="n">PUBLISH</span> <span class="n">Packet</span> <span class="n">Identifier</span> <span class="o">=</span> <span class="mh">0x1234</span>
+<span class="n">PUBACK</span> <span class="n">Packet</span> <span class="n">Identifier</span> <span class="o">=</span> <span class="mh">0x1234</span>   <span class="o">-----&gt;</span>
+      <span class="o">&lt;-----</span> <span class="n">PUBACK</span> <span class="n">Packet</span> <span class="n">Identifier</span> <span class="o">=</span> <span class="mh">0x1234</span>
+</pre></div>
+</div>
+</section>
+<section id="payload">
+<h3><span class="section-number">6.4.3.3.1.3. </span>Payload<a class="headerlink" href="#payload" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>控制类型</p></td>
+<td><p>是否需要payload</p></td>
+</tr>
+<tr class="row-even"><td><p>CONNECT</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>CONNACK</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>PUBLISH</p></td>
+<td><p>可选</p></td>
+</tr>
+<tr class="row-odd"><td><p>PUBACK</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>PUBREC</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-odd"><td><p>PUBREL</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>PUBCOMP</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-odd"><td><p>SUBSCRIBE</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>SUBACK</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>UNSUBSCRIBE</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-even"><td><p>UNSUBACK</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-odd"><td><p>PINGREQ</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>PINGRESP</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-odd"><td><p>DISCONNECT</p></td>
+<td><p>否</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id3">
+<h2><span class="section-number">6.4.3.3.2. </span>MQTT控制报文<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<section id="connect">
+<h3><span class="section-number">6.4.3.3.2.1. </span>CONNECT - 客户端请求连接服务器<a class="headerlink" href="#connect" title="此标题的永久链接"></a></h3>
+<p>每个客户端只能发送一次CONNECT包，服务端会把此客户端再次发送的CONNECT包当作违反协议处理，并断开与此客户端的连接</p>
+<ul class="simple">
+<li><p>固定报头: CONNECT包头</p></li>
+<li><p>可变报头: 协议名字，协议等级，连接标识，保持连接</p></li>
+</ul>
+<img alt="../../../_images/connect_options.png" src="../../../_images/connect_options.png" />
+<ul class="simple">
+<li><p>载荷: CONNECT包的载荷可以包含一个或多个带有长度前缀的字段，这取决于可变包头的标识，这些字段如果存在，必须按照这样的顺序(1.客户端唯一标识 2.Will Topic
+3.Will Message 4.User Name 5.Password)</p></li>
+</ul>
+</section>
+<section id="connack">
+<h3><span class="section-number">6.4.3.3.2.2. </span>CONNACK - 确认收到连接请求<a class="headerlink" href="#connack" title="此标题的永久链接"></a></h3>
+<p>CONNACK包是服务端发送的用来响应客户端CONNECT包的一种数据包，从服务端发送到客户端的第一个包一定是CONNACK包.</p>
+<img alt="../../../_images/CONNACK_packet.png" src="../../../_images/CONNACK_packet.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>字节3是连接确认标识，为7-1是保留位必须设置为0，位0(SP1)是session present标识</p>
+</div>
+<ol class="arabic simple">
+<li><p>如果服务端接受了一个CleanSession设置为1的连接，服务端必须将CONNACK包中的session present设置为0，并且CONNACK包的返回码也设置为0.</p></li>
+<li><p>如果服务端接受了一个CleanSession设置为0的连接，session present的值取决于服务端是否已经存储了客户端ID对应的会话状态．如果已经存储，
+session present必须设置为1,否则设置为0,另外CONNACK返回码也必须设置为0</p></li>
+</ol>
+</section>
+<section id="publish">
+<h3><span class="section-number">6.4.3.3.2.3. </span>PUBLISH - 发布消息<a class="headerlink" href="#publish" title="此标题的永久链接"></a></h3>
+<p>PUBLISH控制包可以从服务端发送到客户端也可以从客户端发送到服务端</p>
+<img alt="../../../_images/PUBLISH_packet.png" src="../../../_images/PUBLISH_packet.png" />
+<p>载荷包含了发布的应用消息，内容和格式由应用决定．载荷的长度可以由固定包头中的Remaining Length减去可变包头长度得到</p>
+<p>PUBLISH包的接收方需要按照下表进行响应</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>QoS Level</p></td>
+<td><p>Expected Respinse</p></td>
+</tr>
+<tr class="row-even"><td><p>QoS 0</p></td>
+<td><p>None</p></td>
+</tr>
+<tr class="row-odd"><td><p>QoS 1</p></td>
+<td><p>PUBACK Packet</p></td>
+</tr>
+<tr class="row-even"><td><p>QoS 2</p></td>
+<td><p>PUBREC Packet</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="puback">
+<h3><span class="section-number">6.4.3.3.2.4. </span>PUBACK - 发布确认<a class="headerlink" href="#puback" title="此标题的永久链接"></a></h3>
+<p>PUBACK包用来响应QoS等级为1的PUBLISH包</p>
+<img alt="../../../_images/PUBACK_packet.png" src="../../../_images/PUBACK_packet.png" />
+</section>
+<section id="pubrec">
+<h3><span class="section-number">6.4.3.3.2.5. </span>PUBREC - 发布收到<a class="headerlink" href="#pubrec" title="此标题的永久链接"></a></h3>
+<p>PUBREC包用来响应QoS 2的PUBLISH包，这是QoS 2协议交换的第二个包</p>
+<img alt="../../../_images/PUBREC_packet.png" src="../../../_images/PUBREC_packet.png" />
+</section>
+<section id="pubrel-publish-release">
+<h3><span class="section-number">6.4.3.3.2.6. </span>PUBREL - Publish release<a class="headerlink" href="#pubrel-publish-release" title="此标题的永久链接"></a></h3>
+<p>PUBREL包用来响应PUBREC包，是QoS 2协议交换的第三部分</p>
+<img alt="../../../_images/PUBREL_packet.png" src="../../../_images/PUBREL_packet.png" />
+</section>
+<section id="pubcomp">
+<h3><span class="section-number">6.4.3.3.2.7. </span>PUBCOMP - 发布完成<a class="headerlink" href="#pubcomp" title="此标题的永久链接"></a></h3>
+<p>PUBCOMP包用来响应PUBREL包，这是QoS 2协议交换的第四个也是最后一个包</p>
+<img alt="../../../_images/PUBCOMP_packet.png" src="../../../_images/PUBCOMP_packet.png" />
+</section>
+<section id="subscribe">
+<h3><span class="section-number">6.4.3.3.2.8. </span>SUBSCRIBE - 订阅主题<a class="headerlink" href="#subscribe" title="此标题的永久链接"></a></h3>
+<p>SUBSCRIBE包从客户端发送到服务端创建一个或多个订阅</p>
+<img alt="../../../_images/SUBSCRIBE_packet.png" src="../../../_images/SUBSCRIBE_packet.png" />
+</section>
+<section id="suback">
+<h3><span class="section-number">6.4.3.3.2.9. </span>SUBACK - 订阅确认<a class="headerlink" href="#suback" title="此标题的永久链接"></a></h3>
+<p>SUBACK包从服务端发送给客户端，用来确认收到并处理了SUBSCRIBE包，且必须包含与相应SUBSCRIBE包相同的包唯一标识</p>
+<img alt="../../../_images/SUBACK_packet.png" src="../../../_images/SUBACK_packet.png" />
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>载荷包含了返回码的列表，每个返回码对应SUBSCRIBE包中需要被确认的主题，SUBACK中的返回码顺序必须匹配SUBSCRIBE包中的主题顺序</p>
+</div>
+</section>
+<section id="unsubscribe">
+<h3><span class="section-number">6.4.3.3.2.10. </span>UNSUBSCRIBE - 退订主题<a class="headerlink" href="#unsubscribe" title="此标题的永久链接"></a></h3>
+<p>UNSUBSCRIBE包从客户端发往服务端，用来退订主题</p>
+<img alt="../../../_images/UNSUBSCRIBE_packet.png" src="../../../_images/UNSUBSCRIBE_packet.png" />
+</section>
+<section id="unsuback">
+<h3><span class="section-number">6.4.3.3.2.11. </span>UNSUBACK - 退订确认<a class="headerlink" href="#unsuback" title="此标题的永久链接"></a></h3>
+<p>UNSUBACK包从服务端发送到客户端来确认收到UNSUBSCRIBE包</p>
+<img alt="../../../_images/UNSUBACK_packet.png" src="../../../_images/UNSUBACK_packet.png" />
+</section>
+<section id="pingreq-ping">
+<h3><span class="section-number">6.4.3.3.2.12. </span>PINGREQ - PING请求<a class="headerlink" href="#pingreq-ping" title="此标题的永久链接"></a></h3>
+<p>PINGREQ包从客户端发往服务端，可以用来</p>
+<ol class="arabic simple">
+<li><p>在没有其他控制包从客户端发往服务端时，告知服务端客户端的存活状态</p></li>
+<li><p>请求服务端响应，来确认服务端是否存活</p></li>
+<li><p>确认网络连接的有效性</p></li>
+</ol>
+<img alt="../../../_images/PINGREQ_packet.png" src="../../../_images/PINGREQ_packet.png" />
+</section>
+<section id="pingresp-ping">
+<h3><span class="section-number">6.4.3.3.2.13. </span>PINGRESP - PING响应<a class="headerlink" href="#pingresp-ping" title="此标题的永久链接"></a></h3>
+<p>PINGRESP包从服务端发送给客户端来响应PINGREQ包，它代表服务端是存活的</p>
+<img alt="../../../_images/PINGRESP_packet.png" src="../../../_images/PINGRESP_packet.png" />
+</section>
+<section id="disconnect">
+<h3><span class="section-number">6.4.3.3.2.14. </span>DISCONNECT - 断开连接通知<a class="headerlink" href="#disconnect" title="此标题的永久链接"></a></h3>
+<p>DISCONNECT包是客户端发送给服务端的最后一个控制包</p>
+<img alt="../../../_images/DISCONNECT_packet.png" src="../../../_images/DISCONNECT_packet.png" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="mqtt_flow.html" class="btn btn-neutral float-left" title="6.4.3.2. MQTT流程图" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="mqtt_usermenu.html" class="btn btn-neutral float-right" title="6.4.3.4. MQTT应用示例" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

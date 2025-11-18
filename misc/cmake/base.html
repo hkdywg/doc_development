@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.7.2. Cmake基础知识 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="7.7.3. CMake常见指令" href="normal_cmd.html" />
+    <link rel="prev" title="7.7.1. CMake简明" href="tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">7.7. Cmake学习笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html">7.7.1. CMake简明</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">7.7.2. Cmake基础知识</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">7.7.2.1. 变量与缓存</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">7.7.2.2. Cmake编程</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">7.7.2.3. Cmake与代码交互</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id11">7.7.2.4. 项目组织</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id12">7.7.2.5. 在Cmake中运行其他程序</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id15">7.7.2.6. 示例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="normal_cmd.html">7.7.3. CMake常见指令</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datastruct_algo/index.html">7.9. 数据结构与算法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.7. </span>Cmake学习笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.7.2. </span>Cmake基础知识</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/misc/cmake/base.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cmake">
+<h1><span class="section-number">7.7.2. </span>Cmake基础知识<a class="headerlink" href="#cmake" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">7.7.2.1. </span>变量与缓存<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<section id="id2">
+<h3><span class="section-number">7.7.2.1.1. </span>本地变量<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>可以用以下方式申明一个本地(local)变量</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="n">MY_VARIBLE</span> <span class="s2">&quot;value&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>变量名通常全部用大写,变量值根在其后，在使用时需要用 ${MY_VARIBLE}。CMake有作用域的概念，在申明一个变量后，你之可以在他的作用域内访问这个变量。如果你将一个汉书或一个文件放到
+一个子目录中，这个变量将不再被定义。可以通过在变量申明末尾添加PARENT_SCOPE来将他的作用域定为上一级作用域</p>
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="n">MY_LIST</span> <span class="s2">&quot;one&quot;</span> <span class="s2">&quot;two&quot;</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="n">MY_LIST</span> <span class="s2">&quot;oneltwo&quot;</span><span class="p">)</span>      <span class="c1">#使用;分割变量</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h3><span class="section-number">7.7.2.1.2. </span>缓存变量<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>CMake提供了一个缓存变量来允许你从命令行中设置变量。CMake中已经有一些预置的变量，像 CMAKE_BUILD_TYPE。如果一个变量还没有被定义，你可以这样申明并设置它</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="n">MY_CACHE_VARIBLE</span> <span class="s2">&quot;value&quot;</span> <span class="n">CACHE</span> <span class="n">STRING</span> <span class="s2">&quot;description&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这样写不会覆盖以定义的值，这是为了让你只能在命令行中设置这些变量，而不会在CMake文件执行时被重新覆盖。如果你想把这些变量作为一个临时的全局变量，可以按以下操作</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">set</span><span class="p">(</span><span class="n">MY_CACHE_VARIBLE</span> <span class="s2">&quot;value&quot;</span> <span class="n">CACHE</span> <span class="n">STRING</span> <span class="s2">&quot;&quot;</span> <span class="n">FORCE</span><span class="p">)</span>     <span class="c1">#强制设置该变量的值</span>
+<span class="n">mark_as_advanced</span><span class="p">(</span><span class="n">MY_CACHE_VARIBLE</span><span class="p">)</span>                      <span class="c1">#mark_as_advanced修饰以后，用户在执行cmake ../ -L时不会列出该变量</span>
+<span class="n">或</span>
+<span class="nb">set</span><span class="p">(</span><span class="n">MY_CACHE_VARIBLE</span> <span class="s2">&quot;value&quot;</span> <span class="n">CACHE</span> <span class="n">INTERNAL</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>常见的BOOL类型变量设置</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">option</span><span class="p">(</span><span class="n">MY_OPTION</span> <span class="s2">&quot;this is settable from command line&quot;</span> <span class="n">OFF</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h3><span class="section-number">7.7.2.1.3. </span>环境变量<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>set(ENV{MY_ENV_STRING} value)   #设置环境变量
+$ENV{MY_ENV_STRING}     #获取环境变量
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3><span class="section-number">7.7.2.1.4. </span>缓存<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>缓存实际上就是个文本文件，CMakeCache.txt，当你运行CMake构建目录时会创建它。CMake可以通过它来记住你设置的所有东西，因此你可以不必在运行CMake的时候再次列出所有的选项。</p>
+</section>
+<section id="id6">
+<h3><span class="section-number">7.7.2.1.5. </span>属性<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h3>
+<p>待完善</p>
+</section>
+</section>
+<section id="id7">
+<h2><span class="section-number">7.7.2.2. </span>Cmake编程<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
+<section id="id8">
+<h3><span class="section-number">7.7.2.2.1. </span>控制流程<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<p>CMake有一个if语句可以进行流程控制</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="n">varible</span><span class="p">)</span>
+     <span class="c1"># if varible is &#39;ON&#39;, &#39;YES&#39; , &#39;TRUE&#39; , &#39;Y&#39;, or non zero number</span>
+<span class="k">else</span><span class="p">()</span>
+    <span class="c1"># if varible is &#39;0&#39; , &#39;OFF&#39; , &#39;NO&#39;, &#39;FALSE&#39; , &#39;N&#39; , &#39;IGNORE&#39; , &#39;NOTFOUND&#39; , &#39;&quot;&quot;&#39; , or ends in &#39;-NOTFOUND&#39;</span>
+<span class="n">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>如果CMake版本大于3.1，可以按以下方式写</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{variable}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># True if variable is not false-like</span>
+<span class="k">else</span><span class="p">()</span>
+    <span class="c1"># Note that undefined variables would be `&quot;&quot;` thus false</span>
+<span class="n">endif</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>这里有一些关键字可以设置，例如</p>
+<ul class="simple">
+<li><p>一元的: NOT , TARGET, EXISTS(文件) , DEFINED等</p></li>
+<li><p>二元的: STREQUAL, AND, OR, MATCHES(正则表达式)，VERSION_LESS, VERSION_LESS_EQUAL</p></li>
+<li><p>括号可以用来分组</p></li>
+</ul>
+</section>
+<section id="id9">
+<h3><span class="section-number">7.7.2.2.2. </span>宏定义与函数<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h3>
+<p>函数与宏只有作用域上存在区别，宏没有作用域的限制。</p>
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>function(SIMPLE REQUIRED_ARG)
+    message(STATUS &quot;simple arguments: ${REQUIRED_ARG}, followed by ${ARGN}&quot;)
+    set(${REQUIRED_ARG} &quot;From SIMPLE&quot; PARENT_SCOPE)
+endfuntion()
+
+simple(This Foo Bar)
+message(&quot;Output: ${This}&quot;)
+</pre></div>
+</div>
+<p>输出如下</p>
+<dl class="simple">
+<dt>::</dt><dd><p>– Simple argument: This, followed by Foo;Bar
+Output: From SIMPLE</p>
+</dd>
+</dl>
+<p>CMake有一个变量名系统，可以通过cmake_parse_arguments函数来对变量进行命名与解析。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>function(COMPLEX)
+    cmake_parse_arguments(
+            COMPLEX_PREFIX
+            &quot;SINGLE;ANOTHER&quot;
+            &quot;ONE_VALUE;ALSO_ONE_VALUE&quot;
+            &quot;MULTI_VALUES&quot;
+            ${ARGN}
+        )
+
+endfunction()
+
+complex(SINGLE ONE_VALUE value MULTI_VALUES some other values)
+</pre></div>
+</div>
+<p>在调用这个函数后，会生成以下变量</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">COMPLEX_PREFIX_SINGLE</span> <span class="o">=</span> <span class="n">TRUE</span>
+<span class="n">COMPLEX_PREFIX_ANOTHER</span> <span class="o">=</span> <span class="n">FALSE</span>
+<span class="n">COMPLEX_PREFIX_ONE_VALUE</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span>
+<span class="n">COMPLEX_PREFIX_ALSO_ONE_VALUE</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">UNDEFINED</span><span class="o">&gt;</span>
+<span class="n">COMPLEX_PREFIX_MULTI_VALURES</span> <span class="o">=</span> <span class="s2">&quot;some&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id10">
+<h2><span class="section-number">7.7.2.3. </span>Cmake与代码交互<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h2>
+</section>
+<section id="id11">
+<h2><span class="section-number">7.7.2.4. </span>项目组织<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h2>
+<p>示例：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">project</span>
+<span class="o">-</span> <span class="o">.</span><span class="n">gitignore</span>
+<span class="o">-</span> <span class="n">README</span><span class="o">.</span><span class="n">md</span>
+<span class="o">-</span> <span class="n">LICENCE</span><span class="o">.</span><span class="n">md</span>
+<span class="o">-</span> <span class="n">CMakeLists</span><span class="o">.</span><span class="n">txt</span>
+<span class="o">-</span> <span class="n">cmake</span>
+  <span class="o">-</span> <span class="n">FindSomeLib</span><span class="o">.</span><span class="n">cmake</span>
+  <span class="o">-</span> <span class="n">something_else</span><span class="o">.</span><span class="n">cmake</span>
+<span class="o">-</span> <span class="n">include</span>
+  <span class="o">-</span> <span class="n">project</span>
+    <span class="o">-</span> <span class="n">lib</span><span class="o">.</span><span class="n">hpp</span>
+<span class="o">-</span> <span class="n">src</span>
+  <span class="o">-</span> <span class="n">CMakeLists</span><span class="o">.</span><span class="n">txt</span>
+  <span class="o">-</span> <span class="n">lib</span><span class="o">.</span><span class="n">cpp</span>
+<span class="o">-</span> <span class="n">apps</span>
+  <span class="o">-</span> <span class="n">CMakeLists</span><span class="o">.</span><span class="n">txt</span>
+  <span class="o">-</span> <span class="n">app</span><span class="o">.</span><span class="n">cpp</span>
+<span class="o">-</span> <span class="n">tests</span>
+  <span class="o">-</span> <span class="n">CMakeLists</span><span class="o">.</span><span class="n">txt</span>
+  <span class="o">-</span> <span class="n">testlib</span><span class="o">.</span><span class="n">cpp</span>
+<span class="o">-</span> <span class="n">docs</span>
+  <span class="o">-</span> <span class="n">CMakeLists</span><span class="o">.</span><span class="n">txt</span>
+<span class="o">-</span> <span class="n">extern</span>
+  <span class="o">-</span> <span class="n">googletest</span>
+<span class="o">-</span> <span class="n">scripts</span>
+  <span class="o">-</span> <span class="n">helper</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</section>
+<section id="id12">
+<h2><span class="section-number">7.7.2.5. </span>在Cmake中运行其他程序<a class="headerlink" href="#id12" title="此标题的永久链接"></a></h2>
+<section id="id13">
+<h3><span class="section-number">7.7.2.5.1. </span>配置时运行一条命令<a class="headerlink" href="#id13" title="此标题的永久链接"></a></h3>
+<p>可以使用excute_progress来运行一条命令并获得他的结果。</p>
+<p>下面是一个更新所有git子模块的例子</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>find_package(Git QUIET)
+
+if(GIT_FOUND AND EXISTS &quot;${PROJECT_SOURCE_DIR}/.git&quot;)
+    execute_progress(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                    RESULT_VARIBLE GIT_SUBMOD_RESULT)
+    if(NOT GIT_SUBMOD_RESULT &quot;0&quot;)
+        message(FATAL_ERROR &quot;git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}&quot;)
+endif()
+</pre></div>
+</div>
+</section>
+<section id="id14">
+<h3><span class="section-number">7.7.2.5.2. </span>在构建时运行一条命令<a class="headerlink" href="#id14" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>find_package(PythonInterp REQUIRED)
+add_custom_command(OUTPUT &quot;${CMAKE_CURRENT_BINARY_DIR}/include/Genetated.hpp&quot;
+    COMMAND &quot;${PYTHON_EXECUTABLE}&quot; &quot;${CMAKE_CURRENT_BINARY_DIR}/scripts/GenerateHeader.py&quot; --argument
+    DEPENDS some_target)
+
+add_custom_target(generate_header ALL
+                  DEPENDS &quot;${CMAKE_CURRENT_BINARY_DIR}/include/Generated.hpp&quot;)
+
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/include/Generated.hpp DESTINATION include)
+</pre></div>
+</div>
+<p>当你在add_custom_target命令中添加ALL关键字，头文件的生成过程会在some_target这些依赖目标完成后自动执行，当你把这个目标作为下一个目标的依赖，你也可以不加ALL关键字</p>
+</section>
+</section>
+<section id="id15">
+<h2><span class="section-number">7.7.2.6. </span>示例<a class="headerlink" href="#id15" title="此标题的永久链接"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="tutorial.html" class="btn btn-neutral float-left" title="7.7.1. CMake简明" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="normal_cmd.html" class="btn btn-neutral float-right" title="7.7.3. CMake常见指令" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

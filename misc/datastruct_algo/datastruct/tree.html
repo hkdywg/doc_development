@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7.9.1.1. 数据结构之树 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="7.9.1.2. 红黑树" href="red_black.html" />
+    <link rel="prev" title="7.9.1. 数据结构与算法" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">7. misc</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../reference/index.html">7.1. linux参考网站</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../git/index.html">7.2. git 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shell/index.html">7.3. shell 使用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../program_debug/index.html">7.4. 程序调试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../vim/index.html">7.5. vim使用手册</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../makefile/index.html">7.6. Makfile应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cmake/index.html">7.7. Cmake学习笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ld_scripts/index.html">7.8. 链接脚本</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">7.9. 数据结构与算法</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">7.9.1. 数据结构与算法</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">7.9.1.1. 数据结构之树</a></li>
+<li class="toctree-l4"><a class="reference internal" href="red_black.html">7.9.1.2. 红黑树</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../sword_offer/index.html">7.9.2. 剑指offer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../algorithm/index.html">7.9.3. 算法</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../markdown/index.html">7.10. markdown笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_commond/index.html">7.11. linux命令汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">7. </span>misc</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">7.9. </span>数据结构与算法</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">7.9.1. </span>数据结构与算法</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7.9.1.1. </span>数据结构之树</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/misc/datastruct_algo/datastruct/tree.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">7.9.1.1. </span>数据结构之树<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2><span class="section-number">7.9.1.1.1. </span>树的概念<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>树是数据结构中的一种，其属于非线性数据结构的一种。树由结点和边组成，且不存在任何环的一种数据结构。</p>
+<img alt="../../../_images/tree.png" src="../../../_images/tree.png" />
+<ul class="simple">
+<li><p>树的基本术语</p></li>
+</ul>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>术语</p></td>
+<td><p>描述</p></td>
+</tr>
+<tr class="row-even"><td><p>节点的度</p></td>
+<td><p>树中某个节点的子树的个数</p></td>
+</tr>
+<tr class="row-odd"><td><p>树的度</p></td>
+<td><p>树中各节点的度的最大值</p></td>
+</tr>
+<tr class="row-even"><td><p>分支节点</p></td>
+<td><p>度不为0的节点</p></td>
+</tr>
+<tr class="row-odd"><td><p>叶子节点</p></td>
+<td><p>度为0的节点</p></td>
+</tr>
+<tr class="row-even"><td><p>孩子节点</p></td>
+<td><p>某节点的后继节点</p></td>
+</tr>
+<tr class="row-odd"><td><p>父节点</p></td>
+<td><p>该节点为其孩子的父节点</p></td>
+</tr>
+<tr class="row-even"><td><p>兄弟节点</p></td>
+<td><p>同一父节点的孩子节点互为兄弟节点</p></td>
+</tr>
+<tr class="row-odd"><td><p>子孙节点</p></td>
+<td><p>某节点所有子树中的节点</p></td>
+</tr>
+<tr class="row-even"><td><p>祖先节点</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>节点的层次</p></td>
+<td><p>根节点为第一层(以此类推)</p></td>
+</tr>
+<tr class="row-even"><td><p>树的高度</p></td>
+<td><p>树中节点的最大层次</p></td>
+</tr>
+<tr class="row-odd"><td><p>有序树</p></td>
+<td><p>树中节点子树按次序从左向右排列，次序不能改变</p></td>
+</tr>
+<tr class="row-even"><td><p>无序树</p></td>
+<td><p>与有序树相反</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>树的性值</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>树中节点数为节点度树加1(加根节点)</p></li>
+<li><p>度为m的树中第i层最多有m^(i-1)个节点</p></li>
+<li><p>高度为h的m次树至多有(m^h-1)/(m-1)个节点</p></li>
+<li><p>具有n个节点的m次树的最小高度为logm(n(m-1)+1)向上取整</p></li>
+</ol>
+</section>
+<section id="id3">
+<h2><span class="section-number">7.9.1.1.2. </span>二叉树<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>二叉树是n个节点的有限集合，该集合可以为空集(称为空二叉树)，或者由一个根节点和两棵互不相交的子树组成，分别称为根节点左子树和右子树</p>
+<img alt="../../../_images/binary_tree.png" src="../../../_images/binary_tree.png" />
+<p>每一个节点中最多拥有一个左结点和右结点，并没有多余的结点，这是很明星的二叉树特征</p>
+<ul class="simple">
+<li><p>二叉树特点</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>每个结点最多有两颗子树，所以二叉树中不存在度大于2的结点</p></li>
+<li><p>左子树和右子树是有顺序的，次序不能任意颠倒</p></li>
+<li><p>即使树中某结点只有一颗子树，也要区分它是左子树还是右子树</p></li>
+</ol>
+<ul class="simple">
+<li><p>二叉树的性质</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>二叉树第i层上的结点数最多为2^(i-1)个结点</p></li>
+<li><p>深度为k的二叉树最多有2^k-1个结点</p></li>
+<li><p>包含n个结点的二叉树高度至少为log2(n+1)</p></li>
+<li><p>在任意一颗二叉树中，若终端结点的个树为N0，度为2的结点为n2,则n0=n2+1</p></li>
+</ol>
+<ul class="simple">
+<li><p>几种特殊的二叉树</p></li>
+</ul>
+<p>斜树: 所有结点都只有左子树的二叉树叫左写树。相反的为右斜树</p>
+<img alt="../../../_images/incline_tree.png" src="../../../_images/incline_tree.png" />
+<p>满二叉树: 在二叉树中所有分支结点都存在左子树和右子树，并且所有叶子结点都在同一层上，这样的二叉树称为满二叉树</p>
+<p>满二叉树的特点有:</p>
+<ol class="arabic simple">
+<li><p>叶子结点只能出现在最下一层</p></li>
+<li><p>非叶子结点的度一定是2</p></li>
+<li><p>在同样深度的二叉树中，满二叉树的结点个树最多，叶子数最多</p></li>
+</ol>
+<img alt="../../../_images/full_tree.png" src="../../../_images/full_tree.png" />
+<p>完全二叉树: 对一颗具有n个结点的二叉树按层编号，如果编号为i(1&lt;=i&lt;=n)的结点与同样深度的满二叉树中的编号为i的结点在二叉树中的位置完全相同，则这颗二叉树称为完全二叉树</p>
+<img alt="../../../_images/complete_tree.png" src="../../../_images/complete_tree.png" />
+</section>
+<section id="id4">
+<h2><span class="section-number">7.9.1.1.3. </span>二叉树的存储<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>二叉树的存储可以有两种方式:顺序存储和链式存储</p>
+<p><strong>顺序存储</strong></p>
+<p>满二叉树</p>
+<img alt="../../../_images/full_tree_save.png" src="../../../_images/full_tree_save.png" />
+<p>完全二叉树</p>
+<img alt="../../../_images/complete_tree_save.png" src="../../../_images/complete_tree_save.png" />
+<p>非满、完全二叉树</p>
+<img alt="../../../_images/tree_save.png" src="../../../_images/tree_save.png" />
+<p>这种存储的缺点是，数组中可能会有大量空间未使用，造成浪费</p>
+<p><strong>链式存储</strong></p>
+<p>链式存储则采用链表的方式进行数据存储。也是较为常见的存储方式</p>
+<img alt="../../../_images/tree_link_save.png" src="../../../_images/tree_link_save.png" />
+<p>一颗二叉树的结点设计一定要有如下内容：</p>
+<ol class="arabic simple">
+<li><p>结点元素，data域，用来存储数据可以是int，char等基本类型，也可以是struct等复合数据类型</p></li>
+<li><p>左孩子结点，left指针</p></li>
+<li><p>右孩子结点，right指针</p></li>
+<li><p>父结点(可选)，parent指针</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">node</span>
+<span class="p">{</span>
+    <span class="nb">int</span> <span class="n">data</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">node</span><span class="o">*</span> <span class="n">left</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">node</span><span class="o">*</span> <span class="n">right</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">struct</span> <span class="n">Tree</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">node</span><span class="o">*</span> <span class="n">root</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<section id="id5">
+<h3><span class="section-number">7.9.1.1.3.1. </span>树的创建<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">insert</span><span class="p">(</span><span class="n">struct</span> <span class="n">tree</span><span class="o">*</span> <span class="n">t</span><span class="p">,</span> <span class="nb">int</span> <span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">node</span><span class="o">*</span> <span class="n">node</span> <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">node</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">sizeof</span><span class="p">(</span><span class="n">struct</span> <span class="n">node</span><span class="p">));</span>
+    <span class="n">node</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="n">node</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+    <span class="n">node</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">t</span><span class="o">-&gt;</span><span class="n">root</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">t</span><span class="o">-&gt;</span><span class="n">root</span> <span class="o">=</span> <span class="n">node</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">struct</span> <span class="n">node</span><span class="o">*</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">t</span><span class="o">-&gt;</span><span class="n">root</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">tmp</span> <span class="o">!=</span> <span class="n">NULL</span><span class="p">)</span>
+        <span class="p">{</span>
+
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id6">
+<h2><span class="section-number">7.9.1.1.4. </span>二叉树的遍历<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p>二叉树的遍历可以总结为以下三句话</p>
+<ol class="arabic simple">
+<li><p>先序遍历: 根左右</p></li>
+<li><p>中序遍历: 左根右</p></li>
+<li><p>后序遍历: 左右根</p></li>
+</ol>
+<section id="id7">
+<h3><span class="section-number">7.9.1.1.4.1. </span>先序遍历<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<img alt="../../../_images/pre_traversal.png" src="../../../_images/pre_traversal.png" />
+<p>这个二叉树的先序遍历访问顺序就是: ABDEFGCH</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">Pre</span><span class="o">-</span><span class="n">Traverse</span> <span class="n">Binary</span><span class="o">-</span><span class="n">Tree</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">Preorder_Traverse_BinaryTree</span><span class="p">(</span><span class="n">struct</span> <span class="n">binary_node</span> <span class="o">*</span><span class="n">node</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">node</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">idx</span><span class="p">);</span>
+        <span class="o">/*</span> <span class="n">Traverse</span> <span class="n">left</span> <span class="n">child</span> <span class="o">*/</span>
+        <span class="n">Preorder_Traverse_BinaryTree</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+        <span class="o">/*</span> <span class="n">Traverse</span> <span class="n">right</span> <span class="n">child</span> <span class="o">*/</span>
+        <span class="n">Preorder_Traverse_BinaryTree</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h3><span class="section-number">7.9.1.1.4.2. </span>中序遍历<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<img alt="../../../_images/pre_traversal.png" src="../../../_images/pre_traversal.png" />
+<p>这个二叉树的中序遍历访问顺序就是：EDFBGACH</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">Midd</span><span class="o">-</span><span class="n">Traverse</span> <span class="n">Binary</span><span class="o">-</span><span class="n">Tree</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">Middorder_Traverse_BinaryTree</span><span class="p">(</span><span class="n">struct</span> <span class="n">binary_node</span> <span class="o">*</span><span class="n">node</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">node</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">Middorder_Traverse_BinaryTree</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">idx</span><span class="p">);</span>
+        <span class="n">Middorder_Traverse_BinaryTree</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h3><span class="section-number">7.9.1.1.4.3. </span>后序遍历<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h3>
+<img alt="../../../_images/pre_traversal.png" src="../../../_images/pre_traversal.png" />
+<p>这个二叉树的后续遍历访问顺序就是: EFDGBHCA</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">Post</span><span class="o">-</span><span class="n">Traverse</span> <span class="n">Binary</span><span class="o">-</span><span class="n">Tree</span> <span class="o">*/</span>
+<span class="n">static</span> <span class="n">void</span> <span class="n">Postorder_Traverse_BinaryTree</span><span class="p">(</span><span class="n">struct</span> <span class="n">binary_node</span> <span class="o">*</span><span class="n">node</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">node</span> <span class="o">==</span> <span class="n">NULL</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">Postorder_Traverse_BinaryTree</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+        <span class="n">Postorder_Traverse_BinaryTree</span><span class="p">(</span><span class="n">node</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">idx</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="7.9.1. 数据结构与算法" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="red_black.html" class="btn btn-neutral float-right" title="7.9.1.2. 红黑树" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

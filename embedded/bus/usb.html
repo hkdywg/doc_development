@@ -1,0 +1,490 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.9.3. USB2.0概述及协议基础 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.9.4. USB描述符" href="usb_description.html" />
+    <link rel="prev" title="8.9.2. 嵌入式系统常见总线" href="normal.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">8.8. 视频相关</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.9. 嵌入式系统常见总线</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="standard_protocal.html">8.9.1. 标准接口规范协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="normal.html">8.9.2. 嵌入式系统常见总线</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.9.3. USB2.0概述及协议基础</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#usb">8.9.3.1. USB总线接口</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">8.9.3.2. USB设备</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">8.9.3.3. USB传输</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="usb_description.html">8.9.4. USB描述符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usb_packet_sample.html">8.9.5. U盘插入及拔出过程中的USB数据包示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.9. </span>嵌入式系统常见总线</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.9.3. </span>USB2.0概述及协议基础</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/bus/usb.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usb2-0">
+<h1><span class="section-number">8.9.3. </span>USB2.0概述及协议基础<a class="headerlink" href="#usb2-0" title="此标题的永久链接"></a></h1>
+<p>USB是通用串行总线(Universal Serial Bus)的缩写。在USB1.0和USB1.1的版本中，支持1.5M/s的低速(low-speed)模式和12Mb/s的(full-speed)模式。在USB2.0中加入了480Mb/s的高速模式</p>
+<section id="usb">
+<h2><span class="section-number">8.9.3.1. </span>USB总线接口<a class="headerlink" href="#usb" title="此标题的永久链接"></a></h2>
+<ul class="simple">
+<li><p>USB接口标准: A型，B型，Mini 型</p></li>
+</ul>
+<section id="id1">
+<h3><span class="section-number">8.9.3.1.1. </span>USB总线信号<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+<p>USB2.0采用四线制，分别是Vbus电源线，GND地线，差分数据线D+和D-. 所以USB2.0的四线制是半双工通信</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">差分信号1</span><span class="p">:</span> <span class="n">D</span><span class="o">+&gt;</span><span class="mf">2.8</span><span class="n">V</span><span class="p">,</span> <span class="n">D</span><span class="o">-&lt;</span><span class="mf">0.3</span><span class="n">V</span>
+<span class="n">差分信号0</span><span class="p">:</span> <span class="n">D</span><span class="o">-&gt;</span><span class="mf">2.8</span><span class="n">V</span><span class="p">,</span> <span class="n">D</span><span class="o">+&lt;</span><span class="mf">0.3</span><span class="n">V</span>
+</pre></div>
+</div>
+<p>USB接口设计如下,电源线和地线较长，这样设计可以使USB设备接入时，USB电源先于数据信号连接，避免电源不稳定对信号造成的影响</p>
+<img alt="../../_images/usb_pin.png" src="../../_images/usb_pin.png" />
+<p>由于USB2.0采用的是四线制，其中没有时钟线。所以USB设备与主机设备在进行数据传输时由于没有时钟同步而导致发送端在发出的数据在接收端采样信号时，可能会因为时钟误差而导致
+数据不正确的问题。</p>
+<p>针对这个问题，USB采用时钟同步域来解决这个问题。即在数据发送时，先发送一个同步头(8`b 01010101).接收端通过这个同步头计算出发送端的频率。这样接收端使用同样的频率采样，从而
+达到数据可以正确接收</p>
+<ul class="simple">
+<li><p>J状态和K状态:</p>
+<ul>
+<li><p>低速下: D+为”0”,D-为”1”为J状态，K状态相反</p></li>
+<li><p>全速下: D+为”1”,D-为”0”为J状态，K状态相反。</p></li>
+<li><p>高速下: 同全速</p></li>
+</ul>
+</li>
+<li><p>SE0状态: D+为”0”,D-为”0”</p></li>
+<li><p>IDLE状态: 低速下IDLE状态为K状态，全速下空闲状态为J状态，高速下空闲状态为SE0状态</p></li>
+</ul>
+<p>针对全速模式，有以下几个重要信号</p>
+<ul class="simple">
+<li><p>Reset信号: 主机在要和设备通信之前会发送Reset信号来吧设备配置到默认的未配置状态。即SE0状态保持10ms</p></li>
+<li><p>Resume信号:20ms的K状态+低速EOP</p></li>
+<li><p>Suspend信号: 3ms以上的J状态</p></li>
+<li><p>SOP信号: 从IDLE状态切换为K状态</p></li>
+<li><p>EOP信号: 持续2位时间的SE0信号，后跟随1位时间的J状态</p></li>
+<li><p>SYNC信号: 3个重复的K,J状态切换。后跟随2位时间的K状态</p></li>
+</ul>
+<img alt="../../_images/suspend_resume.webp" src="../../_images/suspend_resume.webp" />
+<img alt="../../_images/sync_signal.webp" src="../../_images/sync_signal.webp" />
+</section>
+<section id="id2">
+<h3><span class="section-number">8.9.3.1.2. </span>USB数据编解码和位填充<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>USB采用NRZI(非归零编码)对发送的数据包进行编码，即: 输入数据0，编码为电平翻转，输入数据1，编码为电平不变</p>
+<img alt="../../_images/NRZI_code.webp" src="../../_images/NRZI_code.webp" />
+<img alt="../../_images/usb_data_value.png" src="../../_images/usb_data_value.png" />
+<p>位填充是为了保证发送的数据序列中有足够多的电平变化，填充的对象是输入数据，即先填充后编码。数据流中每6个连续的1就要插入一个0. 接收方解码NRZI码流，然后识别填充位，并丢弃它们</p>
+<img alt="../../_images/bit_stuffed.webp" src="../../_images/bit_stuffed.webp" />
+</section>
+<section id="id3">
+<h3><span class="section-number">8.9.3.1.3. </span>USB拓扑结构<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>USB是一种主从结构的系统，主机叫做Host，从机叫做Device. Device包括USB function和USB HUB</p>
+<p>USB总线基于分层的星状拓扑结构，以HUB为中心，连接周围设备。总线上最多可连接127个设备。HUB串联数量最多5个</p>
+<img alt="../../_images/usb_struct.png" src="../../_images/usb_struct.png" />
+</section>
+</section>
+<section id="id4">
+<h2><span class="section-number">8.9.3.2. </span>USB设备<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<section id="id5">
+<h3><span class="section-number">8.9.3.2.1. </span>USB设备供电方式<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>USB设备有两种供电方式:</p>
+<ul class="simple">
+<li><p>自供电: 设备从外部电源获取工作电压</p></li>
+<li><p>总线供电: 设备从VBUS(5v)取电, USB1.0/1.1/2.0每个端口可提供500ma电流，USB3.0/3.1/3.2每个端口可提供900ma电流</p></li>
+</ul>
+<p>对于总线供电设备，区分低功耗和高功耗设备。低功耗设备最大功耗不超过100ma,高功耗设备枚举时最大功耗不超过100ma,枚举完成配置后功耗不超过500ma</p>
+<p>设备在枚举过程中，通过配置描述符来向主机报告它的供电方式和功耗要求。</p>
+</section>
+<section id="id6">
+<h3><span class="section-number">8.9.3.2.2. </span>USB设备插入检测机制<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h3>
+<p>没有设备连接主机时，主机的D+和D-都在低电平(SE0状态)，当SE0状态持续一段时间了，就被主机认为是断开状态。</p>
+<p>当设备连接主机时，主机检测到某一数据线拉高并持续一段时间，就认为有设备连上来了。主机必须在复位设备之前，立即采样总线状态来判断设备的速度</p>
+<img alt="../../_images/usb_hotplug.webp" src="../../_images/usb_hotplug.webp" />
+</section>
+<section id="id7">
+<h3><span class="section-number">8.9.3.2.3. </span>USB设备状态<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>USB设备有 <code class="docutils literal notranslate"><span class="pre">插入</span></code> , <code class="docutils literal notranslate"><span class="pre">供电</span></code> , <code class="docutils literal notranslate"><span class="pre">初始化</span></code> , <code class="docutils literal notranslate"><span class="pre">分配地址</span></code> , <code class="docutils literal notranslate"><span class="pre">配置</span></code> , <code class="docutils literal notranslate"><span class="pre">挂起</span></code> 六种状态，其状态迁移图如下</p>
+<img alt="../../_images/usb_device_sta.webp" src="../../_images/usb_device_sta.webp" />
+</section>
+<section id="id8">
+<h3><span class="section-number">8.9.3.2.4. </span>USB设备枚举过程<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<p>对应USB设备的状态，host对USB设备有以下活动</p>
+<img alt="../../_images/usb_device_enum.webp" src="../../_images/usb_device_enum.webp" />
+<p>USB枚举过程中，都是使用控制传输</p>
+<ul>
+<li><p>复位阶段: USB主机检测到USB设备插入后，就会对设备复位。USB设备在总线复位后其地址为0，这样主机就可以通过地址0和那些刚插入的设备通信。USB主机往地址为0的设备的断点0发送
+获取设备描述符的标准请求。设备会将设备描述符返回给主机，主机在成功获取到数据包后，就会返回一个确认数据包给设备，从而进入接下来的分配地址阶段</p></li>
+<li><p>分配地址阶段: 主机对设备又一次复位，就进入到分配地址阶段。主机向地址为0的设备的端点0发送一个设备地址的请求，新的设备地址就包含在建立过程的数据包中。具体的地址由主机进行管理，
+主机会分配一个唯一的地址给刚接入的设备。设备在接收到这个建立过程后，就会进入到状态过程。设备等待主机请求状态返回，收到状态请求后，设备就返回0长度的状态数据包。如果主机确认该
+状态包已经正确收到，就会发送应答包ACK给设备，设备在收到这个ACK后，就要启用新的设备地址了。这样设备就分配到了一个唯一的设备地址</p></li>
+<li><p>获取描述符阶段: 形象化描述如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Host: 你是什么设备
+Device: 12 01 0100 ... Device Descriptor
+Host: 你有几种功能
+Device: 09 02 09 ... Configuration Descriptor
+Host: 每个功能有几个接口
+Device: 09 04 00 ... Interface Descriptor
+Host: 每个接口使用哪几个端点
+Device: 06 05 82 ... Endpoint Descriptor
+Host: 好了，我知道你是谁了，开始传输设备吧
+Device: Ok, Read Go
+</pre></div>
+</div>
+</li>
+</ul>
+<img alt="../../_images/usb_enum_sample.png" src="../../_images/usb_enum_sample.png" />
+</section>
+<section id="id9">
+<h3><span class="section-number">8.9.3.2.5. </span>USB描述符<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h3>
+<p>USB描述符有以下11类</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>描述符类型</p></td>
+<td><p>值</p></td>
+</tr>
+<tr class="row-even"><td><p>DEVICE</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>CONFIGURATION</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>STRING</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-odd"><td><p>INTERFACE</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p>ENDPOINT</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p>DEVICE_QUALIFIER</p></td>
+<td><p>6</p></td>
+</tr>
+<tr class="row-even"><td><p>OTHER_SPEED_CONFIGURATION</p></td>
+<td><p>7</p></td>
+</tr>
+<tr class="row-odd"><td><p>INTERFACE_POWER1</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-even"><td><p>HID_HID_DESCRIPTION_TYPE</p></td>
+<td><p>0x21</p></td>
+</tr>
+<tr class="row-odd"><td><p>HID_REPORT_DESCRIPTION_TYPE</p></td>
+<td><p>0x22</p></td>
+</tr>
+<tr class="row-even"><td><p>HID_PHYSICAL_DESCRIPTOR_TYPE</p></td>
+<td><p>0x23</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Device Descriptor</p></li>
+</ul>
+<img alt="../../_images/device_descriptor.webp" src="../../_images/device_descriptor.webp" />
+<ul class="simple">
+<li><p>Configuration Descriptor</p></li>
+</ul>
+<img alt="../../_images/configuration_descriptor.webp" src="../../_images/configuration_descriptor.webp" />
+<ul class="simple">
+<li><p>Interface Descriptor</p></li>
+</ul>
+<img alt="../../_images/interface_descriptor.webp" src="../../_images/interface_descriptor.webp" />
+<ul class="simple">
+<li><p>Endpoint Descriptor</p></li>
+</ul>
+<img alt="../../_images/endpoint_descriptor.webp" src="../../_images/endpoint_descriptor.webp" />
+<ul class="simple">
+<li><p>String Descriptor</p></li>
+</ul>
+<img alt="../../_images/string_descriptor.webp" src="../../_images/string_descriptor.webp" />
+</section>
+</section>
+<section id="id10">
+<h2><span class="section-number">8.9.3.3. </span>USB传输<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h2>
+<p>USB总线上传输数据是以包(packet)为基本单位的，必须把不同的包组织成事务(transaction)才能传输数据。</p>
+<p>USB协议定义了四种传输(transfer)类型: <code class="docutils literal notranslate"><span class="pre">批量传输</span></code> , <code class="docutils literal notranslate"><span class="pre">同步传输</span></code> , <code class="docutils literal notranslate"><span class="pre">中断传输</span></code> , <code class="docutils literal notranslate"><span class="pre">控制传输</span></code> .其中，批量传输、同步传输、中断传输每传输一次数据都是一个事务。</p>
+<img alt="../../_images/transfer_translation.webp" src="../../_images/transfer_translation.webp" />
+<section id="packet">
+<h3><span class="section-number">8.9.3.3.1. </span>包packet<a class="headerlink" href="#packet" title="此标题的永久链接"></a></h3>
+<p>一个包被分为不同域，根据不同类型的包，所含的域也是不一样的。但都要以同步域SYNC开始，紧跟一个包标识符PID,最终以包结束符EOP来结束这个包</p>
+<img alt="../../_images/packet_struct.webp" src="../../_images/packet_struct.webp" />
+<ul class="simple">
+<li><p>PID域: PID用来标识一个包的类型，它共有8位，只使用低四位，高四位取反，用来校验PID</p></li>
+</ul>
+<img alt="../../_images/pid_bit.webp" src="../../_images/pid_bit.webp" />
+<p>PID规定了四类包: <code class="docutils literal notranslate"><span class="pre">令牌包</span></code> 、 <code class="docutils literal notranslate"><span class="pre">数据包</span></code> 、 <code class="docutils literal notranslate"><span class="pre">握手包</span></code> 、 <code class="docutils literal notranslate"><span class="pre">特殊包</span></code> . 同类的包又各分为具体的四种包</p>
+<img alt="../../_images/packet_type.webp" src="../../_images/packet_type.webp" />
+<ul class="simple">
+<li><p>地址域: 地址共占11位，其中低7位是设备地址，高4位是端点地址</p></li>
+</ul>
+<img alt="../../_images/address_struct.webp" src="../../_images/address_struct.webp" />
+<ul class="simple">
+<li><p>帧号域: 帧号占11位，主机每发一帧，帧号都会自动加1，当帧号达到0x7FF时，将归零重新开始计数</p></li>
+<li><p>数据域: 根据传输类型的不同，数据域的数据长度从0到1024字节不等。</p></li>
+</ul>
+<img alt="../../_images/data_struct.webp" src="../../_images/data_struct.webp" />
+<ul class="simple">
+<li><p>CRC域: 计算地址域和帧号域的CRC,或数据域数据的CRC</p></li>
+</ul>
+<img alt="../../_images/usb_crc.webp" src="../../_images/usb_crc.webp" />
+<p><strong>令牌包</strong></p>
+<p>令牌包有四种:</p>
+<ul class="simple">
+<li><p>OUT: 通知设备将要输出一个数据包</p></li>
+<li><p>IN: 通知设备返回一个数据包</p></li>
+<li><p>SETUP: 只用在控制传输中，也是通知设备将要输出一个数据包，域OUT令牌的区别是:只使用DATA0数据包，且只能发到device的控制端点</p></li>
+<li><p>SOF: 在每帧开始时以广播的形式发送，针对USB全速设备，主机每1ms产生一个帧，USB主机会对当前帧号进行统计，每次帧开始时通过SOF包发送帧号</p></li>
+</ul>
+<p>OUT/IN/SETUP令牌包没有帧号域和数据域</p>
+<img alt="../../_images/pid_out.webp" src="../../_images/pid_out.webp" />
+<p>SOF令牌包没有地址域和数据域</p>
+<img alt="../../_images/pid_sof.webp" src="../../_images/pid_sof.webp" />
+<p><strong>数据包</strong></p>
+<p>数据包没有地址域和帧号域，根据transfer的类型不同，数据包最大长度有所不同</p>
+<img alt="../../_images/pid_data.webp" src="../../_images/pid_data.webp" />
+<p><strong>握手包</strong></p>
+<p>握手包又四种:</p>
+<ul class="simple">
+<li><p>ACK: 传输正确完成</p></li>
+<li><p>NAK: 设备暂时没有准备好接收数据，或没有准备好发送数据</p></li>
+<li><p>STALL: 设备不能用于传输</p></li>
+<li><p>NYET/ERR: 仅用于高速传输，设备没有准备好或出错</p></li>
+</ul>
+<p>握手包仅有PID域</p>
+<img alt="../../_images/pid_handshake.webp" src="../../_images/pid_handshake.webp" />
+</section>
+<section id="transaction">
+<h3><span class="section-number">8.9.3.3.2. </span>事务transaction<a class="headerlink" href="#transaction" title="此标题的永久链接"></a></h3>
+<p>事务可以分为三类:</p>
+<ul class="simple">
+<li><p>setup事务: 主机用来向设备发送控制命令</p></li>
+<li><p>数据输入事务: 主机用来从设备读取数据</p></li>
+<li><p>数据输出事务: 主机用来向设备发送数据</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>事务组成: Token packet + Data packet + 可选的Handshake packet</p>
+</div>
+</section>
+<section id="transfer">
+<h3><span class="section-number">8.9.3.3.3. </span>传输transfer<a class="headerlink" href="#transfer" title="此标题的永久链接"></a></h3>
+<p>USB协议定义了四种传输类型: <code class="docutils literal notranslate"><span class="pre">控制传输(control</span> <span class="pre">transfer)</span></code> 、 <code class="docutils literal notranslate"><span class="pre">批量传输(bulk</span> <span class="pre">transfer)</span></code> 、 <code class="docutils literal notranslate"><span class="pre">同步传输(isochronous</span> <span class="pre">transfer)</span></code> 、 <code class="docutils literal notranslate"><span class="pre">中断传输(interrupt</span> <span class="pre">transfer)</span></code></p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>传输类型</p></td>
+<td><p>特点</p></td>
+<td><p>应用场景</p></td>
+</tr>
+<tr class="row-even"><td><p>控制传输</p></td>
+<td><p>非周期性，突发性</p></td>
+<td><p>命令和状态的传输</p></td>
+</tr>
+<tr class="row-odd"><td><p>批量传输</p></td>
+<td><p>非周期性，突发</p></td>
+<td><p>数据可以占用任意带宽，容忍延迟</p></td>
+</tr>
+<tr class="row-even"><td><p>同步传输</p></td>
+<td><p>周期性</p></td>
+<td><p>持续性传输，传输与时效相关的信息，并在数据中保存时间戳</p></td>
+</tr>
+<tr class="row-odd"><td><p>中断传输</p></td>
+<td><p>周期性，低频率</p></td>
+<td><p>允许有延迟的通信</p></td>
+</tr>
+</tbody>
+</table>
+<img alt="../../_images/usb_transfer_compare.png" src="../../_images/usb_transfer_compare.png" />
+<p><strong>批量传输</strong></p>
+<p>批量传输使用批量传输事务(IN传输/OUT传输)，一次批量传输事务分为三个阶段: 令牌包阶段、数据包阶段、握手包阶段</p>
+<img alt="../../_images/bulk_step_trans.png" src="../../_images/bulk_step_trans.png" />
+<p>对于批量传输，如果启动批量传输，如果USB总线有多余的总线带宽，传输会被立即执行。当带宽紧张时，批量传输会把带宽让给其他传输类型</p>
+<img alt="../../_images/bulk_transfer.png" src="../../_images/bulk_transfer.png" />
+<ul class="simple">
+<li><p>令牌阶段: 主机发送BULK令牌包，令牌包中包含设备地址、端点号、数据方向</p></li>
+<li><p>数据包阶段:</p>
+<ul>
+<li><p>从机如果接收令牌包出错，无响应，让主机等待超时</p></li>
+<li><p>从机端点不存在，回送STALL</p></li>
+<li><p>从机端点数据未准备好，回送NAK</p></li>
+<li><p>从机数据准备好，回送数据包</p></li>
+</ul>
+</li>
+<li><p>握手包阶段</p>
+<ul>
+<li><p>数据包正确，并有足够的空间保留数据，设备返回ACK握手包活NYET握手包(只有高速模式才有NYET握手包，表示本次数据接收成功，但没有能力接收下一次传输)</p></li>
+<li><p>数据包正确，但没有足够的空间保存数据，设备返回NAK握手包。主机收到NAK后，延时一段时间后，再重新进行批量输出事务</p></li>
+<li><p>数据包正确，但端点处于挂起状态；设备返回一个STALL握手包</p></li>
+<li><p>数据包错误，设备不返回任何握手包，让主机等待超时</p></li>
+<li><p>CRC错误或位填充错误: 设备不返回任何握手包，让主机等待超时</p></li>
+</ul>
+</li>
+</ul>
+<p>USB批量读抓包</p>
+<img alt="../../_images/usb_bulk_read_trans_sample.png" src="../../_images/usb_bulk_read_trans_sample.png" />
+<p>USB批量写抓包</p>
+<img alt="../../_images/usb_bulk_write_trans_sample.png" src="../../_images/usb_bulk_write_trans_sample.png" />
+<p><strong>中断传输</strong></p>
+<p>中断传输一般用于小批量的和非连续的数据传输，但实时性高的场合，主要应用于人机交互设备(HID)的鼠标和键盘</p>
+<p>USB中断传输和我们传统意义上的中断不一样，他不是由设备主动发起的一次中断请求，而是由主机保证在不大于某个时间间隔内安排的一次传输，所以是实时查询操作</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>中断传输在流程上除了不支持PING之外，其他的跟批量传输是一样的。他们之前的区别仅在于事务传输发生的端点不一样、支持的最大包长度不一样，优先级不一样</p>
+</div>
+<p><strong>同步传输</strong></p>
+<p>同步传输是不可靠的传输，只关心数据的实时性，不关心数据的正确性，它没有握手包，也不支持PID翻转。主机在排定事务传输时，同步传输有最高优先级.</p>
+<p>应用在数据量大，对实时性要求较高的场合，如视频设备，音频设备</p>
+<p>同步传输包含两个阶段: 令牌阶段、数据阶段</p>
+<img alt="../../_images/sync_trans.png" src="../../_images/sync_trans.png" />
+<p>同步读抓包</p>
+<img alt="../../_images/usb_sync_read_sample.png" src="../../_images/usb_sync_read_sample.png" />
+<p><strong>控制传输</strong></p>
+<p>控制传输是一种特殊的传输方式。当USB设备初次连接主机时，用控制传输传送控制命令等对设备进行配置。同时设备接入主机时，需要通过控制传输去获取USB设备的描述符以及
+对设备进行识别，在设备的枚举过程中都是使用控制传输进行数据交换</p>
+<p>控制传输分为三个过程:</p>
+<ul class="simple">
+<li><p>建立过程:</p>
+<ul>
+<li><p>主机发送令牌包: SETUP</p></li>
+<li><p>主机发送数据包: DATA0</p></li>
+<li><p>设备返回握手包: ACK或不应答</p></li>
+</ul>
+</li>
+</ul>
+<img alt="../../_images/control_trans.png" src="../../_images/control_trans.png" />
+<ul class="simple">
+<li><p>数据过程(可选): 一个数据过程可以不包含或包含多个数据事务，但所有数据事务必须是同一方向的。若数据方向发生了改变则认为进入了状态过程. 数据过程中的第一个数据包必须是DATA1，然后
+每次正确传输一个数据包后就在DATA0和DATA1之间交替</p></li>
+<li><p>状态过程: 状态过程只使用DATA1包，并且传输方向与数据方向相反。</p></li>
+</ul>
+<p>USB控制读</p>
+<img alt="../../_images/usb_control_read.png" src="../../_images/usb_control_read.png" />
+<p>抓包分析</p>
+<img alt="../../_images/usb_control_read_sample.png" src="../../_images/usb_control_read_sample.png" />
+<p>USB控制写</p>
+<img alt="../../_images/usb_control_write.png" src="../../_images/usb_control_write.png" />
+<p>抓包分析</p>
+<img alt="../../_images/usb_control_write_sample.png" src="../../_images/usb_control_write_sample.png" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="normal.html" class="btn btn-neutral float-left" title="8.9.2. 嵌入式系统常见总线" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="usb_description.html" class="btn btn-neutral float-right" title="8.9.4. USB描述符" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

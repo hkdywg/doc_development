@@ -11,7 +11,7 @@ sysfs以不同的视角展示当前系统接入的设备：
 - /sys/block 历史遗留问题，存放块设备，提供一设备名(如sda)到/sys/devices的符号链接
 
 - /sys/bus 按总线类型分类，在某个总线目录之下可以找到链接该总线的设备的符号链接，指向/sys/devices. 某个总线目录之下的drivers目录
-  包含了该总线所需的所有驱动的符号链接。对应卡尔呢了中的struct bus_type
+  包含了该总线所需的所有驱动的符号链接。对应kernel中的struct bus_type
 
 - /sys/calss 按设备功能分类，如输入设备在/sys/class/input之下，图形设备在/sys/class/graphics之下，是指向/sys/devices的符号链接。
   对应kernel中的struct class

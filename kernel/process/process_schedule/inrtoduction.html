@@ -1,0 +1,405 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.3.4.1. linux进程调度器概述 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.3.4.2. linux进程调度器的设计" href="design.html" />
+    <link rel="prev" title="3.3.4. 进程调度" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.3. 进程管理与调度</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../process_overview/index.html">3.3.1. 进程描述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_create/index.html">3.3.2. 进程创建</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_run/index.html">3.3.3. 进程运行</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">3.3.4. 进程调度</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.3.4.1. linux进程调度器概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="design.html">3.3.4.2. linux进程调度器的设计</a></li>
+<li class="toctree-l4"><a class="reference internal" href="main_schedule.html">3.3.4.3. linux进程调度器之主调度器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="preempt.html">3.3.4.4. 用户抢占和内核抢占</a></li>
+<li class="toctree-l4"><a class="reference internal" href="context_switch.html">3.3.4.5. 进程上下文切换</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prioprity.html">3.3.4.6. linux进程优先级的处理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="wakeup.html">3.3.4.7. linux唤醒抢占</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../process_cfs/index.html">3.3.5. 调度普通进程-完全公平调度器CFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thread_info/index.html">3.3.6. thread_info与内核栈stack的关系</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.3. </span>进程管理与调度</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.3.4. </span>进程调度</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.3.4.1. </span>linux进程调度器概述</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/process/process_schedule/inrtoduction.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux">
+<h1><span class="section-number">3.3.4.1. </span>linux进程调度器概述<a class="headerlink" href="#linux" title="此标题的永久链接"></a></h1>
+<p>内存中保存了对每个进程的唯一描述，并通过若干结构和其他进程连接起来</p>
+<p>调度器面对的情形就是这样，其任务是在程序之间共享CPU时间,创造并行执行的错觉,该任务分为两个不同的部分,其中一个涉及 <code class="docutils literal notranslate"><span class="pre">调度策略</span></code> 另一个涉及 <code class="docutils literal notranslate"><span class="pre">上下文切换</span></code></p>
+<section id="id1">
+<h2><span class="section-number">3.3.4.1.1. </span>背景知识<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<section id="id2">
+<h3><span class="section-number">3.3.4.1.1.1. </span>什么是调度器<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>通常来说,操作系统是应用程序和可用资源之间的媒介</p>
+<p>典型的资源有内存和物理设备，其实CPU也可以认为是一种资源,调度器可以临时分配一个任务在上面执行,调度器使我们同时执行多个程序成为可能，因此可以与具有
+各种需求的用户共享CPU</p>
+<p>内核必须提供一种方法，在各个进程之间尽可能的公平的共享CPU时间,而又要考虑不同人物的任务优先级</p>
+<p>调度器的一个重要目标是有效的分配CPU时间片，同时提供很好的用户体验，调度器还需要面对一些互相冲突的目标，例如既要为关键实时任务最小化响应时间，又要最大限度
+的提高CPU的总体利用率</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">3.3.4.1.1.2. </span>调度策略<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>linux操作系统算法需要解决几个互相冲突的目标</p>
+<ol class="arabic simple">
+<li><p>进程响应时间尽可能快</p></li>
+<li><p>后台作业的吞吐量即可能高</p></li>
+<li><p>尽可能避免进程的饥饿现象</p></li>
+<li><p>低优先级和高优先级进程的需要尽可能调和</p></li>
+</ol>
+<p>调度策略的任务就是决定什么时候以一种怎么样的方式选择一个新进程占用CPU运行</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">3.3.4.1.1.3. </span>进程饥饿<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<p>进程饥饿，指当等待时间给进程推进和响应带来明显影响成为进程饥饿。当饥饿到一定程度进程即使完成也无实际意义的时候成为饥饿死亡</p>
+<p>产生饥饿的原因主要是，在一个动态系统中对于每种资源系统需要确定一个分配策略，当多个进程同时访问某种资源时，由分配策略确定资源分配给进程的次序，如果策略
+不当或者产生死锁则会发生饥饿</p>
+</section>
+</section>
+<section id="id5">
+<h2><span class="section-number">3.3.4.1.2. </span>linux进程分类<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<p>传统上分为 <code class="docutils literal notranslate"><span class="pre">I/O受限(I/O-dound)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">CPU受限(CPU-bound)</span></code></p>
+<p>I/O受限型：别称I/O密集型，频繁使用I/O设备，并花费很多时间在等待I/O操作的完成，例如数据库服务器或者文本编辑器</p>
+<p>CPU受限型：别称计算密集型，花费大量CPU时间进程数值计算</p>
+<p>另外一种分类方法把进程分为三类：</p>
+<ol class="arabic simple">
+<li><p>交互式进程：此类进程经常与用户进程交互，因此需要花费很多时间在等待键盘和鼠标操作，当接受了用户的输入后进程必须很快被唤醒，否则会感觉系统反映迟钝</p></li>
+<li><p>批处理进程：此类进程不与用户进行交互，经常处于后台运行，此类进程不需要快速响应，比如程序语言的编译程序、数据库搜索引擎</p></li>
+<li><p>实时进程：这类进程有很强的调度需要，这样的进程绝不会被低优先级的进程阻塞，并且他们的响应时间要尽可能的短</p></li>
+</ol>
+<p>对于实时进程，采用FIFO或者Round Robin的调度策略</p>
+<p>对于普通进程，则需要区分交互式和批处理式的不同，传统linux调度器提高交互式应用的优先级，使得它们能更快的调度。而CFS和RSDL等新的调度器的核心思想是完全公平。
+这个设计理念不仅大大的简化了调度器代码复杂度，还对各种调度需求提供了更完美的支持</p>
+</section>
+<section id="id6">
+<h2><span class="section-number">3.3.4.1.3. </span>linux调度器设计<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<section id="id7">
+<h3><span class="section-number">3.3.4.1.3.1. </span>linux进程调度器的框架<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<ul class="simple">
+<li><p>两个调度器</p></li>
+</ul>
+<p>可以用两种方法来激活调度</p>
+<ol class="arabic simple">
+<li><p>一种是比较直接的，比如进程打算睡眠或者处于其他原因放弃CPU</p></li>
+<li><p>另一种是通过周期性的机制，以固定的频率运行不时的检测是否有必要</p></li>
+</ol>
+<p>因此当前linux的调度程序由两个调度器组成：主调度器，周期性调度器(通用调度器或者核心调度器)。并且每个调度器包括两个内容：<code class="docutils literal notranslate"><span class="pre">调度框架</span></code> 及 <code class="docutils literal notranslate"><span class="pre">调度器类</span></code></p>
+<ul class="simple">
+<li><p>6种调度策略</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>字段</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>调度器</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SCHED_NORMAL</p></td>
+<td><p>用于普通进程,通过CFS调度器实现</p></td>
+<td><p>cfs</p></td>
+</tr>
+<tr class="row-odd"><td><p>SCHED_BATCH</p></td>
+<td><p>SCHED_NORMAL普通进程的分化版本,采用分时策略,根据动态优先级,分配CPU运算资源.</p></td>
+<td><p>cfs</p></td>
+</tr>
+<tr class="row-even"><td><p>SCHED_IDLE</p></td>
+<td><p>优先级最低，只有在系统空闲时才跑这类进程</p></td>
+<td><p>cfs</p></td>
+</tr>
+<tr class="row-odd"><td><p>SCHED_FIFO</p></td>
+<td><p>先入先出(实时调度策略),相同优先级的先到先服务，高优先级的可以抢占低优先级的任务</p></td>
+<td><p>rt</p></td>
+</tr>
+<tr class="row-even"><td><p>SCHED_RR</p></td>
+<td><p>轮流调度算法(实时调度策略),采用时间片，相同优先级的当用完时间片以后会被放到队列尾部,以保证
+公平性,高优先级的可以抢占低优先级的</p></td>
+<td><p>rt</p></td>
+</tr>
+<tr class="row-odd"><td><p>SCHED_DEADLINE</p></td>
+<td><p>新支持的实时进程调度策略,针对突发型计算,且对延迟和完成时间高度敏感的任务适用.</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>而依据其调度策略的不同实现了5个调度器类，一个调度器类可以用一种或者多种调度策略某一类进程，也可以用于特殊情况或者调度特殊功能的进程</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>调度器类</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>对应的调度策略</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>stop_sched_class</p></td>
+<td><p>优先级最高的线程，会中断所有其他线程，且不会被其他任务打断
+1.发生在cpu_stop_cpu_callback进行cpu之间任务migration
+2.HOTPLUG_CPU的情况下关闭任务</p></td>
+<td><p>不需要调度普通进程</p></td>
+</tr>
+<tr class="row-odd"><td><p>dl_sched_class</p></td>
+<td><p>采用EDF最早截至时间优先算法调度实时进程</p></td>
+<td><p>SCHED_DEADLINE</p></td>
+</tr>
+<tr class="row-even"><td><p>rt_sched_class</p></td>
+<td><p>采用RR算法或者FIFO算法调度实时进程，具体调度策略由进程的task_struct-&gt;policy指定</p></td>
+<td><p>SCHED_FIFO/RR</p></td>
+</tr>
+<tr class="row-odd"><td><p>fair_sched_class</p></td>
+<td><p>采用CFS算法调度普通的非实时进程</p></td>
+<td><p>SCHED_NORMAL/BATCH</p></td>
+</tr>
+<tr class="row-even"><td><p>idle_sched_class</p></td>
+<td><p>采用CFS算法调度idle进程，每个cpu的第一个pid=0线程：swapper，是一个静态线程
+在ps中看不到的，一般运行在开机过程或者cpu异常的时候做dump</p></td>
+<td><p>SCHED_IDLE</p></td>
+</tr>
+</tbody>
+</table>
+<p>所属进程的优先级顺序为</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stop_sched_calss</span> <span class="o">&gt;</span> <span class="n">dl_sched_class</span> <span class="o">&gt;</span> <span class="n">rt_sched_class</span> <span class="o">&gt;</span> <span class="n">fair_sched_class</span> <span class="o">&gt;</span> <span class="n">idle_sched_class</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>3个调度实体</p></li>
+</ul>
+<p>调度器不限于调度进程，还可以调度更大的实体，比如实现组调度：可用的cpu时间首先在一半的进程组之间分配，接下来分配的时间在组内进行二次分配</p>
+<p>因此需要一个通用的数据结构描述这个调度实体，即sched_entity结构，其实际上就代表了一个调度对象，可以为一个进程，也可以为一个进程组</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>调度实体</p></th>
+<th class="head"><p>名称</p></th>
+<th class="head"><p>描述</p></th>
+<th class="head"><p>调度器类</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sched_dl_entity</p></td>
+<td><p>DEADLINE调度实体</p></td>
+<td><p>采用EDF算法调度的实体调度实体</p></td>
+<td><p>dl_class_class</p></td>
+</tr>
+<tr class="row-odd"><td><p>sched_dt_entity</p></td>
+<td><p>RT调度实体</p></td>
+<td><p>采用RR或者FIFO算法调度的实时调度实体</p></td>
+<td><p>rt_sched_class</p></td>
+</tr>
+<tr class="row-even"><td><p>sched_entity</p></td>
+<td><p>CFS调度实体</p></td>
+<td><p>采用CFS算法调度的普通非实时进程调度实体</p></td>
+<td><p>fair_sched_class</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>调度器类的就绪队列</p></li>
+</ul>
+<p>对于调度框架和调度器类，他们都有自己管理的运行队列，调度框架只时别rq，而对于cfs调度器类他的运行队列则是cfs_rq(内部使用红黑树组织调度实体)，实时
+rt的运行队列rt_rq(内部使用优先级bitmap+双向链表组织调度实体)，此外内核对新增的dl实时策略也提供了运行队列dl_rq</p>
+<ul class="simple">
+<li><p>调度器整体框架</p></li>
+</ul>
+<p>本质上通用调度器(核心调度器)是一个分配器,与其他两个组件交互</p>
+<ol class="arabic simple">
+<li><p>调度器用来判断接下来运行哪个进程</p></li>
+</ol>
+<p>内核支持不通的调度策略(完全公平调度,实时调度,在无事可做的时候调度空闲进程,即0号进程也叫swapper进程,idle进程),调度类使得能够以模块化的方法
+实现这些策略，即一个类的代码不需要与其他类的代码交互，当调度器被调用时,它会查询调度器类，得知接下来运行哪个进程</p>
+<ol class="arabic simple" start="2">
+<li><p>在选中将要运行的进程之后，必须执行底层的任务切换</p></li>
+</ol>
+<p>这需要与CPU的紧密交互,每个进程刚好属于某一调度类,各个调度类负责管理所属的进程,通用调度器本身不涉及进程管理,其工作都委托给调度器类</p>
+<p>每个进程都属于某个调度器类(由字段task_struct-&gt;sched_class),由调度器类采用进程对应的调度策略调度(由task_struct-&gt;policy)进行调度,task_struct也存储了其对应
+的调度实体标识。</p>
+<p>linux实现了6种调度策略，而依据其调度策略的不同实现了5个调度器类,一个调度器类可以用一种或者多种调度策略某一类进程,也可以用于特殊情况或者调度特殊功能的进程、</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>调度器类</p></th>
+<th class="head"><p>调度策略</p></th>
+<th class="head"><p>调度算法</p></th>
+<th class="head"><p>调度实体</p></th>
+<th class="head"><p>调度对象</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>stop_sched_cla</p></td>
+<td><p>无</p></td>
+<td><p>无</p></td>
+<td><p>无</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>dl_sched_class</p></td>
+<td><p>SCHED_DEADLINE</p></td>
+<td></td>
+<td><p>sched_dl_entity</p></td>
+<td><p>采用DEF最早截至时间有限算法调度实时进程</p></td>
+</tr>
+<tr class="row-even"><td><p>rt_sched_class</p></td>
+<td><p>SCHED_FIFO/RR</p></td>
+<td><p>RR时间片轮转/FIFO</p></td>
+<td><p>sched_rt_entity</p></td>
+<td><p>实时进程</p></td>
+</tr>
+<tr class="row-odd"><td><p>fair_sched_cla</p></td>
+<td><p>SCHED_NORMAL</p></td>
+<td><p>CFS完全公平调度算法</p></td>
+<td><p>sched_entity</p></td>
+<td><p>采用CFS算法普通非实时进程</p></td>
+</tr>
+<tr class="row-even"><td><p>idle_sched_cla</p></td>
+<td><p>SCHED_IDLE</p></td>
+<td><p>无</p></td>
+<td><p>无</p></td>
+<td><p>idle进程</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="id8">
+<h2><span class="section-number">3.3.4.1.4. </span>进程的调度<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
+<p>什么样的进程会进入调度器进行选择,就是处于TASK_RUNNING状态的进程，而其他状态的进程都不会进入进入调度器进行调度</p>
+<p>发生调度的时机如下</p>
+<ol class="arabic simple">
+<li><p>调用cond_resched()时</p></li>
+<li><p>显示调用schedule()时</p></li>
+<li><p>从系统调用或者异常中断返回用户空间时</p></li>
+<li><p>从中断上下文返回用户空间时</p></li>
+</ol>
+<p>当开启内核抢占(默认开启)时，会多出几个调度时机,如下</p>
+<ol class="arabic simple">
+<li><p>在系统调用或者异常中断上下文种调用preempt_enable()时(多次调用,系统只在最后一次调用时会调度)</p></li>
+<li><p>在中断上下文种从中断处理函数返回到可抢占的上下文时(这里是中断下半部,中断上半部实际上会关中断,而新的中断只会被登记,由于上半部处理很快,上半部处理完成后才会执行新的的中断信号,这样就形成了可重入)</p></li>
+</ol>
+<p>在系统启动调度器初始化时会初始化一个调度定时器,调度定时器每隔一定时间执行一个中断,在中断会对当前运行进程时间进行更新,如果进程需要被调度,在调度定时器中断中会设置一个调度标志位,之后从定时器中断返回
+因为上面已经提到从中断上下文返回时是有调度时机的,在内核源码的汇编代码中所有中断返回处理都必需去判断调度标志位是否设置,如设置则执行schedule()进行调度</p>
+<p>我们知道实时进程和普通进程是共存的,调度器是怎么协调他们之间的调度的呢，其实很简单,每次调度时会现在实时进程运行队列中查看是否有可运行的实时进程，如果没有再去普通进程的运行队列找下一个可运行的普通进程
+,如果也没有则取运行idle进程</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="3.3.4. 进程调度" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="design.html" class="btn btn-neutral float-right" title="3.3.4.2. linux进程调度器的设计" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

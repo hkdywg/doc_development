@@ -1,0 +1,179 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.5.3. RTP协议 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="6.5.4. RTSP协议" href="rtsp.html" />
+    <link rel="prev" title="6.5.2. H264结构" href="h264.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/index.html">6.4. 通信中间件</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">6.5. 视频笔记</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mp4_muxer.html">6.5.1. MP4文件格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="h264.html">6.5.2. H264结构</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">6.5.3. RTP协议</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">6.5.3.1. RTP格式</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">6.5.3.2. RTP实例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rtsp.html">6.5.4. RTSP协议</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.5. </span>视频笔记</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.5.3. </span>RTP协议</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user/video/rtp.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rtp">
+<h1><span class="section-number">6.5.3. </span>RTP协议<a class="headerlink" href="#rtp" title="此标题的永久链接"></a></h1>
+<p>RTP全名是 <code class="docutils literal notranslate"><span class="pre">Real-time</span> <span class="pre">Transport</span> <span class="pre">Protocal</span></code> (实时传输协议)</p>
+<p>RTP用来为网络中音视频实时传输的多媒体数据提供端到端的实时传输服务，包含时间信息和流同步，但不保证服务质量</p>
+<p>RTP(实时传输协议)，顾名思义他是用来提供实时传输的，因而可以看成是传输层的一个子层．</p>
+<img alt="../../_images/rtp_layer.png" src="../../_images/rtp_layer.png" />
+<p>可以认为RTP介于应用层和传输层之间．RTP实现者在发送RTP包时，需要将数据封装成RTP包</p>
+<section id="id1">
+<h2><span class="section-number">6.5.3.1. </span>RTP格式<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>RTP数据包由两部分组成，一部分是RTP Header, RTP Header占用最少12字节，最多72字节．另一部分是RTP Payload，用来封装实际的数据，例如H264码流</p>
+<p><strong>RTP Header格式</strong></p>
+<img alt="../../_images/rtp_header.png" src="../../_images/rtp_header.png" />
+<ul class="simple">
+<li><p>版本号(V): 2bit,用来标识使用的RTP版本</p></li>
+<li><p>填充位(P): 1bit,如果该位置位，则该RTP包的尾部包含附加的填充字节</p></li>
+<li><p>扩展为(X): 1bit,如果该位置位，则RTP固定头部后面就跟有一个扩展头部</p></li>
+<li><p>CSRC计数器(CC): 4bit,含有固定头部后面跟着的CSRC的数目</p></li>
+<li><p>标记位(M): 1bit,该位置位时，表示该数据包是一帧数据的最后一个数据包</p></li>
+<li><p>载荷类型(PT): 7bit, 标识了RTP负载的类型</p></li>
+<li><p>序列号(SN): 16bit,发送方在每发送完一个RTP包后就将该域的值增加一，接收方可以由该域检测包的丢失．</p></li>
+<li><p>时间戳(timestamp): 32bit,记录该包中第一个字节的采样时刻,时间戳是去除抖动和实现同步不可缺少的</p></li>
+<li><p>同步源标识符(SSRC): 32bit,同步源是指RTP包流的来源，在同一个RTP会话中不能有两个相同的SSRC值．该标识符是随机值．</p></li>
+<li><p>贡献源列表(CSRC List): 0~15项，每项32bit,用来标志对一个RTP混合器产生的新包有贡献的所有RTP包的源</p></li>
+</ul>
+<img alt="../../_images/pt_define.png" src="../../_images/pt_define.png" />
+</section>
+<section id="id2">
+<h2><span class="section-number">6.5.3.2. </span>RTP实例<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>根据PT类型的不同，Payload有不同的组织方式.以下是一个实际的RTP数据包的抓包</p>
+<img alt="../../_images/rtp_package.png" src="../../_images/rtp_package.png" />
+<p><strong>红色框中的部分为RTP Header,绿色框中的为RTP Payload</strong></p>
+<p>将RTP Header部分用16进制表示，如下</p>
+<img alt="../../_images/rtp_header_parse.png" src="../../_images/rtp_header_parse.png" />
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="h264.html" class="btn btn-neutral float-left" title="6.5.2. H264结构" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="rtsp.html" class="btn btn-neutral float-right" title="6.5.4. RTSP协议" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

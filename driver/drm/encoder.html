@@ -1,0 +1,888 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.14.3. encoder代码分析 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.14.4. crtc代码分析" href="crtc.html" />
+    <link rel="prev" title="4.14.2. connector代码分析" href="connector.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.14. DRM框架分析</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="drm_frame.html">4.14.1. DRM框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="connector.html">4.14.2. connector代码分析</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.14.3. encoder代码分析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#struct-drm-encoder">4.14.3.1. struct drm_encoder结构体</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#drm-encoder-init">4.14.3.2. drm_encoder_init</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rcar-du-encoder-init">4.14.3.3. rcar_du_encoder_init</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="crtc.html">4.14.4. crtc代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plane.html">4.14.5. plane代码分析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple_drm.html">4.14.6. VKMS示例</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.14. </span>DRM框架分析</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.14.3. </span>encoder代码分析</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/drm/encoder.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="encoder">
+<h1><span class="section-number">4.14.3. </span>encoder代码分析<a class="headerlink" href="#encoder" title="此标题的永久链接"></a></h1>
+<section id="struct-drm-encoder">
+<h2><span class="section-number">4.14.3.1. </span>struct drm_encoder结构体<a class="headerlink" href="#struct-drm-encoder" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">drm_encoder</span> <span class="p">{</span>
+    <span class="n">struct</span> <span class="n">drm_device</span> <span class="o">*</span><span class="n">dev</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="n">head</span><span class="p">;</span>
+
+    <span class="n">struct</span> <span class="n">drm_mode_object</span> <span class="n">base</span><span class="p">;</span>
+    <span class="n">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="o">/**</span>
+     <span class="o">*</span> <span class="nd">@encoder_type</span><span class="p">:</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="n">One</span> <span class="n">of</span> <span class="n">the</span> <span class="n">DRM_MODE_ENCODER_</span><span class="o">&lt;</span><span class="n">foo</span><span class="o">&gt;</span> <span class="n">types</span> <span class="ow">in</span> <span class="n">drm_mode</span><span class="o">.</span><span class="n">h</span><span class="o">.</span> <span class="n">The</span> <span class="n">following</span>
+     <span class="o">*</span> <span class="n">encoder</span> <span class="n">types</span> <span class="n">are</span> <span class="n">defined</span> <span class="n">thus</span> <span class="n">far</span><span class="p">:</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="o">-</span> <span class="n">DRM_MODE_ENCODER_DAC</span> <span class="k">for</span> <span class="n">VGA</span> <span class="ow">and</span> <span class="n">analog</span> <span class="n">on</span> <span class="n">DVI</span><span class="o">-</span><span class="n">I</span><span class="o">/</span><span class="n">DVI</span><span class="o">-</span><span class="n">A</span><span class="o">.</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="o">-</span> <span class="n">DRM_MODE_ENCODER_TMDS</span> <span class="k">for</span> <span class="n">DVI</span><span class="p">,</span> <span class="n">HDMI</span> <span class="ow">and</span> <span class="p">(</span><span class="n">embedded</span><span class="p">)</span> <span class="n">DisplayPort</span><span class="o">.</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="o">-</span> <span class="n">DRM_MODE_ENCODER_LVDS</span> <span class="k">for</span> <span class="n">display</span> <span class="n">panels</span><span class="p">,</span> <span class="ow">or</span> <span class="ow">in</span> <span class="n">general</span> <span class="nb">any</span> <span class="n">panel</span>
+     <span class="o">*</span>   <span class="k">with</span> <span class="n">a</span> <span class="n">proprietary</span> <span class="n">parallel</span> <span class="n">connector</span><span class="o">.</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="o">-</span> <span class="n">DRM_MODE_ENCODER_TVDAC</span> <span class="k">for</span> <span class="n">TV</span> <span class="n">output</span> <span class="p">(</span><span class="n">Composite</span><span class="p">,</span> <span class="n">S</span><span class="o">-</span><span class="n">Video</span><span class="p">,</span>
+     <span class="o">*</span>   <span class="n">Component</span><span class="p">,</span> <span class="n">SCART</span><span class="p">)</span><span class="o">.</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="o">-</span> <span class="n">DRM_MODE_ENCODER_VIRTUAL</span> <span class="k">for</span> <span class="n">virtual</span> <span class="n">machine</span> <span class="n">displays</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="o">-</span> <span class="n">DRM_MODE_ENCODER_DSI</span> <span class="k">for</span> <span class="n">panels</span> <span class="n">connected</span> <span class="n">using</span> <span class="n">the</span> <span class="n">DSI</span> <span class="n">serial</span> <span class="n">bus</span><span class="o">.</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="o">-</span> <span class="n">DRM_MODE_ENCODER_DPI</span> <span class="k">for</span> <span class="n">panels</span> <span class="n">connected</span> <span class="n">using</span> <span class="n">the</span> <span class="n">DPI</span> <span class="n">parallel</span>
+     <span class="o">*</span>   <span class="n">bus</span><span class="o">.</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="o">-</span> <span class="n">DRM_MODE_ENCODER_DPMST</span> <span class="k">for</span> <span class="n">special</span> <span class="n">fake</span> <span class="n">encoders</span> <span class="n">used</span> <span class="n">to</span> <span class="n">allow</span>
+     <span class="o">*</span>   <span class="n">mutliple</span> <span class="n">DP</span> <span class="n">MST</span> <span class="n">streams</span> <span class="n">to</span> <span class="n">share</span> <span class="n">one</span> <span class="n">physical</span> <span class="n">encoder</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="nb">int</span> <span class="n">encoder_type</span><span class="p">;</span>
+
+    <span class="o">/**</span>
+     <span class="o">*</span> <span class="nd">@index</span><span class="p">:</span> <span class="n">Position</span> <span class="n">inside</span> <span class="n">the</span> <span class="n">mode_config</span><span class="o">.</span><span class="n">list</span><span class="p">,</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="k">as</span> <span class="n">an</span> <span class="n">array</span>
+     <span class="o">*</span> <span class="n">index</span><span class="o">.</span> <span class="n">It</span> <span class="ow">is</span> <span class="n">invariant</span> <span class="n">over</span> <span class="n">the</span> <span class="n">lifetime</span> <span class="n">of</span> <span class="n">the</span> <span class="n">encoder</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">unsigned</span> <span class="n">index</span><span class="p">;</span>
+
+    <span class="o">/**</span>
+     <span class="o">*</span> <span class="nd">@possible_crtcs</span><span class="p">:</span> <span class="n">Bitmask</span> <span class="n">of</span> <span class="n">potential</span> <span class="n">CRTC</span> <span class="n">bindings</span><span class="p">,</span> <span class="n">using</span>
+     <span class="o">*</span> <span class="n">drm_crtc_index</span><span class="p">()</span> <span class="k">as</span> <span class="n">the</span> <span class="n">index</span> <span class="n">into</span> <span class="n">the</span> <span class="n">bitfield</span><span class="o">.</span> <span class="n">The</span> <span class="n">driver</span> <span class="n">must</span> <span class="nb">set</span>
+     <span class="o">*</span> <span class="n">the</span> <span class="n">bits</span> <span class="k">for</span> <span class="nb">all</span> <span class="o">&amp;</span><span class="n">drm_crtc</span> <span class="n">objects</span> <span class="n">this</span> <span class="n">encoder</span> <span class="n">can</span> <span class="n">be</span> <span class="n">connected</span> <span class="n">to</span>
+     <span class="o">*</span> <span class="n">before</span> <span class="n">calling</span> <span class="n">drm_encoder_init</span><span class="p">()</span><span class="o">.</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="n">In</span> <span class="n">reality</span> <span class="n">almost</span> <span class="n">every</span> <span class="n">driver</span> <span class="n">gets</span> <span class="n">this</span> <span class="n">wrong</span><span class="o">.</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="n">Note</span> <span class="n">that</span> <span class="n">since</span> <span class="n">CRTC</span> <span class="n">objects</span> <span class="n">can</span><span class="s1">&#39;t be hotplugged the assigned indices</span>
+     <span class="o">*</span> <span class="n">are</span> <span class="n">stable</span> <span class="ow">and</span> <span class="n">hence</span> <span class="n">known</span> <span class="n">before</span> <span class="n">registering</span> <span class="nb">all</span> <span class="n">objects</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">uint32_t</span> <span class="n">possible_crtcs</span><span class="p">;</span>
+
+    <span class="o">/**</span>
+     <span class="o">*</span> <span class="nd">@possible_clones</span><span class="p">:</span> <span class="n">Bitmask</span> <span class="n">of</span> <span class="n">potential</span> <span class="n">sibling</span> <span class="n">encoders</span> <span class="k">for</span> <span class="n">cloning</span><span class="p">,</span>
+     <span class="o">*</span> <span class="n">using</span> <span class="n">drm_encoder_index</span><span class="p">()</span> <span class="k">as</span> <span class="n">the</span> <span class="n">index</span> <span class="n">into</span> <span class="n">the</span> <span class="n">bitfield</span><span class="o">.</span> <span class="n">The</span> <span class="n">driver</span>
+     <span class="o">*</span> <span class="n">must</span> <span class="nb">set</span> <span class="n">the</span> <span class="n">bits</span> <span class="k">for</span> <span class="nb">all</span> <span class="o">&amp;</span><span class="n">drm_encoder</span> <span class="n">objects</span> <span class="n">which</span> <span class="n">can</span> <span class="n">clone</span> <span class="n">a</span>
+     <span class="o">*</span> <span class="o">&amp;</span><span class="n">drm_crtc</span> <span class="n">together</span> <span class="k">with</span> <span class="n">this</span> <span class="n">encoder</span> <span class="n">before</span> <span class="n">calling</span>
+     <span class="o">*</span> <span class="n">drm_encoder_init</span><span class="p">()</span><span class="o">.</span> <span class="n">Drivers</span> <span class="n">should</span> <span class="nb">set</span> <span class="n">the</span> <span class="n">bit</span> <span class="n">representing</span> <span class="n">the</span>
+     <span class="o">*</span> <span class="n">encoder</span> <span class="n">itself</span><span class="p">,</span> <span class="n">too</span><span class="o">.</span> <span class="n">Cloning</span> <span class="n">bits</span> <span class="n">should</span> <span class="n">be</span> <span class="nb">set</span> <span class="n">such</span> <span class="n">that</span> <span class="n">when</span> <span class="n">two</span>
+     <span class="o">*</span> <span class="n">encoders</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">cloned</span> <span class="n">configuration</span><span class="p">,</span> <span class="n">they</span> <span class="n">both</span> <span class="n">should</span> <span class="n">have</span>
+     <span class="o">*</span> <span class="n">each</span> <span class="n">another</span> <span class="n">bits</span> <span class="nb">set</span><span class="o">.</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="n">In</span> <span class="n">reality</span> <span class="n">almost</span> <span class="n">every</span> <span class="n">driver</span> <span class="n">gets</span> <span class="n">this</span> <span class="n">wrong</span><span class="o">.</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="n">Note</span> <span class="n">that</span> <span class="n">since</span> <span class="n">encoder</span> <span class="n">objects</span> <span class="n">can</span><span class="s1">&#39;t be hotplugged the assigned indices</span>
+     <span class="o">*</span> <span class="n">are</span> <span class="n">stable</span> <span class="ow">and</span> <span class="n">hence</span> <span class="n">known</span> <span class="n">before</span> <span class="n">registering</span> <span class="nb">all</span> <span class="n">objects</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">uint32_t</span> <span class="n">possible_clones</span><span class="p">;</span>
+
+    <span class="o">/**</span>
+     <span class="o">*</span> <span class="nd">@crtc</span><span class="p">:</span> <span class="n">Currently</span> <span class="n">bound</span> <span class="n">CRTC</span><span class="p">,</span> <span class="n">only</span> <span class="n">really</span> <span class="n">meaningful</span> <span class="k">for</span> <span class="n">non</span><span class="o">-</span><span class="n">atomic</span>
+     <span class="o">*</span> <span class="n">drivers</span><span class="o">.</span>  <span class="n">Atomic</span> <span class="n">drivers</span> <span class="n">should</span> <span class="n">instead</span> <span class="n">check</span>
+     <span class="o">*</span> <span class="o">&amp;</span><span class="n">drm_connector_state</span><span class="o">.</span><span class="n">crtc</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">struct</span> <span class="n">drm_crtc</span> <span class="o">*</span><span class="n">crtc</span><span class="p">;</span>
+    <span class="n">struct</span> <span class="n">drm_bridge</span> <span class="o">*</span><span class="n">bridge</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">drm_encoder_funcs</span> <span class="o">*</span><span class="n">funcs</span><span class="p">;</span>
+    <span class="n">const</span> <span class="n">struct</span> <span class="n">drm_encoder_helper_funcs</span> <span class="o">*</span><span class="n">helper_private</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>encoder_type</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">const</span> <span class="n">struct</span> <span class="n">drm_prop_enum_list</span> <span class="n">drm_encoder_enum_list</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span> <span class="n">DRM_MODE_ENCODER_NONE</span><span class="p">,</span> <span class="s2">&quot;None&quot;</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">DRM_MODE_ENCODER_DAC</span><span class="p">,</span> <span class="s2">&quot;DAC&quot;</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">DRM_MODE_ENCODER_TMDS</span><span class="p">,</span> <span class="s2">&quot;TMDS&quot;</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">DRM_MODE_ENCODER_LVDS</span><span class="p">,</span> <span class="s2">&quot;LVDS&quot;</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">DRM_MODE_ENCODER_TVDAC</span><span class="p">,</span> <span class="s2">&quot;TV&quot;</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">DRM_MODE_ENCODER_VIRTUAL</span><span class="p">,</span> <span class="s2">&quot;Virtual&quot;</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">DRM_MODE_ENCODER_DSI</span><span class="p">,</span> <span class="s2">&quot;DSI&quot;</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">DRM_MODE_ENCODER_DPMST</span><span class="p">,</span> <span class="s2">&quot;DP MST&quot;</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="n">DRM_MODE_ENCODER_DPI</span><span class="p">,</span> <span class="s2">&quot;DPI&quot;</span> <span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>struct drm_encoder_funcs</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">drm_encoder_funcs</span> <span class="p">{</span>
+    <span class="o">/**</span>
+     <span class="o">*</span> <span class="nd">@reset</span><span class="p">:</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="n">Reset</span> <span class="n">encoder</span> <span class="n">hardware</span> <span class="ow">and</span> <span class="n">software</span> <span class="n">state</span> <span class="n">to</span> <span class="n">off</span><span class="o">.</span> <span class="n">This</span> <span class="n">function</span> <span class="n">isn</span><span class="s1">&#39;t</span>
+     <span class="o">*</span> <span class="n">called</span> <span class="n">by</span> <span class="n">the</span> <span class="n">core</span> <span class="n">directly</span><span class="p">,</span> <span class="n">only</span> <span class="n">through</span> <span class="n">drm_mode_config_reset</span><span class="p">()</span><span class="o">.</span>
+     <span class="o">*</span> <span class="n">It</span><span class="s1">&#39;s not a helper hook only for historical reasons.</span>
+     <span class="o">*/</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">reset</span><span class="p">)(</span><span class="n">struct</span> <span class="n">drm_encoder</span> <span class="o">*</span><span class="n">encoder</span><span class="p">);</span>
+
+    <span class="o">/**</span>
+     <span class="o">*</span> <span class="nd">@destroy</span><span class="p">:</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="n">Clean</span> <span class="n">up</span> <span class="n">encoder</span> <span class="n">resources</span><span class="o">.</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">only</span> <span class="n">called</span> <span class="n">at</span> <span class="n">driver</span> <span class="n">unload</span> <span class="n">time</span>
+     <span class="o">*</span> <span class="n">through</span> <span class="n">drm_mode_config_cleanup</span><span class="p">()</span> <span class="n">since</span> <span class="n">an</span> <span class="n">encoder</span> <span class="n">cannot</span> <span class="n">be</span>
+     <span class="o">*</span> <span class="n">hotplugged</span> <span class="ow">in</span> <span class="n">DRM</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">destroy</span><span class="p">)(</span><span class="n">struct</span> <span class="n">drm_encoder</span> <span class="o">*</span><span class="n">encoder</span><span class="p">);</span>
+
+    <span class="o">/**</span>
+     <span class="o">*</span> <span class="nd">@late_register</span><span class="p">:</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="n">This</span> <span class="n">optional</span> <span class="n">hook</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="n">to</span> <span class="n">register</span> <span class="n">additional</span> <span class="n">userspace</span>
+     <span class="o">*</span> <span class="n">interfaces</span> <span class="n">attached</span> <span class="n">to</span> <span class="n">the</span> <span class="n">encoder</span> <span class="n">like</span> <span class="n">debugfs</span> <span class="n">interfaces</span><span class="o">.</span>
+     <span class="o">*</span> <span class="n">It</span> <span class="ow">is</span> <span class="n">called</span> <span class="n">late</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">driver</span> <span class="n">load</span> <span class="n">sequence</span> <span class="kn">from</span> <span class="nn">drm_dev_register</span><span class="p">()</span><span class="o">.</span>
+     <span class="o">*</span> <span class="n">Everything</span> <span class="n">added</span> <span class="kn">from</span> <span class="nn">this</span> <span class="n">callback</span> <span class="n">should</span> <span class="n">be</span> <span class="n">unregistered</span> <span class="ow">in</span>
+     <span class="o">*</span> <span class="n">the</span> <span class="n">early_unregister</span> <span class="n">callback</span><span class="o">.</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="n">Returns</span><span class="p">:</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="mi">0</span> <span class="n">on</span> <span class="n">success</span><span class="p">,</span> <span class="ow">or</span> <span class="n">a</span> <span class="n">negative</span> <span class="n">error</span> <span class="n">code</span> <span class="n">on</span> <span class="n">failure</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="nb">int</span> <span class="p">(</span><span class="o">*</span><span class="n">late_register</span><span class="p">)(</span><span class="n">struct</span> <span class="n">drm_encoder</span> <span class="o">*</span><span class="n">encoder</span><span class="p">);</span>
+
+    <span class="o">/**</span>
+     <span class="o">*</span> <span class="nd">@early_unregister</span><span class="p">:</span>
+     <span class="o">*</span>
+     <span class="o">*</span> <span class="n">This</span> <span class="n">optional</span> <span class="n">hook</span> <span class="n">should</span> <span class="n">be</span> <span class="n">used</span> <span class="n">to</span> <span class="n">unregister</span> <span class="n">the</span> <span class="n">additional</span>
+     <span class="o">*</span> <span class="n">userspace</span> <span class="n">interfaces</span> <span class="n">attached</span> <span class="n">to</span> <span class="n">the</span> <span class="n">encoder</span> <span class="kn">from</span>
+     <span class="o">*</span> <span class="nd">@late_register</span><span class="o">.</span> <span class="n">It</span> <span class="ow">is</span> <span class="n">called</span> <span class="kn">from</span> <span class="nn">drm_dev_unregister</span><span class="p">(),</span>
+     <span class="o">*</span> <span class="n">early</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">driver</span> <span class="n">unload</span> <span class="n">sequence</span> <span class="n">to</span> <span class="n">disable</span> <span class="n">userspace</span> <span class="n">access</span>
+     <span class="o">*</span> <span class="n">before</span> <span class="n">data</span> <span class="n">structures</span> <span class="n">are</span> <span class="n">torndown</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">void</span> <span class="p">(</span><span class="o">*</span><span class="n">early_unregister</span><span class="p">)(</span><span class="n">struct</span> <span class="n">drm_encoder</span> <span class="o">*</span><span class="n">encoder</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>drm_encoder_helper_funcs</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>struct drm_encoder_helper_funcs {
+    /**
+     * @dpms:
+     *
+     * Callback to control power levels on the encoder.  If the mode passed in
+     * is unsupported, the provider must use the next lowest power level.
+     * This is used by the legacy encoder helpers to implement DPMS
+     * functionality in drm_helper_connector_dpms().
+     *
+     * This callback is also used to disable an encoder by calling it with
+     * DRM_MODE_DPMS_OFF if the @disable hook isn&#39;t used.
+     *
+     * This callback is used by the legacy CRTC helpers.  Atomic helpers
+     * also support using this hook for enabling and disabling an encoder to
+     * facilitate transitions to atomic, but it is deprecated. Instead
+     * @enable and @disable should be used.
+     */
+    void (*dpms)(struct drm_encoder *encoder, int mode);
+
+    /**
+     * @mode_valid:
+     *
+     * This callback is used to check if a specific mode is valid in this
+     * encoder. This should be implemented if the encoder has some sort
+     * of restriction in the modes it can display. For example, a given
+     * encoder may be responsible to set a clock value. If the clock can
+     * not produce all the values for the available modes then this callback
+     * can be used to restrict the number of modes to only the ones that
+     * can be displayed.
+     *
+     * This hook is used by the probe helpers to filter the mode list in
+     * drm_helper_probe_single_connector_modes(), and it is used by the
+     * atomic helpers to validate modes supplied by userspace in
+     * drm_atomic_helper_check_modeset().
+     *
+     * This function is optional.
+     *
+     * NOTE:
+     *
+     * Since this function is both called from the check phase of an atomic
+     * commit, and the mode validation in the probe paths it is not allowed
+     * to look at anything else but the passed-in mode, and validate it
+     * against configuration-invariant hardward constraints. Any further
+     * limits which depend upon the configuration can only be checked in
+     * @mode_fixup or @atomic_check.
+     *
+     * RETURNS:
+     *
+     * drm_mode_status Enum
+     */
+    enum drm_mode_status (*mode_valid)(struct drm_encoder *crtc,
+                       const struct drm_display_mode *mode);
+
+    /**
+     * @mode_fixup:
+     *
+     * This callback is used to validate and adjust a mode. The parameter
+     * mode is the display mode that should be fed to the next element in
+     * the display chain, either the final &amp;drm_connector or a &amp;drm_bridge.
+     * The parameter adjusted_mode is the input mode the encoder requires. It
+     * can be modified by this callback and does not need to match mode. See
+     * also &amp;drm_crtc_state.adjusted_mode for more details.
+     *
+     * This function is used by both legacy CRTC helpers and atomic helpers.
+     * This hook is optional.
+     *
+     * NOTE:
+     *
+     * This function is called in the check phase of atomic modesets, which
+     * can be aborted for any reason (including on userspace&#39;s request to
+     * just check whether a configuration would be possible). Atomic drivers
+     * MUST NOT touch any persistent state (hardware or software) or data
+     * structures except the passed in adjusted_mode parameter.
+     *
+     * This is in contrast to the legacy CRTC helpers where this was
+     * allowed.
+     *
+     * Atomic drivers which need to inspect and adjust more state should
+     * instead use the @atomic_check callback. If @atomic_check is used,
+     * this hook isn&#39;t called since @atomic_check allows a strict superset
+     * of the functionality of @mode_fixup.
+     *
+     * Also beware that userspace can request its own custom modes, neither
+     * core nor helpers filter modes to the list of probe modes reported by
+     * the GETCONNECTOR IOCTL and stored in &amp;drm_connector.modes. To ensure
+     * that modes are filtered consistently put any encoder constraints and
+     * limits checks into @mode_valid.
+     *
+     * RETURNS:
+     *
+     * True if an acceptable configuration is possible, false if the modeset
+     * operation should be rejected.
+     */
+    bool (*mode_fixup)(struct drm_encoder *encoder,
+               const struct drm_display_mode *mode,
+               struct drm_display_mode *adjusted_mode);
+
+    /**
+     * @prepare:
+     *
+     * This callback should prepare the encoder for a subsequent modeset,
+     * which in practice means the driver should disable the encoder if it
+     * is running. Most drivers ended up implementing this by calling their
+     * @dpms hook with DRM_MODE_DPMS_OFF.
+     *
+     * This callback is used by the legacy CRTC helpers.  Atomic helpers
+     * also support using this hook for disabling an encoder to facilitate
+     * transitions to atomic, but it is deprecated. Instead @disable should
+     * be used.
+     */
+    void (*prepare)(struct drm_encoder *encoder);
+
+    /**
+     * @commit:
+     *
+     * This callback should commit the new mode on the encoder after a modeset,
+     * which in practice means the driver should enable the encoder.  Most
+     * drivers ended up implementing this by calling their @dpms hook with
+     * DRM_MODE_DPMS_ON.
+     *
+     * This callback is used by the legacy CRTC helpers.  Atomic helpers
+     * also support using this hook for enabling an encoder to facilitate
+     * transitions to atomic, but it is deprecated. Instead @enable should
+     * be used.
+     */
+    void (*commit)(struct drm_encoder *encoder);
+
+    /**
+     * @mode_set:
+     *
+     * This callback is used to update the display mode of an encoder.
+     *
+     * Note that the display pipe is completely off when this function is
+     * called. Drivers which need hardware to be running before they program
+     * the new display mode (because they implement runtime PM) should not
+     * use this hook, because the helper library calls it only once and not
+     * every time the display pipeline is suspend using either DPMS or the
+     * new &quot;ACTIVE&quot; property. Such drivers should instead move all their
+     * encoder setup into the @enable callback.
+     *
+     * This callback is used both by the legacy CRTC helpers and the atomic
+     * modeset helpers. It is optional in the atomic helpers.
+     *
+     * NOTE:
+     *
+     * If the driver uses the atomic modeset helpers and needs to inspect
+     * the connector state or connector display info during mode setting,
+     * @atomic_mode_set can be used instead.
+     */
+    void (*mode_set)(struct drm_encoder *encoder,
+             struct drm_display_mode *mode,
+             struct drm_display_mode *adjusted_mode);
+
+    /**
+     * @atomic_mode_set:
+     *
+     * This callback is used to update the display mode of an encoder.
+     *
+     * Note that the display pipe is completely off when this function is
+     * called. Drivers which need hardware to be running before they program
+     * the new display mode (because they implement runtime PM) should not
+     * use this hook, because the helper library calls it only once and not
+     * every time the display pipeline is suspended using either DPMS or the
+     * new &quot;ACTIVE&quot; property. Such drivers should instead move all their
+     * encoder setup into the @enable callback.
+     *
+     * This callback is used by the atomic modeset helpers in place of the
+     * @mode_set callback, if set by the driver. It is optional and should
+     * be used instead of @mode_set if the driver needs to inspect the
+     * connector state or display info, since there is no direct way to
+     * go from the encoder to the current connector.
+     */
+    void (*atomic_mode_set)(struct drm_encoder *encoder,
+                struct drm_crtc_state *crtc_state,
+                struct drm_connector_state *conn_state);
+
+    /**
+     * @get_crtc:
+     *
+     * This callback is used by the legacy CRTC helpers to work around
+     * deficiencies in its own book-keeping.
+     *
+     * Do not use, use atomic helpers instead, which get the book keeping
+     * right.
+     *
+     * FIXME:
+     *
+     * Currently only nouveau is using this, and as soon as nouveau is
+     * atomic we can ditch this hook.
+     */
+    struct drm_crtc *(*get_crtc)(struct drm_encoder *encoder);
+
+    /**
+     * @detect:
+     *
+     * This callback can be used by drivers who want to do detection on the
+     * encoder object instead of in connector functions.
+     *
+     * It is not used by any helper and therefore has purely driver-specific
+     * semantics. New drivers shouldn&#39;t use this and instead just implement
+     * their own private callbacks.
+     *
+     * FIXME:
+     *
+     * This should just be converted into a pile of driver vfuncs.
+     * Currently radeon, amdgpu and nouveau are using it.
+     */
+    enum drm_connector_status (*detect)(struct drm_encoder *encoder,
+                        struct drm_connector *connector);
+
+    /**
+     * @atomic_disable:
+     *
+     * This callback should be used to disable the encoder. With the atomic
+     * drivers it is called before this encoder&#39;s CRTC has been shut off
+     * using their own &amp;drm_crtc_helper_funcs.atomic_disable hook. If that
+     * sequence is too simple drivers can just add their own driver private
+     * encoder hooks and call them from CRTC&#39;s callback by looping over all
+     * encoders connected to it using for_each_encoder_on_crtc().
+     *
+     * This callback is a variant of @disable that provides the atomic state
+     * to the driver. If @atomic_disable is implemented, @disable is not
+     * called by the helpers.
+     *
+     * This hook is only used by atomic helpers. Atomic drivers don&#39;t need
+     * to implement it if there&#39;s no need to disable anything at the encoder
+     * level. To ensure that runtime PM handling (using either DPMS or the
+     * new &quot;ACTIVE&quot; property) works @atomic_disable must be the inverse of
+     * @atomic_enable.
+     */
+    void (*atomic_disable)(struct drm_encoder *encoder,
+                   struct drm_atomic_state *state);
+
+    /**
+     * @atomic_enable:
+     *
+     * This callback should be used to enable the encoder. It is called
+     * after this encoder&#39;s CRTC has been enabled using their own
+     * &amp;drm_crtc_helper_funcs.atomic_enable hook. If that sequence is
+     * too simple drivers can just add their own driver private encoder
+     * hooks and call them from CRTC&#39;s callback by looping over all encoders
+     * connected to it using for_each_encoder_on_crtc().
+     *
+     * This callback is a variant of @enable that provides the atomic state
+     * to the driver. If @atomic_enable is implemented, @enable is not
+     * called by the helpers.
+     *
+     * This hook is only used by atomic helpers, it is the opposite of
+     * @atomic_disable. Atomic drivers don&#39;t need to implement it if there&#39;s
+     * no need to enable anything at the encoder level. To ensure that
+     * runtime PM handling works @atomic_enable must be the inverse of
+     * @atomic_disable.
+     */
+    void (*atomic_enable)(struct drm_encoder *encoder,
+                  struct drm_atomic_state *state);
+
+    /**
+     * @disable:
+     *
+     * This callback should be used to disable the encoder. With the atomic
+     * drivers it is called before this encoder&#39;s CRTC has been shut off
+     * using their own &amp;drm_crtc_helper_funcs.disable hook.  If that
+     * sequence is too simple drivers can just add their own driver private
+     * encoder hooks and call them from CRTC&#39;s callback by looping over all
+     * encoders connected to it using for_each_encoder_on_crtc().
+     *
+     * This hook is used both by legacy CRTC helpers and atomic helpers.
+     * Atomic drivers don&#39;t need to implement it if there&#39;s no need to
+     * disable anything at the encoder level. To ensure that runtime PM
+     * handling (using either DPMS or the new &quot;ACTIVE&quot; property) works
+     * @disable must be the inverse of @enable for atomic drivers.
+     *
+     * For atomic drivers also consider @atomic_disable and save yourself
+     * from having to read the NOTE below!
+     *
+     * NOTE:
+     *
+     * With legacy CRTC helpers there&#39;s a big semantic difference between
+     * @disable and other hooks (like @prepare or @dpms) used to shut down a
+     * encoder: @disable is only called when also logically disabling the
+     * display pipeline and needs to release any resources acquired in
+     * @mode_set (like shared PLLs, or again release pinned framebuffers).
+     *
+     * Therefore @disable must be the inverse of @mode_set plus @commit for
+     * drivers still using legacy CRTC helpers, which is different from the
+     * rules under atomic.
+     */
+    void (*disable)(struct drm_encoder *encoder);
+
+    /**
+     * @enable:
+     *
+     * This callback should be used to enable the encoder. With the atomic
+     * drivers it is called after this encoder&#39;s CRTC has been enabled using
+     * their own &amp;drm_crtc_helper_funcs.enable hook.  If that sequence is
+     * too simple drivers can just add their own driver private encoder
+     * hooks and call them from CRTC&#39;s callback by looping over all encoders
+     * connected to it using for_each_encoder_on_crtc().
+     *
+     * This hook is only used by atomic helpers, it is the opposite of
+     * @disable. Atomic drivers don&#39;t need to implement it if there&#39;s no
+     * need to enable anything at the encoder level. To ensure that
+     * runtime PM handling (using either DPMS or the new &quot;ACTIVE&quot; property)
+     * works @enable must be the inverse of @disable for atomic drivers.
+     */
+    void (*enable)(struct drm_encoder *encoder);
+
+    /**
+     * @atomic_check:
+     *
+     * This callback is used to validate encoder state for atomic drivers.
+     * Since the encoder is the object connecting the CRTC and connector it
+     * gets passed both states, to be able to validate interactions and
+     * update the CRTC to match what the encoder needs for the requested
+     * connector.
+     *
+     * Since this provides a strict superset of the functionality of
+     * @mode_fixup (the requested and adjusted modes are both available
+     * through the passed in &amp;struct drm_crtc_state) @mode_fixup is not
+     * called when @atomic_check is implemented.
+     *
+     * This function is used by the atomic helpers, but it is optional.
+     *
+     * NOTE:
+     *
+     * This function is called in the check phase of an atomic update. The
+     * driver is not allowed to change anything outside of the free-standing
+     * state objects passed-in or assembled in the overall &amp;drm_atomic_state
+     * update tracking structure.
+     *
+     * Also beware that userspace can request its own custom modes, neither
+     * core nor helpers filter modes to the list of probe modes reported by
+     * the GETCONNECTOR IOCTL and stored in &amp;drm_connector.modes. To ensure
+     * that modes are filtered consistently put any encoder constraints and
+     * limits checks into @mode_valid.
+     *
+     * RETURNS:
+     *
+     * 0 on success, -EINVAL if the state or the transition can&#39;t be
+     * supported, -ENOMEM on memory allocation failure and -EDEADLK if an
+     * attempt to obtain another state object ran into a &amp;drm_modeset_lock
+     * deadlock.
+     */
+    int (*atomic_check)(struct drm_encoder *encoder,
+                struct drm_crtc_state *crtc_state,
+                struct drm_connector_state *conn_state);
+};
+</pre></div>
+</div>
+</section>
+<section id="drm-encoder-init">
+<h2><span class="section-number">4.14.3.2. </span>drm_encoder_init<a class="headerlink" href="#drm-encoder-init" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int drm_encoder_init(struct drm_device *dev,
+             struct drm_encoder *encoder,
+             const struct drm_encoder_funcs *funcs,
+             int encoder_type, const char *name, ...)
+{
+    int ret;
+
+    /* encoder index is used with 32bit bitmasks */
+    if (WARN_ON(dev-&gt;mode_config.num_encoder &gt;= 32))
+        return -EINVAL;
+
+    //与connector类似，生成一个类型为DRM_MODE_OBJECT_ENCODER的struct drm_mode_object结构体
+    ret = drm_mode_object_add(dev, &amp;encoder-&gt;base, DRM_MODE_OBJECT_ENCODER);
+    if (ret)
+        return ret;
+
+    //初始化encoder成员变量
+    encoder-&gt;dev = dev;
+    encoder-&gt;encoder_type = encoder_type;
+    encoder-&gt;funcs = funcs;
+    if (name) {
+        va_list ap;
+
+        va_start(ap, name);
+        encoder-&gt;name = kvasprintf(GFP_KERNEL, name, ap);
+        va_end(ap);
+    } else {
+        encoder-&gt;name = kasprintf(GFP_KERNEL, &quot;%s-%d&quot;,
+                      drm_encoder_enum_list[encoder_type].name,
+                      encoder-&gt;base.id);
+    }
+    if (!encoder-&gt;name) {
+        ret = -ENOMEM;
+        goto out_put;
+    }
+
+    //将encoder加入到结构体struct drm_mode_config的encoder链表中
+    list_add_tail(&amp;encoder-&gt;head, &amp;dev-&gt;mode_config.encoder_list);
+    encoder-&gt;index = dev-&gt;mode_config.num_encoder++;
+
+out_put:
+    if (ret)
+        drm_mode_object_unregister(dev, &amp;encoder-&gt;base);
+
+    return ret;
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>drm_mode_getencoder</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int drm_mode_getencoder(struct drm_device *dev, void *data,
+            struct drm_file *file_priv)
+{
+    struct drm_mode_get_encoder *enc_resp = data;
+    struct drm_encoder *encoder;
+    struct drm_crtc *crtc;
+
+    if (!drm_core_check_feature(dev, DRIVER_MODESET))
+        return -EOPNOTSUPP;
+
+    //根据传入的id找到encoder
+    encoder = drm_encoder_find(dev, file_priv, enc_resp-&gt;encoder_id);
+    if (!encoder)
+        return -ENOENT;
+
+    drm_modeset_lock(&amp;dev-&gt;mode_config.connection_mutex, NULL);
+    //找到encoder适配的crtc
+    crtc = drm_encoder_get_crtc(encoder);
+    if (crtc &amp;&amp; drm_lease_held(file_priv, crtc-&gt;base.id))
+        enc_resp-&gt;crtc_id = crtc-&gt;base.id;
+    else
+        enc_resp-&gt;crtc_id = 0;
+    drm_modeset_unlock(&amp;dev-&gt;mode_config.connection_mutex);
+
+    enc_resp-&gt;encoder_type = encoder-&gt;encoder_type;
+    enc_resp-&gt;encoder_id = encoder-&gt;base.id;
+    enc_resp-&gt;possible_crtcs = drm_lease_filter_crtcs(file_priv,
+                              encoder-&gt;possible_crtcs);
+    enc_resp-&gt;possible_clones = encoder-&gt;possible_clones;
+
+    return 0;
+}
+</pre></div>
+</div>
+</section>
+<section id="rcar-du-encoder-init">
+<h2><span class="section-number">4.14.3.3. </span>rcar_du_encoder_init<a class="headerlink" href="#rcar-du-encoder-init" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//drivers/gpu/drm/rcar-du/rcar_du_encoder.c
+int rcar_du_encoder_init(struct rcar_du_device *rcdu,
+             enum rcar_du_output output,
+             struct device_node *enc_node)
+{
+    struct rcar_du_encoder *renc;
+    struct drm_encoder *encoder;
+    struct drm_bridge *bridge;
+    int ret;
+
+    renc = devm_kzalloc(rcdu-&gt;dev, sizeof(*renc), GFP_KERNEL);
+    if (renc == NULL)
+        return -ENOMEM;
+
+    rcdu-&gt;encoders[output] = renc;
+    renc-&gt;output = output;
+    encoder = rcar_encoder_to_drm_encoder(renc);
+
+    dev_dbg(rcdu-&gt;dev, &quot;initializing encoder %pOF for output %u\n&quot;,
+        enc_node, output);
+
+    /*
+     * Locate the DRM bridge from the DT node. For the DPAD outputs, if the
+     * DT node has a single port, assume that it describes a panel and
+     * create a panel bridge.
+     */
+    if ((output == RCAR_DU_OUTPUT_DPAD0 ||
+         output == RCAR_DU_OUTPUT_DPAD1) &amp;&amp;
+        rcar_du_encoder_count_ports(enc_node) == 1) {
+        struct drm_panel *panel = of_drm_find_panel(enc_node);
+
+        if (IS_ERR(panel)) {
+            ret = PTR_ERR(panel);
+            goto done;
+        }
+
+        bridge = devm_drm_panel_bridge_add(rcdu-&gt;dev, panel,
+                           DRM_MODE_CONNECTOR_DPI);
+        if (IS_ERR(bridge)) {
+            ret = PTR_ERR(bridge);
+            goto done;
+        }
+    } else {
+        bridge = of_drm_find_bridge(enc_node);
+        if (!bridge) {
+            if (output == RCAR_DU_OUTPUT_HDMI0 ||
+                output == RCAR_DU_OUTPUT_HDMI1) {
+#if IS_ENABLED(CONFIG_DRM_RCAR_DW_HDMI)
+                ret = -EPROBE_DEFER;
+#else
+                ret = 0;
+#endif
+                goto done;
+            } else if (output == RCAR_DU_OUTPUT_LVDS0 ||
+                   output == RCAR_DU_OUTPUT_LVDS1) {
+#if IS_ENABLED(CONFIG_DRM_RCAR_LVDS)
+                ret = -EPROBE_DEFER;
+#else
+                ret = 0;
+#endif
+                goto done;
+            } else if (output == RCAR_DU_OUTPUT_MIPI_DSI0 ||
+                   output == RCAR_DU_OUTPUT_MIPI_DSI1) {
+#if IS_ENABLED(CONFIG_DRM_RCAR_MIPI_DSI)
+                ret = -EPROBE_DEFER;
+#else
+                ret = 0;
+#endif
+                goto done;
+            } else {
+                ret = -EPROBE_DEFER;
+                goto done;
+            }
+        }
+
+        if (output == RCAR_DU_OUTPUT_LVDS0 ||
+            output == RCAR_DU_OUTPUT_LVDS1)
+            rcdu-&gt;lvds[output - RCAR_DU_OUTPUT_LVDS0] = bridge;
+    }
+
+    /*
+     * On Gen3 skip the LVDS1 output if the LVDS1 encoder is used as a
+     * companion for LVDS0 in dual-link mode.
+     */
+    if (rcdu-&gt;info-&gt;gen &gt;= 3 &amp;&amp; output == RCAR_DU_OUTPUT_LVDS1) {
+        if (rcar_lvds_dual_link(bridge)) {
+            ret = -ENOLINK;
+            goto done;
+        }
+    }
+
+    renc-&gt;bridge = bridge;
+
+    ret = drm_encoder_init(rcdu-&gt;ddev, encoder, &amp;encoder_funcs,
+                   DRM_MODE_ENCODER_NONE, NULL);
+    if (ret &lt; 0)
+        goto done;
+
+    drm_encoder_helper_add(encoder, &amp;encoder_helper_funcs);
+
+    /*
+     * Attach the bridge to the encoder. The bridge will create the
+     * connector.
+     */
+    ret = drm_bridge_attach(encoder, bridge, NULL);
+    if (ret) {
+        drm_encoder_cleanup(encoder);
+        return ret;
+    }
+
+done:
+    if (ret &lt; 0) {
+        if (encoder-&gt;name)
+            encoder-&gt;funcs-&gt;destroy(encoder);
+        devm_kfree(rcdu-&gt;dev, renc);
+    }
+
+    return ret;
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>调用关系</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rcar_du_probe</span>
+<span class="o">|--</span> <span class="n">rcar_du_modeset_init</span>
+<span class="o">|---|---</span><span class="n">drm_mode_config_init</span>
+    <span class="o">|---</span><span class="n">rcar_du_properties_init</span>
+    <span class="o">|---</span><span class="n">drm_vblank_init</span>
+    <span class="o">|---</span><span class="n">rcar_du_planes_init</span>
+    <span class="o">|---</span><span class="n">rcar_du_vsps_init</span>
+    <span class="o">|---</span><span class="n">rcar_du_crtc_create</span>
+    <span class="o">|---</span><span class="n">rcar_du_encoders_init</span>
+    <span class="o">|</span>   <span class="o">|---</span><span class="n">rcar_du_encoders_init_one</span>
+    <span class="o">|</span>       <span class="o">|---</span><span class="n">rcar_du_encoder_init</span>
+    <span class="o">|---</span><span class="n">rcar_du_writeback_init</span>
+<span class="o">|---</span><span class="n">drm_dev_register</span>
+<span class="o">|---</span><span class="n">drm_fbdev_generic_setup</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="connector.html" class="btn btn-neutral float-left" title="4.14.2. connector代码分析" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="crtc.html" class="btn btn-neutral float-right" title="4.14.4. crtc代码分析" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

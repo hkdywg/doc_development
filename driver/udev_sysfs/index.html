@@ -1,191 +1,128 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="zh-CN" >
+<html class="writer-html5" lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>3.3. sysfs、udev以及它们背后的linux统一设备模型 &mdash; ywg_dev_doc 0.1 文档</title>
-  
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.5. sysfs、udev以及它们背后的linux统一设备模型 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
-        <script src="../../_static/translations.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="3.4. GPIO子系统" href="../gpio/index.html" />
-    <link rel="prev" title="3.2. I2C驱动框架以及I2C设备驱动" href="../i2c/index.html" /> 
+    <link rel="next" title="4.6. GPIO子系统" href="../gpio/index.html" />
+    <link rel="prev" title="4.4.8. tasklet" href="../irq/tasklet.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> ywg_dev_doc
           
-
-          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">1. u-boot dev note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">2. kernel note</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">3. linux driver modules note</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">3.1. emmc driver</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">3.2. I2C驱动框架以及I2C设备驱动</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">3.3. sysfs、udev以及它们背后的linux统一设备模型</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#sysfs">3.3.1. sysfs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">3.3.2. 统一设备模型</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#kobject">3.3.2.1. kobject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.5. sysfs、udev以及它们背后的linux统一设备模型</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sysfs">4.5.1. sysfs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">4.5.2. 统一设备模型</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#kobject">4.5.2.1. kobject</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#uedev">3.3.3. uedev</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#udev">3.3.3.1. udev规则</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uedev">4.5.3. uedev</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#udev">4.5.3.1. udev规则</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">3.4. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">4. file system note</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">5. application development node</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../work_space/index.html">6. holo work note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../issues/index.html">8. Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">ywg_dev_doc</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../index.html"><span class="section-number">3. </span>linux driver modules note</a> &raquo;</li>
-        
-      <li><span class="section-number">3.3. </span>sysfs、udev以及它们背后的linux统一设备模型</li>
-    
-    
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.5. </span>sysfs、udev以及它们背后的linux统一设备模型</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../../_sources/driver/udev_sysfs/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
+            <a href="../../_sources/driver/udev_sysfs/index.rst.txt" rel="nofollow"> 查看页面源码</a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="sysfsudevlinux">
-<h1><span class="section-number">3.3. </span>sysfs、udev以及它们背后的linux统一设备模型<a class="headerlink" href="#sysfsudevlinux" title="永久链接至标题">¶</a></h1>
-<div class="section" id="sysfs">
-<h2><span class="section-number">3.3.1. </span>sysfs<a class="headerlink" href="#sysfs" title="永久链接至标题">¶</a></h2>
+             
+  <section id="sysfsudevlinux">
+<h1><span class="section-number">4.5. </span>sysfs、udev以及它们背后的linux统一设备模型<a class="headerlink" href="#sysfsudevlinux" title="此标题的永久链接"></a></h1>
+<section id="sysfs">
+<h2><span class="section-number">4.5.1. </span>sysfs<a class="headerlink" href="#sysfs" title="此标题的永久链接"></a></h2>
 <p>sysfs是一个基于内存的虚拟的文件系统，有kernel提供，挂载到/sys目录下，负责以设备树的形式向user space提供直观的设备和驱动信息。</p>
 <p>sysfs以不同的视角展示当前系统接入的设备：</p>
 <ul class="simple">
 <li><p>/sys/block 历史遗留问题，存放块设备，提供一设备名(如sda)到/sys/devices的符号链接</p></li>
 <li><p>/sys/bus 按总线类型分类，在某个总线目录之下可以找到链接该总线的设备的符号链接，指向/sys/devices. 某个总线目录之下的drivers目录
-包含了该总线所需的所有驱动的符号链接。对应卡尔呢了中的struct bus_type</p></li>
+包含了该总线所需的所有驱动的符号链接。对应kernel中的struct bus_type</p></li>
 <li><p>/sys/calss 按设备功能分类，如输入设备在/sys/class/input之下，图形设备在/sys/class/graphics之下，是指向/sys/devices的符号链接。
 对应kernel中的struct class</p></li>
 <li><p>/sys/dev 按设备驱动程序分层(字符设备 块设备)，提供以major:minor为名到/sys/devices的符号链接。 对应Kernel中的struct device_driver</p></li>
@@ -201,12 +138,12 @@ system devices不是外设，而是芯片内部的核心结构，比如CPU，tim
 </ul>
 <p>sysfs支持多视角查看，通过符号链接，同样的信息可出现在多个目录下。</p>
 <p>以硬盘sda为例，既可以在块设备目录/sys/block下找到，又可以在/sys/devices/pci0000:00/0000:00:10.0/host32/target32:0:0/下找到</p>
-</div>
-<div class="section" id="id1">
-<h2><span class="section-number">3.3.2. </span>统一设备模型<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+</section>
+<section id="id1">
+<h2><span class="section-number">4.5.2. </span>统一设备模型<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
 <p>sysfs的功能基于linux的统一设备模型，其由以下结构组成：</p>
-<div class="section" id="kobject">
-<h3><span class="section-number">3.3.2.1. </span>kobject<a class="headerlink" href="#kobject" title="永久链接至标题">¶</a></h3>
+<section id="kobject">
+<h3><span class="section-number">4.5.2.1. </span>kobject<a class="headerlink" href="#kobject" title="此标题的永久链接"></a></h3>
 <p>统一设备模型中最基本的对象</p>
 <ul class="simple">
 <li><p>kobject</p></li>
@@ -558,18 +495,18 @@ device_driver结构体中probe方法，移除驱动或者设备时调用device_d
 只有一种实现，但实际上 show 和 store 应该根据属性的不同而不同。怎么办呢？绕个弯子：在调用 sysfs_ops.show 和 sysfs_ops.store 时传入属性 attribute 的指针，
 然后在函数中将指针转换为设备类型对应属性的指针后调用属性的 show 和 store 函数。这也就是 device_attribute 、 class_attribute 或一些设备自定义属性
 (比如 cpuidle_driver_attr) 中定义有 show 和 store 函数的原因。</p>
-</div>
-</div>
-<div class="section" id="uedev">
-<h2><span class="section-number">3.3.3. </span>uedev<a class="headerlink" href="#uedev" title="永久链接至标题">¶</a></h2>
+</section>
+</section>
+<section id="uedev">
+<h2><span class="section-number">4.5.3. </span>uedev<a class="headerlink" href="#uedev" title="此标题的永久链接"></a></h2>
 <p>udev完全工作在用户空间，当一个设备被插入或者移除时，内核会通过netlink套接字发送设备详细信息到用户空间，udev获取到设备信息，根据信息内容在/dev下创建并命名设备节点。</p>
 <ul class="simple">
 <li><p>冷插拔的设备怎么办</p></li>
 </ul>
 <p>由于冷插拔的设备在开机时就已经存在，在udev启动前已经被插入，针对这种情况，sysfs的设备都存在 <code class="docutils literal notranslate"><span class="pre">uevent</span></code> 文件，向该文件写入 <code class="docutils literal notranslate"><span class="pre">add</span></code> ，内核会重新发送netlink，之后udev就可以
 受到设备的详细信息了，从而创建/dev下对应的设备节点。</p>
-<div class="section" id="udev">
-<h3><span class="section-number">3.3.3.1. </span>udev规则<a class="headerlink" href="#udev" title="永久链接至标题">¶</a></h3>
+<section id="udev">
+<h3><span class="section-number">4.5.3.1. </span>udev规则<a class="headerlink" href="#udev" title="此标题的永久链接"></a></h3>
 <ul class="simple">
 <li><p>配置文件</p></li>
 </ul>
@@ -599,10 +536,6 @@ device_driver结构体中probe方法，移除驱动或者设备时调用device_d
 <p>下面的key可以匹配设备属性，部分key也可以用于匹配sysfs中父设备属性，不仅仅是产生事件的那个设备。如果在一个规则中，有多个key
 匹配了一个父设备，则这些key必须匹配同一个父设备。</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 17%" />
-<col style="width: 83%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>key</p></th>
 <th class="head"><p>description</p></th>
@@ -675,10 +608,6 @@ device_driver结构体中probe方法，移除驱动或者设备时调用device_d
 <li><p>赋值型KEY</p></li>
 </ul>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 17%" />
-<col style="width: 83%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>key</p></th>
 <th class="head"><p>description</p></th>
@@ -808,64 +737,39 @@ device_driver结构体中probe方法，移除驱动或者设备时调用device_d
 <span class="n">UDEV</span>  <span class="p">[</span><span class="mf">95312.830561</span><span class="p">]</span> <span class="n">bind</span>     <span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">interconnect</span><span class="o">@</span><span class="mi">100000</span><span class="o">/</span><span class="mi">4</span><span class="n">fb0000</span><span class="o">.</span><span class="n">sdhci</span><span class="o">/</span><span class="n">mmc_host</span><span class="o">/</span><span class="n">mmc1</span><span class="o">/</span><span class="n">mmc1</span><span class="p">:</span><span class="n">aaaa</span> <span class="p">(</span><span class="n">mmc</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../gpio/index.html" class="btn btn-neutral float-right" title="3.4. GPIO子系统" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../i2c/index.html" class="btn btn-neutral float-left" title="3.2. I2C驱动框架以及I2C设备驱动" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../irq/tasklet.html" class="btn btn-neutral float-left" title="4.4.8. tasklet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../gpio/index.html" class="btn btn-neutral float-right" title="4.6. GPIO子系统" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        
-        &copy; 版权所有 2020, yinwg
-
-    </p>
+    <p>&#169; 版权所有 2019, yinwg。</p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

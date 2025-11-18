@@ -1,0 +1,219 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.8. 视频相关 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.8.1. 视频传输接口协议" href="video_interface.html" />
+    <link rel="prev" title="8.7.7. bitbake 总结" href="../yocto/bitbake.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../yocto/index.html">8.7. Yocto使用总结</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">8.8. 视频相关</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="video_interface.html">8.8.1. 视频传输接口协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LCD_timing.html">8.8.2. LCD timing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html">8.8.3. MIPI CSI传输协议解析</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_dsi.html">8.8.4. MIPI DSI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bt656.html">8.8.5. BT656</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.8. </span>视频相关</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/video/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">8.8. </span>视频相关<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="video_interface.html">8.8.1. 视频传输接口协议</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="video_interface.html#lvds">8.8.1.1. LVDS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="video_interface.html#id2">8.8.1.1.1. 物理层</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video_interface.html#id3">8.8.1.1.2. 数据传输层</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="video_interface.html#hdmi">8.8.1.2. HDMI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="video_interface.html#id4">8.8.1.2.1. 信号定义</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video_interface.html#frame">8.8.1.2.2. 链路层Frame结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video_interface.html#id5">8.8.1.2.3. 数据传输</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video_interface.html#video">8.8.1.2.4. video中像素编码方式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video_interface.html#audio">8.8.1.2.5. Audio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="video_interface.html#control">8.8.1.2.6. Control</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="video_interface.html#dsi">8.8.1.3. DSI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="LCD_timing.html">8.8.2. LCD timing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LCD_timing.html#id1">8.8.2.1. LCD timing时序示意图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LCD_timing.html#lcd">8.8.2.2. LCD相关计算</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mipi_csi.html">8.8.3. MIPI CSI传输协议解析</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mipi_csi.html#mipi">8.8.3.1. MIPI概述</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mipi_csi.html#multi-lane-distribution-and-merging">8.8.3.2. Multi-Lane Distribution and Merging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mipi_csi.html#low-level-protocol">8.8.3.3. Low Level Protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html#id1">8.8.3.3.1. 底层数据包格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html#data-id">8.8.3.3.2. Data ID</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="mipi_csi.html#virtual-channel">8.8.3.3.2.1. Virtual Channel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mipi_csi.html#data-type">8.8.3.3.2.2. Data Type</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html#ecc">8.8.3.3.3. ECC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html#cs">8.8.3.3.4. CS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html#sync-short-package">8.8.3.3.5. Sync Short package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html#data-type-interleaving">8.8.3.3.6. Data Type Interleaving</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mipi_csi.html#data-formats">8.8.3.4. Data Formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html#yuv-image-data">8.8.3.4.1. YUV Image data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html#rgb-image-data">8.8.3.4.2. RGB Image data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_csi.html#raw-image-data">8.8.3.4.3. RAW Image data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mipi_dsi.html">8.8.4. MIPI DSI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mipi_dsi.html#id1">8.8.4.1. 两种工作模式的区别</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mipi_dsi.html#video-mode">8.8.4.2. video mode时序控制模式</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mipi_dsi.html#non-burst-mode-with-sync-pulses">8.8.4.2.1. Non-Burst MOde with SYnc Pulses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_dsi.html#non-burst-mode-with-sync-events">8.8.4.2.2. Non-Burst Mode with sync Events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_dsi.html#burst-mode">8.8.4.2.3. Burst Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mipi_dsi.html#command">8.8.4.3. Command模式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mipi_dsi.html#dsi">8.8.4.4. DSI 数据包</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mipi_dsi.html#id2">8.8.4.4.1. 短数据包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mipi_dsi.html#id3">8.8.4.4.2. 长数据包</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mipi_dsi.html#id4">8.8.4.5. DSI命令模式</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bt656.html">8.8.5. BT656</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bt656.html#id1">8.8.5.1. 基本概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bt656.html#bt656-vs-bt601">8.8.5.2. BT656 VS BT601</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bt656.html#ntsc-vs-pal">8.8.5.3. NTSC VS PAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bt656.html#bt601-vs-bt709-vs-bt2020">8.8.5.4. BT601 VS BT709 VS BT2020</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../yocto/bitbake.html" class="btn btn-neutral float-left" title="8.7.7. bitbake 总结" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="video_interface.html" class="btn btn-neutral float-right" title="8.8.1. 视频传输接口协议" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,823 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.4.1.4. opendds配置选项 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="6.4.2. SOME/IP" href="../some_ip/index.html" />
+    <link rel="prev" title="6.4.1.3. condition和listener" href="condition_listener.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">6.4. 通信中间件</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">6.4.1. opendds</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="summary.html">6.4.1.1. opendds 简介</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simple_example.html">6.4.1.2. opendds简单示例</a></li>
+<li class="toctree-l4"><a class="reference internal" href="condition_listener.html">6.4.1.3. condition和listener</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">6.4.1.4. opendds配置选项</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../some_ip/index.html">6.4.2. SOME/IP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mqtt/index.html">6.4.3. mqtt协议</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linux_system/index.html">6.8. linux 系统编程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6.4. </span>通信中间件</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.4.1. </span>opendds</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.4.1.4. </span>opendds配置选项</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/user/communication/opendds/configure.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="opendds">
+<h1><span class="section-number">6.4.1.4. </span>opendds配置选项<a class="headerlink" href="#opendds" title="此标题的永久链接"></a></h1>
+<img alt="../../../_images/config_file_sections.png" src="../../../_images/config_file_sections.png" />
+<p>配置文件应用示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">publisher</span> <span class="o">-</span><span class="n">DCPSConfigFile</span> <span class="n">pub</span><span class="o">.</span><span class="n">ini</span>
+</pre></div>
+</div>
+<p>指令参数将在domain participant factor初始化时传递．</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;dds/DCPS/Server_Participant.h&gt;</span>
+<span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">DDS</span><span class="p">::</span><span class="n">DomainParticipantFactory_var</span> <span class="n">dpf</span> <span class="o">=</span> <span class="n">TheParticipantFactoryWithArgs</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>配置文件内容示例</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">conmon</span><span class="p">]</span>
+<span class="n">DCPSDebugLevel</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">DCPSInfoRepo</span><span class="o">=</span><span class="n">localhost</span><span class="p">:</span><span class="mi">12345</span>
+<span class="n">DCPSLivelinessFactory</span><span class="o">=</span><span class="mi">80</span>
+<span class="n">DCPSChunks</span><span class="o">=</span><span class="mi">20</span>
+<span class="n">DCPSChunksAssociationMultiplier</span><span class="o">=</span><span class="mi">10</span>
+<span class="n">DCPSBitLookupDurationMesc</span><span class="o">=</span><span class="mi">2000</span>
+<span class="n">DCPSPendingTimeout</span><span class="o">=</span><span class="mi">30</span>
+</pre></div>
+</div>
+<section id="global-setting">
+<h2><span class="section-number">6.4.1.4.1. </span>Global Setting<a class="headerlink" href="#global-setting" title="此标题的永久链接"></a></h2>
+<section id="common">
+<h3><span class="section-number">6.4.1.4.1.1. </span>[common]<a class="headerlink" href="#common" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td><p>DCPSBit=[1|0]</p></td>
+<td><p>切换内置主题支持</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>DCPSBItLookupDurationMsec=msec</p></td>
+<td><p>解读当前实例所给出的topic的最长持续时间</p></td>
+<td><p>2000ms</p></td>
+</tr>
+<tr class="row-even"><td><p>DCPSBitTransportIPAddress=addr</p></td>
+<td><p>设定tcp传输的ip地址, 只对DCPSInfoRepo设定有效</p></td>
+<td><p>INADDR_ANY</p></td>
+</tr>
+<tr class="row-odd"><td><p>DCPSBitTransportPort=port</p></td>
+<td><p>TCP传输中端口号设定，如果使用默认值0，则操作系统来选择要使用的端口，只对DCPSInfoRepo设定有效</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>DCPSChunks=n</p></td>
+<td><p>当RESOURCE_LIMITS Qos值为无穷大时，数据写入者和读取者的缓存分配器将预分配的块的可配置数量．当所
+有预分配的块都在使用时，opendds从堆中进行分配</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-odd"><td><p>DCPSChunkAssociationMultiplier=n</p></td>
+<td><p>与DCPSChunks或resource_limits.max_samples相乘的值，以确定已预先分配的浅拷贝块的总数．</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>DCPSDebugLevel=n</p></td>
+<td><p>控制DCPS层打印的调试信息量的整数值．有效值0-10．</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>DCPSDefaultAddress=addr</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>DCPSDefaultDiscovery=[]</p></td>
+<td><p>指定用于未明确配置的任何域的发现配置．可选值为DEFAULT_REPO|DEFAULT_REPS|DEFAULT_STATIC</p></td>
+<td><p>DEFAULT_REPO</p></td>
+</tr>
+<tr class="row-odd"><td><p>DCPSGlobalTransportConfig=name</p></td>
+<td><p>设置应该用作全局配置的传输配置的名称</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>DCPSInfoRepo=objref</p></td>
+<td><p>用于查找DCPS信息存储库的对象引用，可以是完整的CORBA IOR也可以是简单的host: port字符串</p></td>
+<td><p><a class="reference external" href="file://repo.ior">file://repo.ior</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>DCPSLivelinessFactory=n</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>DCPSMonitor=[0|1]</p></td>
+<td><p>使用OpenDDS_Monitor库发布有关监视主题的数据</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>DCPSPendingTimeout=sec</p></td>
+<td><p>数据写入器将阻塞的最大持续时间(以秒为单位)</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>DCPSPersistentDataDir=path</p></td>
+<td><p>文件系统上将存储持久数据的路径，如果不存在将自动创建</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>DCPSPublisherContentFilter=[1|0]</p></td>
+<td><p>控制内容过滤主题的过滤器表达式评估策略，启用后，如果所有订阅者都将忽略这些样本，则发布者可以将样
+本移交给传输之前丢弃样本</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>DCPSSecurity=[0|1]</p></td>
+<td><p>仅在启用dds安全性的情况下编译opendds时，此配置才有效</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>pool_size=n_bytes</p></td>
+<td><p>安全配置文件存储池的大小，以字节为单位</p></td>
+<td><p>41943040(40 MiB)</p></td>
+</tr>
+<tr class="row-even"><td><p>pool_granularity=n_bytes</p></td>
+<td><p>安全配置文件存储池的粒度(以字节为单位)，必须是8的倍数</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-odd"><td><p>Scheduler=[]</p></td>
+<td><p>选择要使用的线程调度器，可选值SCHED_RR|SCHED_FIFO|SCHED_OTHER</p></td>
+<td><p>SCHED_OTHER</p></td>
+</tr>
+<tr class="row-even"><td><p>scheduler_slice=usec</p></td>
+<td><p>某些操作系统需要设置时间片</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>DCPSBidirGIOP=[0|1]</p></td>
+<td><p>使用TAO的双向GIOP功能与DCPSInfoRepo进行交互</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="discovery">
+<h2><span class="section-number">6.4.1.4.2. </span>Discovery<a class="headerlink" href="#discovery" title="此标题的永久链接"></a></h2>
+<section id="domain">
+<h3><span class="section-number">6.4.1.4.2.1. </span>[domain/*]<a class="headerlink" href="#domain" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td><p>DomainId=n</p></td>
+<td><p>表示与存储库关联的域的整数值</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>DomainRepoKey=k</p></td>
+<td><p>映射的存储库的键值(不推荐使用)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>DiscoveryConfig=name</p></td>
+<td><p>用户定义的字符串，它引用同一配置文件中[repository]或[rtps_discovery]节的实例名称</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>DefaultTransportConfig=config</p></td>
+<td><p>用户定义的字符串，它引用[config]节的实例名称</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="repository">
+<h3><span class="section-number">6.4.1.4.2.2. </span>[repository/*]<a class="headerlink" href="#repository" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td><p>Repositorylor=ior</p></td>
+<td><p>存储库IOR或host: port</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>RepositoryKey=key</p></td>
+<td><p>存储库的唯一键值(不推荐使用，为向后兼容而提供)</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="rtps-discovery">
+<h3><span class="section-number">6.4.1.4.2.3. </span>[rtps_discovery/*]<a class="headerlink" href="#rtps-discovery" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td><p>ResendPeriod=sec</p></td>
+<td><p>参与者公告之间进程等待的秒数</p></td>
+<td><p>30</p></td>
+</tr>
+<tr class="row-odd"><td><p>MinResendDelay=msec</p></td>
+<td><p>参与者公告之间的最短时间(以毫秒为单位)</p></td>
+<td><p>100</p></td>
+</tr>
+<tr class="row-even"><td><p>QuickResendRatio</p></td>
+<td><p>配置本地SDPD重发的调整参数(重发周期的比率)</p></td>
+<td><p>0.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>LeaseDuration=sec</p></td>
+<td><p>作为参与者发送公告的一部分，它告诉对等参与者，如果在指定的持续时间内没有收到该参与者的消息，则
+可以认为该参与者”没有生命”</p></td>
+<td><p>300</p></td>
+</tr>
+<tr class="row-even"><td><p>PB=port</p></td>
+<td><p>端口基本号，此数字设置派生用于简单断点发现协议(SEDP)的端口号的起点，此属性与DG,PG,D0(或DX)和D1
+结合使用，以构造用于RTPS发现通信的必要端点</p></td>
+<td><p>7400</p></td>
+</tr>
+<tr class="row-odd"><td><p>DG=n</p></td>
+<td><p>表示域增益的整数值，这是一个乘法器，有助于RTPS指定多播或单播端口</p></td>
+<td><p>250</p></td>
+</tr>
+<tr class="row-even"><td><p>PG=n</p></td>
+<td><p>配置SPDP单播端口并用作偏移乘数，地址=PB+DG*dimainid+d1+PG*particatorid</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>D0=n</p></td>
+<td><p>SPDP Multicast配置中提供用于计算可分配端口的偏移量，公式为PB+DG*domainid+d0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>D1=n</p></td>
+<td><p>SPDP Unicast配置中提供用于计算可分配端口的偏移量，公式PB+DG*dimainid+d1+PG*particatorid</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p>SedpMaxMessageSize</p></td>
+<td><p>设置SEDP消息大小，默认值为最大UDP消息大小</p></td>
+<td><p>65466</p></td>
+</tr>
+<tr class="row-even"><td><p>SedpMulticast=[0|1]</p></td>
+<td><p>设置是否将多播用于SEDP通信，1为多播</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>SedpLocalAddress=addr:port</p></td>
+<td><p>配置SEDP绑定的本地地址和端口</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="static-discovery">
+<h2><span class="section-number">6.4.1.4.3. </span>Static Discovery<a class="headerlink" href="#static-discovery" title="此标题的永久链接"></a></h2>
+<section id="endpoint">
+<h3><span class="section-number">6.4.1.4.3.1. </span>[endpoint/*]<a class="headerlink" href="#endpoint" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td><p>domain=numeric</p></td>
+<td><p>端点的域ID,范围为0-231,用于形成端点的GUID</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>participant=hexstring</p></td>
+<td><p>12个十六进制数字的字符串，用于形成端点的GUID</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>entity=hexstring</p></td>
+<td><p>6个十六进制数字的字符串，用于形成端点GUID</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>type=[reader|writer]</p></td>
+<td><p>确定实体是数据读取器还是写入器</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>topic=name</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>datawriterqos=name</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>datareaderqos=name</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>publisherqos=name</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>subscriberqos=name</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>config</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="topic">
+<h3><span class="section-number">6.4.1.4.3.2. </span>[topic/*]<a class="headerlink" href="#topic" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td><p>name=string</p></td>
+<td><p>topic的名称</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>type_name=string</p></td>
+<td><p>唯一定义topic类型的标识符，通常是CORBA接口存储库类型名称</p></td>
+<td><p>Required</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="datawriterqos">
+<h3><span class="section-number">6.4.1.4.3.3. </span>[datawriterqos/*]<a class="headerlink" href="#datawriterqos" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="datareaderqos">
+<h3><span class="section-number">6.4.1.4.3.4. </span>[datareaderqos/*]<a class="headerlink" href="#datareaderqos" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="publisherqos">
+<h3><span class="section-number">6.4.1.4.3.5. </span>[publisherqos/*]<a class="headerlink" href="#publisherqos" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="subscriberqos">
+<h3><span class="section-number">6.4.1.4.3.6. </span>[subscriberqos/*]<a class="headerlink" href="#subscriberqos" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="transport">
+<h2><span class="section-number">6.4.1.4.4. </span>[Transport/*]<a class="headerlink" href="#transport" title="此标题的永久链接"></a></h2>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td><p>Transport=inst1[,inst2][,…]</p></td>
+<td><p>此配置将使用的</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>swap_bytes=[0|1]</p></td>
+<td><p>值为0时dds以源计算机的本机字节序对数据进行序列化</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>passive_connect_duration=msec</p></td>
+<td><p>初始被动连接建立的超时(毫秒)</p></td>
+<td><p>10000</p></td>
+</tr>
+</tbody>
+</table>
+<section id="common-transport-configuration-options">
+<h3><span class="section-number">6.4.1.4.4.1. </span>[Common Transport Configuration Options]<a class="headerlink" href="#common-transport-configuration-options" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td><p>transport_type=transport</p></td>
+<td><p>传输类型，tcp, udp, multicast, shmem, rtps_udp等</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>queue_messages_per_pool=n</p></td>
+<td><p>当检测到backpressure时，消息发送将要排队，当队列必须增长时，它将以该数字增长</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p>queue_initial_pools=n</p></td>
+<td><p>backpressure队列的初始池数</p></td>
+<td><p>5</p></td>
+</tr>
+<tr class="row-odd"><td><p>max_packet_size=n</p></td>
+<td><p>传输数据包的最大大小</p></td>
+<td><p>2147481599</p></td>
+</tr>
+<tr class="row-even"><td><p>max_samples_per_packet=n</p></td>
+<td><p>传输数据包中的最大样本数</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p>optimum_packet_size=n</p></td>
+<td><p>即使仍然有排队的样本要发送，大于此大小的传输数据包也会发送</p></td>
+<td><p>4096(4k)</p></td>
+</tr>
+<tr class="row-even"><td><p>thread_per_connection=[0|1]</p></td>
+<td><p>启用或禁用每个连接发送策略的线程</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>datalink_release_delay=msec</p></td>
+<td><p>设置没有关联后数据链路释放的延迟</p></td>
+<td><p>10000</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tcp-ip-configuration-options">
+<h3><span class="section-number">6.4.1.4.4.2. </span>[TCP/IP Configuration Options]<a class="headerlink" href="#tcp-ip-configuration-options" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td><p>active_conn_timeout_period=msec</p></td>
+<td><p>活动连接侧等待建立连接的时间段(毫秒),如果在此期间未连接，则将调用on_publication_lost()回调</p></td>
+<td><p>5000</p></td>
+</tr>
+<tr class="row-odd"><td><p>conn_retry_attempts=n</p></td>
+<td><p>丢弃并调用on_publication_lost和on_subscription_lost回调之前尝试重新连接的次数</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p>conn_retry_initial_delay=msec</p></td>
+<td><p>尝试重新链接的初始延迟</p></td>
+<td><p>500</p></td>
+</tr>
+<tr class="row-odd"><td><p>conn_retry_backoff_multiplier=n</p></td>
+<td><p>尝试重新连接的退避乘数</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>enable_nagle_algorithm=[0|1]</p></td>
+<td><p>启用或禁用Nagle算法，启用Nagle算法会增加吞吐量，但会增加延迟</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>local_address=host:port</p></td>
+<td><p>连接接收器的主机名和端口</p></td>
+<td><p>fqdn:0</p></td>
+</tr>
+<tr class="row-even"><td><p>max_output_pause_period=msec</p></td>
+<td><p>排队中消息无法发送的最长时间(毫秒)</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>passive_reconnect_duration=msec</p></td>
+<td><p>被动连接端等待重新连接的时间段</p></td>
+<td><p>2000</p></td>
+</tr>
+<tr class="row-even"><td><p>pub_address=host:port</p></td>
+<td><p>用配置的字符串覆盖发送给对等方的地址，可用于防火墙穿透和其他高级网络配置</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="udp-ip-configuration-options">
+<h3><span class="section-number">6.4.1.4.4.3. </span>[UDP/IP Configuration Options]<a class="headerlink" href="#udp-ip-configuration-options" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td><p>local_address=host:port</p></td>
+<td><p>监听套接字的主机名和端口</p></td>
+<td><p>fqdn:0</p></td>
+</tr>
+<tr class="row-odd"><td><p>send_buffer_size=n</p></td>
+<td><p>用于UDP有效负载的总发送缓冲区大小(以字节为单位)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>rcv_buffer_size=n</p></td>
+<td><p>用于UDP有效负载的总接收缓冲区大小(以字节为单位)</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ip-multicast-configuration-options">
+<h3><span class="section-number">6.4.1.4.4.4. </span>[IP Multicast Configuration Options]<a class="headerlink" href="#ip-multicast-configuration-options" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td><p>default_to_ipv6=[0|1]</p></td>
+<td><p>启用IPV6默认组地址选择</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>group_address=host:port</p></td>
+<td><p>要加入发送/接收数据的多播组</p></td>
+<td><p>224.0.0.128:&lt;port&gt;</p></td>
+</tr>
+<tr class="row-even"><td><p>local_address=address</p></td>
+<td><p>如果为非空，则为用于加入多播组的本地网络接口的地址</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>nak_delay_intervals=n</p></td>
+<td><p>初始化nak之后nak之间的间隔数</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p>nak_depth=n</p></td>
+<td><p>为了service repair requests而保留的数据报数</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-odd"><td><p>nak_interval=msec</p></td>
+<td><p>两次修复请求之间等待的最小毫秒数</p></td>
+<td><p>500</p></td>
+</tr>
+<tr class="row-even"><td><p>nak_max=n</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>nak_timeout=msec</p></td>
+<td><p>放弃维修响应之前等待时间</p></td>
+<td><p>30000</p></td>
+</tr>
+<tr class="row-even"><td><p>port_offset=n</p></td>
+<td><p>未指定组地址时用于设置端口号，此值不应设置为小于49152</p></td>
+<td><p>49152</p></td>
+</tr>
+<tr class="row-odd"><td><p>rcv_buffer_size=n</p></td>
+<td><p>socket接收缓冲区大小,0使用系统默认值</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>reliable=[0|1]</p></td>
+<td><p>使能可靠的通信</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>syn_backoff=n</p></td>
+<td><p>握手重试期间使用的指数基,较小的值会缩短尝试之间的延迟</p></td>
+<td><p>2.0</p></td>
+</tr>
+<tr class="row-even"><td><p>syn_interval=msec</p></td>
+<td><p>关联期间，等待握手尝试的最小毫秒数</p></td>
+<td><p>250</p></td>
+</tr>
+<tr class="row-odd"><td><p>syn_timeout=msec</p></td>
+<td><p>关联期间，放弃握手响应之前要等待的最大毫秒数</p></td>
+<td><p>30000</p></td>
+</tr>
+<tr class="row-even"><td><p>ttl=n</p></td>
+<td><p>发送任何数据包的生存时间(ttl)字段,默认值为1表示所有数据都限于本地网络</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>async_send=[0|1]</p></td>
+<td><p>使用异步I/O发送数据报</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="rtps-udp-configuration-options">
+<h3><span class="section-number">6.4.1.4.4.5. </span>[RTPS_UDP Configuration Options]<a class="headerlink" href="#rtps-udp-configuration-options" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td><p>use_multicast=[0|1]</p></td>
+<td><p>rtps_udp传输可以使用单播或多播，默认使用多播</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>multicast_group_address=address</p></td>
+<td><p>传输设置为多播时，应使用多播网络地址．如果未指定网络端口号，则使用7401</p></td>
+<td><p>239.255.0.2:7401</p></td>
+</tr>
+<tr class="row-even"><td><p>multicast_interface=iface</p></td>
+<td><p>指定传输实例要使用的网络接口,linux系统中可以使用eth0</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>local_address=addr:port</p></td>
+<td><p>指定地址和端口</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>nak_depth-n</p></td>
+<td><p>为service repair requests而保留的数据报数</p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-odd"><td><p>nak_response_delay=msec</p></td>
+<td><p>允许rtps writer针对数据请求延迟否定确定的响应</p></td>
+<td><p>200</p></td>
+</tr>
+<tr class="row-even"><td><p>heartbeat_period=msec</p></td>
+<td><p>rtps writer公告数据可用性频率</p></td>
+<td><p>1000</p></td>
+</tr>
+<tr class="row-odd"><td><p>heartbeat_response_delay=msec</p></td>
+<td><p>rtps reader延迟发送肯定或否定确认</p></td>
+<td><p>500</p></td>
+</tr>
+<tr class="row-even"><td><p>handshake_timeout=msec</p></td>
+<td><p>关联期间放弃握手响应之前要等待的最大毫秒数</p></td>
+<td><p>30000</p></td>
+</tr>
+<tr class="row-odd"><td><p>max_message_size</p></td>
+<td><p>最大消息大小，默认值为最大UDP消息大小</p></td>
+<td><p>65466</p></td>
+</tr>
+<tr class="row-even"><td><p>quick_reply_ratio</p></td>
+<td><p>用于控制相对于heartbeat_period和heartbeat_response_delay的新公告发生速度</p></td>
+<td><p>0.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>ttl=n</p></td>
+<td><p>发送的任何多播数据报的生存时间</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>DataRtpsRelayAddress=host:port</p></td>
+<td><p>指定用于rtps消息的rtpsrelay地址</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>RtpsRelayOnly=[0|1]</p></td>
+<td><p>仅将消息发送到rtpsrelay(用于调试)</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="shared-memory-transport-configuration-options">
+<h3><span class="section-number">6.4.1.4.4.6. </span>[Shared-Memory Transport Configuration Options]<a class="headerlink" href="#shared-memory-transport-configuration-options" title="此标题的永久链接"></a></h3>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>配置选项</p></td>
+<td><p>描述</p></td>
+<td><p>默认值</p></td>
+</tr>
+<tr class="row-even"><td><p>pool_size=bytes</p></td>
+<td><p>分配的单个共享内存池的大小</p></td>
+<td><p>16777216(16MiB)</p></td>
+</tr>
+<tr class="row-odd"><td><p>datalink_control_size=bytes</p></td>
+<td><p>为每个数据链路分配的控制区域的大小，此分配来自pool_size定义的共享内存池</p></td>
+<td><p>4096(4KiB)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="config">
+<h3><span class="section-number">6.4.1.4.4.7. </span>config<a class="headerlink" href="#config" title="此标题的永久链接"></a></h3>
+</section>
+<section id="id1">
+<h3><span class="section-number">6.4.1.4.4.8. </span>transport<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h3>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="condition_listener.html" class="btn btn-neutral float-left" title="6.4.1.3. condition和listener" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../some_ip/index.html" class="btn btn-neutral float-right" title="6.4.2. SOME/IP" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.8.1. I/O复用之select/poll/epoll &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="6.8.2. 源码解读select/poll/epoll内核机制" href="select_kernel_source.html" />
+    <link rel="prev" title="6.8. linux 系统编程" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">6. application development node</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">6.1. 用户态GPIO操作</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../c%2B%2B/index.html">6.2. C++应用笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../function_safety/index.html">6.3. 汽车功能安全规范及设计</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../communication/index.html">6.4. 通信中间件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">6.5. 视频笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../verhicle_app/index.html">6.6. 车载应用汇总</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../socket/index.html">6.7. linux socket编程</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">6.8. linux 系统编程</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">6.8.1. I/O复用之select/poll/epoll</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">6.8.1.1. 概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#select">6.8.1.2. select</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#poll">6.8.1.3. poll</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#epoll">6.8.1.4. epoll</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="select_kernel_source.html">6.8.2. 源码解读select/poll/epoll内核机制</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Cstand_lib/index.html">6.9. C标准库函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.html">6.10. 信息安全篇</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config/index.html">6.11. 配置文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../soft_package_list/index.html">6.12. 软件包汇总</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">6. </span>application development node</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">6.8. </span>linux 系统编程</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6.8.1. </span>I/O复用之select/poll/epoll</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/user/linux_system/select.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="i-oselect-poll-epoll">
+<h1><span class="section-number">6.8.1. </span>I/O复用之select/poll/epoll<a class="headerlink" href="#i-oselect-poll-epoll" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">6.8.1.1. </span>概述<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>I/O复用是用来解决进程或线程阻塞到某个I/O系统调用而出现的技术，使进程不阻塞于某个特定的I/O系统调用．</p>
+<p>I/O复用使用的场合</p>
+<ul class="simple">
+<li><p>当客户处理多个描述符(通常是交互式输入，网络套接字)时，必须使用I/O复用</p></li>
+<li><p>TCP服务器既要处理监听套接字，又要处理已连接的套接字，一般要使用I/O复用</p></li>
+<li><p>如果一个服务器既要处理TCP又要处理UDP，一般要使用I/O复用</p></li>
+<li><p>如果一个服务器要处理多个服务时，一般要使用I/O复用</p></li>
+</ul>
+</section>
+<section id="select">
+<h2><span class="section-number">6.8.1.2. </span>select<a class="headerlink" href="#select" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;sys/select.h&gt;
+#include &lt;sys/time.h&gt;
+#include &lt;sys/types.h&gt;
+
+/*
+ * nfds: 指定要检测的描述符范围，所检测描述符最大值+1
+ * readfds: 可读描述符集，监测该集合中的任意描述符是否有数据可读
+ * writefds: 可写描述符集
+ * exceptfds: 异常描述符集
+ * timeout: 超时时间
+ * return: 出错时返回-1,返回0时表示超时
+*/
+int select(int nfds, fd_set *readfds, fd_set *write_fds,
+            fd_set *exceptfds, struct timeval *timeout);
+
+//如果超时时间为NULL,则表示一直等待
+
+//该结构体表示超时等待时间
+struct timeval {
+    long tv_sec; //秒
+    long tv_usec; //微秒
+};
+</pre></div>
+</div>
+<p>另外select需要配置集合操作函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">初始化描述符集</span>
+<span class="n">void</span> <span class="n">FD_ZERO</span><span class="p">(</span><span class="n">fd_set</span> <span class="o">*</span><span class="n">fdset</span><span class="p">);</span>
+
+<span class="o">//</span><span class="n">将一个描述符添加到描述符集</span>
+<span class="n">void</span> <span class="n">FD_SET</span><span class="p">(</span><span class="nb">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">fd_set</span> <span class="o">*</span><span class="n">fdset</span><span class="p">);</span>
+
+<span class="o">//</span><span class="n">将一个描述符从描述符集中删除</span>
+<span class="n">void</span> <span class="n">FD_CLR</span><span class="p">(</span><span class="nb">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">fd_set</span> <span class="o">*</span><span class="n">fdset</span><span class="p">);</span>
+
+<span class="o">//</span><span class="n">检测指定的描述符是否有事件发生</span>
+<span class="nb">int</span> <span class="n">FD_ISSET</span><span class="p">(</span><span class="nb">int</span> <span class="n">fd</span><span class="p">,</span> <span class="n">fd_set</span> <span class="o">*</span><span class="n">fdset</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>每次调用select,都需要把fd集合从用户态拷贝到内核态，这个开销在fd很多时会很大，同时每次调用select都需要在内核中遍历传递进来的所有fd
+文件描述符个数受限，单进程能够监控的文件描述符一般为1024,通过修改宏定义增大上限，单同样存在效率低的弱势</p></li>
+<li><p>性能衰减严重:IO随着监控的描述符数量增长，其性能会线性下降</p></li>
+</ul>
+</div>
+</section>
+<section id="poll">
+<h2><span class="section-number">6.8.1.3. </span>poll<a class="headerlink" href="#poll" title="此标题的永久链接"></a></h2>
+<p>select和poll系统调用的本质一样，管理多个描述符也是进行轮循，根据描述符的状态进行处理，但是poll没有最大文件描述符数量的限制(但是数量过大后性能也是会下降).
+poll和select同样存在一个缺点就是，包含大量文件描述符的数组被整体复制于用户态和内核态的地址空间之间．</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;poll.h&gt;</span>
+
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">fds</span><span class="p">:</span> <span class="n">指定fd的条件</span>
+ <span class="o">*</span> <span class="n">nfds</span><span class="p">:</span> <span class="n">用来指定第一个参数的数组元素个数</span>
+ <span class="o">*</span> <span class="n">timeout</span><span class="p">:</span> <span class="n">指定等待的毫秒数</span>
+ <span class="o">*</span> <span class="k">return</span><span class="p">:</span> <span class="n">失败时返回</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">超时返回0</span><span class="p">,</span><span class="n">成功则返回文件描述符个数</span>
+<span class="o">*/</span>
+<span class="nb">int</span> <span class="n">poll</span><span class="p">(</span><span class="n">struct</span> <span class="n">pollfd</span> <span class="o">*</span><span class="n">fds</span><span class="p">,</span> <span class="n">nfds_t</span> <span class="n">nfds</span><span class="p">,</span> <span class="nb">int</span> <span class="n">timeout</span><span class="p">);</span>
+
+
+<span class="n">struct</span> <span class="n">pollfd</span> <span class="p">{</span>
+    <span class="nb">int</span> <span class="n">fd</span><span class="p">;</span>         <span class="o">//</span><span class="n">文件描述符</span>
+    <span class="n">short</span> <span class="n">events</span><span class="p">;</span>   <span class="o">//</span><span class="n">监听的请求事件</span>
+    <span class="n">short</span> <span class="n">revents</span><span class="p">;</span>  <span class="o">//</span><span class="n">已发生的事件</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<img alt="../../_images/pool_return.png" src="../../_images/pool_return.png" />
+</section>
+<section id="epoll">
+<h2><span class="section-number">6.8.1.4. </span>epoll<a class="headerlink" href="#epoll" title="此标题的永久链接"></a></h2>
+<p>epoll是在2.6版本内核中提出的，是select和poll的增强版．相对于select和poll来说，epoll更加灵活，没有描述符数量限制．epoll使用一个文件描述符管理多个描述符，
+将用户空间的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需要一次．epoll机制是linux最高效的I/O复用机制</p>
+<p>select/poll都只有一个方法，epoll操作过程有3个方法，分别是 <code class="docutils literal notranslate"><span class="pre">epoll_create()</span></code> , <code class="docutils literal notranslate"><span class="pre">epoll_ctl()</span></code> , <code class="docutils literal notranslate"><span class="pre">epoll_wait()</span></code></p>
+<ul class="simple">
+<li><p>epoll_create</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;sys/epoll.h&gt;
+
+/* 用于创建epoll句柄，size是指监听的描述符个数，现在内核支持动态扩展，该值的意义仅仅是
+ * 初次分配的fd个数，后面空间不够时会动态扩容．当创建完epoll句柄后，占用一个fd值
+ * ls /proc/&lt;pid&gt;/fd/　可通过终端查看fd值
+ * 使用完epoll后，必须调用close关闭，否则可能导致fd被耗尽
+ */
+int epoll_create(int size);
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>epoll_ctl</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;sys/epoll.h&gt;
+
+/*
+ * 功能: 用于对需要监听的文件描述符(fd)执行op操作，比如将fd加入到epoll句柄
+ * epfd: epoll_create的返回值
+ * op: 表示op操作，用三个宏来表示，EPOLL_CTL_ADD(添加), EPOLL_CTL_DEL(删除), EPOLL_CTL_MOD(修改)
+ * fd: 需要监听的文件描述符
+ * event: 需要监听的事件
+ * return: 失败返回-1,超时返回0,正常则返回需要处理的事件数目
+ */
+int epoll_ctl(int epfd, int op, struct epoll_event *event);
+
+struct epoll_event {
+    __uint32_t events;  //epoll事件, EPOLLIN(可读，包括对端的SOCKET正常关闭), EPOLLOUT(可写)
+                        //EPOLLERR(错误), EPOLLHUP(中断)，EPOLLPRI(高优先级的可读), EPOLLLET(将EPOLL设为边缘触发模式，这是相对水平触发来说的)
+                        //EPOLLONESHOT(只监听一次事件，当监听完这次事件之后就不再监听该事件)
+    epoll_data_t data;  //用户可用数据
+};
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>epoll_wait</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#include &lt;sys/epoll.h&gt;
+
+/*
+ * epfd: 等待epfd上的IO事件，最多返回maxevents个事件
+ * events: 用来从内核得到事件的集合
+ * maxevents: events数量，该maxevents值不能大于创建epoll_create的size
+ * timeout: 超时时间(毫秒，0会立即返回)
+ */
+int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<ul class="simple">
+<li><p>监视的描述符数量不受限制，所支持的fd上限是最大可以打开文件的数目，具体数目可以cat /proc/sys/fs/file-max来查看</p></li>
+<li><p>IO性能不会随着监视fd的数量增长而下降，epoll不同于select和poll轮循的方式，而是通过每个fd定义的回调函数来实现的，只有据序的fd才会执行回调函数</p></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="6.8. linux 系统编程" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="select_kernel_source.html" class="btn btn-neutral float-right" title="6.8.2. 源码解读select/poll/epoll内核机制" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

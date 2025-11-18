@@ -1,0 +1,217 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.10.1. MDIO &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.10.2. 自协商原理" href="auto_negotiation.html" />
+    <link rel="prev" title="4.10. 以太网驱动" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../irq/index.html">4.4. linux 中断</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.10. 以太网驱动</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.10.1. MDIO</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.10.1.1. MDIO原理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ubootmdio">4.10.1.2. uboot中通过命令访问MDIO</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.10.1.3. uboot中通过源码访问MDIO</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kernelmdio">4.10.1.4. kernel中通过源码访问MDIO</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">4.10.1.5. 用户空间通过命令访问MDIO</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">4.10.1.6. 用户空间通过源码访问MDIO</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="auto_negotiation.html">4.10.2. 自协商原理</a></li>
+<li class="toctree-l3"><a class="reference internal" href="phy_standard_reg.html">4.10.3. PHY标准寄存器</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.10. </span>以太网驱动</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.10.1. </span>MDIO</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/net/mdio.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mdio">
+<h1><span class="section-number">4.10.1. </span>MDIO<a class="headerlink" href="#mdio" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">4.10.1.1. </span>MDIO原理<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>MII是一个标准接口，用于连接MAC和PHY，MII是IEEE-802.3定义的以太网标准，MII接口可以同时控制多个PHY。MII包含两个接口</p>
+<ol class="arabic simple">
+<li><p>一个数据接口，用户MAC和PHY之间收发Ethernet数据</p></li>
+<li><p>一个管理接口，这个管理接口通常称为MDIO,或者SMI。这个接口用于MAC从PHY读写相关管理寄存器的值</p></li>
+</ol>
+<p>拓扑图如下</p>
+<img alt="../../_images/mac-phy.png" src="../../_images/mac-phy.png" />
+<p>mdio包括两根信号线，分别如下:</p>
+<ol class="arabic simple">
+<li><p>MDC时钟线：MDIO的时钟信号，由MAC驱动PHY</p></li>
+<li><p>MDIO数据线: 双向数据线，用于在MAC和PHY之间传输配置信息</p></li>
+</ol>
+<p>mdio总线支持MAC作为主设备，PHY作为从设备，MDIO支持两种时许，分别为 <code class="docutils literal notranslate"><span class="pre">Clasuse</span> <span class="pre">22</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Clause</span> <span class="pre">45</span></code></p>
+<section id="mdio-clause-22">
+<h3><span class="section-number">4.10.1.1.1. </span>MDIO clause 22<a class="headerlink" href="#mdio-clause-22" title="此标题的永久链接"></a></h3>
+<p>MDIO clause 22是MDIO使用的一种信号时序，在这个信号时序模式，MAC先向MDIO信号线上拍32个周期，接着传输16bit的控制位。16个信号位包含了2个开始位，2bits 读写控制位，5bits的PHY地址，5bits的寄存器地址，以及2bits的
+翻转位。当进行写操作时，MAC在接下来的周期中提供地址和数据。当进行读操作时，PHY会翻转MDIO之后向MDIO信号线上发送数据</p>
+<ul class="simple">
+<li><p>MDIO read</p></li>
+</ul>
+<img alt="../../_images/mdio-read.png" src="../../_images/mdio-read.png" />
+<ul class="simple">
+<li><p>MDIO write</p></li>
+</ul>
+<img alt="../../_images/mdio-write.png" src="../../_images/mdio-write.png" />
+</section>
+</section>
+<section id="ubootmdio">
+<h2><span class="section-number">4.10.1.2. </span>uboot中通过命令访问MDIO<a class="headerlink" href="#ubootmdio" title="此标题的永久链接"></a></h2>
+<p>uboot中提供了mii工具去操作MDIO总线，用法如下</p>
+<img alt="../../_images/mii_cmd.png" src="../../_images/mii_cmd.png" />
+</section>
+<section id="id2">
+<h2><span class="section-number">4.10.1.3. </span>uboot中通过源码访问MDIO<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>uboot中进行MDIO操作可以参考如下代码</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">use</span> <span class="n">current</span> <span class="n">device</span> <span class="o">*/</span>
+<span class="n">devname</span> <span class="o">=</span> <span class="n">miiphy_get_current_dev</span><span class="p">();</span>
+<span class="o">/*</span> <span class="n">mdio</span> <span class="n">write</span> <span class="o">*/</span>
+<span class="n">miiphy_write</span> <span class="p">(</span><span class="n">devname</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">reg</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+<span class="o">/*</span> <span class="n">mdio</span> <span class="n">read</span> <span class="o">*/</span>
+<span class="n">miiphy_read</span><span class="p">(</span><span class="n">devname</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">reg</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">val</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="kernelmdio">
+<h2><span class="section-number">4.10.1.4. </span>kernel中通过源码访问MDIO<a class="headerlink" href="#kernelmdio" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bs</span> <span class="o">=</span> <span class="n">phy_read_mmd</span><span class="p">(</span><span class="n">phydev</span><span class="p">,</span> <span class="n">DP83867_DEVADDR</span><span class="p">,</span> <span class="n">DP83867_STRAP_STS2</span><span class="p">);</span>
+<span class="n">phy_write_mmd</span><span class="p">(</span><span class="n">phydev</span><span class="p">,</span> <span class="n">DP83867_DEVADDR</span><span class="p">,</span> <span class="n">DP83867_RGMIICTL</span><span class="p">,</span> <span class="n">val</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>phy_read_mmd 会调用以下函数，从而达到调用mdio接口函数</p>
+<img alt="../../_images/phy_read_mmd.png" src="../../_images/phy_read_mmd.png" />
+</section>
+<section id="id3">
+<h2><span class="section-number">4.10.1.5. </span>用户空间通过命令访问MDIO<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>用户空间可以通过ethtool命令去访问mdio</p>
+</section>
+<section id="id4">
+<h2><span class="section-number">4.10.1.6. </span>用户空间通过源码访问MDIO<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<p>…待完成</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="index.html" class="btn btn-neutral float-left" title="4.10. 以太网驱动" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="auto_negotiation.html" class="btn btn-neutral float-right" title="4.10.2. 自协商原理" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

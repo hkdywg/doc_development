@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.4.6. linux中断处理 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="4.4.7. 软中断" href="irq_soft.html" />
+    <link rel="prev" title="4.4.5. 创建软硬中断号映射" href="irq_soft_hard.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">4. linux driver modules note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../platform_bus/index.html">4.1. platform总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmc/emmc/index.html">4.2. emmc driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../i2c/index.html">4.3. I2C驱动框架以及I2C设备驱动</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">4.4. linux 中断</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="abnormal_process.html">4.4.1. linux异常处理流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_init_call.html">4.4.2. linux中断初始化和基本调用流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_init_arm64.html">4.4.3. ARM64中断初始化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_frame.html">4.4.4. linux 中断框架</a></li>
+<li class="toctree-l3"><a class="reference internal" href="irq_soft_hard.html">4.4.5. 创建软硬中断号映射</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4.4.6. linux中断处理</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.4.6.1. 注册中断</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.4.6.2. 中断处理</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="irq_soft.html">4.4.7. 软中断</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tasklet.html">4.4.8. tasklet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../device_module/index.html">4.5. 设备模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpio/index.html">4.6. GPIO子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kobj/index.html">4.7. kobject详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Async_notify/index.html">4.8. 异步通知机制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mmap/index.html">4.9. mmap 总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../net/index.html">4.10. 以太网驱动</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../timer/index.html">4.11. 内核定时器的使用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">4.12. 输入子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../framebuffer/index.html">4.13. framebuffer子系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../drm/index.html">4.14. DRM框架分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../v4l2/index.html">4.15. linux V4L2视频框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rpmsg/index.html">4.16. rpmsg应用笔记</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">4. </span>linux driver modules note</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">4.4. </span>linux 中断</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4.4.6. </span>linux中断处理</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/driver/irq/irq_process.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux">
+<h1><span class="section-number">4.4.6. </span>linux中断处理<a class="headerlink" href="#linux" title="此标题的永久链接"></a></h1>
+<section id="id1">
+<h2><span class="section-number">4.4.6.1. </span>注册中断<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h2>
+<p>中断函数注册接口</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">request_threaded_irq</span><span class="p">(</span><span class="n">unsigned</span> <span class="nb">int</span> <span class="n">irq</span><span class="p">,</span> <span class="n">irq_handler_t</span> <span class="n">handler</span><span class="p">,</span>
+                     <span class="n">irq_handler_t</span> <span class="n">thread_fn</span><span class="p">,</span> <span class="n">unsigned</span> <span class="n">long</span> <span class="n">irqflags</span><span class="p">,</span>
+                     <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">devname</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">dev_id</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>参数</p></td>
+<td><p>说明</p></td>
+</tr>
+<tr class="row-even"><td><p>irq</p></td>
+<td><p>IRQ软中断号</p></td>
+</tr>
+<tr class="row-odd"><td><p>hanlder</p></td>
+<td><p>中断发生时优先执行handler,如果此参数为NULL且thread_fn不为空，系统执行默认的handler</p></td>
+</tr>
+<tr class="row-even"><td><p>thread_fn</p></td>
+<td><p>中断线程化的处理程序，如果不为空会创建一个内核线程。handler和thread_fn不能同时为空</p></td>
+</tr>
+<tr class="row-odd"><td><p>irqflags</p></td>
+<td><p>中断标志位</p></td>
+</tr>
+<tr class="row-even"><td><p>devname</p></td>
+<td><p>中断名称</p></td>
+</tr>
+<tr class="row-odd"><td><p>dev_id</p></td>
+<td><p>传递给中断处理程序的参数</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>request_threaded_irq(irq, handler, thread_fn,  irqflags，devname, dev_id)
+|  //对于共享中断，通常通过dev_id来查询寄存器，确定哪个外设产生的中断
+|--if (((irqflags &amp; IRQF_SHARED) &amp;&amp; !dev_id) ||
+|        (!(irqflags &amp; IRQF_SHARED) &amp;&amp; (irqflags &amp; IRQF_COND_SUSPEND)) ||
+|        ((irqflags &amp; IRQF_NO_SUSPEND) &amp;&amp; (irqflags &amp; IRQF_COND_SUSPEND)))
+|      return -EINVAL;
+|--desc = irq_to_desc(irq);
+|  //判断是否设置_IRQ_NOREQUEST标志，它是系统预留的
+|  //_IRQ_PER_CPU_DEVID标志是per cpu中断，需要用request_percpu_irq()函数注册中断
+|--if (!irq_settings_can_request(desc) ||
+|         WARN_ON(irq_settings_is_per_cpu_devid(desc)))
+|      return -EINVAL;
+|  //primary handler和thread_fn不能同时为NULL，primary handler为NULL，
+|  //则采用默认的irq_default_primary_handler
+|--if (!handler)
+|      if (!thread_fn)
+|          return -EINVAL;
+|      handler = irq_default_primary_handler;
+|  //分配并初始化irqaction
+|--action = kzalloc(sizeof(struct irqaction), GFP_KERNEL)
+|  action-&gt;handler = handler;//初始化primary handler
+|  action-&gt;thread_fn = thread_fn;//初始化线程中断处理函数
+|  action-&gt;flags = irqflags;
+|  action-&gt;name = devname;
+|  action-&gt;dev_id = dev_id;
+|  //使能irq chip供电
+|--irq_chip_pm_get(&amp;desc-&gt;irq_data)
+|  //注册irqaction到irq_desc
+|--__setup_irq(irq, desc, action)
+</pre></div>
+</div>
+<p>__setup_irq承担了主要的注册工作</p>
+<ul class="simple">
+<li><p>__setup_irq</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>__setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
+|--new-&gt;irq = irq;
+|  //设置触发类型，它在irq_create_fwspec_mapping创建软硬中断映射时初始化
+|--if (!(new-&gt;flags &amp; IRQF_TRIGGER_MASK))
+|      new-&gt;flags |= irqd_get_trigger_type(&amp;desc-&gt;irq_data);
+|--nested = irq_settings_is_nested_thread(desc);
+|  //如果支持中断嵌套，thread_fn不能为NULL, primary handler为空默认设为irq_nested_primary_handler
+|  if (nested)
+|      new-&gt;handler = irq_nested_primary_handler;
+|  else
+|      //判断是否支持中断线程化,如果支持则强制中断线程化
+|      if (irq_settings_can_thread(desc))
+|          irq_setup_forced_threading(new);
+|  //&gt;&gt;&gt;&gt;&gt;&gt;对没有嵌套的中断线程处理函数创建内核线程
+|--if (new-&gt;thread_fn &amp;&amp; !nested)
+|      setup_irq_thread(new, irq, false);
+|      if (new-&gt;secondary)
+|          setup_irq_thread(new-&gt;secondary, irq, true);
+|  //IRQCHIP_ONESHOT_SAFE表示中断控制器不支持中断嵌套(中断控制器支持ONESHOT)？
+|--if (desc-&gt;irq_data.chip-&gt;flags &amp; IRQCHIP_ONESHOT_SAFE)
+|      new-&gt;flags &amp;= ~IRQF_ONESHOT;
+|  //request irq chip resource
+|--if (!desc-&gt;action)
+|      irq_request_resources(desc);
+|  //&gt;&gt;&gt;&gt;&gt;共享中断的处理
+|  //old非null，表示irq_desc已经注册了中断，代表共享中断
+|--old_ptr = &amp;desc-&gt;action;
+|  old = *old_ptr;
+|  if (old)
+|      //NMI中断不支持共享？
+|      if (desc-&gt;istate &amp; IRQS_NMI)
+|          ret = -EINVAL;
+|          goto out_unlock;
+|      //非共享中断、触发类型不一致、IRQF_ONESHOT标志不一致为不匹配情况
+|      if (!((old-&gt;flags &amp; new-&gt;flags) &amp; IRQF_SHARED) ||
+|                   (oldtype != (new-&gt;flags &amp; IRQF_TRIGGER_MASK)) ||
+|                   ((old-&gt;flags ^ new-&gt;flags) &amp; IRQF_ONESHOT))
+|          goto mismatch;
+|      //old_ptr循环移动指向irq_desc的irqaction链表的最后一个元素的next,thread_mask记录共享中断irqaction
+|      do {
+|          thread_mask |= old-&gt;thread_mask;
+|          old_ptr = &amp;old-&gt;next;
+|          old = *old_ptr;
+|      } while (old);
+|      shared = 1;//表示一个共享中断
+|
+|--if (new-&gt;flags &amp; IRQF_ONESHOT)
+|      new-&gt;thread_mask = 1UL &lt;&lt; ffz(thread_mask);
+|  // primary handler为NULL，又不支持ONESHOT的控制器，对于电平触发的中断会引发中断风暴
+|  else if (new-&gt;handler == irq_default_primary_handler &amp;&amp;
+|       !(desc-&gt;irq_data.chip-&gt;flags &amp; IRQCHIP_ONESHOT_SAFE))
+|      ret = -EINVAL;
+|      goto out_unlock;
+|  //&gt;&gt;&gt;&gt;&gt;&gt;非共享中断的处理
+|--if (!shared)
+|      init_waitqueue_head(&amp;desc-&gt;wait_for_threads);
+|      __irq_set_trigger(desc,new-&gt;flags &amp; IRQF_TRIGGER_MASK);
+|      irq_activate(desc);
+|      清/设desc-&gt;istate标志，清/设&amp;desc-&gt;irq_data标志
+|      if (irq_settings_can_autoenable(desc))
+|          irq_startup(desc, IRQ_RESEND, IRQ_START_COND);
+|  //将新的irqaction连入irq_desc的irqaction链表
+|--*old_ptr = new;
+|  //Check whether we disabled the irq via the spurious handler
+|  //before. Reenable it and give it another chance.？
+|--if (shared &amp;&amp; (desc-&gt;istate &amp; IRQS_SPURIOUS_DISABLED))
+|      desc-&gt;istate &amp;= ~IRQS_SPURIOUS_DISABLED;
+|      __enable_irq(desc);
+|--irq_setup_timings(desc, new);
+|--if (new-&gt;thread)
+|      wake_up_process(new-&gt;thread);
+|--if (new-&gt;secondary)
+|      wake_up_process(new-&gt;secondary-&gt;thread);
+|--register_irq_proc(irq, desc);
+|--register_handler_proc(irq, new);
+</pre></div>
+</div>
+<p>__setup_irq会处理共享中断和非共享中断，最终会将irqaction链入irq_desc的irqaction链表完成注册。对于中断线程化会创建线程并会将其加入就绪队列。</p>
+<ol class="arabic simple">
+<li><p>irq_setup_forced_threading：如果没有设置_IRQ_NOTHREAD标志，则说明可以被中断线程化，则irq_setup_forced_threading执行强制中断线程化，它通过new-&gt;thread_fn = new-&gt;handler 将主中断处理函数赋值给中断线程函数，后面会通过setup_irq_thread来创建线程专门执行主处理函数，实现了中断处理的线程化</p></li>
+<li><p>setup_irq_thread：会通过kthread_create创建内核线程，调度策略SCHED_FIFO，优先级50，对于中断线程化的情况，则主处理函数线程会”irq/中断号-中断名”为线程名，原有的线程处理函数线程会以”irq/中断号-s-中断名”; 对于非中断线程化的情况，则只会为线程处理函数线程创建名为”irq/中断号-中断名”的线程。同时会设置中断亲和标志IRQTF_AFFINITY？</p></li>
+<li><p>对于共享中断的处理：如果irq_desc上已经有irq_action，而本次又要链接新的irq_action，则说明为一个共享中断，共享中断需要检查不匹配的情况，在最后会将old_ptr循环移动指向irq_desc的irqaction链表的最后一个元素的next，old指向*old_ptr，同时thread_mask每个bit代表一个irqaction,记录了所有的共享中断，当desc-&gt;thread_active等于0，才能算中断处理完成。</p></li>
+<li><p>new-&gt;handler == irq_default_primary_handler &amp;&amp; !(desc-&gt;irq_data.chip-&gt;flags &amp; IRQCHIP_ONESHOT_SAFE))：primary handler为irq_default_primary_handler ，说明请求时为NULL，有一种情况，如msi中断，中断控制器本身支持ONESHOT，则会设置IRQCHIP_ONESHOT_SAFE，没有设置IRQCHIP_ONESHOT_SAFE，说明中断控制器不支持ONESHOT，但是对于电平触发的中断，如果不设置primary handler，控制器又不支持ONESHOT，就会引发中断风暴，因此此情况下一定要设置primary handler</p></li>
+<li><p>非共享中断的处理：初始化desc-&gt;wait_for_threads等待队列？设置触发类型？清/设desc-&gt;istate标志，清/设&amp;desc-&gt;irq_data标志</p></li>
+<li><p>*old_ptr = new：将新的irqaction连入irq_desc的irqaction链表</p></li>
+<li><p>wake_up_process：唤醒中断线程</p></li>
+</ol>
+</section>
+<section id="id2">
+<h2><span class="section-number">4.4.6.2. </span>中断处理<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<section id="gic-handle-irq">
+<h3><span class="section-number">4.4.6.2.1. </span>gic_handle_irq<a class="headerlink" href="#gic-handle-irq" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;drivers/irqchip/irq-gic.c&gt;
+static void __exception_irq_entry gic_handle_irq(struct pt_regs *regs)
+|--struct gic_chip_data *gic = &amp;gic_data[0];
+|--void __iomem *cpu_base = gic_data_cpu_base(gic);
+|--do {
+       //读取GIC的GICC_IAR寄存器，读取行为本身是对中断的ack
+       irqstat = readl_relaxed(cpu_base + GIC_CPU_INTACK);
+       //获取发生中断的硬中断号
+       irqnr = irqstat &amp; GICC_IAR_INT_ID_MASK;
+       if (unlikely(irqnr &gt;= 1020))
+           break;
+       //写入GICC_EOIR寄存器，通知CPU interface中断处理完成
+       if (static_branch_likely(&amp;supports_deactivate_key))
+           writel_relaxed(irqstat, cpu_base + GIC_CPU_EOI);
+       isb();
+       //对SGI私有中断的处理
+       if (irqnr &lt;= 15)
+           smp_rmb();
+           this_cpu_write(sgi_intid, irqstat);
+       handle_domain_irq(gic-&gt;domain, irqnr, regs);
+   } while (1);
+</pre></div>
+</div>
+<p>generic_handle_irq在__gic_init_bases函数中被设置为默认的中断处理函数，在前面的文章中已经解释过了</p>
+<ol class="arabic simple">
+<li><p>读GIC的GICC_IAR寄存器，读取行为本身是对中断的ack，会让中断从pending状态进入到active状态</p></li>
+<li><p>写入GICC_EOIR寄存器，通知CPU interface中断处理完成，让中断从active状态进入到inactive状态</p></li>
+<li><p>handle_domain_irq: 对于gic中断控制器会执行gic_of_init初始化，它会创建并注册irq_domain.第一个参数gic-&gt;domain就是gic初始化时创建的，它代表了中断控制器。。irqnr为硬中断号，通过硬
+中断号可以知道软中断号，然后以软中断号为索引可以获取到irq_desc，进一步获取到irq_data并获取到irqaction进行处理</p></li>
+</ol>
+</section>
+<section id="handle-domain-irq">
+<h3><span class="section-number">4.4.6.2.2. </span>handle_domain_irq<a class="headerlink" href="#handle-domain-irq" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">handle_domain_irq</span><span class="p">(</span><span class="n">struct</span> <span class="n">irq_domain</span> <span class="o">*</span><span class="n">domain</span><span class="p">,</span><span class="n">unsigned</span> <span class="nb">int</span> <span class="n">hwirq</span><span class="p">,</span> <span class="n">struct</span> <span class="n">pt_regs</span> <span class="o">*</span><span class="n">regs</span><span class="p">)</span>
+<span class="o">|--</span><span class="n">__handle_domain_irq</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">hwirq</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="n">regs</span><span class="p">);</span>
+       <span class="o">|--</span><span class="n">unsigned</span> <span class="nb">int</span> <span class="n">irq</span> <span class="o">=</span> <span class="n">hwirq</span><span class="p">;</span>
+       <span class="o">|--</span><span class="n">irq_enter</span><span class="p">();</span>
+       <span class="o">|</span>  <span class="o">//</span><span class="n">以硬中断号为索引软中断号返回给irq</span>
+       <span class="o">|--</span><span class="n">irq</span> <span class="o">=</span> <span class="n">irq_find_mapping</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">hwirq</span><span class="p">);</span>
+       <span class="o">|--</span><span class="n">generic_handle_irq</span><span class="p">(</span><span class="n">irq</span><span class="p">);</span>
+       <span class="o">|--</span><span class="n">irq_exit</span><span class="p">();</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>irq_enter: 显式的告诉linux内核现在进入中断上下文，主要通过增加preempt.count的HARDIRQ域计数值来实现</p></li>
+<li><p>irq_find_mapping: 以硬中断号为索引找到软中断号,这里irq_domain会维护软硬件中断号的映射关系</p></li>
+<li><p>generic_handle_irq: 为通用中断处理的主函数</p></li>
+<li><p>irq_exit：irq_enter对应，退出中断上下文</p></li>
+</ol>
+</section>
+<section id="generic-handle-irq">
+<h3><span class="section-number">4.4.6.2.3. </span>generic_handle_irq<a class="headerlink" href="#generic-handle-irq" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>int generic_handle_irq(unsigned int irq)
+|--struct irq_desc *desc = irq_to_desc(irq);
+|--generic_handle_irq_desc(desc);
+|--desc-&gt;handle_irq(desc)
+       |--handle_fasteoi_irq（desc）
+              |--handle_irq_event(desc);
+                     |--__handle_irq_event_percpu(desc, &amp;flags);
+                            |--for_each_action_of_desc(desc, action)
+                                   |  //标记中断被强制线程化
+                                   |--if (irq_settings_can_thread(desc) &amp;&amp;
+                                   |           !(action-&gt;flags &amp; (IRQF_NO_THREAD | IRQF_PERCPU | IRQF_ONESHOT)))
+                                   |       lockdep_hardirq_threaded();
+                                   |--res = action-&gt;handler(irq, action-&gt;dev_id);
+                                   |--switch (res)
+                                      //primary handler处理完毕，需要唤醒中断线程
+                                      case IRQ_WAKE_THREAD:
+                                          __irq_wake_thread(desc, action);
+                                      //无中断线程
+                                      case IRQ_HANDLED:
+                                          *flags |= action-&gt;flags;
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>handle_arch_irq可以理解为中断从底层处理进入顶层处理的入口，而desc-&gt;handle_irq为中断的回调。最终会调用action-&gt;handler，此处为驱动程序中注册的中断处理函数</p></li>
+<li><p>action-&gt;handler函数如果返回的是IRQ_WAKE_THREAD则唤醒中断线程执行，中断线程在注册中断时创建，如果返回IRQ_HANDLED则表示没有中断线程</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>request_threaded_irq会将参数hanlder传递给action-&gt;handler，如果此函数为空，将采用默认的irq_default_primary_hanlder。</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="irq_soft_hard.html" class="btn btn-neutral float-left" title="4.4.5. 创建软硬中断号映射" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="irq_soft.html" class="btn btn-neutral float-right" title="4.4.7. 软中断" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

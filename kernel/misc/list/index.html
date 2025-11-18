@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.11.1. linux 通用双向循环链表 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.11.2. kernel queue note" href="../queue/index.html" />
+    <link rel="prev" title="3.11. linux内核杂项" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../process/index.html">3.3. 进程管理与调度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.11. linux内核杂项</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3.11.1. linux 通用双向循环链表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../queue/index.html">3.11.2. kernel queue note</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.11. </span>linux内核杂项</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.11.1. </span>linux 通用双向循环链表</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/misc/list/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linux">
+<h1><span class="section-number">3.11.1. </span>linux 通用双向循环链表<a class="headerlink" href="#linux" title="此标题的永久链接"></a></h1>
+<p>在linux内核中，有一种通用的的双向循环链表，构成了各种队列的基础。链表的结构定义和相关函数均在 <code class="docutils literal notranslate"><span class="pre">include/linux/list.h</span></code> 中。</p>
+<p>include/linux/types.h 中对 <code class="docutils literal notranslate"><span class="pre">list_head</span></code> 做出了定义</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">list_head</span> <span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="nb">next</span><span class="p">,</span> <span class="o">*</span><span class="n">prev</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>这是链表的元素结构，因为时循环链表，表头和表中节点都是同样的结构。有prev和next两个指针，分别指向前一节点和后一节点。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define LIST_HEAD_INIT(name)    {&amp;(name), &amp;(name)}</span>
+
+<span class="c1">#define LIST_HEAD(name) \</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="n">name</span> <span class="o">=</span> <span class="n">LIST_HEAD_INIT</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">INIT_LIST_HEAD</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="nb">list</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nb">list</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="nb">list</span><span class="p">;</span>
+    <span class="nb">list</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="nb">list</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>初始化时，链表头的prev和next都是指向自身的。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">__list_add</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">new</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">prev</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="nb">next</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">new</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="nb">next</span><span class="p">;</span>
+    <span class="nb">next</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">new</span><span class="p">;</span>
+    <span class="n">prev</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">new</span><span class="p">;</span>
+    <span class="n">new</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">list_add</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">new</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">__list_add</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">head</span><span class="p">,</span> <span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">list_add_tail</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">new</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">__list_add</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">head</span><span class="o">-</span><span class="n">prev</span><span class="p">,</span> <span class="n">head</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>双向循环链表的实现，很少有例外的情况，基本都可以用公共的方式来处理。</p>
+<p>链表API实现时大致都是分为两层：一层是外部的,如 <code class="docutils literal notranslate"><span class="pre">list_add</span></code> <code class="docutils literal notranslate"><span class="pre">list_add_tail</span></code> ,用来消除一些例外情况，调用内部实现；
+一层是内部的，函数名前会加双下划线，如 <code class="docutils literal notranslate"><span class="pre">__list_add</span></code> ,往往都是几个操作公共的部分，或者排除例外后的实现。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">__list_del</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">prev</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="nb">next</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">prev</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="nb">next</span><span class="p">;</span>
+    <span class="nb">next</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">list_del</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">__list_del</span><span class="p">(</span><span class="n">head</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">,</span> <span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">list_del_init</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">entry</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">__list_del</span><span class="p">(</span><span class="n">entry</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">,</span> <span class="n">entry</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">);</span>
+    <span class="n">LIST_INIT_HEAD</span><span class="p">(</span><span class="n">entry</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>list_del是将链表中的节点删除，list_del_init则是将链表中的节点删除后再次把节点指针初始化。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">list_replace</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">old</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">new</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">new</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">old</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="n">new</span><span class="o">-&gt;</span><span class="nb">next</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">new</span><span class="p">;</span>
+    <span class="n">new</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">old</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">;</span>
+    <span class="n">new</span><span class="o">-&gt;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">new</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">list_replace_init</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">old</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">new</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">list_replace</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">);</span>
+    <span class="n">INIT_LIST_HEAD</span><span class="p">(</span><span class="n">old</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>list_replace 将链表中的一个节点old，替换为另一个节点new。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">list_move</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="nb">list</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">__list_del</span><span class="p">(</span><span class="nb">list</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">,</span> <span class="nb">list</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">);</span>
+    <span class="n">list_add</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">head</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">list_move_tail</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="nb">list</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">__list_del</span><span class="p">(</span><span class="nb">list</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">,</span> <span class="nb">list</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">);</span>
+   <span class="n">list_add_tail</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">head</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>list_move 的作用是将list节点从原链表中删除，并加入新的链表head中。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="nb">int</span> <span class="n">list_is_last</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="nb">list</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">list</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">==</span> <span class="n">head</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>list_is_last 判断list是否处于head链表的尾部。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="nb">int</span> <span class="n">list_empty</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">rerurn</span> <span class="p">(</span><span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">==</span> <span class="n">head</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">static</span> <span class="n">inline</span> <span class="nb">int</span> <span class="n">list_empty_careful</span><span class="p">(</span><span class="n">const</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">head</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="nb">next</span> <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">next</span> <span class="o">==</span> <span class="n">head</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nb">next</span> <span class="o">==</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>list_empty 判断head链表是否为空</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static inline int list_is_singular(const list_head *head)
+{
+    return !list_empty(head) &amp;&amp; (head-&gt;next == head-&gt;prev);
+}
+</pre></div>
+</div>
+<p>list_is_singular 判断head是否只有一个节点，即除链表头head外是否只有一个节点。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span> <span class="n">__list_cut_position</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="nb">list</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">entry</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">entry</span><span class="o">-&gt;</span><span class="nb">next</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">;</span>
+    <span class="n">head</span><span class="o">-&gt;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">entry</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span>
+    <span class="nb">list</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+    <span class="n">head</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="nb">list</span><span class="p">;</span>
+    <span class="n">entry</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">=</span> <span class="nb">list</span><span class="p">;</span>
+    <span class="nb">list</span><span class="o">-&gt;</span><span class="n">prev</span> <span class="o">=</span> <span class="n">entry</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">static</span> <span class="n">line</span> <span class="n">void</span> <span class="n">lis_cut_position</span><span class="p">(</span><span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="nb">list</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span> <span class="n">struct</span> <span class="n">list_head</span> <span class="n">entry</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">list_entry</span><span class="p">(</span><span class="n">head</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">list_is_singular</span><span class="p">(</span><span class="n">head</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nb">list</span><span class="o">-&gt;</span><span class="nb">next</span> <span class="o">!=</span> <span class="n">entry</span> <span class="o">&amp;&amp;</span> <span class="n">head</span> <span class="o">!=</span> <span class="n">entry</span><span class="p">))</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">entry</span> <span class="o">==</span> <span class="n">head</span><span class="p">)</span>
+        <span class="n">INIT_LIST_HEAD</span><span class="p">(</span><span class="nb">list</span><span class="p">);</span>
+    <span class="k">else</span>
+        <span class="n">__list_cut_position</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">head</span><span class="p">,</span> <span class="n">entry</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>list_cut_position 用于把head链表分为两部分，从head-&gt;next 一直到entry被从head链表中删除，加入新的链表list。
+新的链表应该是空的，或者原来的节点可以被忽略掉。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>static inline void __list_splice(struct list_head *list, struct list_head *prev, struct list_head *next)
+{
+    struct list_head *first = list-&gt;next;
+    struct list_head *last = list-&gt;prev;
+
+    prev-&gt;next = first;
+    first-&gt;prev = prev;
+
+    last-&gt;next = next;
+    next-&gt;prev = last;
+}
+
+static inline void list_splice(struct list_head *list, struct list_head *head)
+{
+    if(!list_empty(list))
+        __list_splice(list, head, head-&gt;next);
+}
+
+static inline void list_splice_tail(struct list_head *list, struct list_head *head)
+{
+    if(!list_emptu=y(list))
+        __list_splice(list, head-&gt;prev, head)；
+}
+</pre></div>
+</div>
+<p>list_splict 的功能和list_cut_posiotion相反，它合并两个链表。list_splice把list链表中的节点加入到head链表中。</p>
+<p>list_splict是把原来list链表中的节点全部插入到head链表的头部，list_splice_tail则是把原来list链表中的节点全部加到head链表的尾部。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define list_entry(ptr, type, member) \</span>
+    <span class="n">container_of</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">member</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>list_entry 主要用于从list节点查找其内嵌在的结构。比如定义了一个结构struct A{struct list_head list;},如果知道结构中链表的地址ptrlist，
+就可以从ptrlist进而获取整个结构的指针，struct A *Ptr = list_entry(ptrlist, struct A, list);</p>
+<p>这种地址翻译的技巧是linux的拿手好戏，container_of随处可见，只是链表节点多被封装在更复杂的结构中，使用专门的list_entry定义也是对了使用方便</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define __list_for_each(pos,head) \</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">head</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span> <span class="n">pos</span> <span class="o">!=</span> <span class="n">head</span><span class="p">;</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>list_for_each 遍历链表中的每一个节点。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define list_for_each_prev(pos,head) \</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">head</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">;</span> <span class="n">pos</span> <span class="o">!=</span> <span class="n">head</span><span class="p">;</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span><span class="o">-&gt;</span><span class="n">prev</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>list_for_each_prev 遍历链表中的每一个节点，不同的是它是逆序的.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define list_for_each_safe(pos, n, head) \</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">head</span><span class="p">)</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">pos</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">;</span><span class="n">pos</span> <span class="o">!=</span> <span class="n">head</span><span class="p">;</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">n</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">pos</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>list_for_each_safe 也是链表顺序遍历，只是它更加安全，即使在遍历过程中喔咕，当前节点从链表中删除，也不会影响链表的遍历。参数中需要加一个暂存的链表节点指针n</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define list_for_each_entry(pos, head, member) \</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">pos</span> <span class="o">=</span> <span class="n">list_entry</span><span class="p">(</span><span class="n">head</span><span class="o">-&gt;</span><span class="nb">next</span><span class="p">,</span> <span class="n">typeof</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">),</span> <span class="n">member</span><span class="p">);</span>
+        <span class="o">&amp;</span><span class="n">pos</span><span class="o">-&gt;</span><span class="n">member</span> <span class="o">!=</span> <span class="n">head</span><span class="p">;</span> \
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">list_entry</span><span class="p">(</span><span class="n">pos</span><span class="o">-&gt;</span><span class="n">memer</span><span class="o">.</span><span class="n">prev</span><span class="p">,</span> <span class="n">typeof</span><span class="p">(</span><span class="o">*</span><span class="n">pos</span><span class="p">),</span> <span class="n">member</span><span class="p">)</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>list_for_each_entry 不是遍历链表节点，而是遍历链表节点所嵌套进的结list_for_each_entry 不是遍历链表节点，而是遍历链表节点所嵌套进的结构.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../index.html" class="btn btn-neutral float-left" title="3.11. linux内核杂项" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../queue/index.html" class="btn btn-neutral float-right" title="3.11.2. kernel queue note" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

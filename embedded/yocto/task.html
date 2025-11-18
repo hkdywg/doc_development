@@ -1,0 +1,511 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8.7.4. 常见任务 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="8.7.5. recipet语法" href="recipet.html" />
+    <link rel="prev" title="8.7.3. 任务以及变量汇总" href="task_variable.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kernel/index.html">3. kernel note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">8. embeded</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../fs/index.html">8.1. 嵌入式文件系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debug/index.html">8.2. 嵌入式linux 调试总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gpt/index.html">8.3. gpt分区表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../systemd/index.html">8.4. systemd 笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ota/index.html">8.5. ota</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../safeboot/index.html">8.6. 安全启动与加密</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">8.7. Yocto使用总结</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview_concepts.html">8.7.1. yocto project concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source_struct.html">8.7.2. yocto源目录结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="task_variable.html">8.7.3. 任务以及变量汇总</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">8.7.4. 常见任务</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#layer">8.7.4.1. 创建layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#image">8.7.4.2. 自定义image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recipes">8.7.4.3. 编写新的recipes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">8.7.4.4. 示例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="recipet.html">8.7.5. recipet语法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="task_continue.html">8.7.6. 常见任务 二</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bitbake.html">8.7.7. bitbake 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../video/index.html">8.8. 视频相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bus/index.html">8.9. 嵌入式系统常见总线</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hotplug/index.html">8.10. linux 热插拔之udev和mdev</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardware/index.html">8.11. 硬件相关知识点总结</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buildroot/index.html">8.12. Buildroot笔记</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../udev/index.html">8.13. udev</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">8. </span>embeded</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">8.7. </span>Yocto使用总结</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">8.7.4. </span>常见任务</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/embedded/yocto/task.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">8.7.4. </span>常见任务<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="layer">
+<h2><span class="section-number">8.7.4.1. </span>创建layer<a class="headerlink" href="#layer" title="此标题的永久链接"></a></h2>
+<section id="id2">
+<h3><span class="section-number">8.7.4.1.1. </span>创建layer<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>可以使用以下命令来创建layer</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span><span class="o">-</span><span class="n">layers</span> <span class="n">create</span><span class="o">-</span><span class="n">layer</span> <span class="n">your_layer_name</span>
+<span class="n">bitbake</span><span class="o">-</span><span class="n">layers</span> <span class="n">create</span><span class="o">-</span><span class="n">layer</span> <span class="o">--</span><span class="n">help</span> <span class="c1">#获取命令的更详细用法</span>
+</pre></div>
+</div>
+<p>创建layer后，对应的目录中会存在conf/layer.conf文件</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># We have a conf and classes directory, add to BBPATH</span>
+<span class="n">BBPATH</span> <span class="o">.=</span> <span class="s2">&quot;:$</span><span class="si">{LAYERDIR}</span><span class="s2">&quot;</span>
+
+<span class="c1"># We have recipes-* directories, add to BBFILES</span>
+<span class="n">BBFILES</span> <span class="o">+=</span> <span class="s2">&quot;$</span><span class="si">{LAYERDIR}</span><span class="s2">/recipes-*/*/*.bb </span><span class="se">\</span>
+<span class="s2">            $</span><span class="si">{LAYERDIR}</span><span class="s2">/recipes-*/*/*.bbappend&quot;</span>
+
+<span class="n">BBFILE_COLLECTIONS</span> <span class="o">+=</span> <span class="s2">&quot;meta-vir&quot;</span>
+<span class="n">BBFILE_PATTERN_meta</span><span class="o">-</span><span class="n">vir</span> <span class="o">=</span> <span class="s2">&quot;^$</span><span class="si">{LAYERDIR}</span><span class="s2">/&quot;</span>
+<span class="n">BBFILE_PRIORITY_meta</span><span class="o">-</span><span class="n">vir</span> <span class="o">=</span> <span class="s2">&quot;6&quot;</span>
+
+<span class="n">LAYERDEPENDS_meta</span><span class="o">-</span><span class="n">vir</span> <span class="o">=</span> <span class="s2">&quot;core&quot;</span>
+<span class="n">LAYERSERIES_COMPAT_meta</span><span class="o">-</span><span class="n">vir</span> <span class="o">=</span> <span class="s2">&quot;honister&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>BBPATH: 将层的根目录添加到bitbake的搜索路径，bitbake可以定位class文件(.bbclass)、配置文件以及包含在include和require语句中的文件</p></li>
+<li><p>BBFILES: 定义layer中所有recipes的位置</p></li>
+<li><p>BBFILE_COLLECTIONS: 通过在整个openembedded构建系统中用于引用层的唯一标识来建立当前层</p></li>
+<li><p>BBFILE_PRIORITY: 当openembedded构建在不同layer中找到同名的recipes时，为layer中的recipes建立优先级</p></li>
+<li><p>LAYERDEPENDS: 列出该layer所依赖的layer</p></li>
+<li><p>LAYERSRIES_COMPAT: 列出当前版本兼容的yocto项目版本</p></li>
+</ol>
+</section>
+<section id="id3">
+<h3><span class="section-number">8.7.4.1.2. </span>启用layer<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h3>
+<p>要启动layer只需要将layer的路径添加到conf/bblayers.conf中的BBLAYERS变量中</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/bblayers.conf
+# changes incompatibly
+POKY_BBLAYERS_CONF_VERSION = &quot;2&quot;
+
+BBPATH = &quot;${TOPDIR}&quot;
+BBFILES ?= &quot;&quot;
+
+BBLAYERS ?= &quot; \
+/home/yinwg/ywg_workspace/yocto/yocto/meta \
+/home/yinwg/ywg_workspace/yocto/yocto/meta-poky \
+/home/yinwg/ywg_workspace/yocto/yocto/meta-yocto-bsp \
+/home/yinwg/ywg_workspace/yocto/yocto/meta-vir \
+&quot;
+</pre></div>
+</div>
+<p><strong>在新建的layer中附加其他layer的元数据</strong></p>
+<p>将元数据附加到另一个recipes称为bitbake附加文件，bitbake附加文件使用.bbappend后缀。可以使用.bbappend对其他layer中的的recipes内容进行增加或者修改，而无需将所有
+内容复制到本layer中. 但必须使用相同的根名称</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">8.7.4.1.3. </span>管理layer<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span><span class="o">-</span><span class="n">layers</span> <span class="o">--</span><span class="n">help</span>
+<span class="n">NOTE</span><span class="p">:</span> <span class="n">Starting</span> <span class="n">bitbake</span> <span class="n">server</span><span class="o">...</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">bitbake</span><span class="o">-</span><span class="n">layers</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">q</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">F</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">color</span> <span class="n">COLOR</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="o">&lt;</span><span class="n">subcommand</span><span class="o">&gt;</span> <span class="o">...</span>
+
+<span class="n">BitBake</span> <span class="n">layers</span> <span class="n">utility</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">d</span><span class="p">,</span> <span class="o">--</span><span class="n">debug</span>           <span class="n">Enable</span> <span class="n">debug</span> <span class="n">output</span>
+  <span class="o">-</span><span class="n">q</span><span class="p">,</span> <span class="o">--</span><span class="n">quiet</span>           <span class="n">Print</span> <span class="n">only</span> <span class="n">errors</span>
+  <span class="o">-</span><span class="n">F</span><span class="p">,</span> <span class="o">--</span><span class="n">force</span>           <span class="n">Force</span> <span class="n">add</span> <span class="n">without</span> <span class="n">recipe</span> <span class="n">parse</span> <span class="n">verification</span>
+  <span class="o">--</span><span class="n">color</span> <span class="n">COLOR</span>         <span class="n">Colorize</span> <span class="n">output</span> <span class="p">(</span><span class="n">where</span> <span class="n">COLOR</span> <span class="ow">is</span> <span class="n">auto</span><span class="p">,</span> <span class="n">always</span><span class="p">,</span> <span class="n">never</span><span class="p">)</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+
+<span class="n">subcommands</span><span class="p">:</span>
+  <span class="o">&lt;</span><span class="n">subcommand</span><span class="o">&gt;</span>
+        <span class="n">add</span><span class="o">-</span><span class="n">layer</span>           <span class="n">Add</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">layers</span> <span class="n">to</span> <span class="n">bblayers</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span>
+        <span class="n">remove</span><span class="o">-</span><span class="n">layer</span>        <span class="n">Remove</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">more</span> <span class="n">layers</span> <span class="kn">from</span> <span class="nn">bblayers.conf.</span>
+        <span class="n">flatten</span>             <span class="n">flatten</span> <span class="n">layer</span> <span class="n">configuration</span> <span class="n">into</span> <span class="n">a</span> <span class="n">separate</span> <span class="n">output</span>
+                                                <span class="n">directory</span><span class="o">.</span>
+        <span class="n">layerindex</span><span class="o">-</span><span class="n">fetch</span>    <span class="n">Fetches</span> <span class="n">a</span> <span class="n">layer</span> <span class="kn">from</span> <span class="nn">a</span> <span class="n">layer</span> <span class="n">index</span> <span class="n">along</span> <span class="k">with</span> <span class="n">its</span>
+                                                <span class="n">dependent</span> <span class="n">layers</span><span class="p">,</span> <span class="ow">and</span> <span class="n">adds</span> <span class="n">them</span> <span class="n">to</span> <span class="n">conf</span><span class="o">/</span><span class="n">bblayers</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span>
+        <span class="n">layerindex</span><span class="o">-</span><span class="n">show</span><span class="o">-</span><span class="n">depends</span>
+                                                <span class="n">Find</span> <span class="n">layer</span> <span class="n">dependencies</span> <span class="kn">from</span> <span class="nn">layer</span> <span class="n">index</span><span class="o">.</span>
+        <span class="n">show</span><span class="o">-</span><span class="n">layers</span>         <span class="n">show</span> <span class="n">current</span> <span class="n">configured</span> <span class="n">layers</span><span class="o">.</span>
+        <span class="n">show</span><span class="o">-</span><span class="n">overlayed</span>      <span class="nb">list</span> <span class="n">overlayed</span> <span class="n">recipes</span> <span class="p">(</span><span class="n">where</span> <span class="n">the</span> <span class="n">same</span> <span class="n">recipe</span> <span class="n">exists</span>
+                                                <span class="ow">in</span> <span class="n">another</span> <span class="n">layer</span><span class="p">)</span>
+        <span class="n">show</span><span class="o">-</span><span class="n">recipes</span>        <span class="nb">list</span> <span class="n">available</span> <span class="n">recipes</span><span class="p">,</span> <span class="n">showing</span> <span class="n">the</span> <span class="n">layer</span> <span class="n">they</span> <span class="n">are</span>
+                                                <span class="n">provided</span> <span class="n">by</span>
+        <span class="n">show</span><span class="o">-</span><span class="n">appends</span>        <span class="nb">list</span> <span class="n">bbappend</span> <span class="n">files</span> <span class="ow">and</span> <span class="n">recipe</span> <span class="n">files</span> <span class="n">they</span> <span class="n">apply</span> <span class="n">to</span>
+        <span class="n">show</span><span class="o">-</span><span class="n">cross</span><span class="o">-</span><span class="n">depends</span>  <span class="n">Show</span> <span class="n">dependencies</span> <span class="n">between</span> <span class="n">recipes</span> <span class="n">that</span> <span class="n">cross</span> <span class="n">layer</span>
+                                                <span class="n">boundaries</span><span class="o">.</span>
+        <span class="n">create</span><span class="o">-</span><span class="n">layer</span>        <span class="n">Create</span> <span class="n">a</span> <span class="n">basic</span> <span class="n">layer</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="image">
+<h2><span class="section-number">8.7.4.2. </span>自定义image<a class="headerlink" href="#image" title="此标题的永久链接"></a></h2>
+<section id="image-install">
+<h3><span class="section-number">8.7.4.2.1. </span>IMAGE_INSTALL<a class="headerlink" href="#image-install" title="此标题的永久链接"></a></h3>
+<p>自定义image最简单的方法就是通过local.conf配置文件添加包，但是这种修改对所有的构建都有效，会影响所有的image。使用这种方式的操作如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IMAGE_INSTALL</span><span class="p">:</span><span class="n">append</span> <span class="o">=</span> <span class="s2">&quot; strace&quot;</span>    <span class="c1">#注:需要添加空格</span>
+</pre></div>
+</div>
+<p>IMAGE_INSTALL:append会影响所有image，可以扩展语法，以便变量仅适用于特定的image, 下面是一个例子</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IMAGE_INSTALL</span><span class="p">:</span><span class="n">append</span><span class="p">:</span><span class="n">pn</span><span class="o">-</span><span class="n">core</span><span class="o">-</span><span class="n">image</span><span class="o">-</span><span class="n">minimal</span> <span class="o">=</span> <span class="s2">&quot; strace&quot;</span>   <span class="c1">#添加strace到core-image-minimal中</span>
+</pre></div>
+</div>
+</section>
+<section id="image-feature">
+<h3><span class="section-number">8.7.4.2.2. </span>IMAGE_FEATURE<a class="headerlink" href="#image-feature" title="此标题的永久链接"></a></h3>
+<p>另一种方法是使用IMAGE_FETURES或者EXTRA_IMAGE_FEATURES变量启用或者禁用image高级功能。要了解这些功能的工作原理，最好的参考是meta/classes/image.bbclass</p>
+<p>为了说明如何使用这些变量来修改图像，请考虑一个选择 SSH 服务器的示例。Yocto 项目附带了两个可用于图像的 SSH 服务器：Dropbear 和 OpenSSH。Dropbear 是适用于资源受限环境的最小 SSH 服务器，
+而 OpenSSH 是众所周知的标准 SSH 服务器实现。默认情况下，core-image-sato映像配置为使用 Dropbear。在core-image-full-cmdline和core-image-lsb 图像都包括OpenSSH的。
+该core-image-minimal映像不包含 SSH 服务器。可以通过修改IMAG_FEATURES变量</p>
+</section>
+<section id="bb">
+<h3><span class="section-number">8.7.4.2.3. </span>使用自定义的.bb文件<a class="headerlink" href="#bb" title="此标题的永久链接"></a></h3>
+<p>示例如下</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IMAGE_INSTALL</span> <span class="o">=</span> <span class="s2">&quot;packagegroup-core-x11-base package1 package2&quot;</span>
+<span class="n">inherit</span> <span class="n">core</span><span class="o">-</span><span class="n">image</span>
+</pre></div>
+</div>
+<p>或者可以拷贝一个已经存在的，如复制meta/recipes-sato/images/core-image-sato.bb到一个新的.bb，然后在末尾添加需要增加的内容</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IMAGE_INSTALL</span> <span class="o">+=</span> <span class="s2">&quot;strace&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id5">
+<h3><span class="section-number">8.7.4.2.4. </span>使用自定义包组<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h3>
+<p>对于复杂的自定义image，最佳方法时创建用于构建一个或多个image的自定义包组recipes. 包组recipes一个很好的例子是meta/recipes-core/packagegroups/packagegroup-base.bb</p>
+<p>PACKAGES列出了需要添加的包，RDEPENDS和RRECOMMENDS来提供父任务应包含的包列表</p>
+<p>下面是一个例子</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DESCRIPTION = &quot;My Custom Package Groups&quot;
+
+inherit packagegroup
+
+PACKAGES = &quot;\
+        ${PN}-apps \
+        ${PN}-tools \
+        &quot;
+
+RDEPENDS:${PN}-apps = &quot;\
+        dropbear \
+        portmap \
+        psplash&quot;
+
+RDEPENDS:${PN}-tools = &quot;\
+        oprofile \
+        oprofileui-server \
+        lttng-tools&quot;
+
+RRECOMMENDS:${PN}-tools = &quot;\
+        kernel-module-oprofile&quot;
+</pre></div>
+</div>
+</section>
+</section>
+<section id="recipes">
+<h2><span class="section-number">8.7.4.3. </span>编写新的recipes<a class="headerlink" href="#recipes" title="此标题的永久链接"></a></h2>
+<p>recipes(.bb)是yocto项目中的基本组件，每个软件都需要一个recipes来定义组件</p>
+<p>下面是创建新recipes的基本过程</p>
+<img alt="../../_images/recipe-workflow.png" src="../../_images/recipe-workflow.png" />
+<p>可以通过以下三种方式创建一个新的recipes</p>
+<ol class="arabic simple">
+<li><p>devtool add: 借助devtool命令</p></li>
+<li><p>recipetool create: yocto提供的命令，可根据源文件自动创建基本配方</p></li>
+<li><p>现有recipet: 在功能与需要创建的recipet类似的上修改</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">recipetool</span> <span class="n">create</span> <span class="o">-</span><span class="n">o</span> <span class="n">OUTFILE</span> <span class="n">source</span>  <span class="c1">#基于源生成recipes</span>
+</pre></div>
+</div>
+<p>可以使用以下结构来填充新recipet的基本区域</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">HOMEPAGE</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">LICENSE</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">SECTION</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">DEPENDS</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">LIC_FILES_CHKSUM</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+<span class="n">SRC_URI</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</pre></div>
+</div>
+<p>openembedded构建系统通过layer的conf/layer.conf文件和BBFILES变量来定位recipets. 当命名一个新的recipet时，一般遵循以下方式</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">basename_version</span><span class="o">.</span><span class="n">bb</span>
+</pre></div>
+</div>
+<p>通过以下方式可以编译一个新的recipet</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span> <span class="n">basename</span>
+</pre></div>
+</div>
+<p>在构建过程中openembedded会为每个recipet创建一个临时工作目录，其中保存提取的源文件，日志文件，中间编译和打包文件等。每个recipet临时工作路径取决于
+构建它的上下文，找到此路径的最快方法就是运行以下命令</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitbake</span> <span class="o">-</span><span class="n">e</span> <span class="n">basename</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">^</span><span class="n">WORKDIR</span><span class="o">=</span>
+</pre></div>
+</div>
+<p><strong>do_fetch</strong></p>
+<p>下面是tarball和git源的例子</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#git的方式获取源文件</span>
+<span class="n">SRCREV</span> <span class="o">=</span> <span class="s2">&quot;d6918c8832793b4205ed3bfede78c2f915c23385&quot;</span>
+
+<span class="n">PR</span> <span class="o">=</span> <span class="s2">&quot;r6&quot;</span>
+<span class="n">PV</span> <span class="o">=</span> <span class="s2">&quot;1.0.5+git$</span><span class="si">{SRCPV}</span><span class="s2">&quot;</span>
+
+<span class="n">SRC_URI</span> <span class="o">=</span> <span class="s2">&quot;git://git.kernel.dk/blktrace.git </span><span class="se">\</span>
+<span class="s2">           file://ldflags.patch&quot;</span>
+
+<span class="c1">#tarball的方式获取源文件</span>
+<span class="n">SRC_URI</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{KERNELORG_MIRROR}</span><span class="s2">/software/scm/git/git-$</span><span class="si">{PV}</span><span class="s2">.tar.gz;name=tarball </span><span class="se">\</span>
+<span class="s2">           $</span><span class="si">{KERNELORG_MIRROR}</span><span class="s2">/software/scm/git/git-manpages-$</span><span class="si">{PV}</span><span class="s2">.tar.gz;name=manpages&quot;</span>
+
+<span class="n">SRC_URI</span><span class="p">[</span><span class="n">tarball</span><span class="o">.</span><span class="n">md5sum</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;166bde96adbbc11c8843d4f8f4f9811b&quot;</span>
+<span class="n">SRC_URI</span><span class="p">[</span><span class="n">tarball</span><span class="o">.</span><span class="n">sha256sum</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ad5334956301c86841eb1e5b1bb20884a6bad89a10a6762c958220c7cf64da02&quot;</span>
+<span class="n">SRC_URI</span><span class="p">[</span><span class="n">manpages</span><span class="o">.</span><span class="n">md5sum</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;31c2272a8979022497ba3d4202df145d&quot;</span>
+<span class="n">SRC_URI</span><span class="p">[</span><span class="n">manpages</span><span class="o">.</span><span class="n">sha256sum</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;9a7ae3a093bea39770eb96ca3e5b40bff7af0b9f6123f089d7821d0e5b8e1230&quot;</span>
+</pre></div>
+</div>
+<p>为了确保URL下载的文件没有被篡改，需要使用两个校验和 SRC_URI[md5sum]和SRC_URI[sha256sum]</p>
+<p>当使用file://协议来指定本地文件时，构建系统从本地获取文件，该路径相对于FILESPATH变量并安特定顺序搜索特定目录，${BP}, ${BPN}, 和files</p>
+<p><strong>do_unpack</strong></p>
+<p>构建过程中,do_unpack任务使用${S}指向解包位置来解压源代码。如果源是tarball并且按照${BPN}-${PV}的方式命名，则不需要设置${S}，如果是git方式获取则
+需要设置${S}</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SRC_URI</span> <span class="o">=</span> <span class="s2">&quot;file://init </span><span class="se">\</span>
+<span class="s2">file://rc.local.sample </span><span class="se">\</span>
+<span class="s2">&quot;</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{WORKDIR}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p><strong>LICENSE</strong></p>
+<p>recipet中需要同时包含LICENSE和LIC_FILES_CHKSUM变量</p>
+<ol class="arabic simple">
+<li><p>LICENSE: 此变量指向软件的许可证</p></li>
+<li><p>LIC_FILES_CHKSUM: 为软件指定使用的许可文件</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LICENSE</span> <span class="o">=</span> <span class="s2">&quot;GPLv2&quot;</span>
+<span class="n">LIC_FILES_CHKSUM</span> <span class="o">=</span> <span class="s2">&quot;file://COPYING:md5=25cf44512b7bc8966a48b6b1a9b7605f&quot;</span>
+</pre></div>
+</div>
+<p><strong>依赖</strong></p>
+<p>大多数的软件包都会依赖其他的软件包，这种依赖一般分为两类，第一类是构建时依赖，另一类是运行时依赖. 构建时依赖可以通过DEPENDS变量来定义，
+而运行时依赖则在打包时自动设置</p>
+<p><strong>do_configure</strong></p>
+<ol class="arabic simple">
+<li><p>Autotools: 如果源文件包含configure.ac文件，那么软件就是使用Autotool构建的，这种方式下，recipet需要继承autotools类，且recipet中不需要包含do_configure任务。如果需要调整，则可以设置EXTRA_OECONF或PACKAGECONFIG_CONFARGS以传递配置选项</p></li>
+<li><p>CMake: 如果源文件包含CMakeList.txt文件，那么软件就是使用CMake构建的，recipet需要继承cmake类，且不需要包含do_configure任务，如果需要调整则设置EXTRA_OECMAKE来传递参数</p></li>
+<li><p>其他: 不是以上两种方式，则需要在recipet中提供一个do_configure任务，如果没有任何配置也可以不提供</p></li>
+</ol>
+<p><strong>do_install</strong></p>
+<p>do_install期间，安装过程将文件从${S}、${B}和${WORKDIR}目录复制到${D}目录</p>
+<p><strong>开启系统服务</strong></p>
+<p>如果recipet中存在do_install函数，则在函数结束位置添加对应的操作，如果不存在则可以使用do_install:append在recipet中完成这项操作</p>
+<p>openembedded支持以下两种方式启动服务</p>
+<ol class="arabic simple">
+<li><p>SysVinit: SysVinit 是一个系统和服务管理器，用于管理用于控制系统最基本功能的 init 系统。init 程序是 Linux 内核在系统启动时启动的第一个程序。Init 然后控制所有其他程序的启动、运行和关闭。要使用
+SysVinit启用服务，recipet中需要继承update-rc.d类，需要在recipet中设置INITSCRIPT_PACKGES、INITSCRIPT_NAME和INITSCRIPT_PARAMS变量</p></li>
+<li><p>systemd: 系统管理守护进程 (systemd) 旨在取代 SysVinit 并提供增强的服务管理。启用systemd需要recipet继承systemd类</p></li>
+</ol>
+</section>
+<section id="id6">
+<h2><span class="section-number">8.7.4.4. </span>示例<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p><strong>本地c文件包</strong></p>
+<p>从本地存储的文件构建应用程序，需要手动编写do_compile和do_install任务</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>SUMMARY = &quot;Simple helloworld application&quot;
+SECTION = &quot;examples&quot;
+LICENSE = &quot;MIT&quot;
+LIC_FILES_CHKSUM = &quot;file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302&quot;
+
+SRC_URI = &quot;file://helloworld.c&quot;
+
+S = &quot;${WORKDIR}&quot;
+
+do_compile() {
+    ${CC} ${LDFLAGS} helloworld.c -o helloworld
+
+}
+
+do_install() {
+    install -d ${D}${bindir}
+    install -m 0755 helloworld ${D}${bindir}
+}
+</pre></div>
+</div>
+<p><strong>autotools</strong></p>
+<p>使用autotools的应用程序，其recipet中需要继承autotools类，该类包含构建基于autotool的应用程序所需的所有步骤定义,构建结果会自动打包</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SUMMARY</span> <span class="o">=</span> <span class="s2">&quot;GNU Helloworld application&quot;</span>
+<span class="n">SECTION</span> <span class="o">=</span> <span class="s2">&quot;examples&quot;</span>
+<span class="n">LICENSE</span> <span class="o">=</span> <span class="s2">&quot;GPLv2+&quot;</span>
+<span class="n">LIC_FILES_CHKSUM</span> <span class="o">=</span> <span class="s2">&quot;file://COPYING;md5=751419260aa954499f7abaabaa882bbe&quot;</span>
+
+<span class="n">SRC_URI</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{GNU_MIRROR}</span><span class="s2">/hello/hello-$</span><span class="si">{PV}</span><span class="s2">.tar.gz&quot;</span>
+
+<span class="n">inherit</span> <span class="n">autotools</span> <span class="n">gettext</span>
+</pre></div>
+</div>
+<p><strong>Makefile</strong></p>
+<p>基于Makefile的应用程序，recipet中不需要自己添加do_compile步骤，默认情况下bitbake会启动make编译应用。如果需要其他make选项，则应该设置EXTRA_OEMAKE或PACKAGECONFIG_CONFARGS变量. 但
+do_install仍然需要一个任务。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>SUMMARY = &quot;Tools for managing memory technology devices&quot;
+SECTION = &quot;base&quot;
+DEPENDS = &quot;zlib lzo e2fsprogs util-linux&quot;
+HOMEPAGE = &quot;http://www.linux-mtd.infradead.org/&quot;
+LICENSE = &quot;GPLv2+&quot;
+LIC_FILES_CHKSUM = &quot;file://COPYING;md5=0636e73ff0215e8d672dc4c32c317bb3 \
+    file://include/common.h;beginline=1;endline=17;md5=ba05b07912a44ea2bf81ce409380049c&quot;
+
+# Use the latest version at 26 Oct, 2013
+SRCREV = &quot;9f107132a6a073cce37434ca9cda6917dd8d866b&quot;
+SRC_URI = &quot;git://git.infradead.org/mtd-utils.git \
+           file://add-exclusion-to-mkfs-jffs2-git-2.patch \
+           &quot;
+
+PV = &quot;1.5.1+git${SRCPV}&quot;
+S = &quot;${WORKDIR}/git&quot;
+
+EXTRA_OEMAKE = &quot;&#39;CC=${CC}&#39; &#39;RANLIB=${RANLIB}&#39; &#39;AR=${AR}&#39; &#39;CFLAGS=${CFLAGS} -I${S}/include -DWITHOUT_XATTR&#39; &#39;BUILDDIR=${S}&#39;&quot;
+
+do_install () {
+         oe_runmake install DESTDIR=${D} SBINDIR=${sbindir} MANDIR=${mandir} INCLUDEDIR=${includedir}
+}
+
+PACKAGES =+ &quot;mtd-utils-jffs2 mtd-utils-ubifs mtd-utils-misc&quot;
+
+FILES:mtd-utils-jffs2 = &quot;${sbindir}/mkfs.jffs2 ${sbindir}/jffs2dump ${sbindir}/jffs2reader ${sbindir}/sumtool&quot;
+FILES:mtd-utils-ubifs = &quot;${sbindir}/mkfs.ubifs ${sbindir}/ubi*&quot;
+FILES:mtd-utils-misc = &quot;${sbindir}/nftl* ${sbindir}/ftl* ${sbindir}/rfd* ${sbindir}/doc* ${sbindir}/serve_image ${sbindir}/recv_image&quot;
+
+PARALLEL_MAKE = &quot;&quot;
+
+BBCLASSEXTEND = &quot;native&quot;
+</pre></div>
+</div>
+<p><strong>将一个应用拆分成多个包</strong></p>
+<p>可以使用变量PACKAGES和FILES将应用程序拆分为多个包。以下是libxpm recipet的示例，默认情况下，这个recipet生成一个包含库和一些二进制文件的包。可以通过修改recipet将二机制文件拆分成单独的包</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">require</span> <span class="n">xorg</span><span class="o">-</span><span class="n">lib</span><span class="o">-</span><span class="n">common</span><span class="o">.</span><span class="n">inc</span>
+
+<span class="n">SUMMARY</span> <span class="o">=</span> <span class="s2">&quot;Xpm: X Pixmap extension library&quot;</span>
+<span class="n">LICENSE</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
+<span class="n">LIC_FILES_CHKSUM</span> <span class="o">=</span> <span class="s2">&quot;file://COPYING;md5=51f4270b012ecd4ab1a164f5f4ed6cf7&quot;</span>
+<span class="n">DEPENDS</span> <span class="o">+=</span> <span class="s2">&quot;libxext libsm libxt&quot;</span>
+<span class="n">PE</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
+
+<span class="n">XORG_PN</span> <span class="o">=</span> <span class="s2">&quot;libXpm&quot;</span>
+
+<span class="n">PACKAGES</span> <span class="o">=+</span> <span class="s2">&quot;sxpm cxpm&quot;</span>
+<span class="n">FILES</span><span class="p">:</span><span class="n">cxpm</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{bindir}</span><span class="s2">/cxpm&quot;</span>
+<span class="n">FILES</span><span class="p">:</span><span class="n">sxpm</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{bindir}</span><span class="s2">/sxpm&quot;</span>
+</pre></div>
+</div>
+<p>以上操作将会把sxpm和cxpm可执行文件放到单独的包中</p>
+<p><strong>打包外部生成的可执行文件</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>do_configure[noexec] = &quot;1&quot;
+do_compile[noexec] = &quot;1&quot;
+
+do_install () {
+    install -m 0755 ${target} ${D}${bindir}
+}
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="task_variable.html" class="btn btn-neutral float-left" title="8.7.3. 任务以及变量汇总" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="recipet.html" class="btn btn-neutral float-right" title="8.7.5. recipet语法" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

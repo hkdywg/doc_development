@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3.3.4.5. 进程上下文切换 &mdash; ywg_dev_doc 0.1 文档</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=04b44b89"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../../_static/translations.js?v=beaddf03"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="3.3.4.6. linux进程优先级的处理" href="prioprity.html" />
+    <link rel="prev" title="3.3.4.4. 用户抢占和内核抢占" href="preempt.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ywg_dev_doc
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" aria-label="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../optee/index.html">1. tee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../u-boot/index.html">2. u-boot dev note</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">3. kernel note</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_map/index.html">3.1. linux kernel map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mm/index.html">3.2. linux 内存管理</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">3.3. 进程管理与调度</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../process_overview/index.html">3.3.1. 进程描述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_create/index.html">3.3.2. 进程创建</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../process_run/index.html">3.3.3. 进程运行</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">3.3.4. 进程调度</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="inrtoduction.html">3.3.4.1. linux进程调度器概述</a></li>
+<li class="toctree-l4"><a class="reference internal" href="design.html">3.3.4.2. linux进程调度器的设计</a></li>
+<li class="toctree-l4"><a class="reference internal" href="main_schedule.html">3.3.4.3. linux进程调度器之主调度器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="preempt.html">3.3.4.4. 用户抢占和内核抢占</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">3.3.4.5. 进程上下文切换</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prioprity.html">3.3.4.6. linux进程优先级的处理</a></li>
+<li class="toctree-l4"><a class="reference internal" href="wakeup.html">3.3.4.7. linux唤醒抢占</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../process_cfs/index.html">3.3.5. 调度普通进程-完全公平调度器CFS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../thread_info/index.html">3.3.6. thread_info与内核栈stack的关系</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../debug/index.html">3.4. linux kernel debug tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dts/index.html">3.5. DTS设备树详解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_function/index.html">3.6. linux 内核函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../system_call/index.html">3.7. linux系统调用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../kernel_start/index.html">3.8. kernel 启动流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../concurrenty_contrl/index.html">3.9. linux并发与同步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance_optimzation/index.html">3.10. 性能优化</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../misc/index.html">3.11. linux内核杂项</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../driver/index.html">4. linux driver modules note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fs/index.html">5. file system note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/index.html">6. application development node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/index.html">7. misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../embedded/index.html">8. embeded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../net/index.html">9. net</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rtos/index.html">10. rtos note</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../android/index.html">11. android</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../arm64/index.html">12. arm64 arch</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ywg_dev_doc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html"><span class="section-number">3. </span>kernel note</a></li>
+          <li class="breadcrumb-item"><a href="../index.html"><span class="section-number">3.3. </span>进程管理与调度</a></li>
+          <li class="breadcrumb-item"><a href="index.html"><span class="section-number">3.3.4. </span>进程调度</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">3.3.4.5. </span>进程上下文切换</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/kernel/process/process_schedule/context_switch.rst.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1><span class="section-number">3.3.4.5. </span>进程上下文切换<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<p>当一个进程从内核中移出,另一个进程称为活动的，这些进程之间便发生了上下文切换，操作系统必须记录进程和新进程使之活动的所需要的所有信息.
+这些信息称之为上下文，它描述了进程的现有状态,进程上下文是可执行程序代码的重要组成部分,实际上是进程执行活动全过程的静态描述，可以看成
+是用户进程传递给内核这些参数以及内核要保存的那一整套的变量和寄存器值和当时的环境等</p>
+<p>进程上下文信息包括，指向可执行文件的指针，栈，内存(数据段和堆),进程状态，优先级,程序io状态,授予权限,调度信息，审计信息,有关资源的信息
+(文件描述符和读写指针)，事件和信号的信息,寄存器组(栈指针,指令计数器等)等</p>
+<p>CPU总是处于以下三种状态之一</p>
+<ol class="arabic simple">
+<li><p>内核态，运行于进程上下文，内核代表进程运行于内核空间</p></li>
+<li><p>内核态,运行于中断上下文，内核代表硬件运行于内核空间</p></li>
+<li><p>用户态，运行于用户空间</p></li>
+</ol>
+<p>用于空间的应用程序，通过系统调用进入内核空间,这个时候用户空间的进程要传递很多变量参数的值给内核,内核态运行的时候也要保存用户进程的一些
+寄存器值，变量等。所谓的进程上下文</p>
+<p>硬件通过触发信号导致内核调用中断处理程序,进入内核空间,这个过程中硬件的一些变量和参数也要传递给内核，内核通过这些参数进行中断处理,所谓中断上下文</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>注意:进程调度和抢占的区别
+进程调度不一定发生抢占,但是抢占时一定发生了调度</p>
+</div>
+<section id="context-switch">
+<h2><span class="section-number">3.3.4.5.1. </span>context_switch注释<a class="headerlink" href="#context-switch" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/*
+ * context_switch - switch to the new MM and the new thread&#39;s register state.
+ */
+static __always_inline struct rq *
+context_switch(struct rq *rq, struct task_struct *prev,
+           struct task_struct *next, struct rq_flags *rf)
+{
+    //完成进程切换的准备工作
+    prepare_task_switch(rq, prev, next);
+
+    /*
+     * For paravirt, this is coupled with an exit in switch_to to
+     * combine the page table reload and the switch backend into
+     * one hypercall.
+     */
+    arch_start_context_switch(prev);
+
+    /*
+     * kernel -&gt; kernel   lazy + transfer active
+     *   user -&gt; kernel   lazy + mmgrab() active
+     *
+     * kernel -&gt;   user   switch + mmdrop() active
+     *   user -&gt;   user   switch
+     */
+     //内核线程无虚拟地址空间,mm=NULL
+    if (!next-&gt;mm) {                                // to kernel
+        enter_lazy_tlb(prev-&gt;active_mm, next);      //这种加速上下文切换的技术称为惰性TLB
+
+        next-&gt;active_mm = prev-&gt;active_mm;  //内核线程的active_mm为上一个进程的active_mm
+        if (prev-&gt;mm)                           // from user
+            mmgrab(prev-&gt;active_mm);
+        else
+            prev-&gt;active_mm = NULL;
+    } else {                                        // to user  //不是内核线程，则需要切换虚拟地址空间
+        membarrier_switch_mm(rq, prev-&gt;active_mm, next-&gt;mm);
+        /*
+         * sys_membarrier() requires an smp_mb() between setting
+         * rq-&gt;curr / membarrier_switch_mm() and returning to userspace.
+         *
+         * The below provides this either through switch_mm(), or in
+         * case &#39;prev-&gt;active_mm == next-&gt;mm&#39; through
+         * finish_task_switch()&#39;s mmdrop().
+         */
+        switch_mm_irqs_off(prev-&gt;active_mm, next-&gt;mm, next);
+
+        if (!prev-&gt;mm) {                        // from kernel
+            /* will mmdrop() in finish_task_switch(). */
+            rq-&gt;prev_mm = prev-&gt;active_mm;      //更新运行队列的prev_mm成员
+            prev-&gt;active_mm = NULL;     //将prev的active_mm的值清空
+        }
+    }
+
+    rq-&gt;clock_update_flags &amp;= ~(RQCF_ACT_SKIP|RQCF_REQ_SKIP);
+
+    prepare_lock_switch(rq, next, rf);
+
+    /* Here we just switch the register state and the stack. */
+    switch_to(prev, next, prev);    //切换进程的执行环境,包括堆栈和寄存器，同时返回上一个执行的程序
+    //switch_to之后的代码只有在当前进程再次被选择运行(恢复执行)时才会运行,而此时当前进程恢复执行时的上一个进程可能跟参数传入时的prev不同
+    //甚至可能是系统中任意一个随机的进程,因此switch_to通过第三个参数将此进程返回
+
+    //路障同步,一般用编译器指令实现，确保了switch_to和finish_task_switch的执行顺序,不会因为任何可能的优化而改变
+    barrier();
+
+    //进程切换之后的处理工作
+    return finish_task_switch(prev);
+}
+</pre></div>
+</div>
+</section>
+<section id="prepare-arch-switch">
+<h2><span class="section-number">3.3.4.5.2. </span>prepare_arch_switch切换前的准备工作<a class="headerlink" href="#prepare-arch-switch" title="此标题的永久链接"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">static</span> <span class="n">inline</span> <span class="n">void</span>
+<span class="n">prepare_task_switch</span><span class="p">(</span><span class="n">struct</span> <span class="n">rq</span> <span class="o">*</span><span class="n">rq</span><span class="p">,</span> <span class="n">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">prev</span><span class="p">,</span>
+            <span class="n">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="nb">next</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">kcov_prepare_switch</span><span class="p">(</span><span class="n">prev</span><span class="p">);</span>
+    <span class="n">sched_info_switch</span><span class="p">(</span><span class="n">rq</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="nb">next</span><span class="p">);</span>
+    <span class="n">perf_event_task_sched_out</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="nb">next</span><span class="p">);</span>
+    <span class="n">rseq_preempt</span><span class="p">(</span><span class="n">prev</span><span class="p">);</span>
+    <span class="n">fire_sched_out_preempt_notifiers</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="nb">next</span><span class="p">);</span>
+    <span class="n">prepare_task</span><span class="p">(</span><span class="nb">next</span><span class="p">);</span>
+    <span class="n">prepare_arch_switch</span><span class="p">(</span><span class="nb">next</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="switch-to">
+<h2><span class="section-number">3.3.4.5.3. </span>switch_to完成进程切换<a class="headerlink" href="#switch-to" title="此标题的永久链接"></a></h2>
+<p>最后用switch_to完成了进程的切换,该函数切换了寄存器状态和栈,新进程在该调用后开始执行,而switch_to之后的代码只有在当前进程下一次选择运行时才会执行</p>
+<p>内核在switch_to中执行如下操作</p>
+<ol class="arabic simple">
+<li><p>进程切换,即esp的切换,由于从esp可以找到进程的描述符</p></li>
+<li><p>硬件上下文切换,设置ip寄存器的值,并jmp到___switch_to函数</p></li>
+<li><p>堆栈切换，即ebp的切换，ebp是栈底指针，它确定了当前用户空间属于哪个进程</p></li>
+</ol>
+<ul class="simple">
+<li><p>为什么switch_to需要三个参数</p></li>
+</ul>
+<p>调度过程</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#define switch_to(prev, next, last)                                 \</span>
+    <span class="n">do</span> <span class="p">{</span>                                                            \
+        <span class="p">((</span><span class="n">last</span><span class="p">)</span> <span class="o">=</span> <span class="n">__switch_to</span><span class="p">((</span><span class="n">prev</span><span class="p">),</span> <span class="p">(</span><span class="nb">next</span><span class="p">)));</span>                     \
+    <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="o">/*</span>
+ <span class="o">*</span> <span class="n">Thread</span> <span class="n">switching</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">__notrace_funcgraph</span> <span class="n">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">__switch_to</span><span class="p">(</span><span class="n">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">prev</span><span class="p">,</span>
+                <span class="n">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="nb">next</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">struct</span> <span class="n">task_struct</span> <span class="o">*</span><span class="n">last</span><span class="p">;</span>
+
+    <span class="n">fpsimd_thread_switch</span><span class="p">(</span><span class="nb">next</span><span class="p">);</span>
+    <span class="n">tls_thread_switch</span><span class="p">(</span><span class="nb">next</span><span class="p">);</span>
+    <span class="n">hw_breakpoint_thread_switch</span><span class="p">(</span><span class="nb">next</span><span class="p">);</span>
+    <span class="n">contextidr_thread_switch</span><span class="p">(</span><span class="nb">next</span><span class="p">);</span>
+    <span class="n">entry_task_switch</span><span class="p">(</span><span class="nb">next</span><span class="p">);</span>
+    <span class="n">uao_thread_switch</span><span class="p">(</span><span class="nb">next</span><span class="p">);</span>
+    <span class="n">ptrauth_thread_switch</span><span class="p">(</span><span class="nb">next</span><span class="p">);</span>
+    <span class="n">ssbs_thread_switch</span><span class="p">(</span><span class="nb">next</span><span class="p">);</span>
+
+    <span class="o">/*</span>
+     <span class="o">*</span> <span class="n">Complete</span> <span class="nb">any</span> <span class="n">pending</span> <span class="n">TLB</span> <span class="ow">or</span> <span class="n">cache</span> <span class="n">maintenance</span> <span class="n">on</span> <span class="n">this</span> <span class="n">CPU</span> <span class="ow">in</span> <span class="n">case</span>
+     <span class="o">*</span> <span class="n">the</span> <span class="n">thread</span> <span class="n">migrates</span> <span class="n">to</span> <span class="n">a</span> <span class="n">different</span> <span class="n">CPU</span><span class="o">.</span>
+     <span class="o">*</span> <span class="n">This</span> <span class="n">full</span> <span class="n">barrier</span> <span class="ow">is</span> <span class="n">also</span> <span class="n">required</span> <span class="n">by</span> <span class="n">the</span> <span class="n">membarrier</span> <span class="n">system</span>
+     <span class="o">*</span> <span class="n">call</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="n">dsb</span><span class="p">(</span><span class="n">ish</span><span class="p">);</span>
+
+    <span class="o">/*</span> <span class="n">the</span> <span class="n">actual</span> <span class="n">thread</span> <span class="n">switch</span> <span class="o">*/</span>
+    <span class="n">last</span> <span class="o">=</span> <span class="n">cpu_switch_to</span><span class="p">(</span><span class="n">prev</span><span class="p">,</span> <span class="nb">next</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="n">last</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="preempt.html" class="btn btn-neutral float-left" title="3.3.4.4. 用户抢占和内核抢占" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="prioprity.html" class="btn btn-neutral float-right" title="3.3.4.6. linux进程优先级的处理" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2019, yinwg。</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
