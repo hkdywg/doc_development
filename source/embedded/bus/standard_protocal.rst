@@ -70,6 +70,8 @@ DP
 
 * :download:`DP_V1.4.pdf<res/DP_V1.4.pdf>`
 
+* :download:`DP_V1.4中文版.pdf<res/DisplayPort_1.4_cn.pdf>`
+
 LVDS
 -----
 
