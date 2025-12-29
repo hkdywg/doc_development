@@ -7,3 +7,4 @@
     ./mipi_csi.rst
     ./mipi_dsi.rst
     ./bt656.rst
+    ./gmsl.rst
