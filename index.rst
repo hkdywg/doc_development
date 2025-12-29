@@ -23,6 +23,7 @@ kevin开发手记
     android/index.rst
     arm64/index.rst
     fpga/index.rst
+    drawio/index.rst
 
 Indices and tables
 ==================

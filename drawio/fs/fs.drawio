@@ -1,0 +1,478 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.1.1 Chrome/132.0.6834.210 Electron/34.3.3 Safari/537.36" version="26.1.1" pages="3">
+  <diagram name="文件系统~磁盘" id="nPkYwNpLtAsUAiEUci8M">
+    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-21" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="20" y="120" width="760" height="510" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-1" value="分区0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="40" y="200" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-2" value="分区1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="240" y="200" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-3" value="分区2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="440" y="200" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-4" value="启动部分" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="40" y="310" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-5" value="块组0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="120" y="310" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-6" value="块组1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="200" y="310" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-7" value="块组2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="280" y="310" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-8" value="......" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="400" y="310" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-9" value="块组n" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="520" y="310" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-10" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0;exitDx=0;exitDy=0;" parent="1" source="DYD4hRT8n6IdkMlLzi9y-4" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="190" y="290" as="sourcePoint" />
+            <mxPoint x="240" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-11" value="超级块" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" parent="1" vertex="1">
+          <mxGeometry x="40" y="440" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-12" value="块组描述符" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="1" vertex="1">
+          <mxGeometry x="160" y="440" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-13" value="块位图" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" parent="1" vertex="1">
+          <mxGeometry x="280" y="440" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-14" value="inode位图" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" parent="1" vertex="1">
+          <mxGeometry x="400" y="440" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-15" value="inode表" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6a00ff;fontColor=#ffffff;strokeColor=#3700CC;" parent="1" vertex="1">
+          <mxGeometry x="520" y="440" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-16" value="数据块" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" parent="1" vertex="1">
+          <mxGeometry x="640" y="440" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-17" value="" style="endArrow=none;html=1;rounded=0;exitX=0;exitY=0;exitDx=0;exitDy=0;" parent="1" source="DYD4hRT8n6IdkMlLzi9y-11" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="70" y="400" as="sourcePoint" />
+            <mxPoint x="120" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-18" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0;exitDx=0;exitDy=0;" parent="1" source="DYD4hRT8n6IdkMlLzi9y-16" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="400" as="sourcePoint" />
+            <mxPoint x="200" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-19" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0;exitDx=0;exitDy=0;" parent="1" source="DYD4hRT8n6IdkMlLzi9y-9" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="290" as="sourcePoint" />
+            <mxPoint x="440" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-22" value="磁盘上的数据块" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="270" y="130" width="190" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-24" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="480" width="600" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-26" value="1块" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="70" y="480" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-27" value="多块" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="190" y="480" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-28" value="1块" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="310" y="480" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-29" value="1块" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="430" y="480" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-30" value="多块" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="550" y="480" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-31" value="多块" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="670" y="480" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-34" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="DYD4hRT8n6IdkMlLzi9y-33" target="DYD4hRT8n6IdkMlLzi9y-28" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="550" />
+              <mxPoint x="330" y="550" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DYD4hRT8n6IdkMlLzi9y-33" value="元数据" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;" parent="1" vertex="1">
+          <mxGeometry x="270" y="580" width="120" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="NvfmpdgTE61DW-zS3CRh" name="文件系统结构视图">
+    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-1" value="用户程序" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="150" y="40" width="210" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-2" value="系统调用" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="150" y="80" width="210" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-3" value="虚拟文件系统VFS" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="150" y="120" width="210" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-4" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
+          <mxGeometry x="150" y="160" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-5" value="文件系统" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="220" y="160" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-6" value="EXT4" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="190" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-7" value="..." style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="230" y="190" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-8" value="NFS" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="290" y="190" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-9" value="页缓存" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" vertex="1" parent="1">
+          <mxGeometry x="150" y="220" width="210" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-10" value="通用块层" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="150" y="260" width="210" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-11" value="块设备IO调度层" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;" vertex="1" parent="1">
+          <mxGeometry x="150" y="300" width="210" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-12" value="块设备驱动层" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fa6800;fontColor=#000000;strokeColor=#C73500;" vertex="1" parent="1">
+          <mxGeometry x="150" y="340" width="210" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-13" value="块设备控制器" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;" vertex="1" parent="1">
+          <mxGeometry x="150" y="380" width="210" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-14" value="磁盘设备" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#76608a;fontColor=#ffffff;strokeColor=#432D57;" vertex="1" parent="1">
+          <mxGeometry x="150" y="420" width="210" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-15" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="80" as="sourcePoint" />
+            <mxPoint x="450" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-16" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="380" as="sourcePoint" />
+            <mxPoint x="450" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-17" value="用户空间" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="50" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-18" value="内核空间" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="120" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="aA5Ceb3e_jg3yCUKy3Um-19" value="物理硬件" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="390" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="2KtADB58V3wGCKijfzfI" name="linux文件系统数据结构">
+    <mxGraphModel dx="6578" dy="4749" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-74" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-2360" y="-560" width="1480" height="760" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-12" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-560" y="-1480" width="1720" height="1050" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-1" value="" style="rounded=0;whiteSpace=wrap;html=1;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="-640" y="-80" width="2000" height="1220" as="geometry" />
+        </mxCell>
+        <mxCell id="EE_cMYgPrfS_u2ps_YlI-1" value="struct super_operations" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-270" y="-10" width="610" height="356" as="geometry" />
+        </mxCell>
+        <mxCell id="EE_cMYgPrfS_u2ps_YlI-2" value="&lt;div&gt;&amp;nbsp; &amp;nbsp; struct inode *(*alloc_inode)(struct super_block *sb);&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;/*在给定super_block下创建和初始化一个inode对象*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; void (*destroy_inode)(struct inode *);/* 释放一个inode节点*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; void (*free_inode)(struct inode *);&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;/* 释放一个inode节点*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; void (*dirty_inode) (struct inode *, int flags);/*VFS在inode脏时调用，日志文件系统执行该函数进行日志更新*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*write_inode) (struct inode *, struct writeback_control *wbc);/*给定inode写入磁盘*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*drop_inode) (struct inode *);/*最后一个指向inode的引用被释放后，VFS调用该函数*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; void (*evict_inode) (struct inode *);/*从磁盘删除给定的inode*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; void (*put_super) (struct super_block *);/*卸载文件系统时由VFS调用，用来释放super block*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*sync_fs)(struct super_block *sb, int wait);/*使文件系统的数据与磁盘 上的文件同步*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*freeze_super) (struct super_block *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*freeze_fs) (struct super_block *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*thaw_super) (struct super_block *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*unfreeze_fs) (struct super_block *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*statfs) (struct dentry *, struct kstatfs *);/*VFS通过此接口 获取文件系统统计信息*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*remount_fs) (struct super_block *, int *, char *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; void (*umount_begin) (struct super_block *);&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*show_options)(struct seq_file *, struct dentry *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*show_devname)(struct seq_file *, struct dentry *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*show_path)(struct seq_file *, struct dentry *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*show_stats)(struct seq_file *, struct dentry *);&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="EE_cMYgPrfS_u2ps_YlI-1">
+          <mxGeometry y="26" width="610" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="EE_cMYgPrfS_u2ps_YlI-3" value="struct inode_operations" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="-10" width="760" height="426" as="geometry" />
+        </mxCell>
+        <mxCell id="EE_cMYgPrfS_u2ps_YlI-4" value="&lt;div&gt;&amp;nbsp; &amp;nbsp; struct dentry * (*lookup) (struct inode *,struct dentry *, unsigned int);/*在给定目录中，根据提供的dentry文件名，查找inode*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; const char * (*get_link) (struct dentry *, struct inode *, struct delayed_call *);/**/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*permission) (struct inode *, int); /*检查给定的inode所代表 的文件是否允许特定的访问模式*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct posix_acl * (*get_acl)(struct inode *, int);&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*readlink) (struct dentry *, char __user *,int);/*系统调用readlink()时调用，拷贝数据到特定的buffer中*/&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*create) (struct inode *,struct dentry *, umode_t, bool);/*VFS通过create()/open()来调用该函数，为dentry对象创建一个新的inode节点*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*link) (struct dentry *,struct inode *,struct dentry *);/*link操作，一个dentry链接到另外一个dentry*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*unlink) (struct inode *,struct dentry *);/*删除dentry指定的inode对象*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*symlink) (struct inode *,struct dentry *,const char *);/*创建符号链接，*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*mkdir) (struct inode *dir,struct dentry *,umode_t);/*在dir目录中你那个创建一个新目录*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*rmdir) (struct inode *,struct dentry *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*mknod) (struct inode *,struct dentry *,umode_t,dev_t);/*创建特殊文件(设备，有名管道，socket)*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*rename) (struct inode *, struct dentry *,&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct inode *, struct dentry *, unsigned int);/*重命名*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*setattr) (struct dentry *, struct iattr *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*getattr) (const struct path *, struct kstat *, u32, unsigned int);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; ssize_t (*listxattr) (struct dentry *, char *, size_t);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*fiemap)(struct inode *, struct fiemap_extent_info *, u64 start,&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; u64 len);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*update_time)(struct inode *, struct timespec64 *, int);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*atomic_open)(struct inode *, struct dentry *,&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;struct file *, unsigned open_flag,&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;umode_t create_mode);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*tmpfile) (struct inode *, struct dentry *, umode_t);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*set_acl)(struct inode *, struct posix_acl *, int);&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="EE_cMYgPrfS_u2ps_YlI-3">
+          <mxGeometry y="26" width="760" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="EE_cMYgPrfS_u2ps_YlI-5" value="struct dentry_operations" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-470" y="532" width="790" height="236" as="geometry" />
+        </mxCell>
+        <mxCell id="EE_cMYgPrfS_u2ps_YlI-6" value="&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*d_revalidate)(struct dentry *, unsigned int);&lt;span style=&quot;color: rgb(64, 64, 64); font-family: SFMono-Regular, Menlo, Monaco, Consolas, &amp;quot;Liberation Mono&amp;quot;, &amp;quot;Courier New&amp;quot;, Courier, monospace; background-color: transparent;&quot;&gt;/* &lt;/span&gt;&lt;span style=&quot;color: rgb(64, 64, 64);&quot;&gt;该函数判断目录对象是否有效。VFS准备从dcache中使用一个目录项时，会调用该函数&lt;/span&gt;&lt;span style=&quot;color: rgb(64, 64, 64); font-family: SFMono-Regular, Menlo, Monaco, Consolas, &amp;quot;Liberation Mono&amp;quot;, &amp;quot;Courier New&amp;quot;, Courier, monospace; background-color: transparent;&quot;&gt;. */&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*d_weak_revalidate)(struct dentry *, unsigned int);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*d_hash)(const struct dentry *, struct qstr *);&amp;nbsp;&lt;span style=&quot;color: rgb(64, 64, 64); font-family: SFMono-Regular, Menlo, Monaco, Consolas, &amp;quot;Liberation Mono&amp;quot;, &amp;quot;Courier New&amp;quot;, Courier, monospace; background-color: transparent;&quot;&gt;/* &lt;/span&gt;该目录生成散列值，当目录项要加入到散列表时，VFS要调用此函数&lt;span style=&quot;color: rgb(64, 64, 64); font-family: SFMono-Regular, Menlo, Monaco, Consolas, &amp;quot;Liberation Mono&amp;quot;, &amp;quot;Courier New&amp;quot;, Courier, monospace; background-color: transparent;&quot;&gt;。 */&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*d_compare)(const struct dentry *,&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; unsigned int, const char *, const struct qstr *);&amp;nbsp;&lt;span style=&quot;color: rgb(64, 64, 64); font-family: SFMono-Regular, Menlo, Monaco, Consolas, &amp;quot;Liberation Mono&amp;quot;, &amp;quot;Courier New&amp;quot;, Courier, monospace; background-color: transparent;&quot;&gt;/* &lt;/span&gt;该函数来比较name1和name2这两个文件名。使用该函数要加dcache_lock锁&lt;span style=&quot;color: rgb(64, 64, 64); font-family: SFMono-Regular, Menlo, Monaco, Consolas, &amp;quot;Liberation Mono&amp;quot;, &amp;quot;Courier New&amp;quot;, Courier, monospace; background-color: transparent;&quot;&gt;。 */&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*d_delete)(const struct dentry *); /*删除目录项*/&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*d_init)(struct dentry *);&amp;nbsp;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; void (*d_release)(struct dentry *);&amp;nbsp;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; void (*d_prune)(struct dentry *);&amp;nbsp;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; void (*d_iput)(struct dentry *, struct inode *);&amp;nbsp;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; char *(*d_dname)(struct dentry *, char *, int);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct vfsmount *(*d_automount)(struct path *);&amp;nbsp;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*d_manage)(const struct path *, bool);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct dentry *(*d_real)(struct dentry *, const struct inode *);&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="EE_cMYgPrfS_u2ps_YlI-5">
+          <mxGeometry y="26" width="790" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="EE_cMYgPrfS_u2ps_YlI-7" value="struct file_operations" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="470" width="850" height="626" as="geometry" />
+        </mxCell>
+        <mxCell id="EE_cMYgPrfS_u2ps_YlI-8" value="&lt;div&gt;&amp;nbsp; &amp;nbsp; struct module *owner;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; loff_t (*llseek) (struct file *, loff_t, int);&lt;span style=&quot;color: var(--color-prettylights-syntax-comment); background-color: rgb(246, 248, 250); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px;&quot;&gt;/*更新offset指针，由系统调用llseek()调用*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; ssize_t (*read) (struct file *, char __user *, size_t, loff_t *);&lt;span style=&quot;color: var(--color-prettylights-syntax-comment); background-color: rgb(246, 248, 250); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px;&quot;&gt;/*从给定文件的offset处读，同时更新文件指针，由系统调用read()调用*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);&lt;span style=&quot;color: var(--color-prettylights-syntax-comment); background-color: rgb(246, 248, 250); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px;&quot;&gt;/*写入给定文件的offset处，同时更新文件指针，由系统调用write()调用*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; ssize_t (*read_iter) (struct kiocb *, struct iov_iter *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; ssize_t (*write_iter) (struct kiocb *, struct iov_iter *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*iopoll)(struct kiocb *kiocb, bool spin);&lt;span style=&quot;color: var(--color-prettylights-syntax-comment); background-color: rgb(246, 248, 250); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px;&quot;&gt;/*睡眠等待给定文件活动。由系统调用poll()调用*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*iterate) (struct file *, struct dir_context *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*iterate_shared) (struct file *, struct dir_context *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; __poll_t (*poll) (struct file *, struct poll_table_struct *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);&lt;span style=&quot;color: var(--color-prettylights-syntax-comment); background-color: rgb(246, 248, 250); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px;&quot;&gt;/*实现与ioctl()类似的功能，只不过不需要调用者持有BKL*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; long (*compat_ioctl) (struct file *, unsigned int, unsigned long);&lt;span style=&quot;color: var(--color-prettylights-syntax-comment); background-color: rgb(246, 248, 250); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px;&quot;&gt;/*ioctl()的可移植变种，被32位应用程序用在64位系统上。不必持有BKL*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*mmap) (struct file *, struct vm_area_struct *);&lt;span style=&quot;color: var(--color-prettylights-syntax-comment); background-color: rgb(246, 248, 250); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px;&quot;&gt;/*将文件映射到指定地址空间上。由系统调用mmap()调用*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; unsigned long mmap_supported_flags;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*open) (struct inode *, struct file *);&lt;span style=&quot;background-color: rgb(246, 248, 250); color: rgb(31, 35, 40); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px;&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: var(--color-prettylights-syntax-comment); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px; box-sizing: border-box;&quot; class=&quot;pl-c&quot;&gt;/*创建一个新的file对象，并把它和相应的inode关联起来*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*flush) (struct file *, fl_owner_t id);&lt;span style=&quot;color: var(--color-prettylights-syntax-comment); background-color: rgb(246, 248, 250); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px;&quot;&gt;/*当已打开的文件引用计数减少时被VFS调用。作用根据具体文件系统而定*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*release) (struct inode *, struct file *);&lt;span style=&quot;color: var(--color-prettylights-syntax-comment); background-color: rgb(246, 248, 250); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px;&quot;&gt;/*当文件最后一个引用被注销时，该函数被VFS调用。作用根据具体文件系统而定*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*fsync) (struct file *, loff_t, loff_t, int datasync);&lt;span style=&quot;background-color: rgb(246, 248, 250); color: rgb(31, 35, 40); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px;&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: var(--color-prettylights-syntax-comment); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px; box-sizing: border-box;&quot; class=&quot;pl-c&quot;&gt;/*指定文件的所有被缓存数据写回磁盘。由系统调用fsync()调用*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*fasync) (int, struct file *, int);&lt;span style=&quot;color: var(--color-prettylights-syntax-comment); background-color: rgb(246, 248, 250); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px;&quot;&gt;/*打开或关闭异步I/O的通告信号*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*lock) (struct file *, int, struct file_lock *);&lt;span style=&quot;color: var(--color-prettylights-syntax-comment); background-color: rgb(246, 248, 250); font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace); font-size: 13.6px;&quot;&gt;/*给指定文件上锁*/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; ssize_t (*sendpage) (struct file *, struct page *, int, size_t, loff_t *, int);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; unsigned long (*get_unmapped_area)(struct file *, unsigned long, unsigned long, unsigned long, unsigned long);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*check_flags)(int);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*flock) (struct file *, int, struct file_lock *);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; ssize_t (*splice_write)(struct pipe_inode_info *, struct file *, loff_t *, size_t, unsigned int);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; ssize_t (*splice_read)(struct file *, loff_t *, struct pipe_inode_info *, size_t, unsigned int);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*setlease)(struct file *, long, struct file_lock **, void **);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; long (*fallocate)(struct file *file, int mode, loff_t offset,&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; loff_t len);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; void (*show_fdinfo)(struct seq_file *m, struct file *f);&lt;/div&gt;&lt;div&gt;#ifndef CONFIG_MMU&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; unsigned (*mmap_capabilities)(struct file *);&lt;/div&gt;&lt;div&gt;#endif&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; ssize_t (*copy_file_range)(struct file *, loff_t, struct file *,&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; loff_t, size_t, unsigned int);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; loff_t (*remap_file_range)(struct file *file_in, loff_t pos_in,&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;struct file *file_out, loff_t pos_out,&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;loff_t len, unsigned int remap_flags);&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; int (*fadvise)(struct file *, loff_t, loff_t, int);&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="EE_cMYgPrfS_u2ps_YlI-7">
+          <mxGeometry y="26" width="850" height="600" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-3" value="超级块/索引节点/目录项/文件对应的operation方法汇总" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=42;" vertex="1" parent="1">
+          <mxGeometry x="-210" y="-150" width="1291" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-4" value="struct super_block" style="swimlane;html=1;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=none;fontFamily=Verdana;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="-450" y="-1360" width="710" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-5" value="&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; //指向超级块链表的指针,s_list是一个双向循环链表，吧所有的super_block连接起来，一个super_block代表一个在linux上的文件系统&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct list_head&amp;nbsp; &amp;nbsp; s_list;&amp;nbsp; &amp;nbsp; &amp;nbsp;/* Keep this first */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; //包含该具体文件系统的块设备标识符，例如对于/dev/hda1,其设备标识符为0x301&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; dev_t&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;s_dev;&amp;nbsp; &amp;nbsp; &amp;nbsp; /* search index; _not_ kdev_t */&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; unsigned char&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;s_blocksize_bits;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; //blocksize占用的位数&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; unsigned long&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;s_blocksize;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; //文件系统中数据块大小，以字节为单位&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; loff_t&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; s_maxbytes;&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;//文件系统中允许的最大文件大小&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct file_system_type *s_type;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;//文件系统类型&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; const struct super_operations&amp;nbsp; &amp;nbsp;*s_op;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;//超级块方法,用于超级块操作的函数集合&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; const struct dquot_operations&amp;nbsp; &amp;nbsp;*dq_op;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;//文件系统中用于限额操作的函数集合&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; const struct quotactl_ops&amp;nbsp; &amp;nbsp;*s_qcop;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;//用于配置磁盘限额的方法，处理来自用户空间的请求&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; const struct export_operations *s_export_op;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;//导出方法&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; unsigned long&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;s_flags;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;//安装标识&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; unsigned long&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;s_iflags;&amp;nbsp; &amp;nbsp;/* internal SB_I_* flags */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; unsigned long&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;s_magic;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;//区别于其他文件系统的标识&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct dentry&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;*s_root;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;//指向该具体文件系统安装目录的目录项&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct rw_semaphore s_umount;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; int&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;s_count;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;//对超级块的使用计数&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; atomic_t&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; s_active;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;//引用计数&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;struct block_device *s_bdev;&lt;/span&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;//指向文件系统被安装的块设备&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-4">
+          <mxGeometry y="26" width="710" height="334" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-6" value="struct inode" style="swimlane;html=1;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;fillColor=none;fontFamily=Verdana;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="340" y="-1360" width="710" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-7" value="&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; umode_t&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;i_mode;&amp;nbsp; &amp;nbsp; &amp;nbsp;//访问权控制&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; unsigned short&amp;nbsp; &amp;nbsp; &amp;nbsp; i_opflags;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; kuid_t&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; i_uid;&amp;nbsp; //使用者的ID&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; kgid_t&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; i_gid;&amp;nbsp; //用户组ID&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; unsigned int&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; i_flags;&amp;nbsp; &amp;nbsp; //文件系统标志&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; const struct inode_operations&amp;nbsp; &amp;nbsp;*i_op;&amp;nbsp; //索引节点操作表&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct super_block&amp;nbsp; *i_sb;&amp;nbsp; //相关的超级块&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct address_space&amp;nbsp; &amp;nbsp; *i_mapping; //相关的地址映射&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; unsigned long&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;i_ino;&amp;nbsp; //索引节点号&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; union {&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; const unsigned int i_nlink;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; unsigned int __i_nlink; //硬连接数&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; };&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; dev_t&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;i_rdev; //实际设备标识符号&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; loff_t&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; i_size;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct timespec64&amp;nbsp; &amp;nbsp;i_atime;&amp;nbsp; &amp;nbsp; //最后访问时间&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct timespec64&amp;nbsp; &amp;nbsp;i_mtime;&amp;nbsp; &amp;nbsp; //最后修改时间&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct timespec64&amp;nbsp; &amp;nbsp;i_ctime;&amp;nbsp; &amp;nbsp; //最后改变时间&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; spinlock_t&amp;nbsp; &amp;nbsp; &amp;nbsp; i_lock; /* i_blocks, i_bytes, maybe i_size */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; unsigned short&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; i_bytes;&amp;nbsp; &amp;nbsp; //使用的字节数&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; u8&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; i_blkbits;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; u8&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; i_write_hint;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; blkcnt_t&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; i_blocks;&amp;nbsp; &amp;nbsp;//文件的块数&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;struct hlist_node&amp;nbsp; &amp;nbsp;i_hash; //为了提高查找inode的效率，每一个inode都会有一个hash值&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;struct list_head&amp;nbsp; &amp;nbsp; i_sb_list;&amp;nbsp; //链接一个文件系统中所有inode的链表&lt;/div&gt;&lt;div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; union {&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct pipe_inode_info&amp;nbsp; *i_pipe;&amp;nbsp; &amp;nbsp; //管道信息&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct block_device *i_bdev;&amp;nbsp; &amp;nbsp; //块设备驱动节点&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct cdev&amp;nbsp; &amp;nbsp; &amp;nbsp;*i_cdev;&amp;nbsp; &amp;nbsp; //字符设备驱动节点&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; char&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; *i_link;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; unsigned&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; i_dir_seq;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; };&lt;/div&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-6">
+          <mxGeometry y="26" width="710" height="464" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-8" value="struct dentry" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-450" y="-910" width="690" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-9" value="&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; atomic_t d_count;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; /* 引用计数，表示该 dentry 被使用的次数 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; unsigned int d_flags;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; /* dentry 状态标志，比如是否在 LRU（Least Recently Used）队列中 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct inode *d_inode;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;/* 关联的 inode，可能为 NULL（比如符号链接或被删除的文件） */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct qstr d_name;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; /* 目录项的名称（文件/目录名），不包含路径 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct hlist_bl_node d_hash; /* 哈希表节点，用于 dentry 缓存查找 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct dentry *d_parent;&amp;nbsp; &amp;nbsp; &amp;nbsp;/* 指向父目录的 dentry */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct list_head d_child;&amp;nbsp; &amp;nbsp; /* 连接到父目录的子目录项列表 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct list_head d_subdirs;&amp;nbsp; /* 当前目录的子目录列表 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct super_block *d_sb;&amp;nbsp; &amp;nbsp; /* 指向超级块的指针，表示所属的文件系统 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; const struct dentry_operations *d_op;&amp;nbsp; /* dentry 相关操作函数表 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct rcu_head d_rcu;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;/* 用于 RCU 机制（Read-Copy-Update），异步删除 dentry */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct lockref d_lockref;&amp;nbsp; &amp;nbsp; /* dentry 的锁和引用计数 */&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-8">
+          <mxGeometry y="26" width="690" height="224" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-10" value="struct file" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="-830" width="690" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-11" value="&lt;div&gt;&amp;nbsp; &amp;nbsp; union {&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct llist_node fu_llist;&amp;nbsp; &amp;nbsp;/* 用于异步 I/O 处理 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; struct rcu_head fu_rcuhead;&amp;nbsp; &amp;nbsp;/* 用于 RCU 释放 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; } f_u;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct path f_path;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;/* 该文件的路径信息（dentry 和 vfsmount） */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct inode *f_inode;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; /* 该文件对应的 inode 结构 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; const struct file_operations *f_op; /* 文件操作函数指针 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; spinlock_t f_lock;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; /* 文件锁，用于同步访问 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; atomic_long_t f_count;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; /* 文件引用计数，避免提前释放 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; unsigned int f_flags;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;/* 打开文件的标志（O_RDONLY, O_WRONLY 等） */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; fmode_t f_mode;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;/* 文件访问模式（读/写/执行） */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; loff_t f_pos;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;/* 当前文件偏移量（用于 `lseek`） */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct fown_struct f_owner;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;/* 信号所有者（异步通知） */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; const struct cred *f_cred;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; /* 打开该文件的进程的权限凭据 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct file_ra_state f_ra;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; /* 预读（readahead）状态 */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; u64 f_version;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; /* 文件版本号（用于缓存一致性） */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; void *private_data;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;/* 驱动使用的私有数据（如 `ioctl` 操作） */&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; struct address_space *f_mapping;&amp;nbsp; /* 文件数据的映射信息 */&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-10">
+          <mxGeometry y="26" width="690" height="284" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-13" value="超级块/索引节点/目录项/文件数据结构汇总" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=45;" vertex="1" parent="1">
+          <mxGeometry x="-70" y="-1590" width="1080" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-15" value="struct file" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="-1860" y="-310" width="200" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-16" value="struct inode &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt; &lt;/span&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp;*f_inode" style="text;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-15">
+          <mxGeometry y="26" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-17" value="struct path &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;f_path" style="text;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;container=0;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-15">
+          <mxGeometry y="52" width="200" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-18" value="fmode_t &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;f_mode" style="text;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1860" y="-154" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-19" value="unsigned int &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;f_flags" style="text;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1860" y="-180" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-20" value="loff_t&amp;nbsp;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;f_pos" style="text;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1860" y="-128" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-21" value="struct&amp;nbsp; address_space&amp;nbsp; &amp;nbsp;*f_mapping" style="text;strokeColor=#9673a6;fillColor=#e1d5e7;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-1860" y="-102" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-22" value="" style="edgeStyle=elbowEdgeStyle;elbow=horizontal;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;entryX=-0.014;entryY=0.067;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1.002;exitY=0.618;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="jfhTNY-dLuvARTbp_OiM-65" target="jfhTNY-dLuvARTbp_OiM-15">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-1990" y="-220" as="sourcePoint" />
+            <mxPoint x="-1850" y="-325" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-23" value="struct dentry&amp;nbsp;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;" vertex="1" parent="1">
+          <mxGeometry x="-1570" y="-470" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-24" value="struct dentry *d_parent" style="text;strokeColor=#2D7600;fillColor=#60a917;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-23">
+          <mxGeometry y="26" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-25" value="struct inode *d_inode" style="text;strokeColor=#2D7600;fillColor=#60a917;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-23">
+          <mxGeometry y="52" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-26" value="unsigned char d_iname[]" style="text;strokeColor=#2D7600;fillColor=#60a917;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-23">
+          <mxGeometry y="78" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-27" value="unsigned int d_flags" style="text;strokeColor=#2D7600;fillColor=#60a917;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-23">
+          <mxGeometry y="104" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-28" value="" style="edgeStyle=elbowEdgeStyle;elbow=horizontal;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;entryX=-0.023;entryY=0.06;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="jfhTNY-dLuvARTbp_OiM-23">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-1660" y="-220" as="sourcePoint" />
+            <mxPoint x="-1610" y="-270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-29" value="struct inode" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;" vertex="1" parent="1">
+          <mxGeometry x="-1300" y="-490" width="290" height="234" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-30" value="umode_t&amp;nbsp; &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;i_mode" style="text;strokeColor=#6F0000;fillColor=#a20025;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-29">
+          <mxGeometry y="26" width="290" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-31" value="kuid_t &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;i_uid,&amp;nbsp; i_gid" style="text;strokeColor=#6F0000;fillColor=#a20025;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-29">
+          <mxGeometry y="52" width="290" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-32" value="unsigned int&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;nbsp;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;i_flags" style="text;strokeColor=#6F0000;fillColor=#a20025;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-29">
+          <mxGeometry y="78" width="290" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-33" value="const struct inode_operations&amp;nbsp; &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;*i_op;" style="text;strokeColor=#6F0000;fillColor=#a20025;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-29">
+          <mxGeometry y="104" width="290" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-34" value="struct super_block &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;*i_sb;" style="text;strokeColor=#6F0000;fillColor=#a20025;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-29">
+          <mxGeometry y="130" width="290" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-35" value="struct address_space &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;*i_mapping" style="text;strokeColor=#6F0000;fillColor=#a20025;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-29">
+          <mxGeometry y="156" width="290" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-36" value="unsigned lonng&amp;nbsp; &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;nbsp;i_ino" style="text;strokeColor=#6F0000;fillColor=#a20025;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-29">
+          <mxGeometry y="182" width="290" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-37" value="struct timespec64 &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;i_atime, i_mtime, i_ctime" style="text;strokeColor=#6F0000;fillColor=#a20025;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-29">
+          <mxGeometry y="208" width="290" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-38" value="" style="edgeStyle=elbowEdgeStyle;elbow=horizontal;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;entryX=-0.008;entryY=0.036;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="jfhTNY-dLuvARTbp_OiM-29">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-1410" y="-400" as="sourcePoint" />
+            <mxPoint x="-1360" y="-450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-39" value="" style="edgeStyle=elbowEdgeStyle;elbow=horizontal;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-1660" y="-270" as="sourcePoint" />
+            <mxPoint x="-1310" y="-490" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-1630" y="-390" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-40" value="struct super_block" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#6d8764;fontColor=#ffffff;strokeColor=#3A5431;" vertex="1" parent="1">
+          <mxGeometry x="-1230" y="-130" width="270" height="208" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-41" value="dev_t&amp;nbsp;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;s_dev" style="text;strokeColor=#3A5431;fillColor=#6d8764;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-40">
+          <mxGeometry y="26" width="270" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-42" value="unsigned char &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt; &lt;/span&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;s_blocksize_bits" style="text;strokeColor=#3A5431;fillColor=#6d8764;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-40">
+          <mxGeometry y="52" width="270" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-43" value="unsigned lonng&amp;nbsp;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;        &lt;/span&gt;s_blocksize" style="text;strokeColor=#3A5431;fillColor=#6d8764;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-40">
+          <mxGeometry y="78" width="270" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-44" value="struct file_system_type&amp;nbsp;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;*s_type" style="text;strokeColor=#3A5431;fillColor=#6d8764;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-40">
+          <mxGeometry y="104" width="270" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-45" value="const struct super_operations *s_op" style="text;strokeColor=#3A5431;fillColor=#6d8764;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-40">
+          <mxGeometry y="130" width="270" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-46" value="struct&amp;nbsp; dentry&amp;nbsp;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;nbsp;*s_root" style="text;strokeColor=#3A5431;fillColor=#6d8764;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-40">
+          <mxGeometry y="156" width="270" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-47" value="struct block_device&amp;nbsp;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;nbsp;*s_bdev" style="text;strokeColor=#3A5431;fillColor=#6d8764;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#ffffff;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-40">
+          <mxGeometry y="182" width="270" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-48" value="" style="edgeStyle=elbowEdgeStyle;elbow=horizontal;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.01;entryY=0.046;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="jfhTNY-dLuvARTbp_OiM-34" target="jfhTNY-dLuvARTbp_OiM-40">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-1440" y="-180" as="sourcePoint" />
+            <mxPoint x="-1390" y="-230" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-1330" y="-230" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-49" value="struct&amp;nbsp; vfsmount" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f0a30a;fontColor=#000000;strokeColor=#BD7000;" vertex="1" parent="1">
+          <mxGeometry x="-1580" y="-206" width="200" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-50" value="struct dentry &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;*mnt_root" style="text;strokeColor=#BD7000;fillColor=#f0a30a;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#000000;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-49">
+          <mxGeometry y="26" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-51" value="struct super_block &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;*mnt_sb" style="text;strokeColor=#BD7000;fillColor=#f0a30a;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#000000;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-49">
+          <mxGeometry y="52" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-52" value="int &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;mnt_flags" style="text;strokeColor=#BD7000;fillColor=#f0a30a;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#000000;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-49">
+          <mxGeometry y="78" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-53" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.011;entryY=0.077;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.771;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="jfhTNY-dLuvARTbp_OiM-17" target="jfhTNY-dLuvARTbp_OiM-49">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-1660" y="-200" as="sourcePoint" />
+            <mxPoint x="-1610" y="-250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-54" value="" style="edgeStyle=elbowEdgeStyle;elbow=horizontal;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;entryX=0;entryY=0.096;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="jfhTNY-dLuvARTbp_OiM-40">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-1380" y="-140" as="sourcePoint" />
+            <mxPoint x="-1330" y="-190" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-1350" y="-80" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-55" value="struct dentry&amp;nbsp;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;" vertex="1" parent="1">
+          <mxGeometry x="-1560" y="-20" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-56" value="struct dentry *d_parent" style="text;strokeColor=#0e8088;fillColor=#b0e3e6;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-55">
+          <mxGeometry y="26" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-57" value="struct inode *d_inode" style="text;strokeColor=#0e8088;fillColor=#b0e3e6;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-55">
+          <mxGeometry y="52" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-58" value="unsigned char d_iname[]" style="text;strokeColor=#0e8088;fillColor=#b0e3e6;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-55">
+          <mxGeometry y="78" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-59" value="unsigned int d_flags" style="text;strokeColor=#0e8088;fillColor=#b0e3e6;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-55">
+          <mxGeometry y="104" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-60" value="" style="edgeStyle=elbowEdgeStyle;elbow=horizontal;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.014;entryY=0.083;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="jfhTNY-dLuvARTbp_OiM-50" target="jfhTNY-dLuvARTbp_OiM-55">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-1600" y="-20" as="sourcePoint" />
+            <mxPoint x="-1550" y="-70" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-1610" y="-90" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-61" value="" style="edgeStyle=elbowEdgeStyle;elbow=horizontal;endArrow=classic;html=1;curved=0;rounded=0;endSize=8;startSize=8;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1.012;entryY=0.088;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="jfhTNY-dLuvARTbp_OiM-46" target="jfhTNY-dLuvARTbp_OiM-55">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-1330" y="50" as="sourcePoint" />
+            <mxPoint x="-1280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-62" value="struct task_struct" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#996185;gradientColor=#d5739d;" vertex="1" parent="1">
+          <mxGeometry x="-2260" y="-330" width="270" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-63" value="struct shced_entity &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;se" style="text;strokeColor=#996185;fillColor=#e6d0de;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;gradientColor=#d5739d;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-62">
+          <mxGeometry y="26" width="270" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-64" value="......" style="text;strokeColor=#996185;fillColor=#e6d0de;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;gradientColor=#d5739d;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-62">
+          <mxGeometry y="52" width="270" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-65" value="struct files_struct &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;/span&gt;*files" style="text;strokeColor=#996185;fillColor=#e6d0de;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;gradientColor=#d5739d;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-62">
+          <mxGeometry y="78" width="270" height="152" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-66" value="......" style="text;strokeColor=#996185;fillColor=#e6d0de;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;gradientColor=#d5739d;" vertex="1" parent="1">
+          <mxGeometry x="-2260" y="-100" width="270" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-67" value="struct&amp;nbsp; mm_struct &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;*mm" style="text;strokeColor=#996185;fillColor=#e6d0de;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;gradientColor=#d5739d;" vertex="1" parent="1">
+          <mxGeometry x="-2260" y="-74" width="270" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-68" value="struct dentry *dentry" style="html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" vertex="1" parent="1">
+          <mxGeometry x="-1830" y="-230" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-69" value="struct vfsmount *mnt" style="html=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" vertex="1" parent="1">
+          <mxGeometry x="-1830" y="-210" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-70" value="struct fdtable __rcu&amp;nbsp; &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;*fdt" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;gradientColor=#ffd966;strokeColor=#d6b656;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" vertex="1" parent="1">
+          <mxGeometry x="-2230" y="-220" width="200" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-71" value="unsigned int &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;max_fds" style="text;fillColor=#fff2cc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=1;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;gradientColor=#ffd966;strokeColor=#d6b656;movable=1;resizable=1;deletable=1;editable=1;locked=0;connectable=1;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-70">
+          <mxGeometry y="26" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-72" value="struct file __rcu&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;**fd" style="text;fillColor=#fff2cc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=1;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;gradientColor=#ffd966;strokeColor=#d6b656;movable=1;resizable=1;deletable=1;editable=1;locked=0;connectable=1;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-70">
+          <mxGeometry y="52" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-73" value="unsigned long &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;*open_fds" style="text;fillColor=#fff2cc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=1;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;gradientColor=#ffd966;strokeColor=#d6b656;movable=1;resizable=1;deletable=1;editable=1;locked=0;connectable=1;" vertex="1" parent="jfhTNY-dLuvARTbp_OiM-70">
+          <mxGeometry y="78" width="200" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="jfhTNY-dLuvARTbp_OiM-75" value="linux文件系统关键数据结构关联" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=38;" vertex="1" parent="1">
+          <mxGeometry x="-2020" y="-620" width="670" height="71" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
