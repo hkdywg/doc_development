@@ -2,15 +2,122 @@
 rst语法链接 https://3vshej.cn/rstSyntax/index.html
 sphinx教程 https://iridescent.ink/HowToMakeDocs/index.html
 
-第一小节
+标题
 ==============
 
-第一小节第一子节
-----------------
+::
 
-*单星号----强调斜体*
+	============
+	一级标题
+	============
 
-**双星号----加黑**
+	二级标题
+	============
+
+	三级标题
+	----------
+
+	四级标题
+	^^^^^^^^^^^
+
+	五级标题
+	""""""""""""
+
+	六级标题
+	***********
+
+字体样式
+===========
+
+- 强调内容
+
+::
+
+	*这里是强调内容*
+
+- 引用内容
+
+::
+
+	`这里是引用内容`
+
+- 粗体
+
+::
+
+	**这里是粗体内容**
+
+- 等宽文本
+
+::
+
+	``这里是等宽文本``
+
+- 上标
+
+
+::
+
+	E = mc\ :sup:`2`
+
+- 下标
+
+::
+
+	H\: sub"`2`\ O
+
+- 转义
+
+::
+
+	\*BSD
+
+
+段落
+========
+
+::
+
+	| 这里是段落
+
+
+- 行块
+
+::
+
+	下面是行块内容：
+	 | 这是一段行块内容
+	 | 这同样也是行块内容
+	   还是行块内容
+
+	这是新的一段。
+
+- 定义
+
+::
+
+	定义1
+	  这是定义1的内容
+
+	定义2
+	  这是定义2的内容
+
+- 字段列表
+
+::
+	:标题: reStructuredText语法说明
+
+	:作者:
+	 - Seay
+	 - Seay1
+	 - Seay2
+
+	:时间: 2017年12月12日
+
+	:概述: 这是一篇
+	 关于reStructuredText的语法说明。
+
+
 
 .. role:: raw-html(raw)
    :format: html
@@ -27,6 +134,49 @@ sphinx教程 https://iridescent.ink/HowToMakeDocs/index.html
         int reval = 0;
         return reval;
     }
+
+.. code-block:: c
+    :linenos:
+        :emphasize-lines: 3,6
+
+         void foo()
+         {
+                 int i;
+
+                         for(i=0; i<10; i++)
+                                     printf("i: %d\n", a);
+                                         
+         }
+
+.. code-block:: c
+    :linenos:
+    :emphasize-lines: 3,6
+
+    void foo()
+    {
+        int i;
+
+        for(i=0; i<10; i++)
+            printf("i: %d\n", a);
+    }
+
+.. code-block:: php
+    :linenos:
+
+    <?php
+        echo 'hi';
+    ?>
+
+.. code-block:: html
+    :linenos:
+
+    <b>粗体</b>
+
+.. code-block:: console
+    :linenos:
+
+    $ ls
+    $ uname -a
 
 文本段
 
