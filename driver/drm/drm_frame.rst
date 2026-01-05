@@ -66,19 +66,34 @@ KMS全称是kernel mode setting,这里的mode是指显示控制器的mode.
 
 KMS将整个显示控制器的显示pipeline抽象成以下几个部分:
 
-- plane : 硬件图层，有的display硬件支持多层合成显示，但所有的display controller至少要有一个plane
+- framebuffer: 帧缓存，它不仅仅是一块内存(drm_gem_object), 更是带有显示元数据的内存。他定义了土地昂的宽、高、像素格式以及内存布局(ptrch/stride), 是KMS流水线的数据源头
 
-- crtc : 显示控制器,产生时序信号的硬件模块，主要用于显示控制(如显示时序、分辨率、刷新率等)例如在rockchip平台是SOC内部的VOP2中video port的抽象
+- plane : 负责从drm_framebuffer中读取像素数据
+  
+  - 主平面(Primary Plane): 构成画面的基础背景层，每个CRTC必须有一个
+
+  - 覆盖平面(Overlay Plane): 用于在主平面上叠加图像，最典型的应用就是视频播放。显示硬件可以直接将视频帧叠加到UI上，无需GPU进行额外的渲染合成
+
+  - 光标平面(Cursor Plane): 一个专门用于显示鼠标指针的小图层，可以独立于其他图层进行移动
+
+- crtc : 显示控制器,产生时序信号的硬件模块，主要用于显示控制(如显示时序、分辨率、刷新率等)例如在rockchip平台是SOC内部的VOP2中video port的抽象. ``crtc是整条流水线的核心和大脑，有两大职责``
+
+  - 混合(Compositing): 接收一个或多个plane的像素流，并将它们按顺序正确的混合成最终的一帧完整画面
+
+  - 时序生成(Timing Generation): 根据先选定的显示模式(drm_display_mode)，生成精确地像素时钟，水平同步和垂直同步信号，驱动整个显示过程, 同时负责色彩管理
 
 - encoder : 负责将CRTC输出的timing时序转换成外部设备所需要的信号的模块,指LVDS, DSI, DP, HDMI等显示接口
 
-- connector : 连接物理显示设备的连接器，指encoder和panel之间交互的接口部分，通常和Encoder驱动绑定在一起
+- connector : 连接物理显示设备的连接器，指encoder和panel之间交互的接口部分，通常和Encoder驱动绑定在一起. 负责与外部世界进行交互
+
+  - 连接状态监测: 通过热插拔(Hotplug)机制检测是否有显示器连接
+
+  - 能力探测: 通过读取显示器的EDID数据，获取其支持的所有显示模式，制造商信息等
 
 - Bridge : 桥接设备,一般用户注册encoder后面另外连接的转换芯片,比如DSI2HDMI转换芯片
 
 - Panel : 泛指屏，各种LCD显示设备的抽象
 
-- Fb: Framebuffer,单个图层的显示内容，惟一一个和硬件无关的基本元素
 
 - VBLANK: 软件和硬件的同步机制，时序中的垂直消隐区，软件通常使用硬件VSYNC来实现
 
