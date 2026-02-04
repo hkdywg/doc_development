@@ -20,6 +20,71 @@ VFS 是底层文件系统的主要接口。这个组件导出一组接口，然�
 概念
 --------
 
+- 超级块: struct super_block
+
+  - 代表一个已经挂载的文件系统，比如把一个U盘挂载到/mnt目录，内核就会创建一个超级块对象
+
+  - 包含信息: 文件系统的类型(FAT还是Ext4等)、块大小、总大小、根目录在哪里
+
+  - 方法: alloc_inode(创建一个新的inode),write_inode(把inode写回磁盘)等
+
+- 索引节点: struct inode
+
+  - 代表文件本身(物理上的文件)
+
+  - 包含信息d: 文件的元数据，包括权限、所有者、文件大小、时间戳、数据块在磁盘的位置
+
+  - inode中不包含文件名
+
+  - 方法: inode_operations, 比如create, mkdir, lookup等
+
+- 目录项: struct dentry
+
+  - 代表路径: 连接文件名和inode
+
+  - 包含信息: 文件名、指向对应inode的指针、指向父目录的指针
+
+- 文件对象: struct file
+
+  - 代表进程打开的一个文件
+
+  - 包含信息: 当前读写位置(f_pos), 这是最重要的，两个进程打开同一个文件，会有两个file对象，各自维护自己的读写进度，还有指向dentry的指针，打开模式(只读/读写)
+
+  - 方法: file_operations, 包含read, write, fsync, mmap
+
+.. code-block:: text
+
+    进程 (Process)
+        |
+        文件描述符表 (fd table)
+        |
+        +-- [0] stdin
+        +-- [1] stdout
+        +-- [2] stderr
+        +-- [3] fd
+              |
+              +-- struct file (文件对象)
+                    |
+                    +-- f_pos: 1024 (当前读到哪了)
+                    +-- f_op: ext4_file_operations (操作函数表)
+                    +-- f_path.dentry
+                          |
+                          v
+                    struct dentry (目录项)
+                        |
+                        +-- d_name: "a.txt"
+                        +-- d_inode
+                              |
+                              v
+                        struct inode (索引节点)
+                            |
+                            +-- i_ino: 34211 (ID)
+                            +-- i_size: 2048
+                            +-- i_op: ext4_inode_ops
+                            +-- 磁盘块映射: [Block 100, Block 101]
+
+
+
 文件: 一组在逻辑上具有完整意义的信息项的系列。在Linux中除了普通文件，其他诸如目录、设备、套接字等以文件被对待
 
 目录: 目录好比一个文件夹，用来容纳相关文件。因为目录可以包含子目录，所以目录是可以层层嵌套，形成文件路径，Linux中目录被作为一种特殊文件对待
