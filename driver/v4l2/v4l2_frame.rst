@@ -24,6 +24,9 @@ V4L2框架主要涉及以下几个部分
 .. image::
     res/v4l2_frame.png
 
+.. image::
+    res/v4l2_layer.png
+
 
 内核中V4L2各组件关系图
 
@@ -35,9 +38,11 @@ V4L2框架主要涉及以下几个部分
 
 **cocntroler主要抽象的结构体**
 
-- ``v4l2_device`` : 这是整个输入设备的总结构体,可以认为他是整个v4l2框架的入口,充当驱动的管理者. 
+- ``video_device`` : 用于生成设备节点(/dev/videoX),代表一个可被用户空间访问的视频设备实例，给用户提供操作接口,如查询/设置参数,获取buffer数据,向内核提交处理好的buffer等
 
-- ``video_device`` : 用于生成设备节点(/dev/videoX), 给用户提供操作接口,如查询/设置参数,获取buffer数据,向内核提交处理好的buffer等
+- ``v4l2_device`` : 对整个视频设备系统的高层抽象，这是整个输入设备的总结构体,可以认为他是整个v4l2框架的入口,充当驱动的管理者. 
+
+- ``v4l2_subdev`` : 用于抽象视频设备中的各个子组件，如sensor、isp、闪光灯等。
 
 - ``v4l2_async_notifier`` : 用于子设备的异步注册,subdev子设备的注册通常和controller设备是分开的,controler设备需要通过v4l2_async_notifier查找子设备并将其注册到v4l2_device进行统一管理
 
@@ -74,7 +79,6 @@ V4L2框架主要涉及以下几个部分
 
 v4l2_fops
 ^^^^^^^^^^
-
 
 ::
 
@@ -166,7 +170,7 @@ v4l2_device
         char name[V4L2_DEVICE_NAME_SIZE];   #设备名称,默认情况下,驱动程序名字+总线ID
         void (*notify)(struct v4l2_subdev *sd,
                 unsigned int notification, void *arg);  #由子设备调用的回调函数
-        struct v4l2_ctrl_handler *ctrl_handler;
+        struct v4l2_ctrl_handler *ctrl_handler;     #参数控制结构(如:分辨率、帧率、焦距、曝光时间、白平衡、色温等)
         struct v4l2_prio_state prio;
         struct kref ref;
         void (*release)(struct v4l2_device *v4l2_dev);
