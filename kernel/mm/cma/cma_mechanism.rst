@@ -24,7 +24,12 @@ CMA工作原理
 
 
 系统启动阶段，CMA会根据预先设定的规则，从系统的物理内存中精心挑选并预留出一块特定的物理内存区域。预留区域的大小可以
-通过多种方式来确定，比如在设备树中进行定义，或者通过内核启动参数来指定。
+通过多种方式来确定，比如在设备树中进行定义，或者内核编译选项或者通过内核启动参数来指定。
+
+常见的内核启动参数格式为cma=size[@start-end], 例如cma=256M@3G-4G
+
+编译内核时可以通过编译选项 ``CONFIG_CMA_SIZE_MBYTES`` 来指定CMA区域的大小。系统启动时会通过 ``dma_contiguous_reserve`` 函数
+会根据内核编译选项或者从设备树中解析出的信息，计算出CMA区域的起始地址和大小，然后通过 ``memblock`` 机制将这部分内存标记为预留状态
 
 
 ::
@@ -36,17 +41,17 @@ CMA工作原理
 
 		/* For Audio DSP */
 		adsp_reserved: linux,adsp@57000000 {
-			compatible = "shared-dma-pool";
-			reusable;
+			compatible = "shared-dma-pool";     
+			reusable;   
 			reg = <0x00000000 0x57000000 0x0 0x01000000>;
 		};
 
 		/* global autoconfigured region for contiguous allocations */
 		linux,cma@58000000 {
-			compatible = "shared-dma-pool";
-			reusable;
-			reg = <0x00000000 0x58000000 0x0 0x10000000>;
-			linux,cma-default;
+			compatible = "shared-dma-pool"; //这是CMA区域在设备树中的标准标识
+			reusable;  //表示该CMA区域未被大块连续内存请求占用时，可以被系统其他部分复用
+			reg = <0x00000000 0x58000000 0x0 0x10000000>;   //定义了起始地址和大小
+			linux,cma-default;  //标记为系统默认的CMA区域，系统中有多个CMA区域时，可以通过这种方式指定一个默认区域
 		};
 
 		/* device specific region for contiguous allocations */
@@ -94,3 +99,24 @@ CMA工作原理
 	#endif
 		const char *name;             // CMA区域的名称
 	};
+
+CMA提供了一系列的接口函数来实现内存的分配和释放操作，主要的分配函数是 ``dma_alloc_from_contiguous`` ,释放的函数是 ``dma_release_from_contiguous``
+
+::
+
+    struct page *dma_alloc_from_contiguous(struct device *dev, size_t count,
+                           unsigned int align, bool no_warn)
+    {
+        if (align > CONFIG_CMA_ALIGNMENT)
+            align = CONFIG_CMA_ALIGNMENT;
+
+        return cma_alloc(dev_get_cma_area(dev), count, align, no_warn);
+
+    }
+
+    bool dma_release_from_contiguous(struct device *dev, struct page *pages,
+                     int count)
+    {
+        return cma_release(dev_get_cma_area(dev), pages, count);
+
+    }
