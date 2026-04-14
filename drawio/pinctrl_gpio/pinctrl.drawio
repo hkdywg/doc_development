@@ -1,0 +1,275 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.1.1 Chrome/132.0.6834.210 Electron/34.3.3 Safari/537.36" version="26.1.1">
+  <diagram name="第 1 页" id="-kirrVvTEbNliqH-kTaG">
+    <mxGraphModel dx="3585" dy="3279" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="het5qb8BKpMWytodhoEc-62" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#994C00;strokeWidth=4;" vertex="1" parent="1">
+          <mxGeometry x="1290" y="445" width="330" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-10" target="het5qb8BKpMWytodhoEc-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-10" value="gpiochip_add_data" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="80" y="220" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-12" target="het5qb8BKpMWytodhoEc-13">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="358" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-12" value="of_gpiochip_add" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="190" y="290" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-13" target="het5qb8BKpMWytodhoEc-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-13" value="of_gpiochip_add_pin_range" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="350" y="350" width="190" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-14" value="gpiochip_add_pin_range" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="480" y="440" width="190" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-15" value="&lt;pre&gt;&lt;div style=&quot;background-color: rgba(0, 0, 0, 0); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;fontColor=default;" vertex="1" parent="1">
+          <mxGeometry x="570" y="510" width="560" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-16" value="&lt;pre&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;        gpio0:&lt;/span&gt;&lt;span style=&quot;&quot;&gt; &lt;/span&gt;&lt;span style=&quot;&quot;&gt;gpio@e6050000 &lt;/span&gt;&lt;span style=&quot;&quot;&gt;{&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;            compatible = &lt;/span&gt;&lt;span style=&quot;&quot;&gt;&quot;renesas,gpio-r8a77990&quot;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;,&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;                     &lt;/span&gt;&lt;span style=&quot;&quot;&gt;&quot;renesas,rcar-gen3-gpio&quot;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;            reg = &lt;/span&gt;&lt;span style=&quot;&quot;&gt;&amp;lt;0 0xe6050000 0 0x50&amp;gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;            interrupts = &lt;/span&gt;&lt;span style=&quot;&quot;&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;            #gpio-cells = &lt;/span&gt;&lt;span style=&quot;&quot;&gt;&amp;lt;2&amp;gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;            gpio-controller;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;            gpio-ranges = &lt;/span&gt;&lt;span style=&quot;&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;&amp;amp;pfc&lt;/span&gt;&lt;span style=&quot;&quot;&gt; 0 0 18&amp;gt;;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;            #interrupt-cells = &lt;/span&gt;&lt;span style=&quot;&quot;&gt;&amp;lt;2&amp;gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;            interrupt-controller;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;            clocks = &lt;/span&gt;&lt;span style=&quot;&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;&amp;amp;cpg&lt;/span&gt;&lt;span style=&quot;&quot;&gt; CPG_MOD 912&amp;gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;            power-domains = &lt;/span&gt;&lt;span style=&quot;&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;&amp;amp;sysc&lt;/span&gt;&lt;span style=&quot;&quot;&gt; R8A77990_PD_ALWAYS_ON&amp;gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;            resets = &lt;/span&gt;&lt;span style=&quot;&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;&amp;amp;cpg&lt;/span&gt;&lt;span style=&quot;&quot;&gt; 912&amp;gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212));&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;        };&lt;/span&gt;&lt;span&gt;   &lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;" style="text;whiteSpace=wrap;html=1;fontColor=default;" vertex="1" parent="1">
+          <mxGeometry x="440" y="40" width="560" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-18" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.438;entryY=0.719;entryDx=0;entryDy=0;entryPerimeter=0;fontColor=#CC0000;strokeColor=#CC0000;" edge="1" parent="1" target="het5qb8BKpMWytodhoEc-19">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="690" y="190" as="sourcePoint" />
+            <mxPoint x="813" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-19" value="&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    /* Use local offset as range ID */&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;range.id = gpio_offset;&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;range.gc = gc;&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;range.name = gc-&amp;gt;label;&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;range.base = gdev-&amp;gt;base + gpio_offset;&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;range.pin_base = pin_offset;&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;range.npins = npins;&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;pctldev = pinctrl_find_and_add_gpio_range(pinctl_name,&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;            &amp;amp;pin_range-&amp;gt;range); &lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="590" y="525" width="480" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-22" value="" style="endArrow=classic;html=1;rounded=0;fontColor=#CC0000;strokeColor=#CC0000;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="710" y="180" as="sourcePoint" />
+            <mxPoint x="840" y="620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-24" value="" style="endArrow=classic;html=1;rounded=0;fontColor=#CC0000;strokeColor=#CC0000;entryX=0.688;entryY=0.469;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="het5qb8BKpMWytodhoEc-19">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="730" y="190" as="sourcePoint" />
+            <mxPoint x="850" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="het5qb8BKpMWytodhoEc-15">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="520.5" y="640" as="targetPoint" />
+            <mxPoint x="520" y="470" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="520" y="605" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-85" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-43" target="het5qb8BKpMWytodhoEc-82">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-43" value="pinctrl_dev" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="1630" y="15" width="350" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-44" value="&lt;pre&gt;&lt;div&gt;&lt;font face=&quot;Consolas, monospace-fallback, monospace&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;struct list_head node;&lt;br&gt;struct pinctrl_desc *desc;&lt;br&gt;struct radix_tree_root pin_desc_tree;&lt;br&gt;struct list_head gpio_ranges;&lt;br&gt;struct device *dev;&lt;br&gt;struct module *owner;&lt;br&gt;void *driver_data;&lt;br&gt;struct pinctrl *p;&lt;br&gt;struct pinctrl_state *hog_default;&lt;br&gt;struct pinctrl_state *hog_sleep;&lt;br&gt;struct mutex mutex;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=none;" vertex="1" parent="het5qb8BKpMWytodhoEc-43">
+          <mxGeometry y="50" width="350" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-48" value="gpio_pin_range" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="265" width="270" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-49" value="struct list_head node;&lt;br&gt;    struct pinctrl_dev *pctldev;&lt;br&gt;    struct pinctrl_gpio_range range;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="het5qb8BKpMWytodhoEc-48">
+          <mxGeometry y="50" width="270" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-50" value="&lt;pre&gt;&lt;div style=&quot;color: rgb(208, 208, 208); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=default;" vertex="1" parent="het5qb8BKpMWytodhoEc-48">
+          <mxGeometry y="120" width="270" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-52" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=-0.004;exitY=0.355;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-44" target="het5qb8BKpMWytodhoEc-48">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-54" value="pinctrl_gpio_range" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="465" width="270" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-55" value="struct list_head node;&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;const char *name;&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;unsigned int id;&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;unsigned int base;&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;unsigned int pin_base;&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;unsigned const *pins;&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;unsigned int npins;&lt;br style=&quot;padding: 0px; margin: 0px;&quot;&gt;struct gpio_chip *gc;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="het5qb8BKpMWytodhoEc-54">
+          <mxGeometry y="50" width="270" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-56" value="&lt;pre&gt;&lt;div style=&quot;color: rgb(208, 208, 208); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=default;" vertex="1" parent="het5qb8BKpMWytodhoEc-54">
+          <mxGeometry y="200" width="270" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-58" value="struct list_head node;&lt;br&gt;    struct pinctrl_dev *pctldev;&lt;br&gt;    struct pinctrl_gpio_range range;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="315" width="270" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=-0.003;exitY=0.717;exitDx=0;exitDy=0;entryX=0.475;entryY=-0.002;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-58" target="het5qb8BKpMWytodhoEc-54">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-64" value="" style="endArrow=classic;html=1;rounded=0;strokeWidth=4;strokeColor=#663300;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1260" y="600" as="sourcePoint" />
+            <mxPoint x="1150" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-65" value="gpio_chip" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="1700" y="730" width="240" height="350" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-66" value="&lt;div&gt;const char&amp;nbsp; *label;&lt;/div&gt;&lt;div&gt;struct gpio_device&amp;nbsp; *gpiodev;&lt;/div&gt;&lt;div&gt;struct device&amp;nbsp; &amp;nbsp;*parent;&lt;/div&gt;&lt;div&gt;struct module&amp;nbsp; &amp;nbsp;*owner;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;int (*request)(struct gpio_chip *gc,&lt;/div&gt;&lt;div&gt;unsigned int offset);&lt;/div&gt;&lt;div&gt;void(*free)(struct gpio_chip *gc,&lt;/div&gt;&lt;div&gt;unsigned int offset);&lt;/div&gt;&lt;div&gt;int (*get_direction)(struct gpio_chip *gc,&lt;/div&gt;&lt;div&gt;unsigned int offset);&lt;/div&gt;&lt;div&gt;int (*direction_input)(struct gpio_chip *gc,&lt;/div&gt;&lt;div&gt;unsigned int offset);&lt;/div&gt;&lt;div&gt;int (*direction_output)(struct gpio_chip *gc,&lt;/div&gt;&lt;div&gt;unsigned int offset, int value);&lt;/div&gt;&lt;div&gt;int (*get)(struct gpio_chip *gc,&lt;/div&gt;&lt;div&gt;unsigned int offset);&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="het5qb8BKpMWytodhoEc-65">
+          <mxGeometry y="50" width="240" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-67" value="&lt;pre&gt;&lt;div style=&quot;color: rgb(208, 208, 208); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=default;" vertex="1" parent="het5qb8BKpMWytodhoEc-65">
+          <mxGeometry y="350" width="240" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-71" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1.007;exitY=0.885;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-55" target="het5qb8BKpMWytodhoEc-65">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-115" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-73" target="het5qb8BKpMWytodhoEc-111">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-73" value="pinctrl_desc" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="2160" y="20" width="240" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-74" value="&lt;div&gt;const char *name;&lt;/div&gt;&lt;div&gt;const struct pinctrl_pin_desc *pins;&lt;/div&gt;&lt;div&gt;unsigned int npins;&lt;/div&gt;&lt;div&gt;const struct pinctrl_ops *pctlops;&lt;/div&gt;&lt;div&gt;const struct pinmux_ops *pmxops;&lt;/div&gt;&lt;div&gt;const struct pinconf_ops *confops;&lt;/div&gt;&lt;div&gt;struct module *owner;&lt;/div&gt;&lt;div&gt;bool link_consumers;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="het5qb8BKpMWytodhoEc-73">
+          <mxGeometry y="50" width="240" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-75" value="&lt;pre&gt;&lt;div style=&quot;color: rgb(208, 208, 208); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=default;" vertex="1" parent="het5qb8BKpMWytodhoEc-73">
+          <mxGeometry y="180" width="240" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-81" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1.008;exitY=0.184;exitDx=0;exitDy=0;entryX=-0.004;entryY=0.264;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-44" target="het5qb8BKpMWytodhoEc-74">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2159.92" y="110.5" as="targetPoint" />
+            <mxPoint x="1981.92" y="110.5" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-82" value="pinctrl" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="2160" y="260" width="240" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-83" value="&lt;div&gt;struct list_head node;&lt;/div&gt;&lt;div&gt;struct device *dev;&lt;/div&gt;&lt;div&gt;struct list_head states;&lt;/div&gt;&lt;div&gt;struct pinctrl_state *state;&lt;/div&gt;&lt;div&gt;struct list_head dt_maps;&lt;/div&gt;&lt;div&gt;struct kref users;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="het5qb8BKpMWytodhoEc-82">
+          <mxGeometry y="50" width="240" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-84" value="&lt;pre&gt;&lt;div style=&quot;color: rgb(208, 208, 208); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=default;" vertex="1" parent="het5qb8BKpMWytodhoEc-82">
+          <mxGeometry y="150" width="240" height="-10" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-86" value="pinctrl_state" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="2160" y="470" width="240" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-87" value="&lt;div&gt;&lt;div&gt;struct list_head node;&lt;/div&gt;&lt;div&gt;const char *name;&lt;/div&gt;&lt;div&gt;struct list_head settings;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="het5qb8BKpMWytodhoEc-86">
+          <mxGeometry y="50" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-88" value="&lt;pre&gt;&lt;div style=&quot;color: rgb(208, 208, 208); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=default;" vertex="1" parent="het5qb8BKpMWytodhoEc-86">
+          <mxGeometry y="110" width="240" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-89" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-83" target="het5qb8BKpMWytodhoEc-86">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2110" y="360" />
+              <mxPoint x="2110" y="497" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-90" value="pinctrl_setting" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="2160" y="665" width="240" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-91" value="&lt;div&gt;struct list_head node;&lt;/div&gt;&lt;div&gt;enum pinctrl_map_type type;&lt;/div&gt;&lt;div&gt;struct pinctrl_dev *pctldev;&lt;/div&gt;&lt;div&gt;const char *dev_name;&lt;/div&gt;&lt;div&gt;union {&lt;/div&gt;&lt;div&gt;struct pinctrl_setting_mux mux;&lt;/div&gt;&lt;div&gt;struct pinctrl_setting_configs configs;&lt;/div&gt;&lt;div&gt;} data;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="het5qb8BKpMWytodhoEc-90">
+          <mxGeometry y="50" width="240" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-92" value="&lt;pre&gt;&lt;div style=&quot;color: rgb(208, 208, 208); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=default;" vertex="1" parent="het5qb8BKpMWytodhoEc-90">
+          <mxGeometry y="190" width="240" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-93" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=-0.006;entryY=0.151;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-87" target="het5qb8BKpMWytodhoEc-91">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2110" y="565" />
+              <mxPoint x="2110" y="736" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-94" value="pinctrl_setting_mux" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="2570" y="600" width="240" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-95" value="&lt;div&gt;unsigned group;&lt;/div&gt;&lt;div&gt;unsigned func;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="het5qb8BKpMWytodhoEc-94">
+          <mxGeometry y="50" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-96" value="&lt;pre&gt;&lt;div style=&quot;color: rgb(208, 208, 208); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=default;" vertex="1" parent="het5qb8BKpMWytodhoEc-94">
+          <mxGeometry y="100" width="240" height="5" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-97" value="pinctrl_setting_mux" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="2570" y="795" width="240" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-98" value="&lt;div&gt;unsigned group_or_pin;&lt;/div&gt;&lt;div&gt;unsigned long *configs;&lt;/div&gt;&lt;div&gt;unsigned num_configs;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="het5qb8BKpMWytodhoEc-97">
+          <mxGeometry y="50" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-99" value="&lt;pre&gt;&lt;div style=&quot;color: rgb(208, 208, 208); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=default;" vertex="1" parent="het5qb8BKpMWytodhoEc-97">
+          <mxGeometry y="100" width="240" height="5" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-101" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=1.005;exitY=0.64;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-91" target="het5qb8BKpMWytodhoEc-95">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2403" y="805" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-102" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-91" target="het5qb8BKpMWytodhoEc-98">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-103" value="pinctrl_ops" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="2560" y="-210" width="240" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-106" value="&lt;div&gt;int (*get_groups_count)&amp;nbsp;&lt;/div&gt;&lt;div&gt;const char *(*get_group_name)&amp;nbsp;&lt;/div&gt;&lt;div&gt;int (*get_group_pins)&amp;nbsp;&lt;/div&gt;&lt;div&gt;void (*pin_dbg_show)&amp;nbsp;&lt;/div&gt;&lt;div&gt;int (*dt_node_to_map)&lt;/div&gt;&lt;div&gt;void (*dt_free_map)&amp;nbsp;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="het5qb8BKpMWytodhoEc-103">
+          <mxGeometry y="50" width="240" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-105" value="&lt;pre&gt;&lt;div style=&quot;color: rgb(208, 208, 208); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=default;" vertex="1" parent="het5qb8BKpMWytodhoEc-103">
+          <mxGeometry y="180" width="240" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-107" value="pinmux_ops" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="2560" y="20" width="240" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-108" value="&lt;div&gt;int (*request) (struct pinctrl_dev *pctldev, unsigned offset);&lt;/div&gt;&lt;div&gt;int (*free) (struct pinctrl_dev *pctldev, unsigned offset);&lt;/div&gt;&lt;div&gt;int (*get_functions_count) (struct pinctrl_dev *pctldev);&lt;/div&gt;&lt;div&gt;const char *(*get_function_name)&amp;nbsp;&lt;/div&gt;&lt;div&gt;int (*get_function_groups)&lt;/div&gt;&lt;div&gt;int (*set_mux)&amp;nbsp;&lt;/div&gt;&lt;div&gt;int (*gpio_request_enable)&lt;/div&gt;&lt;div&gt;void (*gpio_disable_free)&amp;nbsp;&lt;/div&gt;&lt;div&gt;int (*gpio_set_direction)&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="het5qb8BKpMWytodhoEc-107">
+          <mxGeometry y="50" width="240" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-109" value="&lt;pre&gt;&lt;div style=&quot;color: rgb(208, 208, 208); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=default;" vertex="1" parent="het5qb8BKpMWytodhoEc-107">
+          <mxGeometry y="240" width="240" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-110" value="pinconf_ops" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="2560" y="300" width="240" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-111" value="&lt;div&gt;int (*pin_config_get)&amp;nbsp;&lt;/div&gt;&lt;div&gt;int (*pin_config_set)&amp;nbsp;&lt;/div&gt;&lt;div&gt;int (*pin_config_group_get)&amp;nbsp;&lt;/div&gt;&lt;div&gt;int (*pin_config_group_set)&amp;nbsp;&lt;/div&gt;&lt;div&gt;void (*pin_config_dbg_show)&amp;nbsp;&lt;/div&gt;&lt;div&gt;void (*pin_config_group_dbg_show)&amp;nbsp;&lt;/div&gt;&lt;div&gt;void (*pin_config_config_dbg_show)&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="het5qb8BKpMWytodhoEc-110">
+          <mxGeometry y="50" width="240" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-112" value="&lt;pre&gt;&lt;div style=&quot;color: rgb(208, 208, 208); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=default;" vertex="1" parent="het5qb8BKpMWytodhoEc-110">
+          <mxGeometry y="170" width="240" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-113" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.002;entryY=0.391;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2400" y="124.2" as="sourcePoint" />
+            <mxPoint x="2559.52" y="-119.97000000000007" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="2480" y="124" />
+              <mxPoint x="2480" y="-120" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-114" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.004;entryY=0.345;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2400" y="144.7" as="sourcePoint" />
+            <mxPoint x="2560.96" y="145.24999999999994" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-116" value="pinctrl_pin_desc" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=1;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;textShadow=0;" vertex="1" parent="1">
+          <mxGeometry x="2560" y="-440" width="240" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-117" value="&lt;div&gt;unsigned number;&lt;/div&gt;&lt;div&gt;const char *name;&lt;/div&gt;&lt;div&gt;void *drv_data;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="het5qb8BKpMWytodhoEc-116">
+          <mxGeometry y="50" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-118" value="&lt;pre&gt;&lt;div style=&quot;color: rgb(208, 208, 208); font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/pre&gt;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;labelBackgroundColor=default;" vertex="1" parent="het5qb8BKpMWytodhoEc-116">
+          <mxGeometry y="110" width="240" as="geometry" />
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-119" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="het5qb8BKpMWytodhoEc-74" target="het5qb8BKpMWytodhoEc-116">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2440" y="102" />
+              <mxPoint x="2440" y="-412" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
