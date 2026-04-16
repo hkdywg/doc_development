@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.1.1 Chrome/132.0.6834.210 Electron/34.3.3 Safari/537.36" version="26.1.1">
   <diagram name="第 1 页" id="-kirrVvTEbNliqH-kTaG">
-    <mxGraphModel dx="3585" dy="3279" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="683" dy="1571" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -40,8 +40,11 @@
         </mxCell>
         <mxCell id="het5qb8BKpMWytodhoEc-18" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.438;entryY=0.719;entryDx=0;entryDy=0;entryPerimeter=0;fontColor=#CC0000;strokeColor=#CC0000;" edge="1" parent="1" target="het5qb8BKpMWytodhoEc-19">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="690" y="190" as="sourcePoint" />
+            <mxPoint x="730" y="190" as="sourcePoint" />
             <mxPoint x="813" y="510" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="820" y="410" />
+            </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="het5qb8BKpMWytodhoEc-19" value="&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    /* Use local offset as range ID */&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;range.id = gpio_offset;&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;range.gc = gc;&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;range.name = gc-&amp;gt;label;&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;range.base = gdev-&amp;gt;base + gpio_offset;&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;range.pin_base = pin_offset;&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;range.npins = npins;&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;    pin_range-&amp;gt;pctldev = pinctrl_find_and_add_gpio_range(pinctl_name,&lt;/div&gt;&lt;div style=&quot;font-family: Consolas, monospace-fallback, &amp;quot;monospace&amp;quot;; font-size: 14px; text-align: left; white-space: pre;&quot;&gt;            &amp;amp;pin_range-&amp;gt;range); &lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
@@ -49,14 +52,8 @@
         </mxCell>
         <mxCell id="het5qb8BKpMWytodhoEc-22" value="" style="endArrow=classic;html=1;rounded=0;fontColor=#CC0000;strokeColor=#CC0000;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="710" y="180" as="sourcePoint" />
+            <mxPoint x="710" y="190" as="sourcePoint" />
             <mxPoint x="840" y="620" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="het5qb8BKpMWytodhoEc-24" value="" style="endArrow=classic;html=1;rounded=0;fontColor=#CC0000;strokeColor=#CC0000;entryX=0.688;entryY=0.469;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="het5qb8BKpMWytodhoEc-19">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="730" y="190" as="sourcePoint" />
-            <mxPoint x="850" y="640" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="het5qb8BKpMWytodhoEc-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="het5qb8BKpMWytodhoEc-15">
@@ -266,6 +263,15 @@
             <Array as="points">
               <mxPoint x="2440" y="102" />
               <mxPoint x="2440" y="-412" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="het5qb8BKpMWytodhoEc-120" value="" style="endArrow=classic;html=1;rounded=0;fontColor=#CC0000;strokeColor=#CC0000;entryX=0.688;entryY=0.469;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="het5qb8BKpMWytodhoEc-19">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="690" y="190" as="sourcePoint" />
+            <mxPoint x="850" y="640" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="730" y="430" />
             </Array>
           </mxGeometry>
         </mxCell>
