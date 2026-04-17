@@ -6,6 +6,9 @@
 kevin开发手记
 =============
 
+.. image:: https://img.shields.io/badge/GitHub-hkdywg-red?logo=github
+   :target: https://github.com/hkdywg
+
 .. toctree::
     :maxdepth: 2
     :numbered:
