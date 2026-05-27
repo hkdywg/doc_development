@@ -1,6 +1,12 @@
 SEC 写法基本规则
 ==================================================
 
+首先 ``SEC`` 是一个编译器属性宏，它将函数放入指定的ELF段(section)，当libbpf加载BPF对象文件时，会解析这些段名
+
+.. code-block:: c
+    
+    #define SEC(name)   __attribute__((section(name), used))
+
 符号含义
 --------
 
