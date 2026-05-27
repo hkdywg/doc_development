@@ -17,6 +17,7 @@ kevin开发手记
     u-boot/index.rst
     kernel/index.rst
     driver/index.rst
+    ebpf/index.rst
     fs/index.rst
     user/index.rst
     misc/index.rst
