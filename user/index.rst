@@ -14,3 +14,4 @@ application development node
     security/index.rst
     config/index.rst
     soft_package_list/index.rst
+    rust/index.rst
