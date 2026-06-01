@@ -1,90 +1,18 @@
-1.  `1. 引言 <intro/index.html>`__
-2.  
+嵌入式 Rust 学习文档
+====================
 
-    1. `1.1. 硬件 <intro/hardware.html>`__
-    2. `1.2. no_std <intro/no-std.html>`__
-    3. `1.3. 工具 <intro/tooling.html>`__
-    4. `1.4. 安装 <intro/install.html>`__
-    5. 
-
-       1. `1.4.1. Linux <intro/install/linux.html>`__
-       2. `1.4.2. MacOS <intro/install/macos.html>`__
-       3. `1.4.3. Windows <intro/install/windows.html>`__
-       4. `1.4.4. 验证工具链的安装 <intro/install/verify.html>`__
-
-3.  `2. 开始 <start/index.html>`__
-4.  
-
-    1. `2.1. QEMU <start/qemu.html>`__
-    2. `2.2. 硬件 <start/hardware.html>`__
-    3. `2.3. 存储映射的寄存器 <start/registers.html>`__
-    4. `2.4. 半主机模式 <start/semihosting.html>`__
-    5. `2.5. 运行时恐慌(Panicking) <start/panicking.html>`__
-    6. `2.6. 异常 <start/exceptions.html>`__
-    7. `2.7. 中断 <start/interrupts.html>`__
-    8. `2.8. IO <start/io.html>`__
-
-5.  `3. 外设 <peripherals/index.html>`__
-6.  
-
-    1. `3.1. Rust尝鲜 <peripherals/a-first-attempt.html>`__
-    2. `3.2. 借用检查器 <peripherals/borrowck.html>`__
-    3. `3.3. 单例 <peripherals/singletons.html>`__
-
-7.  `4. 静态保障(static guarantees) <static-guarantees/index.html>`__
-8.  
-
-    1. `4.1. 类型状态编程 <static-guarantees/typestate-programming.html>`__
-    2. `4.2. 把外设当作状态机 <static-guarantees/state-machines.html>`__
-    3. `4.3. 设计约定 <static-guarantees/design-contracts.html>`__
-    4. `4.4. 零成本抽象 <static-guarantees/zero-cost-abstractions.html>`__
-
-9.  `5. 可移植性 <portability/index.html>`__
-10. `6. 并发 <concurrency/index.html>`__
-11. `7. 容器 <collections/index.html>`__
-12. `8. 设计模式 <design-patterns/index.html>`__
-13. 
-
-    1. `8.1. HALs <design-patterns/hal/index.html>`__
-    2. 
-
-       1. `8.1.1. 列表 <design-patterns/hal/checklist.html>`__
-       2. `8.1.2. 命名 <design-patterns/hal/naming.html>`__
-       3. `8.1.3. 互操性 <design-patterns/hal/interoperability.html>`__
-       4. `8.1.4. 可预见性 <design-patterns/hal/predictability.html>`__
-       5. `8.1.5. GPIO <design-patterns/hal/gpio.html>`__
-
-14. `9. 给嵌入式C开发者的贴士 <c-tips/index.html>`__
-15. `10. 互操性 <interoperability/index.html>`__
-16. 
-
-    1. `10.1. 使用C的Rust <interoperability/c-with-rust.html>`__
-    2. `10.2. 使用Rust的C <interoperability/rust-with-c.html>`__
-
-17. `11. 没有排序的主题 <unsorted/index.html>`__
-18. 
-
-    1. `11.1. 优化: 速度与大小间的博弈 <unsorted/speed-vs-size.html>`__
-    2. `11.2. 执行数学运算 <unsorted/math.html>`__
-
-19. 
-
-    20. 
-
-        21. `附录A: 词汇表 <appendix/glossary.html>`__
-
-`引言 <#引言>`__
-================
+引言
+----
 
 欢迎阅读嵌入式Rust:一本关于如何在裸机(比如，微处理器)上使用Rust编程语言的入门书籍。
 
-`嵌入式Rust是为谁准备的 <#嵌入式rust是为谁准备的>`__
-----------------------------------------------------
+嵌入式Rust是为谁准备的
+~~~~~~~~~~~~~~~~~~~~~~
 
 嵌入式Rust是为了那些既想要进行嵌入式编程，又想要使用Rust语言所提供的高级概念和安全保障的人们而准备的(参见\ `Who Rust Is For <https://doc.rust-lang.org/book/ch00-00-introduction.html>`__)
 
-`本书范围 <#本书范围>`__
-------------------------
+本书范围
+~~~~~~~~
 
 这本书的目的是：
 
@@ -94,19 +22,15 @@
 
 虽然尽可能地尝试让这本书可以用于大多数场景，但是为了使读者和作者更容易理解，在所有的示例中，这本书都使用了ARM Cortex-M架构。然而，这本书并不需要读者熟悉这个架构，书中会在需要时对这个架构的特定细节进行解释。
 
-`这本书是为谁准备的 <#这本书是为谁准备的>`__
---------------------------------------------
+这本书是为谁准备的
+~~~~~~~~~~~~~~~~~~
 
 这本书适合那些有一些嵌入式背景或者有Rust背景的人，然而我相信每一个对Rust嵌入式编程好奇的人都能从这本书中获得某些收获。对于那些先前没有任何经验的人，我们建议你读一下“要求和预备知识”部分。从其它资料中获取、补充缺失的知识，这样能提高你的阅读体验。你可以看看“其它资源”部分，以找到你感兴趣的那些主题的资源。
 
-`要求和预备知识 <#要求和预备知识>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+要求和预备知识
+^^^^^^^^^^^^^^
 
 -  你可以轻松地使用Rust编程语言，且在一个桌面环境上写过，运行过，调试过Rust应用。你应该也要熟悉\ `2018 edition <https://doc.rust-lang.org/edition-guide/>`__\ 的术语，因为这本书是面向Rust 2018的。
-
-.. raw:: html
-
-   <!-- -->
 
 -  你可以轻松地使用其它语言，比如C，C++或者Ada，开发和调试嵌入式系统，且熟悉如下的概念：
 
@@ -115,13 +39,13 @@
    -  中断
    -  I2C，SPI，串口等等常见的接口
 
-`其它资源 <#其它资源>`__
-~~~~~~~~~~~~~~~~~~~~~~~~
+其它资源
+^^^^^^^^
 
 如果你还不熟悉上面提到的东西或者你对这本书中提到的某个特定主题感兴趣，你也许能从这些资源中找到有用的信息。
 
 =============================== ========================================================================================================================================================================================= ==========================================================
-主题                            资源                                                                                                                                                                                      描述
+题 资                           源 描                                                                                                                                                                                     述
 =============================== ========================================================================================================================================================================================= ==========================================================
 Rust                            `Rust Book <https://doc.rust-lang.org/book/>`__                                                                                                                                           如果你还不熟悉Rust，我们强烈建议你读这本书．
 Rust, Embedded                  `Discovery Book <https://docs.rust-embedded.org/discovery/>`__                                                                                                                            如果你从没做过嵌入式编程，这本书可能是个更好的开端．
@@ -132,10 +56,8 @@ Rust, Embedded                  `Comprehensive Rust 🦀: Bare Metal <https://go
 Interrupts                      `Interrupt <https://en.wikipedia.org/wiki/Interrupt>`__                                                                                                                                   -
 Memory-mapped IO/Peripherals    `Memory-mapped I/O <https://en.wikipedia.org/wiki/Memory-mapped_I/O>`__                                                                                                                   -
 SPI, UART, RS232, USB, I2C, TTL `Stack Exchange about SPI, UART, and other interfaces <https://electronics.stackexchange.com/questions/37814/usart-uart-rs232-usb-spi-i2c-ttl-etc-what-are-all-of-these-and-how-do-th>`__ -
+## 翻译                                                                                                                                                                                                                  
 =============================== ========================================================================================================================================================================================= ==========================================================
-
-`翻译 <#翻译>`__
-~~~~~~~~~~~~~~~~
 
 这本书是已经被一些慷慨的志愿者们翻译了。如果你想要将你的翻译列在这里，请打开一个PR去添加它。
 
@@ -143,13 +65,13 @@ SPI, UART, RS232, USB, I2C, TTL `Stack Exchange about SPI, UART, and other inter
 
 -  `中文 <https://xxchang.github.io/book/>`__ (`repository <https://github.com/xxchang/book>`__)
 
-`如何使用这本书 <#如何使用这本书>`__
-------------------------------------
+如何使用这本书
+~~~~~~~~~~~~~~
 
 这本书通常假设你是按顺序阅读的。之后的章节是建立在先前的章节中提到的概念之上的，先前章节可能不会深入一个主题的细节，因为在随后的章节将会再次重温这个主题。 在大多数示例中这本书将使用\ `STM32F3DISCOVERY <http://www.st.com/en/evaluation-tools/stm32f3discovery.html>`__\ 开发板。这个板子是基于ARM Cortex-M架构的，且基本功能与大多数基于这个架构的CPUs功能相似。微处理器的外设和其它实现细节在不同的厂家之间是不同的，甚至来自同一个厂家，不同处理器系列之间也是不同的。 因此我们建议购买\ `STM32F3DISCOVERY <http://www.st.com/en/evaluation-tools/stm32f3discovery.html>`__\ 开发板来尝试这本书中的例子。
 
-`贡献 <#贡献>`__
-----------------
+贡献
+~~~~
 
 这本书的工作主要在\ `这个仓库 <https://github.com/rust-embedded/book>`__\ 里管理，且主要由\ `resouces team <https://github.com/rust-embedded/wg#the-resources-team>`__\ 开发。
 
@@ -157,8 +79,8 @@ SPI, UART, RS232, USB, I2C, TTL `Stack Exchange about SPI, UART, and other inter
 
 修改拼写错误和添加新内容的Pull requests非常欢迎！
 
-`二次使用这个材料 <#二次使用这个材料>`__
-----------------------------------------
+二次使用这个材料
+~~~~~~~~~~~~~~~~
 
 这本书根据以下许可证发布:
 
@@ -173,13 +95,13 @@ SPI, UART, RS232, USB, I2C, TTL `Stack Exchange about SPI, UART, and other inter
 
 也请告诉我这本书对你是否有帮助！
 
-`熟悉你的硬件 <#熟悉你的硬件>`__
-================================
+熟悉你的硬件
+------------
 
 先来熟悉下我们要用的硬件。
 
-`STM32F3DISCOVERY (the "F3") <#stm32f3discovery-the-f3>`__
-----------------------------------------------------------
+STM32F3DISCOVERY (the "F3")
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 []
 
@@ -208,60 +130,60 @@ SPI, UART, RS232, USB, I2C, TTL `Stack Exchange about SPI, UART, and other inter
 
 提醒一句: 如果想要为板子提供外部信号，请小心。微控制器STM32F303VCT6管脚的标称电压是3.3伏。更多信息请查看\ `6.2 Absolute maximum ratings section in the manual <https://www.st.com/resource/en/datasheet/stm32f303vc.pdf>`__\ 。
 
-`一个 ``no_std`` Rust环境 <#一个-no_std-rust环境>`__
-====================================================
+一个 ``no_std`` Rust环境
+------------------------
 
 | 嵌入式编程这个词被广泛用于许多不同的编程场景中。小到RAM和ROM只有KB的8位机(像是\ `ST72325xx <https://www.st.com/resource/en/datasheet/st72325j6.pdf>`__)，大到一个具有32/64位4核Cortex-A53和1GB RAM的系统，比如树莓派(\ `Model B 3+ <https://en.wikipedia.org/wiki/Raspberry_Pi#Specifications>`__)。当编写代码时，取决于你的目标环境和用例，将会有不同的限制和局限。
 | 通常嵌入式编程有两类:
 
-`主机环境下 <#主机环境下>`__
-----------------------------
+主机环境下
+~~~~~~~~~~
 
 这类环境与一个常见的PC环境类似。意味着向你提供了一个系统接口\ `比如 POSIX <https://en.wikipedia.org/wiki/POSIX>`__\ ，使你能和不同的系统进行交互，比如文件系统，网络，内存管理，进程，等等。标准库相应地依赖这些接口去实现了它们的功能。可能有某种sysroot并限制了对RAM/ROM的使用，可能还有一些特别的硬件或者I/O。总之感觉像是在专用的PC环境上编程一样。
 
-`裸机环境下 <#裸机环境下>`__
-----------------------------
+裸机环境下
+~~~~~~~~~~
 
 在一个裸机环境中，程序被加载前，环境中不存在代码。没有系统提供的软件，我们不能加载标准库。相反地，程序和它使用的crates只能使用硬件(裸机)去运行。使用\ ``no-std``\ 可以防止rust读取标准库。标准库中与平台无关的部分在\ `libcore <https://doc.rust-lang.org/core/>`__\ 中。libcore剔除了那些在一个嵌入式环境中非必要的东西。比如用于动态分配的内存分配器。如果你需要这些或者其它的某些功能，通常会有提供这些功能的crates。
 
-`libstd运行时 <#libstd运行时>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+libstd运行时
+^^^^^^^^^^^^
 
 就像之前提到的，使用\ `libstd <https://doc.rust-lang.org/std/>`__\ 需要一些系统集成，这不仅仅是因为\ `libstd <https://doc.rust-lang.org/std/>`__\ 使用了一个公共的方法访问操作系统，它也提供了一个运行时环境。这个运行时环境，负责设置堆栈溢出保护，处理命令行参数，并在一个程序的主函数被激活前启动一个主线程。在一个\ ``no_std``\ 环境中，这个运行时环境也是不可用的。
 
-`总结 <#总结>`__
-----------------
+总结
+~~~~
 
 ``#![no_std]``\ 是一个crate层级的属性，它说明crate将连接至core-crate而不是std-crate。\ `libcore <https://doc.rust-lang.org/core/>`__ crate是std crate的一个的子集，其与平台无关，它对程序将要运行的系统没有做要求。比如，它提供了像是floats，strings和切片的APIs，暴露了像是与原子操作和SIMD指令相关的处理器功能的APIs。然而，它缺少涉及到平台集成的那些APIs。由于这些特性，no_std和\ `libcore <https://doc.rust-lang.org/core/>`__\ 代码可以用于任何引导程序(stage 0)像是bootloaders，固件或者内核。
 
-`概述 <#概述>`__
-~~~~~~~~~~~~~~~~
+概述
+^^^^
 
-============================== ====== ===
-特性                           no_std std
-============================== ====== ===
-堆 (dynamic memory)            \*     ✓
-容器 (Vec, BTreeMap, etc)      \*\*   ✓
-栈溢出保护                     ✘      ✓
-在进入main之前运行的初始化代码 ✘      ✓
-libstd available               ✘      ✓
-libcore available              ✓      ✓
-编写固件，内核，或者引导程序   ✓      ✘
-============================== ====== ===
-
-\* 只有在你使用了 ``alloc`` crate 并设置了一个适合的分配器后，比如\ `alloc-cortex-m <https://github.com/rust-embedded/alloc-cortex-m>`__\ 后可用．
+================================= ========== ============================================================
+性 no                             \_std st   d
+================================= ========== ============================================================
+堆 (dynamic memory)               \*         ✓
+容器 (Vec, BTreeMap, etc)         \*\*       ✓
+栈溢出保护                        ✘          ✓
+在进入main之前运行的初始化代码    ✘          ✓
+libstd available                  ✘          ✓
+libcore available                 ✓          ✓
+编写固件，内核，或者引导程序      ✓          ✘
+只有在你使用了 ``alloc`` crate              
+设置了一个适合的分配器后，比如[al loc-cortex -m](https://github.com/rust-embedded/alloc-cortex-m)后可用．
+================================= ========== ============================================================
 
 \*\* 只有在你使用了 ``collections`` crate 并配置了一个全局默认的分配器后可用．
 
 \*\* 由于缺少安全的随机数产生器，所以无法使用HashMap和HashSet．
 
-`参见 <#参见>`__
-----------------
+参见
+~~~~
 
 -  `RFC-1184 <https://github.com/rust-lang/rfcs/blob/master/text/1184-stabilize-no_std.md>`__
 
-`工具 <#工具>`__
-================
+工具
+----
 
 与微控制器打交道需要使用几种不同的工具，因为我们要处理的架构与笔记本电脑不同，我们必须在 *远程* 设备上运行和调试程序。我们将使用下面列举出来的工具。当没有指定一个最小版本时，最新的版本应该也可以用，但是我们还是列出了我们已经测过的那些版本。
 
@@ -274,48 +196,48 @@ libcore available              ✓      ✓
 
 下面的文档将解释我们为什么使用这些工具。安装指令可以在下一页找到。
 
-```cargo-generate`` 或者 ``git`` <#cargo-generate-或者-git>`__
---------------------------------------------------------------
+``cargo-generate`` 或者 ``git``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 | 裸机编程是非标准Rust编程，为了得到正确的程序的内存布局，需要对链接过程进行一些调整，这要求添加一些额外的文件(比如linker scripts)和配置(比如linker flags)。我们已经为你把这些打包进了一个模板里了，你只需要补充缺失的信息(比如项目名和目标硬件的特性)。
 | 我们的模板兼容\ ``cargo-generate``:一个用来从模板生成新的Cargo项目的Cargo子命令。你也能使用``git``,\ ``curl``,\ ``wget``,或者你的网页浏览器下载模板。
 
-```cargo-binutils`` <#cargo-binutils>`__
-----------------------------------------
+``cargo-binutils``
+~~~~~~~~~~~~~~~~~~
 
 | ``cargo-binutils``\ 是一个Cargo命令的子集，它让我们能轻松使用Rust工具链带来的LLVM工具。这些工具包括LLVM版本的\ ``objdump``\ ，\ ``nm``\ 和\ ``size``\ ，用来查看二进制文件。
 | 在GNU binutils之上使用这些工具的好处是，(a)无论你的操作系统是什么，安装这些LLVM工具都可以用同一条命令(\ ``rustup component add llvm-tools-preview``)。(b)像是\ ``objdump``\ 这样的工具，支持所有\ ``rustc``\ 支持的架构--从ARM到x86_64--因为它们都有一样的LLVM后端。
 
-```qemu-system-arm`` <#qemu-system-arm>`__
-------------------------------------------
+``qemu-system-arm``
+~~~~~~~~~~~~~~~~~~~
 
 QEMU是一个仿真器。在这个例子里，我们使用能完全仿真ARM系统的改良版QEMU。我们使用QEMU在主机上运行嵌入式程序。多亏了它，你可以在没有任何硬件的情况下，尝试这本书的部分示例。
 
-`用于调试嵌入式Rust的工具 <#用于调试嵌入式rust的工具>`__
-========================================================
+用于调试嵌入式Rust的工具
+------------------------
 
 .. _概述-1:
 
-`概述 <#概述-1>`__
-------------------
+概述
+~~~~
 
 在Rust中调试嵌入式系统需要用到专业的工具，这包括用于管理调试进程的软件，用于观察和控制程序执行的调试器，和用于便捷主机和嵌入式设备之间进行交互的硬件探测器．这个文档会介绍像是Probe-rs和OpenOCD这样的基础软件，以及像是GDB和Probe-rs Visual Studio Code扩展这样常见的调试器．另外，该文档会覆盖像是Rusty-probe，ST-Link，J-Link，和MCU-Link这样的硬件探测器，它们整合在一起可以高效地对嵌入式设备进行调试和编程．
 
-`驱动调试工具的软件 <#驱动调试工具的软件>`__
---------------------------------------------
+驱动调试工具的软件
+~~~~~~~~~~~~~~~~~~
 
-`Probe-rs <#probe-rs>`__
-~~~~~~~~~~~~~~~~~~~~~~~~
+Probe-rs
+^^^^^^^^
 
 Probe-rs是一个现代化的，以Rust开发的软件，被设计用来配合嵌入式系统中的调试器一起工作．不像OpenOCD，Probe-rs设计的时候就考虑到了简单性，目标是减少在其它调试解决方案中常见的配置重担． 它支持不同的探测器和目标架构，提供一个用于与嵌入式硬件交互的高层接口．Probe-rs直接集成了Rust工具链，并且通过扩展集成进了Visual Studio Code中，允许开发者精简它们的调试工作流程．
 
-`OpenOCD (Open On-Chip Debugger) <#openocd-open-on-chip-debugger>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+OpenOCD (Open On-Chip Debugger)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 OpenOCD是一个用于调试，测试，和编程嵌入式系统的开源软件工具．它提供了一个主机系统和嵌入式硬件之间的接口，支持不同的传输层，比如JTAG和SWD（Serial Wire Debug）．OpenOCD集成了GDB，其是一个调试器．OpenOCD受到了广泛的支持，拥有大量的文档和一个庞大的社区，但是配置可能会很复杂，特别是对于自定义的嵌入式设置．
 
-`Debuggers <#debuggers>`__
---------------------------
+Debuggers
+~~~~~~~~~
 
 调试器允许开发者观察和控制一个程序的执行，以辨别和纠正错误或者bugs．它提供像是设置断点，一行一行地步进代码，和研究变量的值以及内存的状态等功能．调试器本质上是为了通过软件开发和维护，使得开发者可以确保他们的代码的行为在不同环境下就像他们预期的那样运行．
 
@@ -328,48 +250,48 @@ OpenOCD是一个用于调试，测试，和编程嵌入式系统的开源软件�
 -  在遇到一个调试事件后继续MCU的执行．
 -  擦出和写入微控制器的FLASH．
 
-`Probe-rs Visual Studio Code Extension <#probe-rs-visual-studio-code-extension>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Probe-rs Visual Studio Code Extension
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Probe-rs有一个Visual Studio Code的扩展，提供了不需要额外设置的无缝的调试体验．通过它的帮助，开发者可以使用Rust特定的特性，像是漂亮的打印和详细的错误信息，确保它们的调试过程可以与Rust的生态对齐．
 
-`GDB (GNU Debugger) <#gdb-gnu-debugger>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+GDB (GNU Debugger)
+^^^^^^^^^^^^^^^^^^
 
 GDB是一个多用途的调试工具，其允许开发者研究程序的状态，无论其正在运行中还是程序崩溃后．对于嵌入式Rust，GDB通过OpenOCD或者其它的调试服务器链接到目标系统上去和嵌入式代码交互．GDB是高度可配置的，并且支持像是远程调试，变量检测，和条件断点．它可以被用于多个平台，并对Rust特定的调试需求有广泛的支持，比如好看的打印和与IDEs集成．
 
-`探测器 <#探测器>`__
---------------------
+探测器
+~~~~~~
 
 硬件探头是一个被用于嵌入式系统的开发和调试的设备，其可以使得主机和目标嵌入式设备间的通信变得简单．它通常支持像是JTAG或者SWD这样的协议，可以编程，调试和分析嵌入式系统上的微控制器或者微处理器．硬件探头对于要设置断点，步进代码，和观察内存与处理器的寄存器的开发者来说很重要，可以让开发者们高效地实时地分析和修复问题．
 
-`Rusty-probe <#rusty-probe>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Rusty-probe
+^^^^^^^^^^^
 
 Rusty-probe是一个开源的基于USB的硬件调试探测器，被设计用来辅助probe-rs一起工作．Rusy-Probe和probe-rs的结合为嵌入式Rust应用的开发者提供了一个易用的，成本高效的解决方案．
 
-`ST-Link <#st-link>`__
-~~~~~~~~~~~~~~~~~~~~~~
+ST-Link
+^^^^^^^
 
 ST-Link是一个由STMicroelectronics开发的常见的调试和编程探测器，其主要用于它们的STM32和STM8微控制器系列．它支持通过JTAG或者SWD接口进行调试和编程．因为STMicroelectronics的大量的开发板对其直接支持并且它集成进了主流的IDEs中，所以使得它成为使用STM微控制器的开发者的首选．
 
-`J-Link <#j-link>`__
-~~~~~~~~~~~~~~~~~~~~
+J-Link
+^^^^^^
 
 J-Link是由SEGGER微控制器开发的，它是一个鲁棒和功能丰富的调试器，其支持大量的CPU内核和设备，不仅仅是ARM，比如RISC-V．因其高性能和可读性而闻名，J-Link支持不同的通信接口，包括JTAG，SWD，和fine-pitch JTAG接口．它因其高级的特性而受到欢迎，比如在flash存储中的无限的断点和它与多种开发环境的兼容性．
 
-`MCU-Link <#mcu-link>`__
-~~~~~~~~~~~~~~~~~~~~~~~~
+MCU-Link
+^^^^^^^^
 
 MCU-Link是一个调试探测器，也可以作为编程器使用，由NXP Semiconductors提供．它支持不同的ARM Cortex微控制器且可以与像是MCUXpresso IDE这样的开发工具进行无缝地交互．MCU-Link因其丰富的功能和易使用而闻名，使它成为像是爱好者，教育者，和专业的开发者们的可行的选项．
 
-`安装工具 <#安装工具>`__
-========================
+安装工具
+--------
 
 这一页包含的工具安装指令与操作系统无关：
 
-`Rust 工具链 <#rust-工具链>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Rust 工具链
+^^^^^^^^^^^
 
 跟着\ https://rustup.rs\ 的指令安装rustup。
 
@@ -426,8 +348,8 @@ Cortex-M33和M35P (ARMv8-M架构):
 
 .. _cargo-binutils-1:
 
-```cargo-binutils`` <#cargo-binutils-1>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``cargo-binutils``
+^^^^^^^^^^^^^^^^^^
 
 ::
 
@@ -437,8 +359,8 @@ Cortex-M33和M35P (ARMv8-M架构):
 
 WINDOWS: 需要预先安装 C++ Build Tools for Visual Studio 2019。https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16
 
-```cargo-generate`` <#cargo-generate>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``cargo-generate``
+^^^^^^^^^^^^^^^^^^
 
 我们随后将使用这个来从模板生成一个项目。
 
@@ -448,22 +370,18 @@ WINDOWS: 需要预先安装 C++ Build Tools for Visual Studio 2019。https://vis
 
 注意:在某些Linux发行版上(e.g. Ubuntu) 在安装cargo-generate之前，你可能需要安装\ ``libssl-dev``\ 和\ ``pkg-config``
 
-`特定于操作系统的指令 <#特定于操作系统的指令>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+特定于操作系统的指令
+^^^^^^^^^^^^^^^^^^^^
 
 现在根据你使用的操作系统，来执行对应的指令:
 
--  `Linux <intro/install/linux.html>`__
--  `Windows <intro/install/windows.html>`__
--  `macOS <intro/install/macos.html>`__
-
-`Linux <#linux>`__
-==================
+Linux
+-----
 
 这部分是在某些Linux发行版下的安装指令。
 
-`依赖包 <#依赖包>`__
---------------------
+依赖包
+~~~~~~
 
 -  Ubuntu 18.04 或者更新的版本 / Debian stretch 或者更新的版本
 
@@ -487,10 +405,6 @@ WINDOWS: 需要预先安装 C++ Build Tools for Visual Studio 2019。https://vis
 
 -  Fedora 27 或者更新的版本
 
-.. raw:: html
-
-   <!-- -->
-
 ::
 
    sudo dnf install gdb openocd qemu-system-arm
@@ -505,8 +419,8 @@ WINDOWS: 需要预先安装 C++ Build Tools for Visual Studio 2019。https://vis
 
    sudo pacman -S arm-none-eabi-gdb qemu-system-arm openocd
 
-`udev 规则 <#udev-规则>`__
---------------------------
+udev 规则
+~~~~~~~~~
 
 这个规则可以让你在不使用超级用户权限的情况下，使用OpenOCD和Discovery开发板。
 
@@ -557,15 +471,13 @@ WINDOWS: 需要预先安装 C++ Build Tools for Visual Studio 2019。https://vis
 
 权限后的 ``+`` 指出存在一个扩展权限。\ ``getfacl`` 命令显示，\ ``user``\ 也就是\ ``你``\ ，可以使用这个设备。
 
-现在，去往\ `下个章节 <intro/install/verify.html>`__.
-
-`macOS <#macos>`__
-==================
+macOS
+-----
 
 所有的工具都可以使用\ `Homebrew <http://brew.sh/>`__\ 或者\ `MacPorts <https://www.macports.org/>`__\ 来安装：
 
-`使用 <#使用homebrew安装工具>`__\ `Homebrew <http://brew.sh/>`__\ 安装工具
---------------------------------------------------------------------------
+使用
+~~~~
 
 ::
 
@@ -586,8 +498,10 @@ WINDOWS: 需要预先安装 C++ Build Tools for Visual Studio 2019。https://vis
 
    $ brew install --HEAD openocd
 
-`使用 <#使用macports安装工具>`__\ `MacPorts <https://www.macports.org/>`__\ 安装工具
-------------------------------------------------------------------------------------
+.. _使用-1:
+
+使用
+~~~~
 
 ::
 
@@ -600,13 +514,11 @@ WINDOWS: 需要预先安装 C++ Build Tools for Visual Studio 2019。https://vis
    $ # QEMU
    $ sudo port install qemu
 
-这是全部内容，请转入\ `下个章节 <intro/install/verify.html>`__\ ．
+Windows
+-------
 
-`Windows <#windows>`__
-======================
-
-```arm-none-eabi-gdb`` <#arm-none-eabi-gdb>`__
-----------------------------------------------
+``arm-none-eabi-gdb``
+~~~~~~~~~~~~~~~~~~~~~
 
 ARM提供了用于Windows的\ ``.exe``\ 安装程序。从\ `这里 <https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads>`__\ 获取, 然后按照说明操作。 在完成安装之前，勾选/选择"Add path to environment variable"选项。 然后验证环境变量是否添加到 ``%PATH%``\ 中:
 
@@ -616,8 +528,8 @@ ARM提供了用于Windows的\ ``.exe``\ 安装程序。从\ `这里 <https://dev
    GNU gdb (GNU Tools for Arm Embedded Processors 7-2018-q2-update) 8.1.0.20180315-git
    (..)
 
-`OpenOCD <#openocd>`__
-----------------------
+OpenOCD
+~~~~~~~
 
 OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折腾编译，\ `这里 <https://xpack.github.io/openocd/>`__\ 有xPack提供的一个二进制发布.。按照说明进行安装。然后更新你的\ ``%PATH%`` 环境变量，将安装目录包括进去。 (``C:\Users\USERNAME\AppData\Roaming\xPacks\@xpack-dev-tools\openocd\0.10.0-13.1\.content\bin\``, 如果使用简易安装)
 
@@ -629,20 +541,18 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    Open On-Chip Debugger 0.10.0
    (..)
 
-`QEMU <#qemu>`__
-----------------
+QEMU
+~~~~
 
 从\ `官网 <https://www.qemu.org/download/#windows>`__\ 获取QEMU。
 
-`ST-LINK USB driver <#st-link-usb-driver>`__
---------------------------------------------
+ST-LINK USB driver
+~~~~~~~~~~~~~~~~~~
 
 你还需要安装这个 `USB驱动 <http://www.st.com/en/embedded-software/stsw-link009.html>`__ 否则OpenOCD将无法工作。按照安装程序的说明，确保你安装了正确版本（32位或64位）的驱动程序。
 
-以上是全部内容！转到 `下个章节 <intro/install/verify.html>`__\ 。
-
-`安装验证 <#安装验证>`__
-========================
+安装验证
+--------
 
 在这个章节中我们将检查工具和驱动是否已经被正确地安装和配置了。
 
@@ -683,8 +593,6 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    Info : Target voltage: 2.919881
    Info : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
 
-内容可能并不是一模一样，但是在最后一行，你应该看到了breakpoints和watchpoints，如果你看到了，那就终止OpenOCD进程然后进入\ `下个章节 <intro/install/../../start/index.html>`__
-
 如果你没看到"breakpoints"这行，尝试下下列命令中的某一个命令。
 
 ::
@@ -693,33 +601,29 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
 
    openocd -f interface/stlink-v2-1.cfg -f target/stm32f3x.cfg
 
-如果这些命令的某条起作用了，那意味着你使用的discovery开发板是一个旧的版本。那也不成问题，但是你要记住这件事，因为随后你的配置可能有点不同。你可以移到\ `下个章节 <intro/install/../../start/index.html>`__\ 了。
-
 如果这些命令在普通用户模式下都没用，尝试下使用root模式运行它们(e.g. ``sudo openocd ..``)。如果命令在root模式下起作用，需要检查下\ `udev rules <intro/install/linux.html#udev-rules>`__\ 是否被正确地设置了。
 
 如果这些都试了，OpenOCD还不工作，请打开一个\ `issue <https://github.com/rust-embedded/book/issues>`__\ ，我们将帮助你！
 
-`开始 <#开始>`__
-================
-
-在这部分里，你将会经历编写，编译，烧录和调试嵌入式程序。大多数的例子都不需要特定的硬件就可以试试，因为我们将要向你展示一个开源硬件仿真器，QEMU的基本使用。唯一需要硬件的部分，那就是，\ `硬件 <start/./hardware.html>`__\ 那一章，我们会使用OpenOCD去编程一个\ `STM32F3DISCOVERY <http://www.st.com/en/evaluation-tools/stm32f3discovery.html>`__\ 。
+开始
+----
 
 .. _qemu-1:
 
-`QEMU <#qemu-1>`__
-==================
+QEMU
+----
 
 我们将开始为\ `LM3S6965 <http://www.ti.com/product/LM3S6965>`__\ 编写程序，一个Cortex-M3微控制器。因为它能使用\ `QEMU仿真 <https://wiki.qemu.org/Documentation/Platforms/ARM#Supported_in_qemu-system-arm>`__\ ，所以我们选择它作为我们的第一个目标，本节中，不需要使用硬件，我们注意力可以集中在工具和开发过程上。
 
 **重要** 在这个引导里，我们将使用"app"这个名字来代指项目名。无论何时你看到单词"app"，你应该用你选择的项目名来替代"app"。或者你也可以选择把你的项目命名为"app"，避免要替换掉。
 
-`生成一个非标准的 Rust program <#生成一个非标准的-rust-program>`__
-------------------------------------------------------------------
+生成一个非标准的 Rust program
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 我们将使用\ ```cortex-m-quickstart`` <https://github.com/rust-embedded/cortex-m-quickstart>`__\ 项目模板来生成一个新项目。生成的项目将包含一个最基本的应用:对于一个新的嵌入式rust应用来说，是一个很好的开始。另外，项目将包含一个\ ``example``\ 文件夹，文件夹中有许多独立的应用，突出了一些关键的嵌入式rust的功能。
 
-`使用 ``cargo-generate`` <#使用-cargo-generate>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+使用 ``cargo-generate``
+^^^^^^^^^^^^^^^^^^^^^^^
 
 首先安装 cargo-generate
 
@@ -739,8 +643,8 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
 
    cd app
 
-`使用 ``git`` <#使用-git>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+使用 ``git``
+^^^^^^^^^^^^
 
 克隆仓库
 
@@ -766,8 +670,8 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    test = false
    bench = false
 
-`要么使用 <#要么使用>`__
-~~~~~~~~~~~~~~~~~~~~~~~~
+要么使用
+^^^^^^^^
 
 抓取最新的 ``cortex-m-quickstart`` 模板，解压它。
 
@@ -782,8 +686,8 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
 
 然后像在 “使用 ``git``” 那里的第二部分写的那样填充 ``Cargo.toml`` 。
 
-`项目概览 <#项目概览>`__
-------------------------
+项目概览
+~~~~~~~~
 
 这是\ ``src/main.rs``\ 中源码最重要的部分。
 
@@ -797,7 +701,10 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    use cortex_m_rt::entry;
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       loop {
+           // your code goes here
+       }
    }
 
 这个程序与标准Rust程序有一点不同，让我们走近点看看。
@@ -806,14 +713,12 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
 
 ``#![no_main]``\ 指出这个程序将不会使用标准的且被大多数Rust程序使用的\ ``main``\ 接口。使用\ ``no_main``\ 的主要理由是，在\ ``no_std``\ 上下文中使用\ ``main``\ 接口需要 nightly 版的 Rust。
 
-``use panic_halt as _;``\ 。这个crate提供了一个\ ``panic_handler``\ ，它定义了程序陷入\ ``panic``\ 时的行为。我们将会在这本书的\ `运行时恐慌(Panicking) <start/panicking.html>`__\ 章节中覆盖更多的细节。
-
 ```#[entry]`` <https://docs.rs/cortex-m-rt-macros/latest/cortex_m_rt_macros/attr.entry.html>`__ 是一个由\ ```cortex-m-rt`` <https://crates.io/crates/cortex-m-rt>`__\ 提供的属性，它用来标记程序的入口。当我们不使用标准的\ ``main``\ 接口时，我们需要其它方法来指示程序的入口，那就是\ ``#[entry]``\ 。
 
 ``fn main() -> !``\ 。我们的程序将会是运行在目标板子上的 *唯一* 的进程，因此我们不想要它结束！我们使用一个\ `发散函数 <https://doc.rust-lang.org/rust-by-example/fn/diverging.html>`__ (函数签名中的 ``-> !`` )来确保在编译时就是这么回事儿。
 
-`交叉编译 <#交叉编译>`__
-------------------------
+交叉编译
+~~~~~~~~
 
 下一步是为Cortex-M3架构\ *交叉*\ 编译程序。如果你知道编译目标(\ ``$TRIPLE``)应该是什么，运行\ ``cargo build --target $TRIPLE``\ 就可以了。幸运地，模板中的\ ``.cargo/config.toml``\ 有这个答案:
 
@@ -841,8 +746,8 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    cargo build --target thumbv7m-none-eabi
    cargo build
 
-`检查 <#检查>`__
-----------------
+检查
+~~~~
 
 现在在\ ``target/thumbv7m-none-eabi/debug/app``\ 中有一个非主机环境的ELF二进制文件。我们能使用\ ``cargo-binutils``\ 检查它。
 
@@ -856,10 +761,6 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
 
 -  ``--bin app`` 是一个用来查看二进制项\ ``target/$TRIPLE/debug/app``\ 的语法糖
 -  ``--bin app`` 需要时也会重新编译二进制项。
-
-.. raw:: html
-
-   <!-- -->
 
 ::
 
@@ -978,8 +879,8 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    HardFault:
         663: <unknown>
 
-`运行 <#运行>`__
-----------------
+运行
+~~~~
 
 接下来，让我们看一个嵌入式程序是如何在QEMU上运行的！此刻我们将使用 ``hello`` 示例，来做些真正的事。
 
@@ -998,7 +899,14 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    use cortex_m_semihosting::;
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       hprintln!("Hello, world!").unwrap();
+
+       // 退出 QEMU
+       // NOTE 不要在硬件上运行这个;它会打破OpenOCD的状态
+       debug::exit(debug::EXIT_SUCCESS);
+
+       loop 
    }
 
 这个程序使用被叫做semihosting的东西去打印文本到主机调试台上。当使用的是真实的硬件时，需要一个调试对话这个程序才能工作，但是当使用的是QEMU时这就可以工作了。
@@ -1067,8 +975,8 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
         Running `qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel target/thumbv7m-none-eabi/release/examples/hello`
    Hello, world!
 
-`调试 <#调试>`__
-----------------
+调试
+~~~~
 
 对于嵌入式开发来说，调试非常重要。让我们来看下如何调试它。
 
@@ -1112,17 +1020,90 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
 
    Remote debugging using :3333
    Reset () at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473
-   473     pub unsafe extern "C" fn Reset() -> ! ;
+   473     pub unsafe extern "C" fn Reset() -> ! {
+
+你将看到，进程被挂起了，程序计数器正指向一个名为 ``Reset`` 的函数。那是 reset 句柄：Cortex-M 内核在启动时执行的中断函数。
+
+   注意在一些配置中，可能不会像上面一样，显示\ ``Reset() at $REGISTRY/cortex-m-rt-0.6.1/src/lib.rs:473``\ ，gdb可能打印一些警告，比如:
+
+   ``core::num::bignum::Big32x40::mul_small () at src/libcore/num/bignum.rs:254`` ``src/libcore/num/bignum.rs: No such file or directory.``
+
+   那是一个已知的小bug，你可以安全地忽略这些警告，你非常大可能已经进入Reset()了。
+
+这个reset句柄最终将调用我们的主函数，让我们使用一个断点和\ ``continue``\ 命令跳过所有的步骤。为了设置断点，让我们首先看下我们想要在我们代码哪里打断点，使用\ ``list``\ 指令
+
+::
+
+   list main
+
+这将显示从examples/hello.rs文件来的源代码。
+
+::
+
+   6       use panic_halt as _;
+   7
+   8       use cortex_m_rt::entry;
+   9       use cortex_m_semihosting::;
    10
    11      #[entry]
-   12      fn main() -> !
+   12      fn main() -> ! {
+   13          hprintln!("Hello, world!").unwrap();
+   14
+   15          // exit QEMU
 
-======================
+我们想要在"Hello, world!"之前添加一个断点，在13行那里。我们可以使用\ ``break``\ 命令
+
+::
+
+   break 13
+
+我们现在能使用\ ``continue``\ 命令指示gdb运行到我们的主函数。
+
+::
+
+   continue
+
+   Continuing.
+
+   Breakpoint 1, hello::__cortex_m_rt_main () at examples\hello.rs:13
+   13          hprintln!("Hello, world!").unwrap();
+
+我们现在靠近打印"Hello, world!"的代码。让我们使用\ ``next``\ 命令继续前进。
+
+::
+
+   next
+
+   16          debug::exit(debug::EXIT_SUCCESS);
+
+在这里，你应该看到 "Hello, world!" 被打印到正在运行 ``qemu-system-arm`` 的终端上。
+
+::
+
+   $ qemu-system-arm (..)
+   Hello, world!
+
+再次调用\ ``next``\ 将会终止QEMU进程。
+
+::
+
+   next
+
+   [Inferior 1 (Remote target) exited normally]
+
+你现在能退出GDB的会话了。
+
+::
+
+   quit
+
+硬件
+----
 
 现在你应该有点熟悉工具和开发过程了。在这部分我们将切换到真正的硬件上；步骤非常相似。让我们深入下去。
 
-`认识你的硬件 <#认识你的硬件>`__
---------------------------------
+认识你的硬件
+~~~~~~~~~~~~
 
 在我们开始之前，你需要了解下你的目标设备的一些特性，因为你将用它们来配置项目:
 
@@ -1139,10 +1120,8 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
 -  位于 0x0800_0000 地址的256KiB的Flash。
 -  位于 0x2000_0000 地址的40KiB的RAM。(这里还有其它的RAM区域，但是为了方便起见，我们将忽略它)。
 
-`配置 <#配置>`__
-----------------
-
-我们将使用一个新的模板实例从零开始。对于新手，请参考\ `先前的QEMU <start/qemu.html>`__\ 章节，了解如何在没有\ ``cargo-generate``\ 的情况下完成配置。
+配置
+~~~~
 
 ::
 
@@ -1176,6 +1155,11 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    $ cat memory.x
    /* Linker script for the STM32F303VCT6 */
    MEMORY
+   {
+     /* NOTE 1 K = 1 KiBi = 1024 bytes */
+     FLASH : ORIGIN = 0x08000000, LENGTH = 256K
+     RAM : ORIGIN = 0x20000000, LENGTH = 40K
+   }
 
 ..
 
@@ -1188,7 +1172,14 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
 ::
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       hprintln!("Hello, world!").unwrap();
+
+       // 退出 QEMU
+       // 注意 不要在硬件上运行这个；它会打破OpenOCD的状态
+       // debug::exit(debug::EXIT_SUCCESS);
+
+       loop 
    }
 
 你可以像你之前做的一样，使用\ ``cargo build``\ 检查编译程序，使用\ ``cargo-binutils``\ 观察二进制项。\ ``cortex-m-rt``\ 库可以处理所有让芯片运行起来所需的魔法，几乎所有的Cortex-M CPUs都按同样的方式启动。
@@ -1199,14 +1190,12 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
 
 .. _调试-1:
 
-`调试 <#调试-1>`__
-------------------
+调试
+~~~~
 
 调试会看起来有点不一样。事实上，取决于不同的目标设备，第一步可能看起来不一样。在这个章节里，我们将展示，调试一个在STM32F3DISCOVERY上运行的程序，所需要的步骤。这作为一个参考。关于调试有关的设备特定的信息，可以看\ `the Debugonomicon <https://github.com/rust-embedded/debugonomicon>`__\ 。
 
 像之前一样，我们将进行远程调试，客户端将是一个GDB进程。不同的是，OpenOCD将是服务器。
-
-像是在\ `安装验证 <start/../intro/install/verify.html>`__\ 中做的那样，把你的笔记本/个人电脑和discovery开发板连接起来，检查ST-LINK的短路帽是否被安装了。
 
 在一个终端上运行 ``openocd`` 连接到你的开发板上的 ST-LINK 。从模板的根目录运行这个命令；\ ``openocd`` 将会选择 ``openocd.cfg`` 文件，它指出了所使用的接口文件(interface file)和目标文件(target file)。
 
@@ -1229,7 +1218,9 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
 
 ..
 
-   **注意** 如果你在\ `安装验证 <start/../intro/install/verify.html>`__\ 章节中，发现你的discovery开发板是一个更旧的版本，那么你应该修改你的 ``openocd.cfg`` 文件，注释掉 ``interface/stlink.cfg``\ ，让它去使用 ``interface/stlink-v2.cfg`` 。
+   **注意**
+
+   ``openocd.cfg`` 文件，注释掉 ``interface/stlink.cfg``\ ，让它去使用 ``interface/stlink-v2.cfg`` 。
 
 ::
 
@@ -1332,7 +1323,7 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    Info : halted: PC: 0x08000d70
    Info : halted: PC: 0x08000d72
 
-消息只打印一次，然后进入定义在19行的无限循环中: ``loop {}``
+消息只打印一次，然后进入定义在19行的无限循环中: ``loop``
 
 使用 ``quit`` 命令，你现在可以退出 GDB 了。
 
@@ -1396,8 +1387,8 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    Transfer rate: 17 KB/sec, 3460 bytes/write.
    (gdb)
 
-`存储映射的寄存器(Memory-Mapped Registers) <#存储映射的寄存器memory-mapped-registers>`__
-========================================================================================
+存储映射的寄存器(Memory-Mapped Registers)
+-----------------------------------------
 
 嵌入式系统想要继续执行下去，只有通过执行常规的Rust代码并在RAM间移动数据才行。如果我们想要获取或者发出信息(点亮一个LED，发现一个按钮按下或者在总线上与芯片外设通信)，我们不得不深入了解外设和它们的"存储映射的寄存器"。
 
@@ -1407,11 +1398,13 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
 
 -  Micro-architecture Crate(微架构库) - 这个库拥有任何对于微控制器的处理器内核来说经常会用到的程序，也包括在这些微控制器中的通用外设。比如 `cortex-m <https://crates.io/crates/cortex-m>`__ crate提供给你可以使能和关闭中断的函数，其对于所有的Cortex-M微控制器都是一样的。它也提供你访问'SysTick'外设的能力，在所有的Cortex-M微控制器中都包括了这个外设功能。
 -  Peripheral Access Crate(PAC)(外设访问库) - 这个库是对各种存储器封装的寄存器再进行的一次浅陋封装，特定于所使用的微控制器的产品号。比如，\ `tm4c123x <https://crates.io/crates/tm4c123x>`__\ 针对TI的Tiva-C TM4C123系列，\ `stm32f30x <https://crates.io/crates/stm32f30x>`__\ 针对ST的STM32F30x系列。这块，根据微控制器的技术手册写的每个外设操作指令，直接和寄存器交互。
--  HAL Crate - 这些crates为你的处理器提供了一个更友好的API，通常是通过实现在\ `embedded-hal <https://crates.io/crates/embedded-hal>`__\ 中定义的一些常用的traits来实现的。比如，这个crate可能提供一个\ ``Serial``\ 结构体，它的构造函数需要一组合适的GPIO端口和一个波特率，它为发送数据提供了 ``write_byte`` 函数。查看 `可移植性 <start/../portability/index.html>`__ 可以看到更多关于 `embedded-hal <https://crates.io/crates/embedded-hal>`__ 的信息。
+-  HAL Crate - 这些crates为你的处理器提供了一个更友好的API，通常是通过实现在\ `embedded-hal <https://crates.io/crates/embedded-hal>`__\ 中定义的一些常用的traits来实现的。比如，这个crate可能提供一个\ ``Serial``\ 结构体，它的构造函数需要一组合适的GPIO端口和一个波特率，它为发送数据提供了
+
+   可以看到更多关于 `embedded-hal <https://crates.io/crates/embedded-hal>`__ 的信息。
 -  Board Crate(开发板库) - 这些Crate通过预配置不同的外设和GPIO管脚再进行了一层抽象以适配你正在使用的特定的开发者工具或者开发板，比如对于STM32F3DISCOVERY开发板来说，是\ `stm32f3-discovery <https://crates.io/crates/stm32f3-discovery>`__
 
-`开发板Crate (Board Crate) <#开发板crate-board-crate>`__
---------------------------------------------------------
+开发板Crate (Board Crate)
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 如果你是嵌入式Rust新手，board crate是一个完美的开始。它们很好地抽象出了，在开始学习这个项目时，需要耗费心力了解的硬件细节，使得标准工作，像是打开或者关闭LED，变得简单。不同的板子间，它们提供的功能变化很大。因为这本书是不假设我们使用的是何种板子，所以这本书不会提到board crate。
 
@@ -1419,8 +1412,8 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
 
 但是如果你正在使用一个还没有提供专用的board crate的系统，或者你需要的一些功能，现存的crates不提供，那我们需要从底层的微架构crates开始。
 
-`Micro-architecture crate <#micro-architecture-crate>`__
---------------------------------------------------------
+Micro-architecture crate
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 让我们看一下SysTick外设，SysTick外设存在于所有的Cortex-M微控制器中。我们能在\ `cortex-m <https://crates.io/crates/cortex-m>`__ crate中找到一个相当底层的API，我们能像这样使用它：
 
@@ -1433,15 +1426,24 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    use panic_halt as _;
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       let peripherals = Peripherals::take().unwrap();
+       let mut systick = peripherals.SYST;
+       systick.set_clock_source(syst::SystClkSource::Core);
+       systick.set_reload(1_000);
+       systick.clear_current();
+       systick.enable_counter();
+       while !systick.has_wrapped() {
+           // Loop
+       }
 
-       loop {}
+       loop 
    }
 
-``SYST``\ 结构体上的功能，相当接近ARM技术手册为这个外设定义的功能。在这个API中没有关于 '延迟X毫秒' 的功能 - 我们不得不通过使用一个 ``while`` 循环来粗略地实现它。注意，我们调用了\ ``Peripherals::take()``\ 才能访问我们的\ ``SYST``\ 结构体 - 这是一个特别的程序，保障了在我们的整个程序中只存在一个\ ``SYST``\ 结构体实例，更多的信息可以看\ `外设 <start/../peripherals/index.html>`__\ 部分。
+``SYST``\ 结构体上的功能，相当接近ARM技术手册为这个外设定义的功能。在这个API中没有关于 '延迟X毫秒' 的功能 - 我们不得不通过使用一个 ``while`` 循环来粗略地实现它。注意，我们调用了\ ``Peripherals::take()``\ 才能访问我们的\ ``SYST``\ 结构体 -
 
-`使用一个外设访问Crate (PAC) <#使用一个外设访问crate-pac>`__
-------------------------------------------------------------
+使用一个外设访问Crate (PAC)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 如果我们把自己只局限于每个Cortex-M拥有的基本外设，那我们的嵌入式软件开发将不会走得太远。我们准备需要写一些特定于我们正在使用的微控制器的代码。在这个例子里，让我们假设我们有一个TI的TM4C123 - 一个有256KiB Flash的中等规模的80MHz的Cortex-M4。我们用\ `tm4c123x <https://crates.io/crates/tm4c123x>`__ crate去使用这个芯片。
 
@@ -1456,24 +1458,36 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    use tm4c123x;
 
    #[entry]
-   pub fn init() -> (Delay, Leds) );
+   pub fn init() -> (Delay, Leds) {
+       let cp = cortex_m::Peripherals::take().unwrap();
+       let p = tm4c123x::Peripherals::take().unwrap();
+
+       let pwm = p.PWM0;
+       pwm.ctl.write(|w| w.globalsync0().clear_bit());
+       // Mode = 1 => Count up/down mode
+       pwm._2_ctl.write(|w| w.enable().set_bit().mode().set_bit());
+       pwm._2_gena.write(|w| w.actcmpau().zero().actcmpad().one());
+       // 528 cycles (264 up and down) = 4 loops per video line (2112 cycles)
+       pwm._2_load.write(|w| unsafe );
        pwm._2_cmpa.write(|w| unsafe );
        pwm.enable.write(|w| w.pwm4en().set_bit());
    }
 
 我们访问 ``PWM0`` 外设的方法和我们之前访问 ``SYST`` 的方法一样，除了我们调用的是 ``tm4c123x::Peripherals::take()`` 之外。因为这个crate是使用\ `svd2rust <https://crates.io/crates/svd2rust>`__\ 自动生成的，访问我们寄存器位段的函数的参数是一个闭包，而不是一个数值参数。虽然这看起来像是有了更多的代码，但是Rust编译器能使用这个闭包为我们执行一系列检查，且产生的机器码十分接近手写的汇编码！如果自动生成的代码不能确保某个访问函数其所有可能的参数都能发挥作用(比如，如果寄存器被SVD定义为32位，但是没有说明某些32位值是否有特殊作用)，那么该函数需要被标记为 ``unsafe`` 。我们能在上面看到这样的例子，我们使用 ``bits()`` 函数设置 ``load`` 和 ``compa`` 子域。
 
-`Reading <#reading>`__
-~~~~~~~~~~~~~~~~~~~~~~
+Reading
+^^^^^^^
 
 ``read()`` 函数返回一个对象，这个对象提供了对这个寄存器中不同子域的只读访问，由厂商提供的这个芯片的SVD文件定义。在 `tm4c123x documentation <https://docs.rs/tm4c123x/0.7.0/tm4c123x/pwm0/ctl/struct.R.html>`__ 中你能找到在这个特别的返回类型 ``R`` 上所有可用的函数，其与特定芯片中的特定外设的特定寄存器有关。
 
 ::
 
-   if pwm.ctl.read().globalsync0().is_set()
+   if pwm.ctl.read().globalsync0().is_set() {
+       // Do a thing
+   }
 
-`Writing <#writing>`__
-~~~~~~~~~~~~~~~~~~~~~~
+Writing
+^^^^^^^
 
 ``write()``\ 函数使用一个只有一个参数的闭包。通常我们把这个参数叫做 ``w``\ 。然后这个参数提供对这个寄存器中不同的子域的读写访问，由厂商关于这个芯片的SVD文件提供。再一次，在 `tm4c123x documentation <https://docs.rs/tm4c123x/0.7.0/tm4c123x/pwm0/ctl/struct.W.html>`__ 中你能找到 ``W`` 所有可用的函数，其与特定芯片中的特定外设的特定寄存器有关。注意,所有我们没有设置的子域将会被设置成一个默认值 - 将会丢失任何在这个寄存器中的现存的内容。
 
@@ -1481,8 +1495,8 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
 
    pwm.ctl.write(|w| w.globalsync0().clear_bit());
 
-`Modifying <#modifying>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Modifying
+^^^^^^^^^
 
 如果我们希望只改变这个寄存器中某个特定的子域而让其它子域不变，我们能使用\ ``modify``\ 函数。这个函数使用一个具有两个参数的闭包 - 一个用来读取，一个用来写入。通常我们分别称它们为 ``r`` 和 ``w`` 。 ``r`` 参数能被用来查看这个寄存器现在的内容，\ ``w`` 参数能被用来修改寄存器的内容。
 
@@ -1501,8 +1515,8 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    temp2 |= PWM0_ENABLE_PWM4EN;
    pwm0.enable.write(temp); // 哦 不! 错误的变量!
 
-`使用一个HAL crate <#使用一个hal-crate>`__
-------------------------------------------
+使用一个HAL crate
+~~~~~~~~~~~~~~~~~
 
 一个芯片的HAL crate是通过为PAC暴露的基础结构体们实现一个自定义Trait来发挥作用的。经常这个trait将会为某个外设定义一个被称作 ``constrain()`` 的函数，或者为像是有多个管脚的GPIO端口这类东西定义一个\ ``split()``\ 函数。这个函数将会使用基础的外设结构体，然后返回一个具有更高抽象的API的新对象。这个API还可以做一些事，比如让Serial port的 ``new`` 函数变成需要某个\ ``Clock``\ 结构体的函数，这个结构体只能通过调用配置PLLs并设置所有的时钟频率的函数来生成。在这时，生成一个Serial port对象而不先配置时钟速率是不可能的，对于Serial port对象来说错误地将波特率转换为时钟滴答数也是不会发生的。一些crates甚至为每个GPIO管脚的状态定义了特定的 traits，在把管脚传递进外设前，要求用户去把一个管脚设置成正确的状态(通过选择Alternate Function模式) 。所有这些都没有运行时开销的！
 
@@ -1522,11 +1536,55 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    use tm4c123x_hal::sysctl;
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       let p = hal::Peripherals::take().unwrap();
+       let cp = hal::CorePeripherals::take().unwrap();
+
+       // 将SYSCTL结构体封装成一个有更高抽象API的对象
+       let mut sc = p.SYSCTL.constrain();
+       // 选择我们的晶振配置
+       sc.clock_setup.oscillator = sysctl::Oscillator::Main(
+           sysctl::CrystalFrequency::_16mhz,
+           sysctl::SystemClock::UsePll(sysctl::PllOutputFrequency::_80_00mhz),
+       );
+       // 设置PLL
+       let clocks = sc.clock_setup.freeze();
+
+       // 把GPIO_PORTA结构体封装成一个有更高抽象API的对象
+       // 注意它需要借用 `sc.power_control` 因此它能自动开启GPIO外设。
+       let mut porta = p.GPIO_PORTA.split(&sc.power_control);
+
+       // 激活UART
+       let uart = Serial::uart0(
+           p.UART0,
+           // 传送管脚
+           porta
+               .pa1
+               .into_af_push_pull::<hal::gpio::AF1>(&mut porta.control),
+           // 接收管脚
+           porta
+               .pa0
+               .into_af_push_pull::<hal::gpio::AF1>(&mut porta.control),
+           // 不需要RTS或者CTS
+           (),
+           (),
+           // 波特率
+           115200_u32.bps(),
+           // 输出处理
+           NewlineMode::SwapLFtoCRLF,
+           // 我们需要时钟频率去计算波特率除法器(divisors)
+           &clocks,
+           // 我们需要这个去启动UART外设
+           &sc.power_control,
+       );
+
+       loop {
+           writeln!(uart, "Hello, World!\r\n").unwrap();
+       }
    }
 
-`半主机模式 <#半主机模式>`__
-============================
+半主机模式
+----------
 
 半主机模式是一种可以让嵌入式设备在主机上进行I/O操作的的机制，主要被用来记录信息到主机控制台上。半主机模式需要一个debug会话，除此之外几乎没有其它要求了，因此它非常易于使用。缺点是它非常慢：每个写操作需要几毫秒的时间，其取决于你的硬件调试器(e.g. ST-LINK)。
 
@@ -1543,7 +1601,10 @@ OpenOCD 官方没有提供Windows的二进制版本， 若你没有心情去折�
    use cortex_m_semihosting::hprintln;
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       hprintln!("Hello, world!").unwrap();
+
+       loop 
    }
 
 如果你在硬件上运行这个程序，你将会在OpenOCD的logs中看到"Hello, world!"信息。
@@ -1584,9 +1645,16 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
    use cortex_m_semihosting::debug;
 
    #[entry]
-   fn main() -> !  else
+   fn main() -> ! {
+       let roses = "blue";
 
-       loop {}
+       if roses == "red" {
+           debug::exit(debug::EXIT_SUCCESS);
+       } else {
+           debug::exit(debug::EXIT_FAILURE);
+       }
+
+       loop 
    }
 
    $ cargo run
@@ -1610,7 +1678,12 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
    use cortex_m_semihosting::debug;
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       let roses = "blue";
+
+       assert_eq!(roses, "red");
+
+       loop 
    }
 
    $ cargo run
@@ -1626,12 +1699,12 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
 
 ::
 
-   panic-semihosting =
+   panic-semihosting = 
 
 ``VERSION``\ 是想要的版本。关于依赖features的更多信息查看Cargo book的\ ```specifying dependencies`` <https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html>`__\ 部分。
 
-`运行时恐慌(Panicking) <#运行时恐慌panicking>`__
-================================================
+运行时恐慌(Panicking)
+---------------------
 
 运行时恐慌是Rust语言的一个核心部分。像是索引这样的内建的操作为了存储安全性是运行时检查的。当尝试越界索引时，这会导致运行时恐慌(panic)。
 
@@ -1671,8 +1744,8 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
 
    ``use panic_abort as _`` 形式的 ``use`` 语句，被用来确保 ``panic_abort`` 运行时恐慌函数被包含进我们最终的可执行程序里，同时让编译器清楚地知道我们不会从这个crate显式地使用任何东西。没有 ``_`` 重命名，编译器将会警告我们有一个未使用的导入。有时候你可能会看到 ``extern crate panic_abort``\ ，这是Rust 2018之前的版本使用的更旧的写法，现在应该只被用于 "sysroot" crates (与Rust一起发布的crates)，比如 ``proc_macro``\ ，\ ``alloc``\ ，\ ``std`` 和 ``test`` 。
 
-`一个例子 <#一个例子>`__
-------------------------
+一个例子
+~~~~~~~~
 
 这里有一个尝试越界访问数组的例子。操作的结果导致了一个运行时恐慌(panic)。
 
@@ -1686,7 +1759,12 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
    use cortex_m_rt::entry;
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       let xs = [0, 1, 2];
+       let i = xs.len();
+       let _y = xs[i]; // out of bounds access
+
+       loop 
    }
 
 这个例子选择了\ ``panic-semihosting``\ 行为，运行时恐慌的信息会被打印至使用了半主机模式的主机控制台上。
@@ -1699,8 +1777,8 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
 
 你可以尝试将行为改成\ ``panic-halt``\ ，确保在这个案例里没有信息被打印。
 
-`异常 <#异常>`__
-================
+异常
+----
 
 异常和中断，是处理器用来处理异步事件和致命错误(e.g. 执行一个无效的指令)的一种硬件机制。异常意味着抢占并涉及到异常处理程序，即响应触发事件的信号的子程序。
 
@@ -1710,7 +1788,9 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
 
    // SysTick (System计时器)异常的异常处理函数
    #[exception]
-   fn SysTick()
+   fn SysTick() {
+       // ..
+   }
 
 除了 ``exception`` 属性，异常处理函数看起来和普通函数一样，但是有一个很大的不同: ``exception`` 处理函数 *不能* 被软件调用。在先前的例子中，语句 ``SysTick();`` 将会导致一个编译错误。
 
@@ -1719,7 +1799,12 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
 ::
 
    #[exception]
-   fn SysTick()
+   fn SysTick() {
+       static mut COUNT: u32 = 0;
+
+       // `COUNT` 被转换到了 `&mut u32` 类型且它用起来是安全的
+       *COUNT += 1;
+   }
 
 就像你可能已经知道的那样，在一个函数里使用\ ``static mut``\ 变量，会让函数变成\ `非可重入函数(non-reentrancy) <https://en.wikipedia.org/wiki/Reentrancy_(computing)>`__\ 。从多个异常/中断处理函数，或者从\ ``main``\ 函数和多个异常/中断处理函数中，直接或者间接地调用一个非可重入(non-reentrancy)函数是未定义的行为。
 
@@ -1727,8 +1812,8 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
 
    注意，\ ``exception``\ 属性，通过将静态变量封装进\ ``unsafe``\ 块中并为我们提供了名字相同的，类型为 ``&mut`` 的，合适的新变量，转换了函数中静态变量的定义。因此我们可以通过 ``*`` 解引用访问变量的值而不需要将它们打包进一个 ``unsafe`` 块中。
 
-`一个完整的例子 <#一个完整的例子>`__
-------------------------------------
+一个完整的例子
+~~~~~~~~~~~~~~
 
 这里有个例子，使用系统计时器大概每秒抛出一个 ``SysTick`` 异常。异常处理函数使用 ``COUNT`` 变量追踪它自己被调用了多少次，然后使用半主机模式(semihosting)打印 ``COUNT`` 的值到主机控制台上。
 
@@ -1746,22 +1831,49 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
 
    use cortex_m::peripheral::syst::SystClkSource;
    use cortex_m_rt::;
-   use cortex_m_semihosting::,
+   use cortex_m_semihosting::{
+       debug,
+       hio::,
    };
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       let p = cortex_m::Peripherals::take().unwrap();
+       let mut syst = p.SYST;
+
+       // 配置系统的计时器每秒去触发一个SysTick异常
+       syst.set_clock_source(SystClkSource::Core);
+       // 这是关于LM3S6965的配置，其有一个12MHz的默认CPU时钟
+       syst.set_reload(12_000_000);
+       syst.clear_current();
+       syst.enable_counter();
+       syst.enable_interrupt();
+
+       loop 
    }
 
    #[exception]
-   fn SysTick()
+   fn SysTick() {
+       static mut COUNT: u32 = 0;
+       static mut STDOUT: Option<HStdout> = None;
 
-       if let Some(hstdout) = STDOUT.as_mut() ", *COUNT).ok();
+       *COUNT += 1;
+
+       // 惰性初始化(Lazy initialization)
+       if STDOUT.is_none() {
+           *STDOUT = hio::hstdout().ok();
+       }
+
+       if let Some(hstdout) = STDOUT.as_mut() {
+           write!(hstdout, "", *COUNT).ok();
        }
 
        // 重要信息 如果运行在真正的硬件上，去掉这个 `if` 块，
        // 否则你的调试器将会以一种不一致的状态结束
-       if *COUNT == 9
+       if *COUNT == 9 {
+           // 这将终结QEMU进程
+           debug::exit(debug::EXIT_SUCCESS);
+       }
    }
 
    tail -n5 Cargo.toml
@@ -1778,14 +1890,15 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
 
 如果你在Discovery开发板上运行这个例子，你将会在OpenOCD控制台上看到输出。还有，当计数到达9的时候，程序将 *会* 停止。
 
-`默认异常处理函数 <#默认异常处理函数>`__
-----------------------------------------
+默认异常处理函数
+~~~~~~~~~~~~~~~~
 
 ``exception`` 属性真正做的是，\ *覆盖* 了一个特定异常的默认异常处理函数。如果你不覆盖一个特定异常的处理函数，它将会被 ``DefaultHandler`` 函数处理，其默认的是:
 
 ::
 
-   fn DefaultHandler()
+   fn DefaultHandler() {
+       loop 
    }
 
 这个函数是 ``cortex-m-rt`` crate提供的，且被标记为 ``#[no_mangle]`` 因此你能在 "DefaultHandler" 上放置一个断点并捕获 *unhandled* 异常。
@@ -1795,12 +1908,14 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
 ::
 
    #[exception]
-   fn DefaultHandler(irqn: i16)
+   fn DefaultHandler(irqn: i16) {
+       // 自定义默认处理函数
+   }
 
 ``irqn`` 参数指出了被服务的是哪个异常。一个负数值指出了被服务的是一个Cortex-M异常;0或者一个正数值指出了被服务的是一个设备特定的异常，也就是中断。
 
-`硬错误(Hard Fault)处理函数 <#硬错误hard-fault处理函数>`__
-----------------------------------------------------------
+硬错误(Hard Fault)处理函数
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``HardFault``\ 异常有点特别。当程序进入一个无法工作的状态时，这个异常被触发，因此它的处理函数 *不能* 返回，因为这么做可能导致一个未定义的行为。在用户定义的 ``HardFault`` 处理函数被调用之前，运行时crate还做了一些工作以改进调试功能。
 
@@ -1824,16 +1939,22 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
    use cortex_m_semihosting::hio;
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       // 读取一个无效的存储位置
+       unsafe {
+           ptr::read_volatile(0x3FFF_FFFE as *const u32);
+       }
 
-       loop {}
+       loop 
    }
 
    #[exception]
-   fn HardFault(ef: &ExceptionFrame) -> ! ", ef).ok();
+   fn HardFault(ef: &ExceptionFrame) -> ! {
+       if let Ok(mut hstdout) = hio::hstdout() {
+           writeln!(hstdout, "", ef).ok();
        }
 
-       loop {}
+       loop 
    }
 
 ``HardFault``\ 处理函数打印了\ ``ExceptionFrame``\ 值。如果你运行这个，你将会看到下面的东西打印到OpenOCD控制台上。
@@ -1842,7 +1963,16 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
 
    $ openocd
    (..)
-   ExceptionFrame
+   ExceptionFrame {
+       r0: 0x3ffffffe,
+       r1: 0x00f00000,
+       r2: 0x20000000,
+       r3: 0x00000000,
+       r12: 0x00000000,
+       lr: 0x080008f7,
+       pc: 0x0800094a,
+       xpsr: 0x61000000
+   }
 
 ``pc``\ 值是异常时程序计数器(Program Counter)的值，它指向触发了异常的指令。
 
@@ -1860,8 +1990,8 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
 
 你可以在反汇编中搜索程序计数器\ ``0x0800094a``\ 的值。你将会看到一个读取操作(\ ``ldr r0, [r0]``)导致了异常。\ ``ExceptionFrame``\ 的\ ``r0``\ 字段将告诉你，那时寄存器\ ``r0``\ 的值是\ ``0x3fff_fffe`` 。
 
-`中断 <#中断>`__
-================
+中断
+----
 
 虽然中断和异常在很多方面都不一样，但是它们的操作和使用几乎是一样的，且它们也能被同一个中断控制器处理。然而异常是由Cortex-M微架构定义的，中断在命名和功能上总是由特定厂商(经常甚至是芯片)实现的。
 
@@ -1883,7 +2013,10 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
 
    // Timer2中断的中断处理函数
    #[interrupt]
-   fn TIM2()
+   fn TIM2() {
+       // ..
+       // 清除生成中断请求的原因
+   }
 
 中断处理函数和异常处理函数一样看起来像是普通的函数(除了没有入参)。然而由于特殊的调用规定，它不能被固件的其它部分直接调用。然而，可以在软件中生成中断请求，转移到中断处理函数中。
 
@@ -1892,20 +2025,23 @@ QEMU理解半主机操作，因此上面的程序不需要启动一个debug会�
 ::
 
    #[interrupt]
-   fn TIM2()
+   fn TIM2() {
+       static mut COUNT: u32 = 0;
 
-关于这里所说的机制的更多细节描述，请参考\ `异常章节 <start/./exceptions.html>`__\ 。
+       // `COUNT` 的类型是 `&mut u32` 且它用起来安全
+       *COUNT += 1;
+   }
 
-`IO <#io>`__
-============
+IO
+--
 
    **TODO** Cover memory mapped I/O using registers.
 
-`外设 <#外设>`__
-================
+外设
+----
 
-`什么是外设? <#什么是外设>`__
------------------------------
+什么是外设?
+~~~~~~~~~~~
 
 大多数微处理器不仅仅有一个CPU，RAM，或者Flash存储器 - 它们还包含被用来与微处理器的外部系统进行交互的硅片部分，通过传感器，电机控制器，或者人机接口比如一个显示器或者键盘直接和间接地与周遭世界交互。这些组件统称为外设。
 
@@ -1922,8 +2058,8 @@ RAM芯片，ROM芯片和I/O控制器(这个系统中的外设)会通过一系列
 
 然而，不像显卡，显卡通常有像是Vulkan，Metal，或者OpenGL这样的一个软件API。外设暴露给微控制器的是一个硬件接口，其被映射到一块存储区域。
 
-`线性的物理存储空间 <#线性的物理存储空间>`__
---------------------------------------------
+线性的物理存储空间
+~~~~~~~~~~~~~~~~~~
 
 在一个微控制器上，随便往一些地址写一些数据，比如 ``0x4000_0000`` 或者 ``0x0000_0000``\ ，可能也是一个完全有效的动作。
 
@@ -1935,8 +2071,8 @@ RAM芯片，ROM芯片和I/O控制器(这个系统中的外设)会通过一系列
 
 `Nordic nRF52832 Datasheet (pdf) <http://infocenter.nordicsemi.com/pdf/nRF52832_PS_v1.1.pdf>`__
 
-`存储映射的外设 <#存储映射的外设>`__
-------------------------------------
+存储映射的外设
+~~~~~~~~~~~~~~
 
 乍一看，与这些外设交互很简单 - 将正确的数据写入正确的地址。比如，在一个串行端口上发送一个32位字，可以直接把那个32位字写入某个存储地址。串行端口外设然后能自动获取和发出数据。
 
@@ -1948,32 +2084,35 @@ RAM芯片，ROM芯片和I/O控制器(这个系统中的外设)会通过一系列
 
 这个接口是关于如何与硬件交互的，其与被使用的语言无关，无论这个语言是汇编，C，或者Rust。
 
-`Rust尝鲜 <#rust尝鲜>`__
-========================
+Rust尝鲜
+--------
 
-`寄存器 <#寄存器>`__
---------------------
+寄存器
+~~~~~~
 
 让我们看下 'SysTick' 外设 - 一个简单的计时器，它存在于每个Cortex-M处理器内核中。通常你能在芯片厂商的数据手册或者\ *技术参考手册*\ 中看到它们，但是下面的例子对所有ARM Cortex-M核心都是通用的，让我们看下\ `ARM参考手册 <http://infocenter.arm.com/help/topic/com.arm.doc.dui0553a/Babieigh.html>`__\ 。我们能看到这里有四个寄存器:
 
-====== ========== ================ =======
-Offset Name       Description      Width
-====== ========== ================ =======
-0x00   SYST_CSR   控制和状态寄存器 32 bits
-0x04   SYST_RVR   重装载值寄存器   32 bits
-0x08   SYST_CVR   当前值寄存器     32 bits
-0x0C   SYST_CALIB 校准值寄存器     32 bits
-====== ========== ================ =======
-
-`C语言风格的方法(The C Approach) <#c语言风格的方法the-c-approach>`__
---------------------------------------------------------------------
+========= ============== ================ =======
+fset Na   me De          scription Wi     dth
+========= ============== ================ =======
+0x00      SYST_CSR       控制和状态寄存器 32 bits
+0x04      SYST_RVR       重装载值寄存器   32 bits
+0x08      SYST_CVR       当前值寄存器     32 bits
+0x0C      SYST_CALIB     校准值寄存器     32 bits
+# C语言风 格的方法(The C Approach)       
+========= ============== ================ =======
 
 在Rust中，我们可以像C语言一样，用一个 ``struct`` 表示一组寄存器。
 
 ::
 
    #[repr(C)]
-   struct SysTick
+   struct SysTick {
+       pub csr: u32,
+       pub rvr: u32,
+       pub cvr: u32,
+       pub calib: u32,
+   }
 
 限定符 ``#[repr(C)]`` 告诉Rust编译器像C编译器一样去布局这个结构体。这非常重要，因为Rust允许结构体字段被重新排序，而C语言不允许。你可以想象下如果这些字段被编译器悄悄地重新排了序，在调试时会给我们带来多大的麻烦！有了这个限定符，我们就有了与上表对应的四个32位的字段。但当然，这个 ``struct`` 本身没什么用处 - 我们需要一个变量。
 
@@ -1982,8 +2121,8 @@ Offset Name       Description      Width
    let systick = 0xE000_E010 as *mut SysTick;
    let time = unsafe ;
 
-`volatile访问(Volatile Accesses) <#volatile访问volatile-accesses>`__
---------------------------------------------------------------------
+volatile访问(Volatile Accesses)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 现在，上面的方法有一堆问题。
 
@@ -2006,17 +2145,26 @@ Offset Name       Description      Width
    use volatile_register::;
 
    #[repr(C)]
-   struct SysTick
-
-   fn get_systick() -> &'static mut SysTick
+   struct SysTick {
+       pub csr: RW<u32>,
+       pub rvr: RW<u32>,
+       pub cvr: RW<u32>,
+       pub calib: RO<u32>,
    }
 
-   fn get_time() -> u32
+   fn get_systick() -> &'static mut SysTick {
+       unsafe 
+   }
+
+   fn get_time() -> u32 {
+       let systick = get_systick();
+       systick.cvr.read()
+   }
 
 现在通过\ ``read``\ 和\ ``write``\ 方法，volatile accesses可以被自动执行。执行写操作仍然是 ``unsafe`` 的，但是公平地讲，硬件有一堆可变的状态，对于编译器来说没有办法知道是否这些写操作是真正安全的，因此默认就这样是个不错的选择。
 
-`Rust风格的封装 <#rust风格的封装>`__
-------------------------------------
+Rust风格的封装
+~~~~~~~~~~~~~~
 
 我们需要把这个\ ``struct``\ 封装进一个更高抽象的API中，这个API对于用户来说，可以安全地调用。作为驱动的作者，我们亲手验证不安全的代码是否正确，然后为我们的用户提供一个safe的API，因此用户们不必担心它(让他们相信我们不会出错!)。
 
@@ -2026,41 +2174,63 @@ Offset Name       Description      Width
 
    use volatile_register::;
 
-   pub struct SystemTimer
+   pub struct SystemTimer {
+       p: &'static mut RegisterBlock
+   }
 
    #[repr(C)]
-   struct RegisterBlock
+   struct RegisterBlock {
+       pub csr: RW<u32>,
+       pub rvr: RW<u32>,
+       pub cvr: RW<u32>,
+       pub calib: RO<u32>,
+   }
 
-   impl SystemTimer
+   impl SystemTimer {
+       pub fn new() -> SystemTimer {
+           SystemTimer {
+               p: unsafe 
            }
        }
 
-       pub fn get_time(&self) -> u32
+       pub fn get_time(&self) -> u32 {
+           self.p.cvr.read()
+       }
 
-       pub fn set_reload(&mut self, reload_value: u32)
+       pub fn set_reload(&mut self, reload_value: u32) {
+           unsafe 
        }
    }
 
-   pub fn example_usage() -> String ", st.get_time())
+   pub fn example_usage() -> String {
+       let mut st = SystemTimer::new();
+       st.set_reload(0x00FF_FFFF);
+       format!("Time is now 0x", st.get_time())
    }
 
 现在，这种方法带来的问题是，下列的代码完全可以被编译器接受:
 
 ::
 
-   fn thread1()
+   fn thread1() {
+       let mut st = SystemTimer::new();
+       st.set_reload(2000);
+   }
 
-   fn thread2()
+   fn thread2() {
+       let mut st = SystemTimer::new();
+       st.set_reload(1000);
+   }
 
 虽然 ``set_reload`` 函数的 ``&mut self`` 参数保证了没有引用到其它的\ ``SystemTimer``\ 结构体，但是不能阻止用户去创造第二个\ ``SystemTimer``\ ，其指向同个外设！如果作者足够努力的话，他能发现所有这些'重复的'驱动实例，那么按这种方式写的代码就可以工作，但是一旦代码被散播一段时间，散播给多个模块，驱动，开发者，它会越来越容易触发此类错误。
 
-`可变的全局状态 <#可变的全局状态>`__
-------------------------------------
+可变的全局状态
+~~~~~~~~~~~~~~
 
 不幸的是，硬件本质上是个可变的全局状态，Rust开发者可能会对此感到很害怕。因为硬件独立于我们所写的代码的结构，能被真实世界在任何时候改变。
 
-`我们应该遵循什么规则? <#我们应该遵循什么规则>`__
--------------------------------------------------
+我们应该遵循什么规则?
+~~~~~~~~~~~~~~~~~~~~~
 
 我们如何才能做到可靠地与这些外设交互?
 
@@ -2068,8 +2238,8 @@ Offset Name       Description      Width
 2. 在软件中，我们应该能共享任何数量的关于这些外设的只读访问
 3. 如果某个软件可以读写一个外设，它应该保有对那个外设的唯一引用。
 
-`借用检查器 <#借用检查器>`__
-----------------------------
+借用检查器
+~~~~~~~~~~
 
 这些规则最后两个听起来与借用检查器在做的事情很像！
 
@@ -2077,15 +2247,15 @@ Offset Name       Description      Width
 
 我们当然可以，但是对于借用检查器来说，每个外设只有一个实例的话，Rust才可以正确地处理这件事。幸运的是，在硬件中，任何给定的外设，只有一个实例，但是我们该如何将它暴露在代码的结构中呢？
 
-`单例 <#单例>`__
-================
+单例
+----
 
    在软件工程中，单例模式是一个软件设计模式，其限制了一个类到一个对象的实例化。
 
    *Wikipedia:*\ `Singleton Pattern <https://en.wikipedia.org/wiki/Singleton_pattern>`__
 
-`为什么不可以使用全局变量？ <#为什么不可以使用全局变量>`__
-----------------------------------------------------------
+为什么不可以使用全局变量？
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 可以像这样，我们可以使每个东西都变成公共静态的(public static):
 
@@ -2093,28 +2263,40 @@ Offset Name       Description      Width
 
    static mut THE_SERIAL_PORT: SerialPort = SerialPort;
 
-   fn main() ;
+   fn main() {
+       let _ = unsafe {
+           THE_SERIAL_PORT.read_speed();
+       };
    }
 
 但是这个带来了一些问题。它是一个可变的全局变量，在Rust，与这些变量交互总是unsafe的。这些变量在你所有的程序间也是可见的，意味着借用检查器不能帮你跟踪这些变量的引用和所有权。
 
-`在Rust中要怎么做? <#在rust中要怎么做>`__
------------------------------------------
+在Rust中要怎么做?
+~~~~~~~~~~~~~~~~~
 
 与其只是让我们的外设变成一个全局变量，我们不如创造一个结构体，在这个例子里其被叫做 ``PERIPHERALS``\ ，这个全局变量对于我们的每个外设，它都有一个与之对应的 ``Option<T>`` ．
 
 ::
 
-   struct Peripherals
-   impl Peripherals
+   struct Peripherals {
+       serial: Option<SerialPort>,
    }
-   static mut PERIPHERALS: Peripherals = Peripherals ;
+   impl Peripherals {
+       fn take_serial(&mut self) -> SerialPort {
+           let p = replace(&mut self.serial, None);
+           p.unwrap()
+       }
+   }
+   static mut PERIPHERALS: Peripherals = Peripherals {
+       serial: Some(SerialPort),
+   };
 
 这个结构体允许我们获得一个外设的实例。如果我们尝试调用\ ``take_serial()``\ 获得多个实例，我们的代码将会抛出运行时恐慌(panic)！
 
 ::
 
-   fn main() ;
+   fn main() {
+       let serial_1 = unsafe ;
        // 这里造成运行时恐慌！
        // let serial_2 = unsafe ;
    }
@@ -2123,8 +2305,8 @@ Offset Name       Description      Width
 
 这个带来了少量的运行时开销，因为我们必须打包 ``SerialPort`` 结构体进一个option中，且我们将需要调用一次 ``take_serial()``\ ，但是这种少量的前期成本，能使我们在接下来的程序中使用借用检查器(borrow checker) 。
 
-`已存在的库支持 <#已存在的库支持>`__
-------------------------------------
+已存在的库支持
+~~~~~~~~~~~~~~
 
 虽然我们在上面生成了我们自己的 ``Peripherals`` 结构体，但这并不是必须的。\ ``cortex_m`` crate 包含一个被叫做 ``singleton!()`` 的宏，它可以为你完成这个任务。
 
@@ -2132,27 +2314,51 @@ Offset Name       Description      Width
 
    use cortex_m::singleton;
 
-   fn main()
+   fn main() {
+       // OK 如果 `main` 只被执行一次
+       let x: &'static mut bool =
+           singleton!(: bool = false).unwrap();
+   }
 
 `cortex_m docs <https://docs.rs/cortex-m/latest/cortex_m/macro.singleton.html>`__
 
-另外，如果你使用 ```cortex-m-rtic`` <https://github.com/rtic-rs/cortex-m-rtic>`__\ ，它将获取和定义这些外设的整个过程抽象了出来，你将获得一个\ ``Peripherals``\ 结构体，其包含了所有你定义了的项的一个非 ``Option<T>`` 的版本。
+另外，如果你使用
+
+``Option<T>`` 的版本。
 
 ::
 
    // cortex-m-rtic v0.5.x
    #[rtic::app(device = lm3s6965, peripherals = true)]
-   const APP: () =
+   const APP: () = {
+       #[init]
+       fn init(cx: init::Context) {
+           static mut X: u32 = 0;
+
+           // Cortex-M外设
+           let core: cortex_m::Peripherals = cx.core;
+
+           // 设备特定的外设
+           let device: lm3s6965::Peripherals = cx.device;
+       }
    }
 
-`为什么？ <#为什么>`__
-----------------------
+为什么？
+~~~~~~~~
 
 但是这些单例模式是如何使我们的Rust代码在工作方式上产生很大不同的?
 
 ::
 
-   impl SerialPort
+   impl SerialPort {
+       const SER_PORT_SPEED_REG: *mut u32 = 0x4000_1000 as _;
+
+       fn read_speed(
+           &self // <------ 这个真的真的很重要
+       ) -> u32 {
+           unsafe {
+               ptr::read_volatile(Self::SER_PORT_SPEED_REG)
+           }
        }
    }
 
@@ -2165,14 +2371,18 @@ Offset Name       Description      Width
 
 ::
 
-   fn main() ;
+   fn main() {
+       // 缺少对`self`的引用！将不会工作。
+       // SerialPort::read_speed();
+
+       let serial_1 = unsafe ;
 
        // 你只能读取你有权访问的内容
        let _ = serial_1.read_speed();
    }
 
-`像对待数据一样对待硬件 <#像对待数据一样对待硬件>`__
-----------------------------------------------------
+像对待数据一样对待硬件
+~~~~~~~~~~~~~~~~~~~~~~
 
 另外，因为一些引用是可变的，一些是不可变的，就可以知道一个函数或者方法是否有能力修改硬件的状态。比如，
 
@@ -2183,18 +2393,22 @@ Offset Name       Description      Width
    fn setup_spi_port(
        spi: &mut SpiPort,
        cs_pin: &mut GpioPin
-   ) -> Result<()>
+   ) -> Result<()> {
+       // ...
+   }
 
 这个不行:
 
 ::
 
-   fn read_button(gpio: &GpioPin) -> bool
+   fn read_button(gpio: &GpioPin) -> bool {
+       // ...
+   }
 
 这允许我们在\ **编译时**\ 而不是运行时强制代码是否应该或者不应该对硬件进行修改。要注意，这通常在只有一个应用的情况下起作用，但是对于裸机系统来说，我们的软件将被编译进一个单一应用中，因此这通常不是一个限制。
 
-`静态保障 <#静态保障>`__
-========================
+静态保障
+--------
 
 Rust的类型系统可以在编译时防止数据竞争(看\ ```Send`` <https://doc.rust-lang.org/core/marker/trait.Send.html>`__\ 和\ ```Sync`` <https://doc.rust-lang.org/core/marker/trait.Sync.html>`__\ 特性(traits))。也可以在编译时使用类型系统来完成一些检查工作；减少某些例子中对运行时检查的需要。
 
@@ -2204,29 +2418,53 @@ Rust的类型系统可以在编译时防止数据竞争(看\ ```Send`` <https://
 
 并且，像是在前面章节看到的，所有权的概念能被应用到外设上确保一个程序只有某些部分可以修改一个外设。与将这个外设当做全局可变的状态相比，\ *访问控制*\ (assess control)使得软件更容易推理。
 
-`类型状态编程(Typestate Programming) <#类型状态编程typestate-programming>`__
-============================================================================
+类型状态编程(Typestate Programming)
+-----------------------------------
 
 `typestates <https://en.wikipedia.org/wiki/Typestate_analysis>`__\ 的概念是指将有关对象当前状态的信息编码进该对象的类型中。虽然这听起来有点神秘，如果你在Rust中用过\ `建造者模式 <https://doc.rust-lang.org/1.0.0/style/ownership/builders.html>`__\ ，你就已经开始使用类型状态编程了！
 
 ::
 
-   pub mod foo_module
+   pub mod foo_module {
+       #[derive(Debug)]
+       pub struct Foo {
+           inner: u32,
+       }
 
-       pub struct FooBuilder
+       pub struct FooBuilder {
+           a: u32,
+           b: u32,
+       }
 
-       impl FooBuilder
+       impl FooBuilder {
+           pub fn new(starter: u32) -> Self {
+               Self {
+                   a: starter,
+                   b: starter,
+               }
            }
 
-           pub fn double_a(self) -> Self
+           pub fn double_a(self) -> Self {
+               Self {
+                   a: self.a * 2,
+                   b: self.b,
+               }
            }
 
-           pub fn into_foo(self) -> Foo
+           pub fn into_foo(self) -> Foo {
+               Foo {
+                   inner: self.a + self.b,
+               }
            }
        }
    }
 
-   fn main() ", x);
+   fn main() {
+       let x = foo_module::FooBuilder::new(10)
+           .double_a()
+           .into_foo();
+
+       println!("", x);
    }
 
 在这个例子里，不能直接生成一个\ ``Foo``\ 对象。必须先生成一个\ ``FooBuilder``\ ，并且恰当地初始化\ ``FooBuilder``\ 后，才能获取到需要的\ ``Foo``\ 对象。
@@ -2236,15 +2474,15 @@ Rust的类型系统可以在编译时防止数据竞争(看\ ```Send`` <https://
 -  ``FooBuilder``\ ，其表示一个"没有被配置"，或者"正在配置"状态
 -  ``Foo``\ ，其表示了一个"被配置"，或者"可以使用"状态。
 
-`强类型 <#强类型>`__
---------------------
+强类型
+~~~~~~
 
 因为Rust有一个\ `强类型系统 <https://en.wikipedia.org/wiki/Strong_and_weak_typing>`__\ ，没有什么简单的方法可以奇迹般地生成一个\ ``Foo``\ 实例，也没有简单的方法可以不用调用\ ``into_foo()``\ 方法而把一个\ ``FooBuilder``\ 变成一个\ ``Foo``\ 。另外，调用\ ``into_foo()``\ 方法消费了最初的\ ``FooBuilder``\ 结构体，意味着不生成一个新的实例就不能被再次使用它。
 
 这允许我们可以将系统的状态表示成类型，把状态转换必须的动作包括进转换两个类型的方法中。通过生成一个 ``FooBuilder``\ ，转换成一个 ``Foo`` 对象，我们已经使用了一个基本的状态机。
 
-`作为状态机的外设 <#作为状态机的外设>`__
-========================================
+作为状态机的外设
+----------------
 
 一个微控制器的外设可以被想成是一组状态机。比如，一个简化的\ `GPIO管脚 <https://en.wikipedia.org/wiki/General-purpose_input/output>`__\ 的配置可以被表达成下列的状态树:
 
@@ -2281,47 +2519,64 @@ Rust的类型系统可以在编译时防止数据竞争(看\ ```Send`` <https://
 3. 配置成输出
 4. 输出: 高
 
-`硬件表征(Hardware Representation) <#硬件表征hardware-representation>`__
-------------------------------------------------------------------------
+硬件表征(Hardware Representation)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 通常，通过向映射到GPIO外设上的指定的寄存器中写入值可以配置上面列出的状态。让我们定义一个假想的GPIO配置寄存器来解释下它:
 
-======== ======= == ====== =======================================
-名字     位数(s) 值 含义   注释
-======== ======= == ====== =======================================
-使能     0       0  关闭   关闭GPIO
-\                1  使能   使能GPIO
-方向     1       0  输入   方向设置成输入
-\                1  输出   方向设置成输出
-输入模式 2..3    00 hi-z   输入设置为高阻态
-\                01 下拉   下拉输入管脚
-\                10 上拉   上拉输入管脚
-\                11 n/a    无效状态。不要设置
-输出模式 4       0  拉低   输出管脚变成地电平
-\                1  拉高   输出管脚变成高电平
-输入状态 5       x  in-val 如果输入 < 1.5v为0，如果输入 >= 1.5v为1
-======== ======= == ====== =======================================
-
-*可以* 在Rust中暴露下列的结构体来控制这个GPIO:
+============= ========== ====== ========== =======================================
+字 位数(s     ) 值       含义              注释
+============= ========== ====== ========== =======================================
+使能          0          0      关闭       关闭GPIO
+\                        1      使能       使能GPIO
+方向          1          0      输入       方向设置成输入
+\                        1      输出       方向设置成输出
+输入模式      2..3       00     hi-z       输入设置为高阻态
+\                        01     下拉       下拉输入管脚
+\                        10     上拉       上拉输入管脚
+\                        11     n/a        无效状态。不要设置
+输出模式      4          0      拉低       输出管脚变成地电平
+\                        1      拉高       输出管脚变成高电平
+输入状态      5          x      in-val     如果输入 < 1.5v为0，如果输入 >= 1.5v为1
+以\* 在Rust中 暴露下列的 结构体 来控制这个 GPIO:
+============= ========== ====== ========== =======================================
 
 ::
 
    /// GPIO接口
-   struct GpioConfig
+   struct GpioConfig {
+       /// 由svd2rust生成的GPIO配置结构体
+       periph: GPIO_CONFIG,
+   }
 
-   impl GpioConfig );
+   impl GpioConfig {
+       pub fn set_enable(&mut self, is_enabled: bool) {
+           self.periph.modify(|_r, w| {
+               w.enable().set_bit(is_enabled)
+           });
        }
 
-       pub fn set_direction(&mut self, is_output: bool) );
+       pub fn set_direction(&mut self, is_output: bool) {
+           self.periph.modify(|_r, w| {
+               w.direction().set_bit(is_output)
+           });
        }
 
-       pub fn set_input_mode(&mut self, variant: InputMode) );
+       pub fn set_input_mode(&mut self, variant: InputMode) {
+           self.periph.modify(|_r, w| {
+               w.input_mode().variant(variant)
+           });
        }
 
-       pub fn set_output_mode(&mut self, is_high: bool) );
+       pub fn set_output_mode(&mut self, is_high: bool) {
+           self.periph.modify(|_r, w| {
+               w.output_mode.set_bit(is_high)
+           });
        }
 
-       pub fn get_input_status(&self) -> bool
+       pub fn get_input_status(&self) -> bool {
+           self.periph.read().input_status().bit_is_set()
+       }
    }
 
 然而，这会允许我们修改某些没有意义的寄存器。比如，如果当我们的GPIO被配置为输入时我们设置\ ``output_mode``\ 字段，将会发生什么？
@@ -2330,65 +2585,102 @@ Rust的类型系统可以在编译时防止数据竞争(看\ ```Send`` <https://
 
 虽然这个接口很方便写入，但是它没有强制我们遵守硬件实现所设的设计约定。
 
-`设计约定(design contracts) <#设计约定design-contracts>`__
-==========================================================
+设计约定(design contracts)
+--------------------------
 
 在我们的上个章节中，我们写了一个接口，但没有强制遵守设计约定。让我们再看下我们假想的GPIO配置寄存器：
 
-======== ======= == ======== =========================================
-名字     位数(s) 值 含义     注释
-======== ======= == ======== =========================================
-使能     0       0  关闭     关闭GPIO
-\                1  使能     使能GPIO
-方向     1       0  输入     方向设置成输入
-\                1  输出     方向设置成输出
-输入模式 2..3    00 高阻态   输入设置为高阻态
-\                01 下拉     下拉输入管脚
-\                10 上拉     上拉输入管脚
-\                11 n/a      无效状态。不要设置
-输出模式 4       0  拉低     把管脚设置成低电平
-\                1  拉高     把管脚设置成高电平
-输入状态 5       x  输入电平 如果输入 < 1.5v 为0，如果输入 >= 1.5v 为1
-======== ======= == ======== =========================================
-
-如果在使用底层硬件之前检查硬件的状态，在运行时强制用户遵守设计约定，代码可能像这一样:
+============ ========== ====== ============ ===========================================
+字 位数(s    ) 值       含     义           注释
+============ ========== ====== ============ ===========================================
+使能         0          0      关闭         关闭GPIO
+\                       1      使能         使能GPIO
+方向         1          0      输入         方向设置成输入
+\                       1      输出         方向设置成输出
+输入模式     2..3       00     高阻态       输入设置为高阻态
+\                       01     下拉         下拉输入管脚
+\                       10     上拉         上拉输入管脚
+\                       11     n/a          无效状态。不要设置
+输出模式     4          0      拉低         把管脚设置成低电平
+\                       1      拉高         把管脚设置成高电平
+输入状态     5          x      输入电平     如果输入 < 1.5v 为0，如果输入 >= 1.5v 为1
+果在使用底层 硬件之前检 查硬件 的状态，在运 行时强制用户遵守设计约定，代码可能像这一样:
+============ ========== ====== ============ ===========================================
 
 ::
 
    /// GPIO接口
-   struct GpioConfig
+   struct GpioConfig {
+       /// 由svd2rust生成的GPIO配制结构体
+       periph: GPIO_CONFIG,
+   }
 
-   impl GpioConfig );
+   impl GpioConfig {
+       pub fn set_enable(&mut self, is_enabled: bool) {
+           self.periph.modify(|_r, w| {
+               w.enable().set_bit(is_enabled)
+           });
        }
 
-       pub fn set_direction(&mut self, is_output: bool) -> Result<(), ()>
+       pub fn set_direction(&mut self, is_output: bool) -> Result<(), ()> {
+           if self.periph.read().enable().bit_is_clear() {
+               // 必须被使能配置方向
+               return Err(());
+           }
 
-           self.periph.modify(|r, w| );
+           self.periph.modify(|r, w| {
+               w.direction().set_bit(is_output)
+           });
 
            Ok(())
        }
 
-       pub fn set_input_mode(&mut self, variant: InputMode) -> Result<(), ()>
+       pub fn set_input_mode(&mut self, variant: InputMode) -> Result<(), ()> {
+           if self.periph.read().enable().bit_is_clear() {
+               // 必须被使能配置输入模式
+               return Err(());
+           }
 
-           if self.periph.read().direction().bit_is_set()
+           if self.periph.read().direction().bit_is_set() {
+               // 方向必须被设置成输入
+               return Err(());
+           }
 
-           self.periph.modify(|_r, w| );
+           self.periph.modify(|_r, w| {
+               w.input_mode().variant(variant)
+           });
 
            Ok(())
        }
 
-       pub fn set_output_status(&mut self, is_high: bool) -> Result<(), ()>
+       pub fn set_output_status(&mut self, is_high: bool) -> Result<(), ()> {
+           if self.periph.read().enable().bit_is_clear() {
+               // 设置输出状态必须被使能
+               return Err(());
+           }
 
-           if self.periph.read().direction().bit_is_clear()
+           if self.periph.read().direction().bit_is_clear() {
+               // 方向必须是输出
+               return Err(());
+           }
 
-           self.periph.modify(|_r, w| );
+           self.periph.modify(|_r, w| {
+               w.output_mode.set_bit(is_high)
+           });
 
            Ok(())
        }
 
-       pub fn get_input_status(&self) -> Result<bool, ()>
+       pub fn get_input_status(&self) -> Result<bool, ()> {
+           if self.periph.read().enable().bit_is_clear() {
+               // 获取状态必须被使能
+               return Err(());
+           }
 
-           if self.periph.read().direction().bit_is_set()
+           if self.periph.read().direction().bit_is_set() {
+               // 方向必须是输入
+               return Err(());
+           }
 
            Ok(self.periph.read().input_status().bit_is_set())
        }
@@ -2396,15 +2688,21 @@ Rust的类型系统可以在编译时防止数据竞争(看\ ```Send`` <https://
 
 因为需要强制遵守硬件上的限制，所以最后做了很多运行时检查，它浪费了我们很多时间和资源，对于开发者来说，这个代码用起来就没那么愉快了。
 
-`类型状态(Type states) <#类型状态type-states>`__
-------------------------------------------------
+类型状态(Type states)
+~~~~~~~~~~~~~~~~~~~~~
 
 但是，如果我们让Rust的类型系统去强制遵守状态转换的规则会怎样？看下这个例子:
 
 ::
 
    /// GPIO接口
-   struct GpioConfig<ENABLED, DIRECTION, MODE>
+   struct GpioConfig<ENABLED, DIRECTION, MODE> {
+       /// 由svd2rust产生的GPIO配置结构体
+       periph: GPIO_CONFIG,
+       enabled: ENABLED,
+       direction: DIRECTION,
+       mode: MODE,
+   }
 
    // GpioConfig中MODE的类型状态
    struct Disabled;
@@ -2417,32 +2715,87 @@ Rust的类型系统可以在编译时防止数据竞争(看\ ```Send`` <https://
    struct DontCare;
 
    /// 这些函数可能被用于所有的GPIO管脚
-   impl<EN, DIR, IN_MODE> GpioConfig<EN, DIR, IN_MODE>
+   impl<EN, DIR, IN_MODE> GpioConfig<EN, DIR, IN_MODE> {
+       pub fn into_disabled(self) -> GpioConfig<Disabled, DontCare, DontCare> {
+           self.periph.modify(|_r, w| w.enable.disabled());
+           GpioConfig {
+               periph: self.periph,
+               enabled: Disabled,
+               direction: DontCare,
+               mode: DontCare,
+           }
        }
 
-       pub fn into_enabled_input(self) -> GpioConfig<Enabled, Input, HighZ> );
-           GpioConfig
+       pub fn into_enabled_input(self) -> GpioConfig<Enabled, Input, HighZ> {
+           self.periph.modify(|_r, w| {
+               w.enable.enabled()
+                .direction.input()
+                .input_mode.high_z()
+           });
+           GpioConfig {
+               periph: self.periph,
+               enabled: Enabled,
+               direction: Input,
+               mode: HighZ,
+           }
        }
 
-       pub fn into_enabled_output(self) -> GpioConfig<Enabled, Output, DontCare> );
-           GpioConfig
+       pub fn into_enabled_output(self) -> GpioConfig<Enabled, Output, DontCare> {
+           self.periph.modify(|_r, w| {
+               w.enable.enabled()
+                .direction.output()
+                .input_mode.set_high()
+           });
+           GpioConfig {
+               periph: self.periph,
+               enabled: Enabled,
+               direction: Output,
+               mode: DontCare,
+           }
        }
    }
 
    /// 这个函数可能被用于一个输出管脚
-   impl GpioConfig<Enabled, Output, DontCare>
+   impl GpioConfig<Enabled, Output, DontCare> {
+       pub fn set_bit(&mut self, set_high: bool) {
+           self.periph.modify(|_r, w| w.output_mode.set_bit(set_high));
+       }
    }
 
    /// 这些方法可能被用于任意一个使能的输入GPIO
-   impl<IN_MODE> GpioConfig<Enabled, Input, IN_MODE>
-
-       pub fn into_input_high_z(self) -> GpioConfig<Enabled, Input, HighZ>
+   impl<IN_MODE> GpioConfig<Enabled, Input, IN_MODE> {
+       pub fn bit_is_set(&self) -> bool {
+           self.periph.read().input_status.bit_is_set()
        }
 
-       pub fn into_input_pull_down(self) -> GpioConfig<Enabled, Input, PulledLow>
+       pub fn into_input_high_z(self) -> GpioConfig<Enabled, Input, HighZ> {
+           self.periph.modify(|_r, w| w.input_mode().high_z());
+           GpioConfig {
+               periph: self.periph,
+               enabled: Enabled,
+               direction: Input,
+               mode: HighZ,
+           }
        }
 
-       pub fn into_input_pull_up(self) -> GpioConfig<Enabled, Input, PulledHigh>
+       pub fn into_input_pull_down(self) -> GpioConfig<Enabled, Input, PulledLow> {
+           self.periph.modify(|_r, w| w.input_mode().pull_low());
+           GpioConfig {
+               periph: self.periph,
+               enabled: Enabled,
+               direction: Input,
+               mode: PulledLow,
+           }
+       }
+
+       pub fn into_input_pull_up(self) -> GpioConfig<Enabled, Input, PulledHigh> {
+           self.periph.modify(|_r, w| w.input_mode().pull_high());
+           GpioConfig {
+               periph: self.periph,
+               enabled: Enabled,
+               direction: Input,
+               mode: PulledHigh,
+           }
        }
    }
 
@@ -2484,15 +2837,15 @@ Rust的类型系统可以在编译时防止数据竞争(看\ ```Send`` <https://
 
 这绝对是存储管脚状态的便捷方法，但是为什么这么做?为什么这比把状态当成一个\ ``enum``\ 存在我们的\ ``GpioConfig``\ 结构体中更好？
 
-`编译时功能安全(Functional Safety) <#编译时功能安全functional-safety>`__
-------------------------------------------------------------------------
+编译时功能安全(Functional Safety)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 因为我们在编译时完全强制遵守设计约定，这造成了没有运行时开销。当管脚处于输入模式时时，是不可能设置输出模式的。必须先把它设置成一个输出管脚，然后再设置输出模式。因为在执行一个函数前会检查现在的状态，因此没有运行时消耗。
 
 也因为这些状态被类型系统强制遵守，因此没有为这个接口的使用者留太多的犯错余地。如果它们尝试执行一个非法的状态转换，代码将不会编译成功！
 
-`零成本抽象 <#零成本抽象>`__
-============================
+零成本抽象
+----------
 
 类型状态是一个零成本抽象的杰出案例 - 把某些行为移到编译时执行或者分析的能力。这些类型状态不包含真实的数据，只用来作为标记。因为它们不包含数据，在运行时它们在内存中不存在实际的表示。
 
@@ -2505,8 +2858,8 @@ Rust的类型系统可以在编译时防止数据竞争(看\ ```Send`` <https://
    let _ = size_of::<PulledHigh>(); // == 0
    let _ = size_of::<GpioConfig<Enabled, Input, PulledHigh>>(); // == 0
 
-`零大小的类型(Zero Sized Types) <#零大小的类型zero-sized-types>`__
-------------------------------------------------------------------
+零大小的类型(Zero Sized Types)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
 
@@ -2518,7 +2871,14 @@ Rust的类型系统可以在编译时防止数据竞争(看\ ```Send`` <https://
 
 ::
 
-   pub fn into_input_high_z(self) -> GpioConfig<Enabled, Input, HighZ>
+   pub fn into_input_high_z(self) -> GpioConfig<Enabled, Input, HighZ> {
+       self.periph.modify(|_r, w| w.input_mode().high_z());
+       GpioConfig {
+           periph: self.periph,
+           enabled: Enabled,
+           direction: Input,
+           mode: HighZ,
+       }
    }
 
 我们返回的GpioConfig在运行时并不存在。对这个函数的调用通常会被归纳为一条汇编指令
@@ -2529,15 +2889,15 @@ Rust的类型系统可以在编译时防止数据竞争(看\ ```Send`` <https://
 
 它不会用更多的CPU，RAM，或者代码空间去跟踪\ ``GpioConfig``\ 的状态，会被渲染成和直接访问寄存器一样的机器码。
 
-`嵌套 <#嵌套>`__
-----------------
+嵌套
+~~~~
 
 通常，这些抽象可能会被深深地嵌套起来。一旦结构体使用的所有的组件是零大小类型的，整个结构体将不会在运行时存在。
 
 对于复杂或者深度嵌套的结构体，定义所有可能的状态组合可能很乏味。在这些例子中，宏可能可以被用来生成所有的实现。
 
-`可移植性 <#可移植性>`__
-========================
+可移植性
+--------
 
 在嵌入式环境中，可移植性是一个非常重要的主题: 每个供应商甚至同个制造商的不同系列间，都提供了不同的外设和功能。同样地，与外设交互的方式也将会不一样。
 
@@ -2551,8 +2911,8 @@ Rust的类型系统可以在编译时防止数据竞争(看\ ```Send`` <https://
 
 在Rust中我们要怎么实现这个目标呢?让我们进入\ **embedded-hal**...
 
-`什么是embedded-hal？ <#什么是embedded-hal>`__
-----------------------------------------------
+什么是embedded-hal？
+~~~~~~~~~~~~~~~~~~~~
 
 简而言之，它是一组traits，其定义了\ **HAL implementations**\ ，\ **驱动**\ ，\ **应用(或者固件)** 之间的实现约定(implementation contracts)。这些约定包括功能(即约定，如果为某个类型实现了某个trait，\ **HAL implementation**\ 就提供了某个功能)和方法(即，如果构造一个实现了某个trait的类型，约定保障类型肯定有在trait中指定的方法)。
 
@@ -2571,13 +2931,13 @@ Rust的类型系统可以在编译时防止数据竞争(看\ ```Send`` <https://
 
 使用\ **embedded-hal** traits和依赖\ **embedded-hal**\ 的crates的主要原因是为了控制复杂性。如果发现一个应用可能必须要实现对硬件外设的使用，以及需要实现应用程序和其它硬件组件间潜在的驱动，那么其应该很容易被看作是可复用性有限的。用数学语言来说就是，如果\ **M**\ 是外设HAL implementations的数量，\ **N**\ 是驱动的数量，那么如果我们要为每个应用重新发明轮子我们最终会有\ **M*N**\ 个实现，然而通过使用\ **embedded-hal**\ 的traits提供的 *API* 将会使实现复杂性变成\ **M+N** 。当然还有其它好处，比如由于API定义良好，开箱即用，导致试错减少。
 
-`embedded-hal的用户 <#embedded-hal的用户>`__
---------------------------------------------
+embedded-hal的用户
+~~~~~~~~~~~~~~~~~~
 
 像上面所说的，HAL有三个主要用户:
 
-`HAL implementation <#hal-implementation>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+HAL implementation
+^^^^^^^^^^^^^^^^^^
 
 HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实现由三部分组成:
 
@@ -2592,20 +2952,20 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 -  通过适配器，比如一个与单元测试有关的类型的仿真
 -  通过相关硬件适配器的驱动，e.g. I2C多路复用器或者GPIO扩展器(I2C multiplexer or GPIO expander)
 
-`驱动 <#驱动>`__
-~~~~~~~~~~~~~~~~
+驱动
+^^^^
 
 驱动为一个外部或者内部组件实现了一组自定义的功能，被连接到一个实现了embedded-hal traits的外设上。这种驱动的典型的例子包括多种传感器(温度计，磁力计，加速度计，光照计)，显示设备(LED阵列，LCD显示屏)和执行器(电机，发送器)。
 
 必须使用实现了embedded-hal的某个\ ``trait``\ 的类型的实例来初始化驱动，这是通过trait bound来确保的，驱动也提供了它自己的类型实例，这个实例具有一组自定义的方法，这些方法允许与被驱动的设备交互。
 
-`应用 <#应用>`__
-~~~~~~~~~~~~~~~~
+应用
+^^^^
 
 应用把多个部分结合在一起并确保需要的功能被实现。当在不同的系统间移植时，这部分的适配是花费最多精力的地方，因为应用需要通过HAL implementation正确地初始化真实的硬件，而且不同硬件的初始化也不相同，甚至有时候差别非常大。用户的选择也在其中扮演了非常重大的角色，因为组件能被物理连接到不同的端口，硬件总线有时候需要外部硬件去匹配配置，或者用户在内部外设的使用上有不同的考量。
 
-`并发 <#并发>`__
-================
+并发
+----
 
 当程序的不同部分有可能会在不同的时刻被执行或者不按顺序地被执行时，那并发就出现了。在一个嵌入式环境中，这包括:
 
@@ -2615,21 +2975,27 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
 因为许多嵌入式程序需要处理中断，因此并发迟早会出现，这也是许多微妙和困难的bugs会出现的地方。幸运地是，Rust提供了许多抽象和安全保障去帮助我们写正确的代码。
 
-`没有并发 <#没有并发>`__
-------------------------
+没有并发
+~~~~~~~~
 
 对于一个嵌入式程序来说最简单的并发是没有并发: 软件由一个保持运行的main循环组成，一点中断也没有。有时候这非常适合手边的问题! 通常你的循环将会读取一些输入，执行一些处理，且写入一些输出。
 
 ::
 
    #[entry]
-   fn main()
+   fn main() {
+       let peripherals = setup_peripherals();
+       loop {
+           let inputs = read_inputs(&peripherals);
+           let outputs = process(inputs);
+           write_outputs(&peripherals, outputs);
+       }
    }
 
 因为这里没有并发，因此不需要担心程序不同部分间的共享数据或者同步对外设的访问。如果可以使用一个简单的方法来解决问题，这种方法是个不错的选择。
 
-`全局可变数据 <#全局可变数据>`__
---------------------------------
+全局可变数据
+~~~~~~~~~~~~
 
 不像非嵌入式Rust，我们通常不会奢侈地在堆上分配数据，并将对该数据的引用传递到新创建的线程中。相反，我们的中断处理函数随时可能被调用，且必须知道如何访问我们正在使用的共享内存。从最底层看来，这意味着我们必须有 *静态分配的* 可变的内存，中断处理函数和main代码都可以引用这块内存。
 
@@ -2642,14 +3008,22 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
    static mut COUNTER: u32 = 0;
 
    #[entry]
-   fn main() -> ! ;
+   fn main() -> ! {
+       set_timer_1hz();
+       let mut last_state = false;
+       loop {
+           let state = read_signal_level();
+           if state && !last_state {
+               // 危险 - 实际不安全! 可能导致数据竞争。
+               unsafe ;
            }
            last_state = state;
        }
    }
 
    #[interrupt]
-   fn timer()
+   fn timer() {
+       unsafe 
    }
 
 每秒计时器中断会把计数器设置回0。这期间，main循环连续地测量信号，且当看到从低电平到高电平的变化时，增加计数器的值。因为它是\ ``static mut``\ 的，我们不得不使用\ ``unsafe``\ 去访问\ ``COUNTER``\ ，意思是我们向编译器保证我们的操作不会导致任何未定义的行为。你能发现竞态条件吗？\ ``COUNTER``\ 上的增加并不一定是原子的
@@ -2657,8 +3031,8 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
 事实上，在大多数嵌入式平台上，它将被分开成一个读取操作，然后是增加，然后是写回。如果中断在计数器被读取之后但是在被写回之前被激活，在中断返回后，重置回0的操作会被忽略掉 - 那期间，我们会算出两倍的转换次数。
 
-`临界区(Critical Sections) <#临界区critical-sections>`__
---------------------------------------------------------
+临界区(Critical Sections)
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 因此，关于数据竞争可以做些什么？一个简单的方法是使用 *临界区(critical sections）* ，在临界区的上下文中中断被关闭了。通过把对\ ``main``\ 中的\ ``COUNTER``\ 访问封装进一个临界区，我们能确保计时器中断将不会激活，直到我们完成了增加\ ``COUNTER``\ 的操作:
 
@@ -2667,7 +3041,15 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
    static mut COUNTER: u32 = 0;
 
    #[entry]
-   fn main() -> ! ;
+   fn main() -> ! {
+       set_timer_1hz();
+       let mut last_state = false;
+       loop {
+           let state = read_signal_level();
+           if state && !last_state {
+               // 新的临界区确保对COUNTER的同步访问
+               cortex_m::interrupt::free(|_| {
+                   unsafe ;
                });
            }
            last_state = state;
@@ -2675,7 +3057,8 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
    }
 
    #[interrupt]
-   fn timer()
+   fn timer() {
+       unsafe 
    }
 
 在这个例子里，我们使用 ``cortex_m::interrupt::free``\ ，但是其它平台将会有更简单的机制在一个临界区中执行代码。它们都有一样的逻辑，关闭中断，运行一些代码，然后重新使能中断。
@@ -2691,8 +3074,8 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
 值得注意的是，虽然一个临界区保障了不会发生中断，但是它在多核系统上不提供一个排他性保证(exclusivity guarantee)！其它核可能很开心地访问与你的核一样的内存区域，即使没有中断。如果你正在使用多核，你将需要更强的同步原语(synchronisation primitives)。
 
-`原子访问 <#原子访问>`__
-------------------------
+原子访问
+~~~~~~~~
 
 在一些平台上，可以使用特定的原子指令，它保障了读取-修改-写回操作。针对Cortex-M: ``thumbv6``\ (Cortex-M0，Cortex-M0+)只提供原子读取和存取指令，而``thumv7``\ (Cortex-M3及以上)提供完整的比较和交换(CAS)指令。这些CAS指令可以替代过重的禁用所有中断的方法: 我们可以尝试执行加法操作，它在大多数情况下都会成功，但是如果它被中断了它将会自动重试完整的加法操作。这些原子操作甚至在多核间也是安全的。
 
@@ -2703,13 +3086,24 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
    static COUNTER: AtomicUsize = AtomicUsize::new(0);
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       set_timer_1hz();
+       let mut last_state = false;
+       loop {
+           let state = read_signal_level();
+           if state && !last_state {
+               // 使用 `fetch_add` 原子性地给 COUNTER 加一
+               COUNTER.fetch_add(1, Ordering::Relaxed);
+           }
            last_state = state;
        }
    }
 
    #[interrupt]
-   fn timer()
+   fn timer() {
+       // 使用 `store` 将 0 直接写入 COUNTER
+       COUNTER.store(0, Ordering::Relaxed)
+   }
 
 这时，\ ``COUNTER``\ 是一个safe的\ ``static``\ 变量。多亏了\ ``AtomicUsize``\ 类型，不需要禁用中断，\ ``COUNTER``\ 能从中断处理函数和main线程被安全地修改。当可以这么做时，这是一个更好的解决方案 - 然而平台上可能不支持这么做。
 
@@ -2717,8 +3111,8 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
 关于原子操作和排序的更多细节，可以看这里\ `nomicon <https://doc.rust-lang.org/nomicon/atomics.html>`__\ 。
 
-`抽象，Send和Sync <#抽象send和sync>`__
---------------------------------------
+抽象，Send和Sync
+~~~~~~~~~~~~~~~~
 
 上面的解决方案都不是特别令人满意。它们需要\ ``unsafe``\ 块，\ ``unsafe``\ 块必须要被十分小心地检查且不符合人体工程学。确实，我们在Rust中可以做得更好！
 
@@ -2736,28 +3130,48 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
    const CS_COUNTER_INIT: CSCounter = CSCounter(UnsafeCell::new(0));
 
-   impl CSCounter ;
+   impl CSCounter {
+       pub fn reset(&self, _cs: &interrupt::CriticalSection) {
+           // 通过要求一个CriticalSection被传递进来，我们知道我们肯定正在一个
+           // CriticalSection中操作，且因此可以自信地使用这个unsafe块(调用UnsafeCell::get的前提)。
+           unsafe ;
        }
 
-       pub fn increment(&self, _cs: &interrupt::CriticalSection) ;
+       pub fn increment(&self, _cs: &interrupt::CriticalSection) {
+           unsafe ;
        }
    }
 
    // 允许静态CSCounter的前提。看下面的解释。
-   unsafe impl Sync for CSCounter {}
+   unsafe impl Sync for CSCounter 
 
    // COUNTER不再是`mut`的因为它使用内部可变性;
    // 因此访问它也不再需要unsafe块。
    static COUNTER: CSCounter = CS_COUNTER_INIT;
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       set_timer_1hz();
+       let mut last_state = false;
+       loop {
+           let state = read_signal_level();
+           if state && !last_state {
+               // 这里不用unsafe!
+               interrupt::free(|cs| COUNTER.increment(cs));
+           }
            last_state = state;
        }
    }
 
    #[interrupt]
-   fn timer() ;
+   fn timer() {
+       // 这里我们需要进入一个临界区，只是为了传递进一个有效的cs token，尽管我们知道
+       // 没有其它中断可以抢占这个中断。
+       interrupt::free(|cs| COUNTER.reset(cs));
+
+       // 如果我们真的需要，我们可以使用unsafe代码去生成一个假CriticalSection，
+       // 避免开销:
+       // let cs = unsafe ;
    }
 
 我们已经把我们的\ ``unsafe``\ 代码移进了精心安排的抽象中，现在我们的应用代码不包含任何\ ``unsafe``\ 块。
@@ -2770,8 +3184,8 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
 为了告诉编译器我们已经注意到\ ``CSCounter``\ 事实上在线程间共享是安全的，我们显式地实现了Sync trait。与之前使用的临界区一样，这只在单核平台上是安全的: 对于多核，你需要做更多的事来确保安全。
 
-`互斥量(Mutexs) <#互斥量mutexs>`__
-----------------------------------
+互斥量(Mutexs)
+~~~~~~~~~~~~~~
 
 我们已经为我们的计数器问题创造了一个有用的抽象，但是关于并发这里还存在许多通用的抽象。
 
@@ -2791,13 +3205,24 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
    static COUNTER: Mutex<Cell<u32>> = Mutex::new(Cell::new(0));
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       set_timer_1hz();
+       let mut last_state = false;
+       loop {
+           let state = read_signal_level();
+           if state && !last_state {
+               interrupt::free(|cs|
+                   COUNTER.borrow(cs).set(COUNTER.borrow(cs).get() + 1));
+           }
            last_state = state;
        }
    }
 
    #[interrupt]
-   fn timer()
+   fn timer() {
+       // 这里我们仍然需要进入一个临界区去满足互斥量。
+       interrupt::free(|cs| COUNTER.borrow(cs).set(0));
+   }
 
 我们现在使用了\ ```Cell`` <https://doc.rust-lang.org/core/cell/struct.Cell.html>`__\ ，它与它的兄弟\ ``RefCell``\ 一起被用于提供safe的内部可变性。我们已经见过\ ``UnsafeCell``\ 了，在Rust中它是内部可变性的底层: 它允许你去获得对某个值的多个可变引用，但是只能与不安全的代码一起工作。一个\ ``Cell``\ 像一个\ ``UnsafeCell``\ 一样但是它提供了一个安全的接口: 它只允许拷贝现在的值或者替换它，不允许获取一个引用，因此它不是Sync，它不能被在线程间共享。这些限制意味着它用起来是safe的，但是我们不能直接将它用于\ ``static``\ 变量因为一个\ ``static``\ 必须是Sync。
 
@@ -2805,8 +3230,8 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
 对于我们的简单类型，像是我们的计数器的\ ``u32``\ 来说是很棒的，但是对于更复杂的不能拷贝的类型呢？在一个嵌入式上下文中一个极度常见的例子是一个外设结构体，通常它们不是Copy。针对那种情况，我们可以使用\ ``RefCell``\ 。
 
-`共享外设 <#共享外设>`__
-------------------------
+共享外设
+~~~~~~~~
 
 使用\ ``svd2rust``\ 生成的设备crates和相似的抽象，通过强制要求同时只能存在一个外设结构体的实例，提供了对外设的安全的访问。这个确保了安全性，但是使得它很难从main线程和一个中断处理函数一起访问一个外设。
 
@@ -2824,16 +3249,50 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
        Mutex::new(RefCell::new(None));
 
    #[entry]
-   fn main() -> ! );
+   fn main() -> ! {
+       // 获得外设的单例并配置它。这个例子来自一个svd2rust生成的crate，
+       // 但是大多数的嵌入式设备crates都相似。
+       let dp = stm32f405::Peripherals::take().unwrap();
+       let gpioa = &dp.GPIOA;
 
-           if state && !last_state );
+       // 某个配置函数。假设它把PA0设置成一个输入和把PA1设置成一个输出。
+       configure_gpio(gpioa);
+
+       // 把GPIOA存进互斥量中，移动它。
+       interrupt::free(|cs| MY_GPIO.borrow(cs).replace(Some(dp.GPIOA)));
+       // 我可以不再用`gpioa`或者`dp.GPIOA`，反而必须通过互斥量访问它。
+
+       // 请注意，只有在设置MY_GPIO后才能使能中断: 要不然当MY_GPIO还是包含None的时候，
+       // 中断可能会发生，然后像上面写的那样操作(使用`unwrap()`)，它将发生运行时恐慌。
+       set_timer_1hz();
+       let mut last_state = false;
+       loop {
+           // 我们现在将通过互斥量，读取其作为数字输入时的状态。
+           let state = interrupt::free(|cs| {
+               let gpioa = MY_GPIO.borrow(cs).borrow();
+               gpioa.as_ref().unwrap().idr.read().idr0().bit_is_set()
+           });
+
+           if state && !last_state {
+               // 如果我们在PA0上已经看到了一个上升沿，拉高PA1。
+               interrupt::free(|cs| {
+                   let gpioa = MY_GPIO.borrow(cs).borrow();
+                   gpioa.as_ref().unwrap().odr.modify(|_, w| w.odr1().set_bit());
+               });
            }
            last_state = state;
        }
    }
 
    #[interrupt]
-   fn timer() );
+   fn timer() {
+       // 这次在中断中，我们将清除PA0。
+       interrupt::free(|cs| {
+           // 我们可以使用`unwrap()` 因为我们知道直到MY_GPIO被设置后，中断都是禁用的；
+           // 否则我应该处理会出现一个None值的潜在可能
+           let gpioa = MY_GPIO.borrow(cs).borrow();
+           gpioa.as_ref().unwrap().odr.modify(|_, w| w.odr1().clear_bit());
+       });
    }
 
 这需要理解的内容很多，所以让我们把重要的内容分解一下。
@@ -2853,7 +3312,10 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
 ::
 
-   interrupt::free(|cs| );
+   interrupt::free(|cs| {
+       let gpioa = MY_GPIO.borrow(cs).borrow();
+       gpioa.as_ref().unwrap().odr.modify(|_, w| w.odr1().set_bit());
+   });
 
 最终，我们用一种安全和并发的方式使用\ ``MY_GPIO``\ 。临界区禁止了中断像往常一样发生，让我们借用互斥量。\ ``RefCell``\ 然后给了我们一个\ ``&Option<GPIOA>``\ 并追踪它还要借用多久 - 一旦引用超出作用域，\ ``RefCell``\ 将会被更新去指出引用不再被借用。
 
@@ -2873,34 +3335,50 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
        Mutex::new(RefCell::new(None));
 
    #[entry]
-   fn main() -> ! );
+   fn main() -> ! {
+       let mut cp = cm::Peripherals::take().unwrap();
+       let dp = stm32f405::Peripherals::take().unwrap();
 
-       loop
+       // 某个计时器配置函数。假设它配置了TIM2计时器和它的NVIC中断，
+       // 最终启动计时器。
+       let tim = configure_timer_interrupt(&mut cp, dp);
+
+       interrupt::free(|cs| {
+           G_TIM.borrow(cs).replace(Some(tim));
+       });
+
+       loop {
+           wfi();
+       }
    }
 
    #[interrupt]
-   fn timer()
+   fn timer() {
+       interrupt::free(|cs| {
+           if let Some(ref mut tim) =  G_TIM.borrow(cs).borrow_mut().deref_mut() {
+               tim.start(1.hz());
+           }
        });
    }
 
 呼！这是安全的，但也有点笨拙。我们还能做些什么吗？
 
-`RTIC <#rtic>`__
-----------------
+RTIC
+~~~~
 
 另一个方法是使用\ `RTIC框架 <https://github.com/rtic-rs/cortex-m-rtic>`__\ ，Real Time Interrupt-driven Concurrency的缩写。它强制执行静态优先级并追踪对\ ``static mut``\ 变量("资源")的访问去确保共享资源总是能被安全地访问，而不需要总是进入临界区和使用引用计数带来的消耗(如\ ``RefCell``\ 中所示)。这有许多好处，比如保证没有死锁且时间和内存的消耗极度低。
 
 这个框架也包括了其它的特性，像是消息传递(message passing)，消息传递减少了对显式共享状态的需要，还提供了在一个给定时间调度任务去运行的功能，这功能能被用来实现周期性的任务。看下\ `文档 <https://rtic.rs>`__\ 可以知道更多的信息！
 
-`实时操作系统 <#实时操作系统>`__
---------------------------------
+实时操作系统
+~~~~~~~~~~~~
 
 与嵌入式并发有关的另一个模型是实时操作系统(RTOS)。虽然现在在Rust中的研究较少，但是它们被广泛用于传统的嵌入式开发。开源的例子包括\ `FreeRTOS <https://freertos.org/>`__\ 和\ `ChibiOS <http://chibios.org/>`__\ (译者注: 目前有个纯Rust实现的\ `Tock <https://www.tockos.org/>`__)。这些RTOSs提供对运行多个应用线程的支持，CPU在这些线程间进行切换，切换要么发生在当线程让出控制权的时候(被称为非抢占式多任务)，要么是基于一个常规计时器或者中断(抢占式多任务)。RTOS通常提供互斥量或者其它的同步原语，经常与硬件功能相互使用，比如DMA引擎。
 
 在撰写本文时，没有太多的Rust RTOS示例可供参考，但这是一个有趣的领域，所以请关注这块！
 
-`多个核心 <#多个核心>`__
-------------------------
+多个核心
+~~~~~~~~
 
 在嵌入式处理器中有两个或者多个核心很正常，其为并发添加了额外一层复杂性。所有使用临界区的例子(包括\ ``cortex_m::interrupt::Mutex``)都假设了另一个执行的线程仅是中断线程，但是在一个多核系统中，这不再是正确的假设。反而，我们将需要为多核设计的同步原语(也被叫做SMP，symmetric multi-processing的缩写)。
 
@@ -2908,8 +3386,8 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
 覆盖这些主题的细节已经超出了本书的范围，但是常规的模式与单核的相似。
 
-`集合 <#集合>`__
-================
+集合
+----
 
 最后，还希望在程序里使用动态数据结构(也称为集合)。\ ``std`` 提供了一组常见的集合: ```Vec`` <https://doc.rust-lang.org/std/vec/struct.Vec.html>`__\ ，\ ```String`` <https://doc.rust-lang.org/std/string/struct.String.html>`__\ ，\ ```HashMap`` <https://doc.rust-lang.org/std/collections/struct.HashMap.html>`__\ ，等等。所有这些在\ ``std``\ 中被实现的集合都使用一个全局动态分配器(也称为堆)。
 
@@ -2919,8 +3397,8 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
 在这部分，我们将研究和比较这两个实现。
 
-`使用 ``alloc`` <#使用-alloc>`__
---------------------------------
+使用 ``alloc``
+~~~~~~~~~~~~~~
 
 ``alloc`` crate与标准的Rust发行版在一起。你可以直接 ``use`` 导入这个crate，而不需要在\ ``Cargo.toml``\ 文件中把它声明为一个依赖。
 
@@ -2947,22 +3425,48 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
    use cortex_m::interrupt;
 
    // 用于单核系统的线性指针分配器
-   struct BumpPointerAlloc
+   struct BumpPointerAlloc {
+       head: UnsafeCell<usize>,
+       end: usize,
+   }
 
-   unsafe impl Sync for BumpPointerAlloc {}
+   unsafe impl Sync for BumpPointerAlloc 
 
-   unsafe impl GlobalAlloc for BumpPointerAlloc  else
+   unsafe impl GlobalAlloc for BumpPointerAlloc {
+       unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+           // `interrupt::free`是一个临界区，临界区让我们的分配器在中断中用起来安全
+           interrupt::free(|_| {
+               let head = self.head.get();
+               let size = layout.size();
+               let align = layout.align();
+               let align_mask = !(align - 1);
+
+               // 将start移至下一个对齐边界。
+               let start = (*head + align - 1) & align_mask;
+
+               if start + size > self.end {
+                   // 一个空指针通知内存不足
+                   ptr::null_mut()
+               } else {
+                   *head = start + size;
+                   start as *mut u8
+               }
            })
        }
 
-       unsafe fn dealloc(&self, _: *mut u8, _: Layout)
+       unsafe fn dealloc(&self, _: *mut u8, _: Layout) {
+           // 这个分配器从不释放内存
+       }
    }
 
    // 全局内存分配器的声明
    // 注意 用户必须确保`[0x2000_0100, 0x2000_0200]`内存区域
    // 没有被程序的其它部分使用
    #[global_allocator]
-   static HEAP: BumpPointerAlloc = BumpPointerAlloc ;
+   static HEAP: BumpPointerAlloc = BumpPointerAlloc {
+       head: UnsafeCell::new(0x2000_0100),
+       end: 0x2000_0200,
+   };
 
 除了选择一个全局分配器，用户也必须要定义如何使用\ *不稳定的*\ ``alloc_error_handler``\ 属性来处理内存溢出错误。
 
@@ -2973,7 +3477,10 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
    use cortex_m::asm;
 
    #[alloc_error_handler]
-   fn on_oom(_layout: Layout) -> !
+   fn on_oom(_layout: Layout) -> ! {
+       asm::bkpt();
+
+       loop 
    }
 
 一旦一切都完成了，用户最后就可以在\ ``alloc``\ 中使用集合。
@@ -2981,13 +3488,21 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 ::
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       let mut xs = Vec::new();
+
+       xs.push(42);
+       assert!(xs.pop(), Some(42));
+
+       loop {
+           // ..
+       }
    }
 
 如果你已经使用了\ ``std`` crate中的集合，那么这些对你来说将非常熟悉，因为他们的实现一样。
 
-`使用 ``heapless`` <#使用-heapless>`__
---------------------------------------
+使用 ``heapless``
+~~~~~~~~~~~~~~~~~
 
 ``heapless``\ 无需设置，因为它的集合不依赖一个全局内存分配器。只是\ ``use``\ 它的集合然后实例化它们:
 
@@ -2998,7 +3513,12 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
    use heapless::consts::*;
 
    #[entry]
-   fn main() -> !
+   fn main() -> ! {
+       let mut xs: Vec<_, U8> = Vec::new();
+
+       xs.push(42).unwrap();
+       assert_eq!(xs.pop(), Some(42));
+       loop 
    }
 
 你会注意到这些集合与\ ``alloc``\ 中的集合有两个不一样的地方。
@@ -3009,13 +3529,13 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
 自v0.4.x版本起，所有的\ ``heapless``\ 集合将所有的元素内联地存储起来了。这意味着像是\ ``let x = heapless::Vec::new()``\ 这样的一个操作将会在栈上分配集合，但是它也能够在一个\ ``static``\ 变量上分配集合，或者甚至在堆上(\ ``Box<Vec<_, _>>``)。
 
-`取舍 <#取舍>`__
-----------------
+取舍
+~~~~
 
 当在堆分配的可重定位的集合和固定容量的集合间进行选择的时候，记住这些内容。
 
-`内存溢出和错误处理 <#内存溢出和错误处理>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+内存溢出和错误处理
+^^^^^^^^^^^^^^^^^^
 
 使用堆分配，内存溢出总是有可能出现的且会发生在任何一个集合需要增长的地方: 比如，所有的 ``alloc::Vec.push`` 调用会潜在地产生一个OOM(Out of Memory)条件。因此一些操作可能会\ *隐式地*\ 失败。一些\ ``alloc``\ 集合暴露了\ ``try_reserve``\ 方法，可以当增加集合时让你检查潜在的OOM条件，但是你需要主动地使用它们。
 
@@ -3023,8 +3543,8 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
 与在所有由\ ``heapless::Vec.push``\ 返回的\ ``Result``\ 上调用\ ``unwrap``\ 相比，OOM错误更难调试，因为错误被发现的位置可能与导致问题的位置\ *不*\ 一致。比如，甚至如果分配器接近消耗完\ ``vec.reserve(1)``\ 都能触发一个OOM，因为一些其它的集合正在泄露内存(内存泄露在安全的Rust是会发生的)。
 
-`内存使用 <#内存使用>`__
-~~~~~~~~~~~~~~~~~~~~~~~~
+内存使用
+^^^^^^^^
 
 推理堆分配集合的内存使用是很难的因为长期使用的集合的大小会在运行时改变。一些操作可能隐式地重分配集合，增加了它的内存使用，一些集合暴露的方法，像是\ ``shrink_to_fit``\ ，会潜在地减少集合使用的内存 -- 最终，它由分配器去决定是否确定减小内存的分配或者不。另外，分配器可能不得不处理内存碎片，它会\ *明显*\ 增加内存的使用。
 
@@ -3034,8 +3554,8 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
 然而，固定容量的集合\ *不*\ 能被减少，与可重定位集合所能达到的负载系数(集合的大小和它的容量之间的比值)相比，它能产生更低的负载系数。
 
-`最坏执行时间 (WCET) <#最坏执行时间-wcet>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+最坏执行时间 (WCET)
+^^^^^^^^^^^^^^^^^^^
 
 如果你正在搭建时间敏感型应用或者硬实时应用，那么你可能更关心你程序的不同部分的最坏执行时间。
 
@@ -3043,32 +3563,25 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
 
 另一方面固定容量的集合不会重分配，因此所有的操作有个可预期的执行时间。比如，\ ``heapless::Vec.push``\ 以固定时间执行。
 
-`易用性 <#易用性>`__
-~~~~~~~~~~~~~~~~~~~~
+易用性
+^^^^^^
 
 ``alloc``\ 要求配置一个全局分配器而\ ``heapless``\ 不需要。然而，\ ``heapless``\ 要求你去选择你要实例化的每一个集合的容量。
 
 ``alloc`` API几乎为每一个Rust开发者所熟知。\ ``heapless`` API尝试模仿\ ``alloc`` API，但是因为\ ``heapless``\ 的显式错误处理，它们不可能会一模一样 -- 一些开发者可能会觉得显式的错误处理过多或太麻烦。
 
-`设计模式 <#设计模式>`__
-========================
+设计模式
+--------
 
 这个章节的目标是为嵌入式Rust收集不同的有用的设计模式。
 
-`HAL设计模式 <#hal设计模式>`__
-==============================
+HAL设计模式
+-----------
 
 这是一组关于使用Rust为微控制器写硬件抽象层的常见的和推荐的模式。当为微控制器编写HALs时，除了现有的 `Rust API 指南 <https://rust-lang.github.io/api-guidelines/>`__ 外，也可以使用这些模式。
 
-`检查清单 <design-patterns/hal/checklist.html>`__
-
--  `命名 <design-patterns/hal/naming.html>`__
--  `互用性 <design-patterns/hal/interoperability.html>`__
--  `可预见性 <design-patterns/hal/predictability.html>`__
--  `GPIO <design-patterns/hal/gpio.html>`__
-
-`HAL设计检查清单 <#hal设计检查清单>`__
-======================================
+HAL设计检查清单
+---------------
 
 -  **命名** *(crate要符合Rust命名规则)*
 
@@ -3090,23 +3603,23 @@ HAL implentation提供硬件和HAL traits的用户之间的接口。典型的实
    -  Pin类型提供擦除管脚和端口的方法 (`C-ERASED-PIN <design-patterns/hal/gpio.html#c-erased-pin>`__)
    -  Pin状态应该被编码为类型参数 (`C-PIN-STATE <design-patterns/hal/gpio.html#c-pin-state>`__)
 
-`命名 <#命名>`__
-================
+命名
+----
 
 []
 
-`crate要被恰当地命名(C-CRATE-NAME) <#crate要被恰当地命名c-crate-name>`__
-------------------------------------------------------------------------
+crate要被恰当地命名(C-CRATE-NAME)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 HAL crates应该在目标支持的芯片或者芯片系列之后被命名。它们的名字应该以\ ``-hal``\ 结尾，为了将它们与PAC区分开来。名字不应该包含下划线(请改用破折号)。
 
-`互用性 <#互用性>`__
-====================
+互用性
+------
 
 []
 
-`封装类型提供一个析构方法 (C-FREE) <#封装类型提供一个析构方法-c-free>`__
-------------------------------------------------------------------------
+封装类型提供一个析构方法 (C-FREE)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 任何由HAL提供的非\ ``Copy``\ 封装类型应该提供一个\ ``free``\ 方法，这个方法消费封装类且返回最初生成它的外设(可能是其它对象)。
 
@@ -3119,16 +3632,25 @@ HAL crates应该在目标支持的芯片或者芯片系列之后被命名。它�
 ::
 
    #![allow(unused)]
-   fn main()
+   fn main() {
+   pub struct TIMER0;
+   pub struct Timer(TIMER0);
 
-       pub fn free(self) -> TIMER0
+   impl Timer {
+       pub fn new(periph: TIMER0) -> Self {
+           Self(periph)
+       }
+
+       pub fn free(self) -> TIMER0 {
+           self.0
+       }
    }
    }
 
 []
 
-`HALs重新导出它们的寄存器访问crate(C-REEXPORT-PAC) <#hals重新导出它们的寄存器访问cratec-reexport-pac>`__
---------------------------------------------------------------------------------------------------------
+HALs重新导出它们的寄存器访问crate(C-REEXPORT-PAC)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 可以在\ `svd2rust <https://github.com/rust-embedded/svd2rust>`__\ 生成的PACs之上，或在其它纯寄存器访问的crates之上编写HALs。HALs需要在crate root中重新导出它们所基于的寄存器访问crate
 
@@ -3136,20 +3658,20 @@ HAL crates应该在目标支持的芯片或者芯片系列之后被命名。它�
 
 []
 
-`类型实现\ ``embedded-hal`` traits (C-HAL-TRAITS) <#类型实现embedded-hal-traits-c-hal-traits>`__
-------------------------------------------------------------------------------------------------
+类型实现\ ``embedded-hal`` traits (C-HAL-TRAITS)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 HAL提供的类型应该实现所有的由\ ```embedded-hal`` <https://github.com/rust-embedded/embedded-hal>`__ crate提供的能用的traits。
 
 同个类型可能实现多个traits。
 
-`可预见性 <#可预见性>`__
-========================
+可预见性
+--------
 
 []
 
-`使用构造函数而不是扩展traits <#使用构造函数而不是扩展traits>`__
-----------------------------------------------------------------
+使用构造函数而不是扩展traits
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 所有由HAL添加功能的外设应该被封装进一个新类型，即使该功能不需要额外的字段。
 
@@ -3158,20 +3680,20 @@ HAL提供的类型应该实现所有的由\ ```embedded-hal`` <https://github.co
 []
 
 `方法在适当的地方用\ ``#[inline]``\ 修饰 <#方法在适当的地方用inline修饰>`__
----------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Rust编译器默认不会越过crate边界执行完全内联。因为嵌入式应用对于不可预期的代码大小的增加很敏感，\ ``#[inline]``\ 应该如下所示用来指导编译器:
 
 -  所有的"小"函数应该被标记\ ``#[inline]``\ 。什么是"小"是主观的，但是通常所有有可能被编译成一位数的指令序列(single-digit instruction sequences)都可以被视为"小"。
 -  非常有可能把一个常量数值作为参数的函数应该被标记为\ ``#[inline]``\ 。这让编译器在编译时就可以进行计算甚至是复杂的初始化逻辑，前提是函数输入是已知的。
 
-`关于GPIO接口的建议 <#关于gpio接口的建议>`__
-============================================
+关于GPIO接口的建议
+------------------
 
 []
 
-`Pin类型默认是零大小的(C-ZST-PIN) <#pin类型默认是零大小的c-zst-pin>`__
-----------------------------------------------------------------------
+Pin类型默认是零大小的(C-ZST-PIN)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 由HAL暴露的GPIO接口应该为所有接口或者端口上的每一个管脚提供一个专用的零大小类型，从而当所有的管脚分配静态已知时，提供一个零开销抽象。
 
@@ -3182,17 +3704,34 @@ Rust编译器默认不会越过crate边界执行完全内联。因为嵌入式�
 ::
 
    #![allow(unused)]
-   fn main()
+   fn main() {
+   pub struct PA0;
+   pub struct PA1;
+   // ...
+
+   pub struct PortA;
+
+   impl PortA {
+       pub fn split(self) -> PortAPins {
+           PortAPins {
+               pa0: PA0,
+               pa1: PA1,
+               // ...
+           }
        }
    }
 
-   pub struct PortAPins
+   pub struct PortAPins {
+       pub pa0: PA0,
+       pub pa1: PA1,
+       // ...
+   }
    }
 
 []
 
-`管脚类型提供方法去擦除管脚和端口(C-ERASED-PIN) <#管脚类型提供方法去擦除管脚和端口c-erased-pin>`__
---------------------------------------------------------------------------------------------------
+管脚类型提供方法去擦除管脚和端口(C-ERASED-PIN)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 从编译时到运行时，管脚都应该提供可以改变属性的类型擦出方法，允许在应用中有更多的灵活性。
 
@@ -3201,26 +3740,50 @@ Rust编译器默认不会越过crate边界执行完全内联。因为嵌入式�
 ::
 
    #![allow(unused)]
-   fn main()
+   fn main() {
+   /// 端口 A, 管脚 0。
+   pub struct PA0;
+
+   impl PA0 {
+       pub fn erase_pin(self) -> PA {
+           PA 
        }
    }
 
    /// 端口A上的A管脚。
-   pub struct PA
+   pub struct PA {
+       /// 管脚号。
+       pin: u8,
+   }
 
-   impl PA
+   impl PA {
+       pub fn erase_port(self) -> Pin {
+           Pin {
+               port: Port::A,
+               pin: self.pin,
+           }
        }
    }
 
-   pub struct Pin
+   pub struct Pin {
+       port: Port,
+       pin: u8,
+       // (这些字段)
+       // (这些字段可以打包以减少内存占用)
+   }
 
-   enum Port
+   enum Port {
+       A,
+       B,
+       C,
+       D,
+   }
    }
 
 []
 
-`管脚状态应该被编码成类型参数 (C-PIN-STATE) <#管脚状态应该被编码成类型参数-c-pin-state>`__
-------------------------------------------------------------------------------------------
+管脚状态应该被编码成类型参数 (C-PIN-STATE)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 取决于芯片或者芯片系列，管脚可能被配置为具有不同特性的输出或者输入。这个状态应该编码进类型系统中以避免在错误的状态中使用管脚。
 
@@ -3245,71 +3808,91 @@ Rust编译器默认不会越过crate边界执行完全内联。因为嵌入式�
 ::
 
    #![allow(unused)]
-   fn main()
+   fn main() {
+   use std::marker::PhantomData;
+   mod sealed {
+       pub trait Sealed 
    }
 
-   pub trait PinState: sealed::Sealed {}
-   pub trait OutputState: sealed::Sealed {}
-   pub trait InputState: sealed::Sealed
+   pub trait PinState: sealed::Sealed 
+   pub trait OutputState: sealed::Sealed 
+   pub trait InputState: sealed::Sealed {
+       // ...
+   }
 
-   pub struct Output<S: OutputState>
+   pub struct Output<S: OutputState> {
+       _p: PhantomData<S>,
+   }
 
-   impl<S: OutputState> PinState for Output<S> {}
-   impl<S: OutputState> sealed::Sealed for Output<S> {}
+   impl<S: OutputState> PinState for Output<S> 
+   impl<S: OutputState> sealed::Sealed for Output<S> 
 
    pub struct PushPull;
    pub struct OpenDrain;
 
-   impl OutputState for PushPull {}
-   impl OutputState for OpenDrain {}
-   impl sealed::Sealed for PushPull {}
-   impl sealed::Sealed for OpenDrain {}
+   impl OutputState for PushPull 
+   impl OutputState for OpenDrain 
+   impl sealed::Sealed for PushPull 
+   impl sealed::Sealed for OpenDrain 
 
-   pub struct Input<S: InputState>
+   pub struct Input<S: InputState> {
+       _p: PhantomData<S>,
+   }
 
-   impl<S: InputState> PinState for Input<S> {}
-   impl<S: InputState> sealed::Sealed for Input<S> {}
+   impl<S: InputState> PinState for Input<S> 
+   impl<S: InputState> sealed::Sealed for Input<S> 
 
    pub struct Floating;
    pub struct PullUp;
    pub struct PullDown;
 
-   impl InputState for Floating {}
-   impl InputState for PullUp {}
-   impl InputState for PullDown {}
-   impl sealed::Sealed for Floating {}
-   impl sealed::Sealed for PullUp {}
-   impl sealed::Sealed for PullDown {}
+   impl InputState for Floating 
+   impl InputState for PullUp 
+   impl InputState for PullDown 
+   impl sealed::Sealed for Floating 
+   impl sealed::Sealed for PullUp 
+   impl sealed::Sealed for PullDown 
 
-   pub struct PA1<S: PinState>
+   pub struct PA1<S: PinState> {
+       _p: PhantomData<S>,
+   }
 
-   impl<S: PinState> PA1<S>
+   impl<S: PinState> PA1<S> {
+       pub fn into_input<N: InputState>(self, input: N) -> PA1<Input<N>> {
+           todo!()
+       }
 
-       pub fn into_output<N: OutputState>(self, output: N) -> PA1<Output<N>>
+       pub fn into_output<N: OutputState>(self, output: N) -> PA1<Output<N>> {
+           todo!()
+       }
 
        pub fn with_input_state<N: InputState, R>(
            &mut self,
            input: N,
            f: impl FnOnce(&mut PA1<N>) -> R,
-       ) -> R
+       ) -> R {
+           todo!()
+       }
 
        pub fn with_output_state<N: OutputState, R>(
            &mut self,
            output: N,
            f: impl FnOnce(&mut PA1<N>) -> R,
-       ) -> R
+       ) -> R {
+           todo!()
+       }
    }
 
    // 对于`PA`和`Pin`一样的，对于其它管脚类型来说也是。
    }
 
-`给嵌入式C开发者的贴士 <#给嵌入式c开发者的贴士>`__
-==================================================
+给嵌入式C开发者的贴士
+---------------------
 
 这个章节收集了可能对于刚开始编写Rust的，有经验的嵌入式C开发者来说，有用的各种各样的贴士。它将解释你在C中可能已经用到的那些东西与Rust中的有何不同。
 
-`预处理器 <#预处理器>`__
-------------------------
+预处理器
+~~~~~~~~
 
 在嵌入式C中，为了各种各样的目的使用预处理器是很常见的，比如:
 
@@ -3319,8 +3902,8 @@ Rust编译器默认不会越过crate边界执行完全内联。因为嵌入式�
 
 在Rust中没有预处理器，所以许多案例有不同的处理方法。本章节剩下的部分，我们将介绍各种替代预处理器的方法。
 
-`编译时的代码选择 <#编译时的代码选择>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+编译时的代码选择
+^^^^^^^^^^^^^^^^
 
 Rust中最接近\ ``#ifdef ... #endif``\ 的是\ `Cargo features <https://doc.rust-lang.org/cargo/reference/manifest.html#the-features-section>`__\ 。这些比C预处理器更正式一点: 每个crate显式列举的，所有可能的features只能是关了的或者打开了的。当你把一个crate列为依赖项时，Features被打开，且是可添加的：如果你依赖树中的任何crate为另一个crate打开了一个feature，那么这个feature将为所有使用那个crate的用户而打开。
 
@@ -3337,7 +3920,14 @@ Rust中最接近\ ``#ifdef ... #endif``\ 的是\ `Cargo features <https://doc.ru
 ::
 
    #![allow(unused)]
-   fn main()
+   fn main() {
+   /// 在你的顶层的lib.rs中
+   #[cfg(feature="FIR")]
+   pub mod fir;
+
+   #[cfg(feature="IIR")]
+   pub mod iir;
+   }
 
 同样地，你可以控制，只有当某个feature *没有* 被打开时，包含代码块，或者某些features的组合被打开或者被关闭时。
 
@@ -3345,17 +3935,20 @@ Rust中最接近\ ``#ifdef ... #endif``\ 的是\ `Cargo features <https://doc.ru
 
 条件编译将只应用于下一条语句或者块。如果一个块不能在现在的作用域中被使用，那么\ ``cfg``\ 属性将需要被多次使用。值得注意的是大多数时间，仅是包含所有的代码而让编译器在优化时去删除死代码(dead code)更好，通常，在移除不使用的代码方面的工作，编译器做得很好。
 
-`编译时大小和计算 <#编译时大小和计算>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+编译时大小和计算
+^^^^^^^^^^^^^^^^
 
 Rust支持\ ``const fn``\ ，\ ``const fn``\ 是在编译时可以被计算的函数，因此可以被用在需要常量的地方，比如在数组的大小中。这个能与上述的features一起使用，比如:
 
 ::
 
    #![allow(unused)]
-   fn main()
+   fn main() {
+   const fn array_size() -> usize {
+       #[cfg(feature="use_more_ram")]
+       
        #[cfg(not(feature="use_more_ram"))]
-
+       
    }
 
    static BUF: [u32; array_size()] = [0u32; array_size()];
@@ -3363,8 +3956,8 @@ Rust支持\ ``const fn``\ ，\ ``const fn``\ 是在编译时可以被计算的�
 
 这些对于stable版本的Rust来说是新的特性，从1.31开始引入，因此文档依然很少。在写这篇文章的时候\ ``const fn``\ 可用的功能也非常有限; 在未来的Rust release版本中，我们可以期望\ ``const fn``\ 将带来更多的功能。
 
-`宏 <#宏>`__
-~~~~~~~~~~~~
+宏
+^^
 
 Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19-06-macros.html>`__\ 。虽然C预处理器几乎直接在你的源代码之上进行操作，但是Rust宏系统可以在一个更高的级别上操作。存在两种Rust宏: *声明宏* 和 *过程宏* 。前者更简单也最常见; 它们看起来像是函数调用，且能扩展成一个完整的表达式，语句，项，或者模式。过程宏更复杂但是却能让Rust更强大: 它们可以把任一条Rust语法变成一个新的Rust语法。
 
@@ -3374,8 +3967,8 @@ Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19
 
 研究完整的Rust宏系统超出了本节内容，因此我们鼓励你去查阅Rust文档了解完整的细节。
 
-`编译系统 <#编译系统>`__
-------------------------
+编译系统
+~~~~~~~~
 
 大多数Rust crates使用Cargo编译 (即使这不是必须的)。这解决了传统编译系统带来的许多难题。然而，你可能希望自定义编译过程。为了实现这个目的，Cargo提供了```build.rs``\ 脚本 <https://doc.rust-lang.org/cargo/reference/build-scripts.html>`__\ 。它们是可以根据需要与Cargo编译系统进行交互的Rust脚本。
 
@@ -3390,15 +3983,15 @@ Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19
 
 .. _交叉编译-1:
 
-`交叉编译 <#交叉编译-1>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+交叉编译
+^^^^^^^^
 
 为你的编译系统使用Cargo也能简化交叉编译。在大多数例子里，告诉Cargo ``--target thumbv6m-none-eabi``\ 就行了，可以在\ ``target/thumbv6m-none-eabi/debug/myapp``\ 中找到一个合适的可执行文件。
 
 对于那些并不是Rust原生支持的平台，将需要自己为那个目标平台编译\ ``libcore``\ 。遇到这样的平台，\ `Xargo <https://github.com/japaric/xargo>`__\ 可以作为Cargo的替代来使用，它可以自动地为你编译\ ``libcore``\ 。
 
-`迭代器与数组访问 <#迭代器与数组访问>`__
-----------------------------------------
+迭代器与数组访问
+~~~~~~~~~~~~~~~~
 
 在C中，你可能习惯于通过索引直接访问数组:
 
@@ -3406,7 +3999,9 @@ Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19
 
    int16_t arr[16];
    int i;
-   for(i=0; i<sizeof(arr)/sizeof(arr[0]); i++)
+   for(i=0; i<sizeof(arr)/sizeof(arr[0]); i++) {
+       process(arr[i]);
+   }
 
 在Rust中，这是一个反模式(anti-pattern)：索引访问可能会更慢(因为它可能需要做边界检查)且可能会阻止编译器的各种优化。这是一个重要的区别，值得再重复一遍: Rust会在手动的数组索引上进行越界检查以保障内存安全性，而C允许索引数组外的内容。
 
@@ -3415,14 +4010,16 @@ Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19
 ::
 
    let arr = [0u16; 16];
-   for element in arr.iter()
+   for element in arr.iter() {
+       process(*element);
+   }
 
 迭代器提供了一个有强大功能的数组，在C中你不得不手动实现它，比如chaining，zipping，enumerating，找到最小或最大值，summing，等等。迭代器方法也能被链式调用，提供了可读性非常高的数据处理代码。
 
 阅读\ `Iterators in the Book <https://doc.rust-lang.org/book/ch13-02-iterators.html>`__\ 和\ `Iterator documentation <https://doc.rust-lang.org/core/iter/trait.Iterator.html>`__\ 获取更多细节。
 
-`引用和指针 <#引用和指针>`__
-----------------------------
+引用和指针
+~~~~~~~~~~
 
 在Rust中，存在指针(被叫做 `裸指针 <https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer>`__)但是只能在特殊的环境中被使用，因为解引用裸指针总是被认为是\ ``unsafe``\ 的 -- Rust通常不能保障指针背后有什么。
 
@@ -3432,8 +4029,8 @@ Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19
 
 某个情况下，你可能仍然要使用裸指针直接与硬件进行交互(比如，写入一个指向DMA外设寄存器中的缓存的指针)，它们也被所有的外设访问crates在底层使用，让你可以读取和写入存储映射寄存器。
 
-`Volatile访问 <#volatile访问>`__
---------------------------------
+Volatile访问
+~~~~~~~~~~~~
 
 在C中，某个变量可能被标记成\ ``volatile``\ ，向编译器指出，变量中的值在访问间可能改变。Volatile变量通常用于一个与存储映射的寄存器有关的嵌入式上下文中。
 
@@ -3445,9 +4042,15 @@ Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19
 
    volatile bool signalled = false;
 
-   void ISR()
+   void ISR() {
+       // 提醒中断已经发生了
+       signalled = true;
+   }
 
-   void driver()
+   void driver() {
+       while(true) {
+           // 睡眠直到信号来了
+           while(!signalled) 
            // 重置信号提示符
            signalled = false;
            // 执行一些正在等待这个中断的任务
@@ -3462,10 +4065,17 @@ Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19
    static mut SIGNALLED: bool = false;
 
    #[interrupt]
-   fn ISR() ;
+   fn ISR() {
+       // 提醒中断已经发生
+       // (在正在的代码中，你应该考虑一个更高级的基本类型,
+       // 比如一个原子类型)
+       unsafe ;
    }
 
-   fn driver()  {}
+   fn driver() {
+       loop {
+           // 睡眠直到信号来了
+           while unsafe  
            // 重置信号指示符
            unsafe ;
            // 执行一些正在等待中断的任务
@@ -3478,10 +4088,8 @@ Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19
 -  我们可以把\ ``&mut SIGNALLED``\ 传递给要求\ ``*mut T``\ 的函数中，因为\ ``&mut T``\ 会自动转换成一个\ ``*mut T`` (对于``*const T``\ 来说是一样的)
 -  我们需要为\ ``read_volatile``/``write_volatile``\ 方法使用\ ``unsafe``\ 块，因为它们是\ ``unsafe``\ 的函数。确保操作安全变成了程序员的责任：看方法的文档获得更多细节。
 
-在你的代码中直接使用这些函数是很少见的，因为它们通常由更高级的库封装起来为你提供服务。对于存储映射的外设，提供外设访问的crates将自动实现volatile访问，而对于并发的基本类型，存在更好的抽象可用。(看\ `并发章节 <c-tips/../concurrency/index.html>`__)
-
-`填充和对齐类型 <#填充和对齐类型>`__
-------------------------------------
+填充和对齐类型
+~~~~~~~~~~~~~~
 
 在嵌入式C中，告诉编译器一个变量必须遵守某个对齐或者一个结构体必须被填充而不是对齐，是很常见的行为，通常是为了满足特定的硬件或者协议要求。
 
@@ -3489,9 +4097,14 @@ Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19
 
 ::
 
-   struct Foo
+   struct Foo {
+       x: u16,
+       y: u8,
+       z: u16,
+   }
 
-   fn main() ;
+   fn main() {
+       let v = Foo ;
        println!("  ", &v.x, &v.y, &v.z);
    }
 
@@ -3503,9 +4116,14 @@ Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19
 ::
 
    #[repr(C)]
-   struct Foo
+   struct Foo {
+       x: u16,
+       y: u8,
+       z: u16,
+   }
 
-   fn main() ;
+   fn main() {
+       let v = Foo ;
        println!("  ", &v.x, &v.y, &v.z);
    }
 
@@ -3518,9 +4136,14 @@ Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19
 ::
 
    #[repr(packed)]
-   struct Foo
+   struct Foo {
+       x: u16,
+       y: u8,
+       z: u16,
+   }
 
-   fn main() ;
+   fn main() {
+       let v = Foo ;
        // 引用必须总是对齐的，因此为了检查结构体字段的地址，我们使用
        // `std::ptr::addr_of!()`去获取一个裸指针而不仅是打印`&v.x`
        let px = std::ptr::addr_of!(v.x);
@@ -3540,9 +4163,14 @@ Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19
 
    #[repr(C)]
    #[repr(align(4096))]
-   struct Foo
+   struct Foo {
+       x: u16,
+       y: u8,
+       z: u16,
+   }
 
-   fn main() ;
+   fn main() {
+       let v = Foo ;
        let u = Foo ;
        println!("  ", &v.x, &v.y, &v.z);
        println!("  ", &u.x, &u.y, &u.z);
@@ -3559,20 +4187,17 @@ Rust提供一个极度强大的\ `宏系统 <https://doc.rust-lang.org/book/ch19
 
 .. _其它资源-1:
 
-`其它资源 <#其它资源-1>`__
---------------------------
+其它资源
+~~~~~~~~
 
 -  这本书中:
-
-   -  `使用C的Rust <c-tips/../interoperability/c-with-rust.html>`__
-   -  `使用Rust的C <c-tips/../interoperability/rust-with-c.html>`__
 
 -  `The Rust Embedded FAQs <https://docs.rust-embedded.org/faq.html>`__
 -  `Rust Pointers for C Programmers <http://blahg.josefsipek.net/?p=580>`__
 -  `I used to use pointers - now what? <https://github.com/diwic/reffers-rs/blob/master/docs/Pointers.md>`__
 
-`互操性 <#互操性>`__
-====================
+互操性
+------
 
 Rust和C代码之间的互操性始终依赖于数据在两个语言间的转换．为了互操性，在\ ``stdlib``\ 中有一个专用的模块，叫作 ```std::ffi`` <https://doc.rust-lang.org/std/ffi/index.html>`__.
 
@@ -3580,38 +4205,41 @@ Rust和C代码之间的互操性始终依赖于数据在两个语言间的转换
 
 从Rust 1.30以来，\ ``std::ffi``\ 的功能也出现在\ ``core::ffi``\ 或者\ ``alloc::ffi``\ 中，取决于是否涉及到内存分配． ```cty`` <https://crates.io/crates/cty>`__\ 库和\ ```cstr_core`` <https://crates.io/crates/cstr_core>`__\ 库也提供了相同的功能．
 
-================== =========== ================
-Rust类型           间接        C类型
-================== =========== ================
-``String``         ``CString`` ``char *``
-``&str``           ``CStr``    ``const char *``
-``()``             ``c_void``  ``void``
-``u32`` or ``u64`` ``c_uint``  ``unsigned int``
-etc                ...         ...
-================== =========== ================
-
-一个C基本类型的值可以被用来作为相关的Rust类型的值，反之亦然，因此前者仅仅是后者的一个类型伪名． 比如，下列的代码可以在\ ``unsigned int``\ 是32位宽的平台上编译．
+================== ============ ================================================================
+st类型 间          接 C类       型
+================== ============ ================================================================
+``String``         ``CString``  ``char *``
+``&str``           ``CStr``     ``const char *``
+``()``             ``c_void``   ``void``
+``u32`` or ``u64`` ``c_uint``   ``unsigned int``
+etc                ...          ...
+个C基本类型的值可  以被用来作为 相关的Rust类型的值，反之亦然，因此前者仅仅是后者的一个类型伪名．
+如，下列的代码可以 在`unsigned  int`是32位宽的平台上编译．
+================== ============ ================================================================
 
 ::
 
-   fn foo(num: u32)
+   fn foo(num: u32) {
+       let c_num: c_uint = num;
+       let r_num: u32 = c_num;
+   }
 
-`与其它编译系统的互用性 <#与其它编译系统的互用性>`__
-----------------------------------------------------
+与其它编译系统的互用性
+~~~~~~~~~~~~~~~~~~~~~~
 
 在嵌入式项目中引入Rust的一个常见需求是，把Cargo结合进你现存的编译系统中，比如make或者cmake。
 
 在\ `issue #61 <https://github.com/rust-embedded/book/issues/61>`__\ 的issue tracker上，我们正在为这个需求收集例子和用例。
 
-`与RTOSs的互操性 <#与rtoss的互操性>`__
---------------------------------------
+与RTOSs的互操性
+~~~~~~~~~~~~~~~
 
 将Rust和一个RTOS集成在一起，比如FreeRTOS或者ChibiOS仍然在进行中; 尤其是从Rust调用RTOS函数可能很棘手。
 
 在\ `issue #62 <https://github.com/rust-embedded/book/issues/62>`__\ 的issue tracker上，我们正为这件事收集例子和用例。
 
-`使用C的Rust <#使用c的rust>`__
-==============================
+使用C的Rust
+-----------
 
 要在一个Rust项目中使用C或者C++，主要有两个步骤:
 
@@ -3620,22 +4248,25 @@ etc                ...         ...
 
 因为对于Rust编译器来说，C++没有一个稳定的ABI，当要将Rust和C或者C++结合时，建议优先选择\ ``C``\ 。
 
-`定义接口 <#定义接口>`__
-------------------------
+定义接口
+~~~~~~~~
 
 在Rust消费C或者C++代码之前，必须定义(在Rust中定义)，在要被链接的代码中存在什么数据类型和函数签名。在C或者C++中，你要包含一个头文件(\ ``.h``\ 或者\ ``.hpp``)，其定义了这个数据。而在Rust中，必须手动地将这些定义翻译成Rust，或者使用一个工具去生成这些定义。
 
 首先，我们将介绍如何将这些定义从C/C++手动地转换为Rust。
 
-`封装C函数和数据类型 <#封装c函数和数据类型>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+封装C函数和数据类型
+^^^^^^^^^^^^^^^^^^^
 
 通常，用C或者C++写的库会提供一个头文件，头文件定义了所有的类型和用于公共接口的函数。如下是一个示例文件:
 
 ::
 
    /* 文件: cool.h */
-   typedef struct CoolStruct  CoolStruct;
+   typedef struct CoolStruct {
+       int x;
+       int y;
+   } CoolStruct;
 
    void cool_function(int i, char c, CoolStruct* cs);
 
@@ -3645,16 +4276,25 @@ etc                ...         ...
 
    /* File: cool_bindings.rs */
    #[repr(C)]
-   pub struct CoolStruct
+   pub struct CoolStruct {
+       pub x: cty::c_int,
+       pub y: cty::c_int,
+   }
 
-   extern "C"
+   extern "C" {
+       pub fn cool_function(
+           i: cty::c_int,
+           c: cty::c_char,
+           cs: *mut CoolStruct
+       );
+   }
 
 让我们一次看一个语句，来解释每个部分。
 
 ::
 
    #[repr(C)]
-   pub struct CoolStruct
+   pub struct CoolStruct 
 
 默认，Rust不会保证包含在\ ``struct``\ 中的数据的大小，填充，或者顺序。为了保证与C代码兼容，我们使用\ ``#[repr(C)]``\ 属性，它指示Rust编译器总是使用和C一样的规则去组织一个结构体中的数据。
 
@@ -3667,7 +4307,7 @@ etc                ...         ...
 
 ::
 
-   extern "C"
+   extern "C" 
 
 这个语句定义了一个使用C ABI的函数的签名，叫做\ ``cool_function``\ 。因为只定义了签名而没有定义函数的主体，所以这个函数的定义将需要在其它地方定义，或者从一个静态库链接进最终的库或者一个二进制文件中。
 
@@ -3681,8 +4321,8 @@ etc                ...         ...
 
 这里我们有了一个新类型，\ ``*mut CoolStruct`` 。因为C没有Rust中像 ``&mut CoolStruct`` 这样的引用，替代的是一个裸指针。所以解引用这个指针是\ ``unsafe``\ 的，因为这个指针实际上可能是一个\ ``null``\ 指针，因此当与C或者C++代码交互时必须要小心对待那些Rust做出的安全保证。
 
-`自动产生接口 <#自动产生接口>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+自动产生接口
+^^^^^^^^^^^^
 
 有一个叫做\ `bindgen <https://github.com/rust-lang/rust-bindgen>`__\ 的工具，它可以自动执行这些转换，而不用手动生成这些接口，手动进行这样的操作非常繁琐且容易出错。关于\ `bindgen <https://github.com/rust-lang/rust-bindgen>`__\ 的使用指令，可以参考\ `bindgen user's manual <https://rust-lang.github.io/rust-bindgen/>`__\ ，常用的步骤大致如下:
 
@@ -3691,8 +4331,8 @@ etc                ...         ...
 3. 将这个\ ``bindings.h``\ 文件和任何用来编译你代码的编译标识发给\ ``bindgen``\ 。贴士: 使用\ ``Builder.ctypes_prefix("cty")`` / ``--ctypes-prefix=cty`` 和 ``Builder.use_core()`` / ``--use-core`` 去使生成的代码兼容\ ``#![no_std]``
 4. ``bindgen``\ 将会在终端窗口输出生成的Rust代码。这个文件可能会被通过管道发送给你项目中的一个文件，比如\ ``bindings.rs`` 。你可能要在你的Rust项目中使用这个文件来与被编译和链接成一个外部库的C/C++代码交互。贴士: 如果你的类型在生成的绑定中被前缀了\ ``cty``\ ，不要忘记使用\ ```cty`` <https://crates.io/crates/cty>`__ crate 。
 
-`编译你的 C/C++ 代码 <#编译你的-cc-代码>`__
--------------------------------------------
+编译你的 C/C++ 代码
+~~~~~~~~~~~~~~~~~~~
 
 因为Rust编译器并不直接知道如何编译C或者C++代码(或者从其它语言来的代码，其提供了一个C接口)，所以必须要静态编译你的非Rust代码。
 
@@ -3702,22 +4342,22 @@ etc                ...         ...
 
 如果你的代码作为一个源项目(source project)存在，将你的C/C++代码编译成一个静态库将是必须的，要么通过使用你现存的编译系统(比如 ``make``\ ，\ ``CMake``\ ，等等)，要么通过使用一个被叫做\ ``cc`` crate的工具移植必要的编译步骤。关于这两个，都必须使用一个\ ``build.rs``\ 脚本。
 
-`Rust的 ``build.rs`` 编译脚本 <#rust的-buildrs-编译脚本>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Rust的 ``build.rs`` 编译脚本
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 一个 ``build.rs`` 脚本是一个用Rust语法编写的文件，它被运行在你的编译机器上，发生在你项目的依赖项被编译\ **之后**\ ，但是在你的项目被编译\ **之前** 。
 
 可能能在\ `这里 <https://doc.rust-lang.org/cargo/reference/build-scripts.html>`__\ 发现完整的参考。\ ``build.rs`` 脚本能用来生成代码(比如通过\ `bindgen <https://github.com/rust-lang/rust-bindgen>`__)，调用外部编译系统，比如\ ``Make``\ ，或者直接通过使用\ ``cc`` crate来直接编译C/C++ 。
 
-`使用外部编译系统 <#使用外部编译系统>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+使用外部编译系统
+^^^^^^^^^^^^^^^^
 
 对于有复杂的外部项或者编译系统的项目，使用\ ```std::process::Command`` <https://doc.rust-lang.org/std/process/struct.Command.html>`__\ 通过遍历相对路径来向其它编译系统"输出"，调用一个固定的命令(比如 ``make library``)，然后拷贝最终的静态库到\ ``target``\ 编译文件夹中恰当的位置，可能是最简单的方法。
 
 虽然你的crate目标可能是一个\ ``no_std``\ 嵌入式平台，但你的\ ``build.rs``\ 只运行在负责编译你的crate的机器上。这意味着你能使用任何Rust crates，其将运行在你的编译主机上。
 
-`使用\ ``cc`` crate构建C/C++代码 <#使用cc-crate构建cc代码>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+使用\ ``cc`` crate构建C/C++代码
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 对于具有有限的依赖项或者复杂度的项目，或者对于那些难以修改编译系统去生成一个静态库(而不是一个二进制文件或者可执行文件)的项目，使用\ ```cc`` crate <https://github.com/alexcrichton/cc-rs>`__\ 可能更容易，它提供了一个符合Rust语法的接口，这个接口是关于主机提供的编译器的。
 
@@ -3725,12 +4365,16 @@ etc                ...         ...
 
 ::
 
-   fn main()
+   fn main() {
+       cc::Build::new()
+           .file("src/foo.c")
+           .compile("foo");
+   }
 
 要把\ ``build.rs``\ 放在包的根目录下．然后\ ``cargo build``\ 会在构建包之前编译和执行它．一个静态的名为\ ``libfoo.a``\ 的归档文件会生成并被放在\ ``target``\ 文件夹中．
 
-`使用Rust的C <#使用rust的c>`__
-==============================
+使用Rust的C
+-----------
 
 在C或者C++中使用Rust代码通常由两部分组成。
 
@@ -3739,8 +4383,8 @@ etc                ...         ...
 
 除了\ ``cargo``\ 和\ ``meson``\ ，大多数编译系统没有原生Rust支持。因此你最好只用\ ``cargo``\ 编译你的crate和依赖。
 
-`设置一个项目 <#设置一个项目>`__
---------------------------------
+设置一个项目
+~~~~~~~~~~~~
 
 像往常一样创建一个新的\ ``cargo``\ 项目。有一些标志可以告诉\ ``cargo``\ 去生成一个系统库，而不是常规的rust目标文件。如果你想要它与crate的其它部分不一样，你也可以为你的库设置一个不同的输出名。
 
@@ -3751,36 +4395,36 @@ etc                ...         ...
    crate-type = ["cdylib"]      # 生成动态链接库
    # crate-type = ["staticlib"] # 生成静态链接库
 
-`构建一个\ ``C`` API <#构建一个c-api>`__
-----------------------------------------
+构建一个\ ``C`` API
+~~~~~~~~~~~~~~~~~~~
 
 因为对于Rust编译器来说，C++没有稳定的ABI，因此对于不同语言间的互操性我们使用\ ``C``\ 。在C和C++代码的内部使用Rust时也不例外。
 
-```#[no_mangle]`` <#no_mangle>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\`#[no_mangle
+^^^^^^^^^^^^^
 
 Rust对符号名的修饰与主机的代码链接器所期望的不同。因此，需要告知任何被Rust导出到Rust外部去使用的函数不要被编译器修饰。
 
-```extern "C"`` <#extern-c>`__
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``extern "C"``
+^^^^^^^^^^^^^^
 
 默认，任何用Rust写的函数将使用Rust ABI(这也不稳定)。当编译面向外部的FFI APIs时，我们需要告诉编译器去使用系统ABI 。
 
-取决于你的平台，你可能想要针对一个特定的ABI版本，其记录在\ `这里 <https://doc.rust-lang.org/reference/items/external-blocks.html>`__\ 。
-
---------------
+取决于你的平台，你可能想要针对一个特定的ABI版本，其记录在\ `这里 <https://doc.rust-lang.org/reference/items/external-blocks.html>`__\ 。 ###
 
 把这些部分放在一起，你得到一个函数，其粗略看起来像是这个。
 
 ::
 
    #[no_mangle]
-   pub extern "C" fn rust_function()
+   pub extern "C" fn rust_function() {
+
+   }
 
 就像在Rust项目中使用\ ``C``\ 代码时那样，现在需要把数据转换为应用中其它部分可以理解的形式。
 
-`链接和更大的项目上下文 <#链接和更大的项目上下文>`__
-----------------------------------------------------
+链接和更大的项目上下文
+~~~~~~~~~~~~~~~~~~~~~~
 
 问题只解决了一半。
 
@@ -3797,7 +4441,7 @@ Rust对符号名的修饰与主机的代码链接器所期望的不同。因此�
 ::
 
    #[no_mangle]
-   pub extern "C" fn rust_function() {}
+   pub extern "C" fn rust_function() 
 
 将会变成
 
@@ -3816,16 +4460,16 @@ Rust对符号名的修饰与主机的代码链接器所期望的不同。因此�
    #include "my-rust-project.h"
    rust_function();
 
-`没有排序的主题 <#没有排序的主题>`__
-====================================
+没有排序的主题
+--------------
 
-`优化: 速度与大小之间的博弈 <#优化-速度与大小之间的博弈>`__
-===========================================================
+优化: 速度与大小之间的博弈
+--------------------------
 
 每个人都想要程序变得即快又小，但是同时满足这两个条件是不可能的。这部分讨论\ ``rustc``\ 提供的不同的优化等级，和它们是如何影响执行时间和一个程序的二进制项的大小。
 
-`无优化 <#无优化>`__
---------------------
+无优化
+~~~~~~
 
 这是默认的。当你调用\ ``cargo build``\ 时，你使用的是development(又叫\ ``dev``)配置。这个配置优化的目的是为了调试，因此它使能了调试信息且\ *关闭*\ 了所有优化，i.e. 它使用 ``-C opt-level = 0`` 。
 
@@ -3843,8 +4487,8 @@ Rust对符号名的修饰与主机的代码链接器所期望的不同。因此�
 
 我们可以有更小的，调试友好的二进制项吗?是的，这里有一个技巧。
 
-`优化依赖 <#优化依赖>`__
-~~~~~~~~~~~~~~~~~~~~~~~~
+优化依赖
+^^^^^^^^
 
 这里有个名为\ ```profile-overrides`` <https://doc.rust-lang.org/cargo/reference/profiles.html#overrides>`__\ 的Cargo feature，其可以让你覆盖依赖项的优化等级。你能使用这个feature去优化所有依赖的大小，而保持顶层的crate没有被优化以致调试起来友好。
 
@@ -3905,8 +4549,8 @@ Rust对符号名的修饰与主机的代码链接器所期望的不同。因此�
 
 现在顶层的crate和\ ``cortex-m-rt``\ 对调试器很友好！
 
-`优化速度 <#优化速度>`__
-------------------------
+优化速度
+~~~~~~~~
 
 自2018-09-18开始 ``rustc`` 支持三个 "优化速度" 的等级: ``opt-level = 1``, ``2`` 和 ``3`` 。当你运行 ``cargo build --release`` 时，你正在使用的是release配置，其默认是 ``opt-level = 3`` 。
 
@@ -3914,8 +4558,8 @@ Rust对符号名的修饰与主机的代码链接器所期望的不同。因此�
 
 现在还没有办法在\ ``opt-level = 2``\ 和\ ``3``\ 的情况下关闭循环展开，因此如果你不能接受它的开销，你应该选择优化你的程序的大小。
 
-`优化大小 <#优化大小>`__
-------------------------
+优化大小
+~~~~~~~~
 
 自2018-09-18开始\ ``rustc``\ 支持两个"优化大小"的等级: ``opt-level = "s"`` 和 ``"z"`` 。这些名字传承自 clang / LLVM 且不具有描述性，但是\ ``"z"``\ 意味着它产生的二进制文件比\ ``"s"``\ 更小。
 
@@ -3951,7 +4595,7 @@ Rust对符号名的修饰与主机的代码链接器所期望的不同。因此�
 当优化大小时，你应该尝试\ ``225``\ 和\ ``275`` 。
 
 `在\ ``#[no_std]``\ 下执行数学运算 <#在no_std下执行数学运算>`__
-===============================================================
+---------------------------------------------------------------
 
 如果你想要执行数学相关的函数，像是计算平方根或者一个数的指数并有完整的标准库支持，代码可能看起来像这样:
 
@@ -3959,11 +4603,20 @@ Rust对符号名的修饰与主机的代码链接器所期望的不同。因此�
 
    //! 可用一些标准支持的数学函数
 
-   fn main()  to {}", float, floored_float);
-       println!("The square root of {} is {}", floored_float, sqrt_of_four);
-       println!("The sinus of four is {}", sinus_of_four);
+   fn main() {
+       let float: f32 = 4.82832;
+       let floored_float = float.floor();
+
+       let sqrt_of_four = floored_float.sqrt();
+
+       let sinus_of_four = floored_float.sin();
+
+       let exponential_of_four = floored_float.exp();
+       println!("Floored test float  to ", float, floored_float);
+       println!("The square root of  is ", floored_float, sqrt_of_four);
+       println!("The sinus of four is ", sinus_of_four);
        println!(
-           "The exponential of four to the base e is {}",
+           "The exponential of four to the base e is ",
            exponential_of_four
        )
    }
@@ -3982,11 +4635,20 @@ Rust对符号名的修饰与主机的代码链接器所期望的不同。因此�
    use libm::;
 
    #[entry]
-   fn main() -> !  to {}", float, floored_float).unwrap();
-       hprintln!("The square root of {} is {}", floored_float, sqrt_of_four).unwrap();
-       hprintln!("The sinus of four is {}", sinus_of_four).unwrap();
+   fn main() -> ! {
+       let float = 4.82832;
+       let floored_float = floorf(float);
+
+       let sqrt_of_four = sqrtf(floored_float);
+
+       let sinus_of_four = sin(floored_float.into());
+
+       let exponential_of_four = exp(floored_float.into());
+       hprintln!("Floored test float  to ", float, floored_float).unwrap();
+       hprintln!("The square root of  is ", floored_float, sqrt_of_four).unwrap();
+       hprintln!("The sinus of four is ", sinus_of_four).unwrap();
        hprintln!(
-           "The exponential of four to the base e is {}",
+           "The exponential of four to the base e is ",
            exponential_of_four
        )
        .unwrap();
@@ -3994,7 +4656,7 @@ Rust对符号名的修饰与主机的代码链接器所期望的不同。因此�
        // 注意不要在硬件上使用这个; 它能破坏OpenOCD的状态
        // debug::exit(debug::EXIT_SUCCESS);
 
-       loop {}
+       loop 
    }
 
 如果需要在MCU上执行更复杂的操作，像是DSP信号处理或者更高级的线性代数，下列的crates可能可以帮到你
@@ -4005,52 +4667,52 @@ Rust对符号名的修饰与主机的代码链接器所期望的不同。因此�
 -  ```microfft`` <https://crates.io/crates/microfft>`__
 -  ```nalgebra`` <https://github.com/dimforge/nalgebra>`__
 
-`附录A: 词汇表 <#附录a-词汇表>`__
-=================================
+附录A: 词汇表
+-------------
 
 嵌入式生态系统中充满了不同的协议，硬件组件，还有许多与生产商相关的东西，它们都使用自己的缩写和项目名。这个词汇表尝试列出它们以便更好理解它们。
 
-`BSP <#bsp>`__
-~~~~~~~~~~~~~~
+BSP
+^^^
 
-板级支持的Crate(Board Support Crate)提供为某个特定板子配置的高级接口。它通常依赖一个\ `HAL <appendix/glossary.html#hal>`__ crate 。在\ `存储映射的寄存器那页 <appendix/../start/registers.html>`__\ 有更多细节的描述或者看\ `这个视频 <https://youtu.be/vLYit_HHPaY>`__\ 来获取一个更广泛的概述。
+板级支持的Crate(Board Support Crate)提供为某个特定板子配置的高级接口。它通常依赖一个\ `HAL <appendix/glossary.html#hal>`__ crate
 
-`FPU <#fpu>`__
-~~~~~~~~~~~~~~
+FPU
+^^^
 
 浮点单元(Floating-Point Unit)。一个只运行在浮点数上的'数学处理器'。
 
-`HAL <#hal>`__
-~~~~~~~~~~~~~~
+HAL
+^^^
 
-硬件抽象层(Hardware Abstraction Layer) crate为微控制器的功能和外设提供一个开发者友好的接口。它通常在\ `Peripheral Access Crate (PAC) <appendix/glossary.html#pac>`__\ 之上被实现。它可能也会实现来自\ ```embedded-hal`` <https://crates.io/crates/embedded-hal>`__ crate的traits 。在\ `存储映射的寄存器那页 <appendix/../start/registers.html>`__\ 上有更多的细节或者看\ `这个视频 <https://youtu.be/vLYit_HHPaY>`__\ 获取一个更广泛的概述。
+硬件抽象层(Hardware Abstraction Layer) crate为微控制器的功能和外设提供一个开发者友好的接口。它通常在\ `Peripheral Access Crate (PAC) <appendix/glossary.html#pac>`__\ 之上被实现。它可能也会实现来自\ ```embedded-hal`` <https://crates.io/crates/embedded-hal>`__ crate的traits
 
-`I2C <#i2c>`__
-~~~~~~~~~~~~~~
+I2C
+^^^
 
 有时又被称为 ``I²C`` 或者 Intere-IC 。它是一种用于在单个集成电路中进行硬件通信的协议。看\ `这里 <https://en.wikipedia.org/wiki/I2c>`__\ 来获取更多细节。
 
-`PAC <#pac>`__
-~~~~~~~~~~~~~~
+PAC
+^^^
 
-一个外设访问 Crate (Peripheral Access Crate)提供了对一个微控制器的外设的访问。它是一个底层的crates且通常从提供的\ `SVD <appendix/glossary.html#svd>`__\ 被直接生成，经常使用\ `svd2rust <https://github.com/rust-embedded/svd2rust/>`__\ 。\ `硬件抽象层 <appendix/glossary.html#hal>`__\ 应该依赖这个crate。在\ `存储映射的寄存器那页 <appendix/../start/registers.html>`__\ 有更细节的描述或者看\ `这个视频 <https://youtu.be/vLYit_HHPaY>`__\ 获取一个更广泛的概述。
+一个外设访问 Crate (Peripheral Access
 
-`SPI <#spi>`__
-~~~~~~~~~~~~~~
+SPI
+^^^
 
 串行外设接口。看\ `这里 <https://en.wikipedia.org/wiki/Serial_peripheral_interface>`__\ 获取更多信息。
 
-`SVD <#svd>`__
-~~~~~~~~~~~~~~
+SVD
+^^^
 
 系统视图描述文件(System View Description)是一个XML文件格式，以程序员视角来描述一个微控制器设备。你能在\ `the ARM CMSIS documentation site <https://www.keil.com/pack/doc/CMSIS/SVD/html/index.html>`__\ 上获取更多信息。
 
-`UART <#uart>`__
-~~~~~~~~~~~~~~~~
+UART
+^^^^
 
 通用异步收发器。看\ `这里 <https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter>`__\ 获取更多信息。
 
-`USART <#usart>`__
-~~~~~~~~~~~~~~~~~~
+USART
+^^^^^
 
 通用同步异步收发器。看\ `这里 <https://en.wikipedia.org/wiki/Universal_synchronous_and_asynchronous_receiver-transmitter>`__\ 获取更多信息。
